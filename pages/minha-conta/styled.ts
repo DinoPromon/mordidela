@@ -4,6 +4,7 @@ import { FOOTER_HEIGHT, NAVBAR_HEIGHT } from "@utils/styles";
 const Wrapper = styled.div`
   height: calc(100vh - ${FOOTER_HEIGHT} - ${NAVBAR_HEIGHT});
   background-color: #fafafa;
+  overflow-y: auto;
 
   & > div {
     display: flex;
@@ -11,16 +12,14 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     gap: 1.25rem;
-    & > img {
-      width: auto;
-      height: auto;
-      max-width: 100px;
-      max-height: 100px;
+
+    & > div {
       margin-top: 1rem;
     }
 
     & > h3 {
       line-height: 1rem;
+      font-size: 20px;
     }
 
     & > h4 {

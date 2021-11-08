@@ -3,6 +3,8 @@ import type { ReactElement } from "react";
 import Wrapper from "./styled";
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
+import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // apenas layout/design
 
@@ -10,8 +12,10 @@ const AccountPage: NextPageWithLayout = () => {
   return (
     <Wrapper>
       <div>
-        <img src="/images/user.png" alt="Logo de usuário" />
-        <h3>Aristóteles da Silva</h3>
+        <div>
+          <FontAwesomeIcon icon={faUser} size="7x" color="rgba(130, 53, 206, 1)" />
+        </div>
+        <h3>| Aristóteles da Silva |</h3>
         <h4>Dados gerais</h4>
         <h4>Pedidos</h4>
         <h4>Cupons</h4>
