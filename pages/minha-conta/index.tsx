@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
 import Wrapper from "./styled";
-import { NavBarFooter } from "@components/Layouts";
+import NavFooter from "@components/NavFooter";
 import { NextPageWithLayout } from "@my-types/next-page";
 
 // apenas layout/design
@@ -9,7 +9,7 @@ import { NextPageWithLayout } from "@my-types/next-page";
 const AccountPage: NextPageWithLayout = () => {
   return (
     <Wrapper>
-      <img src="/images/user.png" alt="Logo de usuário" />
+      <img src="" alt="Logo de usuário" />
       <h3>Aristóteles da Silva</h3>
       <h4>Dados gerais</h4>
       <h4>Pedidos</h4>
@@ -20,7 +20,7 @@ const AccountPage: NextPageWithLayout = () => {
 };
 
 AccountPage.getLayout = function getLayout(page: ReactElement) {
-  return <NavBarFooter>{page}</NavBarFooter>;
+  return <NavFooter>{page}</NavFooter>;
 };
 
 export default AccountPage;
