@@ -28,8 +28,9 @@ const DropdownList: React.FC<Props> = (props) => {
   return (
     <Wrapper ref={dropdownRef as React.Ref<HTMLUListElement>} animation={dropdownAnimation}>
       <li>
-        <Link href="/minha-conta">Minha Conta</Link>
+        <Link href="/minha-conta">Minha conta</Link>
       </li>
+      <li>Pedidos</li>
       <li>Sair</li>
     </Wrapper>
   );

@@ -28,12 +28,6 @@ const GlobalStyle = createGlobalStyle`
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
 
-  // return (
-  //   <Fragment>
-  //     <GlobalStyle />
-  //     <Component {...pageProps} />
-  //   </Fragment>
-  // );
   return getLayout(
     <Fragment>
       <GlobalStyle />
