@@ -6,6 +6,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1.25rem;
 
   & > img {
     width: auto;
@@ -16,18 +17,19 @@ const Wrapper = styled.div`
   }
 
   & > h3 {
-    line-height: 3rem;
+    line-height: 1rem;
   }
 
   & > h4 {
     background-color: white;
+    color: rgba(130, 53, 206, 1);
     width: 150px;
-    border: 1.5px solid rgba(130, 53, 206, 1);
-    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    /* border: 1.5px solid rgba(130, 53, 206, 1); */
+    padding: 1rem;
     margin: auto;
-    border-radius: 0.5rem;
+    border-radius: 0.25rem;
     text-align: center;
-    margin-bottom: 15px;
     transition: color 0.4s ease;
   }
 `;
