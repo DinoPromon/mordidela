@@ -1,9 +1,15 @@
-import type { NextPage } from 'next';
+import type { ReactElement } from "react";
 
-const LoginPage: NextPage = () => {
-  return (
-    <div></div>
-  );
+import Login from "@components/Login";
+import { Center } from "@components/Layouts";
+import { NextPageWithLayout } from "@my-types/next-page";
+
+const LoginPage: NextPageWithLayout = () => {
+  return <Login />;
+};
+
+LoginPage.getLayout = function getLayout(page: ReactElement) {
+  return <Center>{page}</Center>;
 };
 
 export default LoginPage;

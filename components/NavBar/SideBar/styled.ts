@@ -1,9 +1,8 @@
 import styled, { keyframes } from "styled-components";
 
 import { PINK } from "@utils/colors";
+import { SIDEBAR_WIDTH } from "@utils/styles";
 
-
-const SIDEBAR_WIDTH = "30vw";
 export const SIDEBAR_ANIMATION_TIME = 150;
 
 export const renderAnimation = keyframes`
@@ -37,7 +36,6 @@ const Aside = styled.aside<Props>`
   height: 100vh;
   width: ${SIDEBAR_WIDTH};
   background-color: rgba(130, 53, 206, 0.9);
-  /* background-color: rgba(231, 0, 149, 0.7); */
 
   animation: ${(props) => props.animation} ${SIDEBAR_ANIMATION_TIME}ms ease-out forwards;
 

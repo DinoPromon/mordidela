@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import Footer from "@components/Footer";
 import NavBar from "@components/NavBar";
 
-const NavFooter: React.FC = (props) => {
+const NavBarFooter: React.FC = (props) => {
   return (
     <Fragment>
       <NavBar />
@@ -13,4 +13,4 @@ const NavFooter: React.FC = (props) => {
   );
 };
 
-export default NavFooter;
+export default NavBarFooter;
