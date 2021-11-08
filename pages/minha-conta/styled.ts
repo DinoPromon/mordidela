@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { FOOTER_HEIGHT, NAVBAR_HEIGHT } from "@utils/styles";
 
 const Wrapper = styled.div`
-  background-color: white;
+  height: calc(100vh - ${FOOTER_HEIGHT} - ${NAVBAR_HEIGHT});
+  background-color: gray;
   display: flex;
   flex-direction: column;
   justify-content: center;

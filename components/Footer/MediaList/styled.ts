@@ -5,7 +5,7 @@ const CustomList = styled.ul`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 1rem 1rem 1rem;
+
 
   & > li {
     margin: 0 10px;

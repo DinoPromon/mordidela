@@ -9,7 +9,7 @@ const CustomFooter = styled.footer`
   align-items: center;
   flex-direction: column;
   text-align: center;
-  padding-top: 0.5rem;
+  height: 180px;
 
   & > h3 {
     font-size: 1rem;
