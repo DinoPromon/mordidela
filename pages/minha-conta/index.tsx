@@ -9,12 +9,14 @@ import { NextPageWithLayout } from "@my-types/next-page";
 const AccountPage: NextPageWithLayout = () => {
   return (
     <Wrapper>
-      <img src="/images/user.png" alt="Logo de usuário" />
-      <h3>Aristóteles da Silva</h3>
-      <h4>Dados gerais</h4>
-      <h4>Pedidos</h4>
-      <h4>Cupons</h4>
-      <h4>Endereços</h4>
+      <div>
+        <img src="/images/user.png" alt="Logo de usuário" />
+        <h3>Aristóteles da Silva</h3>
+        <h4>Dados gerais</h4>
+        <h4>Pedidos</h4>
+        <h4>Cupons</h4>
+        <h4>Endereços</h4>
+      </div>
     </Wrapper>
   );
 };

@@ -44,7 +44,7 @@ const Wrapper = styled.fieldset<Props>`
     position: absolute;
     color: black;
     padding: 0 4px;
-    background-color: white;
+    background-color: #fafafa;
     z-index: 20;
     font-size: 1rem;
     margin-left: 0.75rem;
@@ -57,7 +57,7 @@ const Wrapper = styled.fieldset<Props>`
     border: none;
     margin: 0 auto;
     outline: none;
-    background-color: white;
+    background-color: #fafafa;
   }
 
   & > label {
