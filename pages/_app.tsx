@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { createGlobalStyle } from "styled-components";
-import type { AppProps } from "next/app";
+
+import { AppPropsWithLayout } from "@my-types/next-page";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -24,8 +25,16 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout || ((page) => page);
+
+  // return (
+  //   <Fragment>
+  //     <GlobalStyle />
+  //     <Component {...pageProps} />
+  //   </Fragment>
+  // );
+  return getLayout(
     <Fragment>
       <GlobalStyle />
       <Component {...pageProps} />

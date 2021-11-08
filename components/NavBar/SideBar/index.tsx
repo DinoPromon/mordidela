@@ -5,8 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 import useComponentVisible from "@hooks/useComponenteVisible";
-
-import Logo from '@images/label_logo.png';
 import Aside, { renderAnimation, unmountAnimation, SIDEBAR_ANIMATION_TIME } from "./styled";
 import SideBarList from "./SideBarList";
 // import Logo from "@images/label_logo.png";
@@ -46,7 +44,7 @@ const SideBar: React.FC<Props> = (props) => {
       </button>
       <Link href="/" passHref>
         <a>
-          <Image src={Logo} alt="Logo do mordidela." width={100} height={80} layout="intrinsic"/>
+          <Image src="/images/label_logo.png" alt="Logo do mordidela." width={100} height={80} layout="intrinsic"/>
         </a>
       </Link>
       <SideBarList />
