@@ -12,7 +12,7 @@ type Props = {
 const ItemImage: React.FC<Props> = (props) => {
   return (
     <Wrapper>
-      <Image src={props.src} alt={props.alt} width={400} height={400} layout="responsive" />
+      <img src={props.src} alt={props.alt} loading="lazy"/>
     </Wrapper>
   );
 };

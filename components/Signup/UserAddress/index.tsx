@@ -5,6 +5,7 @@ import UserAddressActions from "./UserAddressActions";
 
 type Props = {
   setIsAddressForm: React.Dispatch<React.SetStateAction<boolean>>;
+  sendRequest: () => void
 };
 
 const UserAddress: React.FC<Props> = (props) => {
@@ -12,10 +13,14 @@ const UserAddress: React.FC<Props> = (props) => {
     props.setIsAddressForm(false);
   };
 
+  const submitHandler = () => {
+    props.sendRequest();
+  }
+
   return (
     <Fragment>
       <AddressForm />
-      <UserAddressActions onBack={backHandler} />
+      <UserAddressActions onBack={backHandler} onSubmit={submitHandler}/>
     </Fragment>
   );
 };

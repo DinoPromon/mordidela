@@ -8,7 +8,7 @@ import ItemDescription from "./ItemDescription";
 const MenuItem: React.FC = () => {
   return (
     <Item>
-      <ItemImage src="" alt="Caixa de batata"/>
+      <ItemImage src="/images/caixa-batata.png" alt="Caixa de batata"/>
       <ItemDescription />
     </Item>
   );

@@ -7,7 +7,7 @@ const CustomHeader = styled.header`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 150px;
+  height: 175px;
   width: 100%;
   background-color: ${PINK};
   color: white;

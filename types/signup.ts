@@ -1,4 +1,4 @@
-export type UserForm =  {
+export type UserFormData =  {
   nome: string,
   data_nasciemnto: string,
   telefone: string,
@@ -7,7 +7,7 @@ export type UserForm =  {
   senha_confirmada: string
 }
 
-export type AddressForm = {
+export type AddressFormData = {
   logradouro: string,
   numero: string,
   bairro: string,

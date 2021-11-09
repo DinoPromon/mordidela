@@ -5,13 +5,14 @@ import { FormButton } from "@components/shared";
 
 type Props = {
   onBack: () => void;
+  onSubmit: () => void
 };
 
 const UserAddressActions: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       <FormButton onClick={props.onBack}>Voltar</FormButton>
-      <FormButton>Finalizar</FormButton>
+      <FormButton onClick={props.onSubmit}>Finalizar</FormButton>
     </Wrapper>
   );
 };
