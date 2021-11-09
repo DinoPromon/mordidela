@@ -4,8 +4,12 @@ import Wrapper from "../styled";
 import { Input } from "@components/shared";
 import { emailValidation, passwordValidation } from "@utils/validations";
 
+type Props = {
+  onSubmit: () => void;
+}
+
 // separar form do endereço
-const SignUpForm: React.FC = () => {
+const SignUpForm: React.FC<Props> = (props) => {
   const nameRef = useRef<HTMLInputElement>(null);
   const dataRef = useRef<HTMLInputElement>(null);
   const telefoneRef = useRef<HTMLInputElement>(null);

@@ -47,6 +47,10 @@ const Aside = styled.aside<Props>`
     border: none;
     outline: none;
     background-color: transparent;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   & > a {

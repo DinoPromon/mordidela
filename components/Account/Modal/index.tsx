@@ -1,21 +1,20 @@
 import React from "react";
 import Wrapper from "./styled";
 
+type Props = {
+  onClose: () => void;
+}
 
-const Modal: React.FC = () => {
-    return (
-      <Wrapper>
-        <h2>Modal Example</h2>
-        <button id="myBtn">Open Modal</button>
+const Modal: React.FC<Props> = (props) => {
+  return (
+    <Wrapper>
+      <h2>Modal Example</h2>
+      <div>
+        <span onClick={props.onClose}>&times;</span>
+        <p>Some text in the Modal..</p>
+      </div>
+    </Wrapper>
+  );
+};
 
-        <div id="myModal">
-            <div>
-                <span id="close">&times;</span>
-                <p>Some text in the Modal..</p>
-            </div>
-        </div>
-      </Wrapper>
-    );
-  };
-  
 export default Modal;
