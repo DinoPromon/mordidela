@@ -1,4 +1,5 @@
 import styled, { keyframes } from "styled-components";
+import { PURPLE } from "@utils/colors";
 
 export const DROPDOWN_ANIMATION_TIME = 120;
 export const renderAnimation = keyframes`
@@ -29,6 +30,7 @@ const Wrapper = styled.ul<Props>`
   z-index: 2;
   background-color: white;
   width: 110%;
+  font-weight: bold;
   list-style: none;
   border-radius: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -47,11 +49,11 @@ const Wrapper = styled.ul<Props>`
   }
 
   & > li {
-    color: black;
+    color: ${PURPLE};
     padding: 0.5rem 0;
 
     & > a{
-      color: black;
+      color: ${PURPLE};
       padding: 0.5rem 0;
       text-decoration: none;
     }
