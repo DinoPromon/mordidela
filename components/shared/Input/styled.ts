@@ -57,7 +57,11 @@ const Wrapper = styled.fieldset<Props>`
     border: none;
     margin: 0 auto;
     outline: none;
-    background-color: #fafafa;
+    background-color: transparent;
+
+    &:focus, &:active {
+      background-color: transparent;
+    }
   }
 
   & > label {

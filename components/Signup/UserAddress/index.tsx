@@ -1,8 +1,7 @@
 import React, { Fragment } from "react";
 
-import AddressForm from "@components/Forms/AddressForm";
-import Wrapper from "@components/Forms/styled";
-import FormButton from "@components/shared/FormButton";
+import { AddressForm } from "@components/Forms";
+import UserAddressActions from "./UserAddressActions";
 
 type Props = {
   setIsAddressForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,10 +15,7 @@ const UserAddress: React.FC<Props> = (props) => {
   return (
     <Fragment>
       <AddressForm />
-      <div>
-        <FormButton onClick={backHandler}>Voltar</FormButton>
-        <FormButton>Finalizar</FormButton>
-      </div>
+      <UserAddressActions onBack={backHandler} />
     </Fragment>
   );
 };

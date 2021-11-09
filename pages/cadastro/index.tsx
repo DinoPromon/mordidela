@@ -1,7 +1,15 @@
-import type { NextPage } from "next";
+import type { ReactElement } from "react";
 
-const SignUpPage: NextPage = () => {
-  return <div></div>;
+import Signup from "@components/Signup";
+import { Center } from "@components/Layouts";
+import { NextPageWithLayout } from "@my-types/next-page";
+
+const SignupPage: NextPageWithLayout = () => {
+  return <Signup />;
 };
 
-export default SignUpPage;
+SignupPage.getLayout = function getLayout(page: ReactElement) {
+  return <Center>{page}</Center>;
+};
+
+export default SignupPage;

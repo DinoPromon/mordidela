@@ -2,12 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import useComponentVisible from "@hooks/useComponenteVisible";
 import Aside, { renderAnimation, unmountAnimation, SIDEBAR_ANIMATION_TIME } from "./styled";
 import SideBarList from "./SideBarList";
-// import Logo from "@images/label_logo.png";
 
 type Props = {
   isShowingSidebar: boolean;
@@ -40,7 +39,7 @@ const SideBar: React.FC<Props> = (props) => {
   return (
     <Aside ref={sidebarRef} animation={sidebarAnimation}>
       <button onClick={closeHandler}>
-        <FontAwesomeIcon icon={faAngleLeft} size="2x" color="white" />
+        <FontAwesomeIcon icon={faTimes} size="lg" color="white" />
       </button>
       <Link href="/" passHref>
         <a>

@@ -1,13 +1,13 @@
-import styled from 'styled-components'
-import { PINK, ORANGE } from '@utils/colors';
+import styled from "styled-components";
+import { PINK, ORANGE } from "@utils/colors";
 
 // generalizar esse código
-
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 85%;
+  margin: 2rem;
   justify-content: center;
   gap: 1.5rem;
   max-width: 400px;
