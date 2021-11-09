@@ -6,6 +6,8 @@ import { NextPageWithLayout } from "@my-types/next-page";
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { PURPLE } from "@utils/colors";
+
 // apenas layout/design
 
 const AccountPage: NextPageWithLayout = () => {
@@ -13,7 +15,7 @@ const AccountPage: NextPageWithLayout = () => {
     <Wrapper>
       <div>
         <div>
-          <FontAwesomeIcon icon={faUser} size="7x" color="rgba(130, 53, 206, 1)" />
+          <FontAwesomeIcon icon={faUser} size="7x" color={PURPLE} />
         </div>
         <h3>| Aristóteles da Silva |</h3>
         <h4>Dados gerais</h4>

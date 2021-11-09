@@ -1,22 +1,21 @@
 import styled from 'styled-components'
-
 import { PINK, ORANGE } from '@utils/colors';
-import { FORM_SCREEN_MAX_WIDTH } from '@utils/styles';
 
 // generalizar esse código
 
+
 const Wrapper = styled.div`
   display: flex;
-  margin: 2rem;
   flex-direction: column;
-  width: 85%;
+  width: 100%;
   justify-content: center;
   gap: 1.5rem;
-  max-width: ${FORM_SCREEN_MAX_WIDTH};
+  max-width: 400px;
 
   & > img {
     align-self: center;
-    width: 200px;
+    width: 150px;
+    margin-bottom: 1rem;
   }
 
   & > p {
@@ -29,6 +28,16 @@ const Wrapper = styled.div`
       color: ${PINK};
       padding: 1px 0;
       border-bottom: 1px ${PINK} solid;
+    }
+  }
+  & > div {
+    display: flex;
+    margin: 1rem 2px;
+    flex-direction: row;
+    align-items: center;
+    & > p {
+      margin-right: auto;
+      color: blue;
     }
   }
 `;

@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { FOOTER_HEIGHT, NAVBAR_HEIGHT } from "@utils/styles";
 
 const Wrapper = styled.div`
-  height: calc(100vh - ${FOOTER_HEIGHT} - ${NAVBAR_HEIGHT});
+  min-height: calc(100vh - ${FOOTER_HEIGHT} - ${NAVBAR_HEIGHT});
   background-color: #fafafa;
-  overflow-y: auto;
+  padding: 1rem;
 
   & > div {
     display: flex;

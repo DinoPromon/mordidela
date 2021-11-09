@@ -28,10 +28,10 @@ const Wrapper = styled.ul<Props>`
   margin-top: 0.5rem;
   z-index: 2;
   background-color: white;
-  width: 100%;
+  width: 110%;
   list-style: none;
   border-radius: 0.5rem;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
   animation: ${props => props.animation} ${DROPDOWN_ANIMATION_TIME}ms ease-out forwards;
 

@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
+import { PURPLE } from "@utils/colors";
+
 const CustomFooter = styled.footer`
-  background: rgba(130, 53, 206, 1);
+  background: ${PURPLE};
   margin-top: auto;
   color: white;
   display: flex;
