@@ -16,11 +16,10 @@ const AccountPage: NextPageWithLayout = () => {
           <FontAwesomeIcon icon={faUser} size="5x" color="rgba(130, 53, 206, 1)" />
         </div>
         <h3>| Aristóteles da Silva |</h3>
-        <h4>Dados gerais</h4>
-        <h4>Pedidos</h4>
-        <h4>Cupons</h4>
-        <h4>Endereços</h4>
         <button>Dados gerais</button>
+        <button>Pedidos</button>
+        <button>Cupons</button>
+        <button>Endereços</button>
       </div>
     </Wrapper>
   );
