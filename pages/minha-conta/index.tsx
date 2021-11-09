@@ -15,13 +15,17 @@ const AccountPage: NextPageWithLayout = () => {
     <Wrapper>
       <div>
         <div>
+<<<<<<< HEAD
           <FontAwesomeIcon icon={faUser} size="7x" color={PURPLE} />
+=======
+          <FontAwesomeIcon icon={faUser} size="5x" color="rgba(130, 53, 206, 1)" />
+>>>>>>> 591236d7c9e488b97652018748b003a7cb505e2a
         </div>
         <h3>| Aristóteles da Silva |</h3>
-        <h4>Dados gerais</h4>
-        <h4>Pedidos</h4>
-        <h4>Cupons</h4>
-        <h4>Endereços</h4>
+        <button>Dados gerais</button>
+        <button>Pedidos</button>
+        <button>Cupons</button>
+        <button>Endereços</button>
       </div>
     </Wrapper>
   );

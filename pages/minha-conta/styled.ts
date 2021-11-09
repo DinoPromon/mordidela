@@ -32,7 +32,26 @@ const Wrapper = styled.div`
       margin: auto;
       border-radius: 0.25rem;
       text-align: center;
-      transition: color 0.4s ease;
+    }
+
+    & > button {
+      background-color: white;
+      color: rgba(130, 53, 206, 1);
+      font-weight: bold;
+      width: 150px;
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      padding: 1rem;
+      margin: auto;
+      border: none;
+      border-radius: 0.25rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 250ms, color 250ms;
+
+      &:focus {
+        background-color: rgba(130, 53, 206, 1);
+        color: white;
+      }
     }
   }
 `;
