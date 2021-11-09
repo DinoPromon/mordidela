@@ -34,6 +34,13 @@ const Wrapper = styled.div`
       top: 0;
       cursor: pointer;
     }
+
+    & > form {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
   }
 `;
 
