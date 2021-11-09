@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { FOOTER_HEIGHT, NAVBAR_HEIGHT } from "@utils/styles";
+import { PURPLE } from "@utils/colors";
 
 const Wrapper = styled.div`
   min-height: calc(100vh - ${FOOTER_HEIGHT} - ${NAVBAR_HEIGHT});
@@ -24,7 +25,7 @@ const Wrapper = styled.div`
 
     & > h4 {
       background-color: white;
-      color: rgba(130, 53, 206, 1);
+      color: ${PURPLE};
       width: 150px;
       box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
       /* border: 1.5px solid rgba(130, 53, 206, 1); */
@@ -36,7 +37,7 @@ const Wrapper = styled.div`
 
     & > button {
       background-color: white;
-      color: rgba(130, 53, 206, 1);
+      color: ${PURPLE};
       font-weight: bold;
       width: 150px;
       box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
@@ -49,7 +50,7 @@ const Wrapper = styled.div`
       transition: background-color 250ms, color 250ms;
 
       &:focus {
-        background-color: rgba(130, 53, 206, 1);
+        background-color: ${PURPLE};
         color: white;
       }
     }
