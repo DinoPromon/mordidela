@@ -6,16 +6,30 @@ import { FormButton } from "@components/shared";
 const GeneralData: React.FC = () => {
   return (
     <CustomForm>
-      <label>Nome</label>
-      <input type="text" value="Aristóteles da Silva" />
-      <label>Data de nascimento</label>
-      <input type="text" />
-      <label>Telefone</label>
-      <input type="text" />
-      <label>Email</label>
-      <input type="text" />
-      <label>Senha</label>
-      <input type="text" />
+      <div>
+        <input type="text"/>
+        <span></span>
+        <label>Nome</label>
+      </div>
+      <div>
+        <input type="text"/>
+        <span></span>
+        <label>Data de nascimento</label>
+      </div>
+      <div>
+        <input type="text"/>
+        <span></span>
+        <label>Telefone</label>
+      </div>
+      <div>
+        <input type="text"/>
+        <span></span>
+        <label>Email</label>
+      </div><div>
+        <input type="text"/>
+        <span></span>
+        <label>Senha</label>
+      </div>
       <FormButton>Salvar</FormButton>
     </CustomForm>
   );
