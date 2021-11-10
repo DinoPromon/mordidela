@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+
 import Wrapper from "./styled";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PURPLE } from "@utils/colors";
-import Modal from "./Modal";
+import GeneralDataModal from "./GeneralDataModal";
 
 const Account: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -18,7 +19,7 @@ const Account: React.FC = () => {
 
   return (
     <Wrapper>
-      {showModal && <Modal onClose={closeModalHandler} />}
+      {showModal && <GeneralDataModal onClose={closeModalHandler} />}
       <div>
         <div>
           <FontAwesomeIcon icon={faUser} size="5x" color={PURPLE} />

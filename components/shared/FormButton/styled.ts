@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { PINK } from '@utils/colors';
 
-const Wrapper = styled.button`
+const CustomButton = styled.button`
 	border: none;
 	font-size: 1rem;
 	border-radius: 5px;
@@ -11,4 +11,4 @@ const Wrapper = styled.button`
 	padding: 0.75rem 1.5rem;
 `;
 
-export default Wrapper;
+export default CustomButton;

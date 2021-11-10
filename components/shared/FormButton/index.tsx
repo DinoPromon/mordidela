@@ -1,13 +1,13 @@
 import React from "react";
 
-import Wrapper from "./styled";
+import CustomButton from "./styled";
 
 type Props = {
   onClick?: () => void;
 };
 
 const FormButton: React.FC<Props> = (props) => {
-  return <Wrapper onClick={props.onClick}>{props.children}</Wrapper>;
+  return <CustomButton onClick={props.onClick}>{props.children}</CustomButton>;
 };
 
 export default FormButton;
