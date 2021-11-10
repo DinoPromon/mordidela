@@ -3,7 +3,7 @@ import React from "react";
 import Wrapper from "./styled";
 import { FormButton } from "@components/shared";
 
-const LoginActions: React.FC = () => {
+const LoginFormActions: React.FC = () => {
   return (
     <Wrapper>
       <p>Esqueceu sua senha?</p>
@@ -12,4 +12,4 @@ const LoginActions: React.FC = () => {
   );
 };
 
-export default LoginActions;
+export default LoginFormActions;

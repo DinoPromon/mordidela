@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 import Wrapper from "./styled";
-import UserAddress from "./UserAddress";
-import UserData from "./UserData";
+import { AddressForm, SignUpForm } from "@components/Forms";
 import { UserFormData, AddressFormData } from "@my-types/signup";
 
 const Signup: React.FC = () => {
   const [isAddressForm, setIsAddresForm] = useState(false);
+  const router = useRouter();
 
   const sendRequest = async () => {
     const userData: UserFormData = {
@@ -37,6 +38,22 @@ const Signup: React.FC = () => {
     });
   };
 
+  const addressFormNextHandler = () => {
+    console.log("todo");
+  };
+
+  const addressFormBackHandler = () => {
+    setIsAddresForm(false);
+  };
+
+  const signupFormNextHandler = () => {
+    setIsAddresForm(true);
+  };
+
+  const signupFormBackHandler = () => {
+    router.back();
+  };
+
   return (
     <Wrapper>
       <img
@@ -44,9 +61,9 @@ const Signup: React.FC = () => {
         alt="Ícone de criação de perfil."
       />
       {isAddressForm ? (
-        <UserAddress setIsAddressForm={setIsAddresForm} sendRequest={sendRequest} />
+        <AddressForm onNext={addressFormNextHandler} onBack={addressFormBackHandler} />
       ) : (
-        <UserData setIsAddressForm={setIsAddresForm} />
+        <SignUpForm onNext={signupFormNextHandler} onBack={signupFormBackHandler} />
       )}
     </Wrapper>
   );

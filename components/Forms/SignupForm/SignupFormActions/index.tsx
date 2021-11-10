@@ -8,7 +8,7 @@ type Props = {
   onNext: () => void;
 };
 
-const UserDataActions: React.FC<Props> = (props) => {
+const SignupFormActions: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       <FormButton onClick={props.onBack}>Voltar</FormButton>
@@ -17,4 +17,4 @@ const UserDataActions: React.FC<Props> = (props) => {
   );
 };
 
-export default UserDataActions;
+export default SignupFormActions;

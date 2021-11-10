@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { getInputColor, getAnimation } from "./utils";
 import Wrapper from "./styled";
@@ -7,36 +7,34 @@ type Props = {
   type: string;
   id: string;
   placeholder: string;
-  inputRef: React.RefObject<HTMLInputElement>;
   inputValidation: (text: string) => boolean;
 };
 
 const Input: React.FC<Props> = (props) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isInputValid, setIsInputValid] = useState(false);
   const [isInputTouched, setIsInputTouched] = useState(false);
   const [isOnFocus, setIsOnFocus] = useState(false);
   const [isInitialState, setIsInitialState] = useState(true);
 
   const focusHandler = () => {
-    setIsOnFocus(true);
     if (isInitialState) setIsInitialState(false);
+    setIsOnFocus(true);
   };
 
   const blurHandler = () => {
-    if (props.inputRef.current?.value.length === 0) {
-      setIsOnFocus(false);
-    }
+    setIsOnFocus(false);
   };
 
   const wrapperClickHandler = () => {
-    props.inputRef.current?.focus();
+    inputRef.current?.focus();
   };
 
-  const changeHandler = () => {
-    const input = props.inputRef.current?.value ? props.inputRef.current.value : "";
-    const validation = props.inputValidation(input);
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    const validation = props.inputValidation(inputValue);
     setIsInputValid(validation);
-    setIsInputTouched(!!input);
+    setIsInputTouched(!!inputValue);
   };
 
   return (
@@ -53,7 +51,7 @@ const Input: React.FC<Props> = (props) => {
         id={props.id}
         onFocus={focusHandler}
         onBlur={blurHandler}
-        ref={props.inputRef}
+        ref={inputRef}
         required={true}
       />
     </Wrapper>

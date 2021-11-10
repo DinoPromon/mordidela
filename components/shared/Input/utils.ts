@@ -12,7 +12,7 @@ export const getInputColor = (
 };
 
 export const getAnimation = (isInitialState: boolean, isOnFocus: boolean, isInputTouched: boolean) => {
-  if (isInitialState) return "";
+  if(isInitialState) return "";
   if (isOnFocus || isInputTouched) return placeholderAnimationUp;
   return placeholderAnimationDown;
 };
