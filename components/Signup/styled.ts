@@ -19,17 +19,9 @@ const Wrapper = styled.div`
   }
 
   & > p {
-    width: auto;
-    font-size: 18px;
-    text-align: center;
-    color: ${ORANGE};
-    & > a {
-      text-decoration: none;
-      color: ${PINK};
-      padding: 1px 0;
-      border-bottom: 1px ${PINK} solid;
-    }
+    color: red;
   }
+
   & > div {
     display: flex;
     margin: 1rem 2px;

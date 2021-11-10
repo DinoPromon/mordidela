@@ -3,39 +3,44 @@ import { useRouter } from "next/router";
 
 import Wrapper from "./styled";
 import { AddressForm, SignUpForm } from "@components/Forms";
+import { userFormValidation, getErrorMessage } from "./utils";
 import { UserFormData, AddressFormData } from "@my-types/signup";
 
+const initialState = Object.freeze({
+  nome: "",
+  data_nascimento: "",
+  email: "",
+  senha: "",
+  senha_confirmada: "",
+  telefone: "",
+});
+
 const Signup: React.FC = () => {
-  const [isAddressForm, setIsAddresForm] = useState(false);
   const router = useRouter();
+  const [isAddressForm, setIsAddresForm] = useState(false);
+  const [formData, setFormData] = useState<UserFormData>(initialState);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const hasErrorInInputs = () => {
+    for(let k in userFormValidation) {
+      const key = k as keyof UserFormData;
+      const isValid = userFormValidation[key](formData[key]);
+      console.log(key, isValid);
+      if(!isValid) return key;
+    }
+  }
 
   const sendRequest = async () => {
-    const userData: UserFormData = {
-      nome: "Aristóteles",
-      data_nasciemnto: "1998/10/12",
-      email: "aristoteles@gmail.com",
-      senha: "aristoteles123",
-      senha_confirmada: "aristoteles123",
-      telefone: "44998345678",
-    };
-
-    const addressData: AddressFormData = {
-      bairro: "Jardim encantado",
-      complemento: "Morro",
-      logradouro: "Rua Distante",
-      numero: "45",
-    };
-
-    await fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({
-        userData,
-        addressData,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    // await fetch("/api/auth/signup", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     userData,
+    //     addressData,
+    //   }),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
   };
 
   const addressFormNextHandler = () => {
@@ -47,6 +52,11 @@ const Signup: React.FC = () => {
   };
 
   const signupFormNextHandler = () => {
+    const errorInput = hasErrorInInputs();
+    if(errorInput){
+      setErrorMessage(getErrorMessage(errorInput));
+      return;
+    }
     setIsAddresForm(true);
   };
 
@@ -63,8 +73,14 @@ const Signup: React.FC = () => {
       {isAddressForm ? (
         <AddressForm onNext={addressFormNextHandler} onBack={addressFormBackHandler} />
       ) : (
-        <SignUpForm onNext={signupFormNextHandler} onBack={signupFormBackHandler} />
+        <SignUpForm
+          state={formData}
+          setState={setFormData}
+          onNext={signupFormNextHandler}
+          onBack={signupFormBackHandler}
+        />
       )}
+      {errorMessage && <p>{errorMessage}</p>}
     </Wrapper>
   );
 };

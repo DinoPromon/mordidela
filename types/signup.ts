@@ -1,6 +1,6 @@
 export type UserFormData =  {
   nome: string,
-  data_nasciemnto: string,
+  data_nascimento: string,
   telefone: string,
   email: string,
   senha: string,

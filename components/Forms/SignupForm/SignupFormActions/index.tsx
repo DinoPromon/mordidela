@@ -12,7 +12,7 @@ const SignupFormActions: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       <FormButton onClick={props.onBack}>Voltar</FormButton>
-      <FormButton onClick={props.onNext}>Próximo</FormButton>
+      <FormButton onClick={props.onNext} type="submit">Próximo</FormButton>
     </Wrapper>
   );
 };
