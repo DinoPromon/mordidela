@@ -7,6 +7,7 @@ import { PURPLE } from "@utils/colors";
 import GeneralDataModal from "./GeneralDataModal";
 
 const Account: React.FC = () => {
+  // mudar para nome do modal. e.g. displayedModal: 'generalData' | 'address' | 'undefined'
   const [showModal, setShowModal] = useState(false);
 
   const closeModalHandler = () => {
