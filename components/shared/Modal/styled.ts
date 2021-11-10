@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PURPLE } from "@utils/colors";
+import { PINK, PURPLE } from "@utils/colors";
 
 const Wrapper = styled.div`
   display: none;
@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 
     & > span {
       font-size: 2rem;
-      color: ${PURPLE};
+      color: ${PINK};
       position: absolute;
       right: 5px;
       top: 0;
