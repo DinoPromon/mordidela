@@ -27,9 +27,9 @@ const Account: React.FC = () => {
         </div>
         <h3>| Aristóteles da Silva |</h3>
         <button onClick={openModalHandler}>Dados gerais</button>
+        <button onClick={openModalHandler}>Endereços</button>
         <button onClick={openModalHandler}>Pedidos</button>
         <button onClick={openModalHandler}>Cupons</button>
-        <button onClick={openModalHandler}>Endereços</button>
       </div>
     </Wrapper>
   );
