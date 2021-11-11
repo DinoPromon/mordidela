@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { PINK, ORANGE } from "@utils/colors";
 
 // generalizar esse código
 

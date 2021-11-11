@@ -4,11 +4,20 @@ import CustomButton from "./styled";
 
 type Props = {
   onClick?: () => void;
-  type?: "button" | "submit"
+  disabled?: boolean;
+  type?: "button" | "submit";
 };
 
 const FormButton: React.FC<Props> = (props) => {
-  return <CustomButton onClick={props.onClick} type={props.type || "button"}>{props.children}</CustomButton>;
+  return (
+    <CustomButton
+      onClick={props.onClick}
+      type={props.type || "button"}
+      isDisabled={props.disabled || false}
+    >
+      {props.children}
+    </CustomButton>
+  );
 };
 
 export default FormButton;

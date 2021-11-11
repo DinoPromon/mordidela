@@ -3,10 +3,9 @@ import { useRouter } from "next/router";
 
 import Wrapper from "./styled";
 import { AddressForm, SignUpForm } from "@components/Forms";
-import { userFormValidation, getErrorMessage } from "./utils";
 import { UserFormData, AddressFormData } from "@my-types/signup";
 
-const initialState = Object.freeze({
+const signupInitialState: UserFormData = Object.freeze({
   nome: "",
   data_nascimento: "",
   email: "",
@@ -15,20 +14,18 @@ const initialState = Object.freeze({
   telefone: "",
 });
 
+const addressInitialState: AddressFormData = Object.freeze({
+  logradouro: "",
+  numero: "",
+  bairro: "",
+  complemento: "",
+});
+
 const Signup: React.FC = () => {
   const router = useRouter();
   const [isAddressForm, setIsAddresForm] = useState(false);
-  const [formData, setFormData] = useState<UserFormData>(initialState);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const hasErrorInInputs = () => {
-    for(let k in userFormValidation) {
-      const key = k as keyof UserFormData;
-      const isValid = userFormValidation[key](formData[key]);
-      console.log(key, isValid);
-      if(!isValid) return key;
-    }
-  }
+  const [signupFormData, setSignupFormData] = useState<UserFormData>(signupInitialState);
+  const [addressFormData, setAddressFormData] = useState<AddressFormData>(addressInitialState);
 
   const sendRequest = async () => {
     // await fetch("/api/auth/signup", {
@@ -52,11 +49,6 @@ const Signup: React.FC = () => {
   };
 
   const signupFormNextHandler = () => {
-    const errorInput = hasErrorInInputs();
-    if(errorInput){
-      setErrorMessage(getErrorMessage(errorInput));
-      return;
-    }
     setIsAddresForm(true);
   };
 
@@ -71,16 +63,20 @@ const Signup: React.FC = () => {
         alt="Ícone de criação de perfil."
       />
       {isAddressForm ? (
-        <AddressForm onNext={addressFormNextHandler} onBack={addressFormBackHandler} />
+        <AddressForm
+          onNext={addressFormNextHandler}
+          onBack={addressFormBackHandler}
+          state={addressFormData}
+          setState={setAddressFormData}
+        />
       ) : (
         <SignUpForm
-          state={formData}
-          setState={setFormData}
+          state={signupFormData}
+          setState={setSignupFormData}
           onNext={signupFormNextHandler}
           onBack={signupFormBackHandler}
         />
       )}
-      {errorMessage && <p>{errorMessage}</p>}
     </Wrapper>
   );
 };

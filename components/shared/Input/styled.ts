@@ -18,7 +18,7 @@ const Wrapper = styled.fieldset<Props>`
   outline: 1px ${(props) => props.outlineColor} solid;
   transition: outline 250ms;
   background-color: inherit;
-
+  
   &:hover {
     cursor: text;
   }
@@ -35,6 +35,10 @@ const Wrapper = styled.fieldset<Props>`
     ${(props) => props.shouldGoTop && topSpan};
   }
 
+  & > label {
+    display: none;
+  }
+
   & > input {
     width: 95%;
     font-size: 1rem;
@@ -47,10 +51,6 @@ const Wrapper = styled.fieldset<Props>`
     &:active {
       background-color: transparent;
     }
-  }
-
-  & > label {
-    display: none;
   }
 `;
 

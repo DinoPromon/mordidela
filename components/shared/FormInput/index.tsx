@@ -4,17 +4,17 @@ import { getInputColor } from "./utils";
 import Wrapper from "./styled";
 
 type Props = {
-  type: string;
+  type?: string;
+  value: string,
   id: string;
   placeholder: string;
+  errorMessage?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  inputValidation: (text: string) => boolean;
+  isInputValid: boolean;
 };
 
-const Input: React.FC<Props> = (props) => {
+const FormInput: React.FC<Props> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isInputValid, setIsInputValid] = useState(false);
-  const [isInputTouched, setIsInputTouched] = useState(false);
   const [isOnFocus, setIsOnFocus] = useState(false);
 
   const focusHandler = () => {
@@ -31,31 +31,32 @@ const Input: React.FC<Props> = (props) => {
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (props.onChange) props.onChange(event);
-    const validation = props.inputValidation(event.target.value);
-    setIsInputValid(validation);
-    setIsInputTouched(!!event.target.value);
   };
+
+  const isInputTouched = props.value.length > 0;
 
   return (
     <Wrapper
       shouldGoTop={isOnFocus || isInputTouched}
       onClick={wrapperClickHandler}
-      outlineColor={getInputColor(isInputValid, isInputTouched, isOnFocus)}
+      outlineColor={getInputColor(props.isInputValid, isInputTouched, isOnFocus)}
     >
-      <label htmlFor={props.id}>{props.id}</label>
-      <span>{props.placeholder}</span>
-      <input
-        name={props.id}
-        onChange={changeHandler}
-        type={props.type}
-        id={props.id}
-        onFocus={focusHandler}
-        onBlur={blurHandler}
-        ref={inputRef}
-        required={true}
-      />
+      <fieldset>
+        <label htmlFor={props.id}>{props.id}</label>
+        <span>{props.placeholder}</span>
+        <input
+          onChange={changeHandler}
+          type={props.type || 'text'}
+          value={props.value}
+          id={props.id}
+          onFocus={focusHandler}
+          onBlur={blurHandler}
+          ref={inputRef}
+        />
+      </fieldset>
+      {!props.isInputValid && isInputTouched && !isOnFocus && <p>{props.errorMessage || ""}</p>}
     </Wrapper>
   );
 };
 
-export default Input;
+export default FormInput;
