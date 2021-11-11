@@ -7,7 +7,7 @@ import { FORM_SCREEN_MAX_WIDTH } from '@utils/styles';
 
 const Wrapper = styled.div`
   display: flex;
-  margin: 2rem;
+  padding: 2rem 0;
   flex-direction: column;
   width: 85%;
   justify-content: center;
