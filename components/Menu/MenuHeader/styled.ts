@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { PINK } from "@utils/colors";
+import { PINK} from "@utils/colors";
 
 const CustomHeader = styled.header`
   display: flex;
