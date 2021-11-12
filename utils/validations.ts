@@ -25,14 +25,34 @@ const confirmedPasswordValidation: Validation = (password: string, confirmedPass
   return password === confirmedPassword;
 };
 
+const phoneValidation = (phone: string) => {
+  const phoneRegex = /^\d{11}$/;
+  if(isNaN(parseInt(phone))) return false;
+  if(!phoneRegex.test(phone)) return false;
+  return true;
+};
+
+const dateValidation: Validation = (date: string) => {
+  const [day, month, year] = date.split("/").map((value) => parseInt(value));
+  if (isNaN(day) || isNaN(month) || isNaN(year)) return false;
+
+  const dateAsTimestamp = Date.parse(`${year}-${month}-${day}`);
+
+  if (isNaN(dateAsTimestamp)) return false;
+
+  if (dateAsTimestamp > Date.now()) return false;
+
+  return true;
+};
+
 const complementValidation: Validation = (complement: string) => {
   return true;
 };
 
 export const userFormValidations: UserFormValidations = {
   nome: nameValidation,
-  data_nascimento: nameValidation,
-  telefone: nameValidation,
+  data_nascimento: dateValidation,
+  telefone: phoneValidation,
   email: emailValidation,
   senha: passwordValidation,
   senha_confirmada: confirmedPasswordValidation,

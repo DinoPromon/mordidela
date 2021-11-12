@@ -21,7 +21,7 @@ const FormInput: React.FC<Props> = (props) => {
     setIsOnFocus(true);
   };
 
-  const blurHandler = () => {
+  const blurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
     setIsOnFocus(false);
   };
 

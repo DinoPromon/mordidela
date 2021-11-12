@@ -11,7 +11,7 @@ export const getSignupErrorMessage = (key?: keyof UserFormValidations): string =
     case "senha":
       return "Senha necessita ter ao menos 5 caracteres e 3 números.";
     case "telefone":
-      return "Por favor, insira um telefone válido.";
+      return "Por favor, insira o número do telefone com DDD.";
     case "senha_confirmada":
       return "As senhas precisam ser iguais!";
   }

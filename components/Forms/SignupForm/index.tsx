@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Wrapper from "../styled";
 import SignupFormActions from "./SignupFormActions";
 import { FormInput } from "@components/shared";
+import { formatDate } from "@utils/input-formatter";
 import { userFormValidations } from "@utils/validations";
 import { UserFormData } from "@my-types/signup";
 import { getSignupErrorMessage } from "@utils/error-message";
@@ -27,10 +28,24 @@ const SignUpForm: React.FC<Props> = (props) => {
     return false;
   };
 
+  const dateChangeHandler = (curDate: string, prevDate: string) => {
+    let changedDate = curDate;
+    if (curDate + "/" === prevDate) {
+      changedDate = curDate.substr(0, curDate.length - 1);
+    } else {
+       changedDate = formatDate(curDate);
+    }
+    return changedDate
+  }
+
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const id = event.target.id;
+    if (id === "data_nascimento") {
+      event.target.value = dateChangeHandler(event.target.value, formState[id]);
+    }
     setFormState({
       ...formState,
-      [event.target.id]: event.target.value,
+      [id]: event.target.value,
     });
   };
 
@@ -56,7 +71,7 @@ const SignUpForm: React.FC<Props> = (props) => {
       />
       <FormInput
         id="data_nascimento"
-        isInputValid={userFormValidations.nome(formState.data_nascimento)}
+        isInputValid={userFormValidations.data_nascimento(formState.data_nascimento)}
         value={formState.data_nascimento}
         errorMessage={getSignupErrorMessage("data_nascimento")}
         onChange={changeHandler}
@@ -64,7 +79,7 @@ const SignUpForm: React.FC<Props> = (props) => {
       />
       <FormInput
         id="telefone"
-        isInputValid={userFormValidations.nome(formState.telefone)}
+        isInputValid={userFormValidations.telefone(formState.telefone)}
         value={formState.telefone}
         errorMessage={getSignupErrorMessage("telefone")}
         onChange={changeHandler}
