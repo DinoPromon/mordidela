@@ -3,11 +3,15 @@ import React from "react";
 import Wrapper from "./styled";
 import { FormButton } from "@components/shared";
 
-const LoginFormActions: React.FC = () => {
+type Props = {
+  disabled: boolean
+}
+
+const LoginFormActions: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       <p>Esqueceu sua senha?</p>
-      <FormButton>Entrar</FormButton>
+      <FormButton type="submit" disabled={props.disabled}>Entrar</FormButton>
     </Wrapper>
   );
 };

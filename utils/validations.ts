@@ -1,4 +1,9 @@
-import { Validation, UserFormValidations, AddressFormValidations } from "@my-types/validation";
+import {
+  Validation,
+  UserFormValidations,
+  AddressFormValidations,
+  LoginFormValidations,
+} from "@my-types/validation";
 
 const emailValidation: Validation = (email: string) => {
   const regex = /^[\w][\w\d.]+@([\w]{3,}).([\w.]{3,})/;
@@ -16,18 +21,15 @@ const nameValidation: Validation = (name: string) => {
   return name.trim().length > 0;
 };
 
-const confirmedPasswordValidation: Validation = (
-  password: string,
-  confirmedPassword?: string
-) => {
+const confirmedPasswordValidation: Validation = (password: string, confirmedPassword?: string) => {
   return password === confirmedPassword;
 };
 
 const complementValidation: Validation = (complement: string) => {
   return true;
-}
+};
 
-export const userFormValidation: UserFormValidations = {
+export const userFormValidations: UserFormValidations = {
   nome: nameValidation,
   data_nascimento: nameValidation,
   telefone: nameValidation,
@@ -36,9 +38,14 @@ export const userFormValidation: UserFormValidations = {
   senha_confirmada: confirmedPasswordValidation,
 };
 
-export const addressFormValidation: AddressFormValidations = {
+export const addressFormValidations: AddressFormValidations = {
   logradouro: nameValidation,
   numero: nameValidation,
   bairro: nameValidation,
-  complemento: complementValidation
-}
+  complemento: complementValidation,
+};
+
+export const loginFormValidations: LoginFormValidations = {
+  email: emailValidation,
+  senha: passwordValidation,
+};

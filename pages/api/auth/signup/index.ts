@@ -10,10 +10,9 @@ const handler: NextApiHandler = async (req, res) => {
   };
 
   if (req.method === "POST") {
-    /* nome, data_nascimento, senha, email, ddd, telefone, logradouro, numero_end, bairro, complemento*/
     const results = await mysql.query("CALL pr_insert_usuario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
       userData.nome,
-      userData.data_nasciemnto,
+      userData.data_nascimento,
       userData.senha,
       userData.email,
       userData.telefone.substring(0, 2),

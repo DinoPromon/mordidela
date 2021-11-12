@@ -5,7 +5,7 @@ import Wrapper from "./styled";
 
 type Props = {
   type?: string;
-  value: string,
+  value: string;
   id: string;
   placeholder: string;
   errorMessage?: string;
@@ -35,6 +35,8 @@ const FormInput: React.FC<Props> = (props) => {
 
   const isInputTouched = props.value.length > 0;
 
+  const shouldShowErrorMessage = !props.isInputValid && isInputTouched && !isOnFocus && props.errorMessage !== "";
+
   return (
     <Wrapper
       shouldGoTop={isOnFocus || isInputTouched}
@@ -46,7 +48,7 @@ const FormInput: React.FC<Props> = (props) => {
         <span>{props.placeholder}</span>
         <input
           onChange={changeHandler}
-          type={props.type || 'text'}
+          type={props.type || "text"}
           value={props.value}
           id={props.id}
           onFocus={focusHandler}
@@ -54,7 +56,7 @@ const FormInput: React.FC<Props> = (props) => {
           ref={inputRef}
         />
       </fieldset>
-      {!props.isInputValid && isInputTouched && !isOnFocus && <p>{props.errorMessage || ""}</p>}
+      {shouldShowErrorMessage && <p>{props.errorMessage}</p>}
     </Wrapper>
   );
 };

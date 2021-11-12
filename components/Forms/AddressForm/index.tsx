@@ -4,68 +4,67 @@ import Wrapper from "../styled";
 import AddressFormActions from "./AddressFormActions";
 import { FormInput } from "@components/shared";
 import { AddressFormData } from "@my-types/signup";
-import { addressFormValidation } from "@utils/validations";
+import { addressFormValidations } from "@utils/validations";
 
 type Props = {
   state: AddressFormData;
   setState: React.Dispatch<React.SetStateAction<AddressFormData>>;
   onBack: () => void;
-  onNext: () => void;
+  onSubmit: () => void;
 };
 
 const AddressForm: React.FC<Props> = (props) => {
-  const { state, setState, onBack, onNext } = props;
-	const [canSubmit, setCanSubmit] = useState(false);
+  const { state: formState, setState: setFormState, onBack, onSubmit } = props;
+  const [canSubmit, setCanSubmit] = useState(false);
 
-  const hasErrorInInputs = (formState: typeof state) => {
-    for (let k in addressFormValidation) {
+  const hasErrorInInputs = (formInputs: typeof formState) => {
+    for (let k in addressFormValidations) {
       const key = k as keyof AddressFormData;
-      const isValid = addressFormValidation[key](formState[key]);
-      if (!isValid) return key;
+      const isValid = addressFormValidations[key](formInputs[key]);
+      if (!isValid) return true;
     }
   };
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
+    setFormState({
+      ...formState,
       [event.target.id]: event.target.value,
     });
   };
 
-	const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const errorInput = hasErrorInInputs(state);
-    if (!errorInput) onNext();
+    const hasError = hasErrorInInputs(formState);
+    if (!hasError) onSubmit();
   };
 
-	useEffect(() => {
-    const hasSomeError = hasErrorInInputs(state);
-    setCanSubmit(!hasSomeError);
-  }, [state]);
+  useEffect(() => { 
+    setCanSubmit(!hasErrorInInputs(formState));
+  }, [formState]);
 
   return (
     <Wrapper onSubmit={submitHandler}>
       <FormInput
         type="text"
         id="logradouro"
-        isInputValid={addressFormValidation.logradouro(state.logradouro)}
+        isInputValid={addressFormValidations.logradouro(formState.logradouro)}
         placeholder="Logradouro*"
-        value={state.logradouro}
+        value={formState.logradouro}
         onChange={changeHandler}
       />
       <FormInput
         type="text"
         id="numero"
-        isInputValid={addressFormValidation.numero(state.numero)}
-        value={state.numero}
+        isInputValid={addressFormValidations.numero(formState.numero)}
+        value={formState.numero}
         placeholder="Número*"
         onChange={changeHandler}
       />
       <FormInput
         type="text"
         id="bairro"
-        isInputValid={addressFormValidation.bairro(state.bairro)}
-        value={state.bairro}
+        isInputValid={addressFormValidations.bairro(formState.bairro)}
+        value={formState.bairro}
         placeholder="Bairro*"
         onChange={changeHandler}
       />
@@ -73,12 +72,12 @@ const AddressForm: React.FC<Props> = (props) => {
         type="text"
         id="complemento"
         isInputValid={true}
-        value={state.complemento}
+        value={formState.complemento}
         placeholder="Complemento"
         onChange={changeHandler}
       />
-      <p>Campos com * são obrigatórios.</p>
-      <AddressFormActions onBack={onBack} disabled={!canSubmit}/>
+      <p>Preencha os campos obrigatórios marcados com *.</p>
+      <AddressFormActions onBack={onBack} disabled={!canSubmit} />
     </Wrapper>
   );
 };

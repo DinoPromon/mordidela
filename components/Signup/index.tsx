@@ -28,20 +28,16 @@ const Signup: React.FC = () => {
   const [addressFormData, setAddressFormData] = useState<AddressFormData>(addressInitialState);
 
   const sendRequest = async () => {
-    // await fetch("/api/auth/signup", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     userData,
-    //     addressData,
-    //   }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-  };
-
-  const addressFormNextHandler = () => {
-    console.log("todo");
+    await fetch("/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        userData: signupFormData,
+        addressData: addressFormData,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const addressFormBackHandler = () => {
@@ -64,7 +60,7 @@ const Signup: React.FC = () => {
       />
       {isAddressForm ? (
         <AddressForm
-          onNext={addressFormNextHandler}
+          onSubmit={sendRequest}
           onBack={addressFormBackHandler}
           state={addressFormData}
           setState={setAddressFormData}
@@ -73,7 +69,7 @@ const Signup: React.FC = () => {
         <SignUpForm
           state={signupFormData}
           setState={setSignupFormData}
-          onNext={signupFormNextHandler}
+          onSubmit={signupFormNextHandler}
           onBack={signupFormBackHandler}
         />
       )}

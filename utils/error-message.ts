@@ -1,4 +1,4 @@
-import { AddressFormValidations, UserFormValidations } from "@my-types/validation";
+import { AddressFormValidations, LoginFormValidations, UserFormValidations } from "@my-types/validation";
 
 export const getSignupErrorMessage = (key?: keyof UserFormValidations): string => {
   switch (key) {
@@ -26,6 +26,16 @@ export const getAddressErrorMessage = (key?: keyof AddressFormValidations): stri
       return "Por favor, insira um número valido.";
     case "bairro":
       return "Por favor, insira um bairro válido.";
+  }
+  return "";
+};
+
+export const getLoginErrorMessage = (key?: keyof LoginFormValidations): string => {
+  switch (key) {
+    case "email":
+      return "Email aparenta ser inválido. Certeza que escreveu corretamente?";
+    case "senha":
+      return "Verifique sua senha. A mesma não segue o mínimo exigido de 5 caracteres e 3 números.";
   }
   return "";
 };
