@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 
 import { getInputColor } from "./utils";
+import { removeDuplicateSpace } from "@utils/input-formatter";
 import Wrapper from "./styled";
 
 type Props = {
@@ -22,6 +23,9 @@ const FormInput: React.FC<Props> = (props) => {
   };
 
   const blurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.target.value = removeDuplicateSpace(event.target.value.trim());
+    if(props.onChange)
+      props.onChange(event);
     setIsOnFocus(false);
   };
 

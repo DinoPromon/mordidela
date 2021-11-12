@@ -34,3 +34,8 @@ export const formatDate = (date: string) => {
   });
   return outputDate.join("").substr(0, 14);
 };
+
+export const removeDuplicateSpace = (input: string) => {
+  const duplicateSpacePattern = /\s+/g;
+  return input.replace(duplicateSpacePattern, ' ');
+}

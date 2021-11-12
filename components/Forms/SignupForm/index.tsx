@@ -35,10 +35,10 @@ const SignUpForm: React.FC<Props> = (props) => {
     } else {
        changedDate = formatDate(curDate);
     }
-    return changedDate
+    return changedDate;
   }
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeFormStateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
     if (id === "data_nascimento") {
       event.target.value = dateChangeHandler(event.target.value, formState[id]);
@@ -67,14 +67,14 @@ const SignUpForm: React.FC<Props> = (props) => {
         value={formState.nome}
         errorMessage={getSignupErrorMessage("nome")}
         placeholder="Nome*"
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
       />
       <FormInput
         id="data_nascimento"
         isInputValid={userFormValidations.data_nascimento(formState.data_nascimento)}
         value={formState.data_nascimento}
         errorMessage={getSignupErrorMessage("data_nascimento")}
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
         placeholder="Data de nascimento*"
       />
       <FormInput
@@ -82,7 +82,7 @@ const SignUpForm: React.FC<Props> = (props) => {
         isInputValid={userFormValidations.telefone(formState.telefone)}
         value={formState.telefone}
         errorMessage={getSignupErrorMessage("telefone")}
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
         placeholder="Telefone*"
       />
       <FormInput
@@ -91,7 +91,7 @@ const SignUpForm: React.FC<Props> = (props) => {
         value={formState.email}
         errorMessage={getSignupErrorMessage("email")}
         placeholder="Email*"
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
       />
       <FormInput
         type="password"
@@ -100,7 +100,7 @@ const SignUpForm: React.FC<Props> = (props) => {
         value={formState.senha}
         errorMessage={getSignupErrorMessage("senha")}
         placeholder="Senha*"
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
       />
       <FormInput
         type="password"
@@ -109,7 +109,7 @@ const SignUpForm: React.FC<Props> = (props) => {
         value={formState.senha_confirmada}
         errorMessage={getSignupErrorMessage("senha_confirmada")}
         placeholder="Confirme a senha*"
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
       />
       <p>Preencha os campos obrigatórios marcados com *.</p>
       <SignupFormActions onBack={onBack} disabled={!canSubmit} />

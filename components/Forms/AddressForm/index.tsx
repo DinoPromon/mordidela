@@ -25,7 +25,7 @@ const AddressForm: React.FC<Props> = (props) => {
     }
   };
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeFormStateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormState({
       ...formState,
       [event.target.id]: event.target.value,
@@ -38,7 +38,7 @@ const AddressForm: React.FC<Props> = (props) => {
     if (!hasError) onSubmit();
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     setCanSubmit(!hasErrorInInputs(formState));
   }, [formState]);
 
@@ -50,7 +50,7 @@ const AddressForm: React.FC<Props> = (props) => {
         isInputValid={addressFormValidations.logradouro(formState.logradouro)}
         placeholder="Logradouro*"
         value={formState.logradouro}
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
       />
       <FormInput
         type="text"
@@ -58,7 +58,7 @@ const AddressForm: React.FC<Props> = (props) => {
         isInputValid={addressFormValidations.numero(formState.numero)}
         value={formState.numero}
         placeholder="Número*"
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
       />
       <FormInput
         type="text"
@@ -66,7 +66,7 @@ const AddressForm: React.FC<Props> = (props) => {
         isInputValid={addressFormValidations.bairro(formState.bairro)}
         value={formState.bairro}
         placeholder="Bairro*"
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
       />
       <FormInput
         type="text"
@@ -74,7 +74,7 @@ const AddressForm: React.FC<Props> = (props) => {
         isInputValid={true}
         value={formState.complemento}
         placeholder="Complemento"
-        onChange={changeHandler}
+        onChange={changeFormStateHandler}
       />
       <p>Preencha os campos obrigatórios marcados com *.</p>
       <AddressFormActions onBack={onBack} disabled={!canSubmit} />
