@@ -4,9 +4,7 @@ import { NextPageWithLayout } from "@my-types/next-page";
 import Account from "@components/Account";
 
 const AccountPage: NextPageWithLayout = () => {
-  return (
-    <Account/>
-  );
+  return <Account />;
 };
 
 AccountPage.getLayout = function getLayout(page: ReactElement) {

@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
   };
 
   const signupFormBackHandler = () => {
-    router.back();
+    router.push('/login');
   };
 
   return (

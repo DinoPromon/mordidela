@@ -4,11 +4,15 @@ import List from "./styled";
 import MenuItem from "./MenuItem";
 import MenuFilter from "./MenuFilter";
 
-const MenuList: React.FC = () => {
+type Props = {
+  onShowModal: () => void;
+}
+
+const MenuList: React.FC<Props> = (props) => {
   return (
     <List>
       <MenuFilter/>
-      <MenuItem />
+      <MenuItem onClick={props.onShowModal}/>
     </List>
   );
 };

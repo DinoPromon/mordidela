@@ -5,9 +5,18 @@ import Item from "./styled";
 import ItemImage from "./ItemImage";
 import ItemDescription from "./ItemDescription";
 
-const MenuItem: React.FC = () => {
+type Props = {
+  onClick: () => void;
+}
+
+const MenuItem: React.FC<Props> = (props) => {
+
+  const clickHandler = () => {
+    props.onClick();
+  };
+
   return (
-    <Item>
+    <Item onClick={clickHandler}>
       <ItemImage src="/images/caixa-batata.png" alt="Caixa de batata"/>
       <ItemDescription />
     </Item>
