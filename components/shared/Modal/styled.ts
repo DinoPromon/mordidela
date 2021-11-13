@@ -15,7 +15,7 @@ const Wrapper = styled.div`
     background-color: white;
     margin: auto;
     padding: 20px;
-    min-width: 30vh;
+    min-width: 70vh;
     border-radius: 0.5rem;
     position: absolute;
     left: 50%;

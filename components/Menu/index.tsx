@@ -7,7 +7,6 @@ import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
 
 const Menu = () => {
-  const [modalItem, setModalItem] = useState();
   const [showModal, setShowModal] = useState(false);
 
   const showModalHandler = () => {

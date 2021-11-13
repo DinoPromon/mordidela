@@ -5,6 +5,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 25vh;
+  cursor: pointer;
   
   & > img {
     max-width: 100%;

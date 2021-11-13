@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   background-color: ${ORANGE};
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
+  cursor: pointer;
   
   & > span {
     letter-spacing: 1px;
