@@ -21,7 +21,7 @@ const ModalItemDescription: React.FC = () => {
         </ul>
         <h3>Adicionais</h3>
         <ul>
-            <li><input type="checkbox" /> Barbecue</li>
+            <li><input type="checkbox" /> Barbecue R$2,00</li>
             <li><input type="checkbox" /> Mostarda e mel</li>
             <li><input type="checkbox" /> Cheddar cremoso</li>
             <li><input type="checkbox" /> Maionese verde</li>
