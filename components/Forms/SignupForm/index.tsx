@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import Wrapper from "../styled";
 import SignupFormActions from "./SignupFormActions";
 import { FormInput } from "@components/shared";
-import { formatDate } from "@utils/input-formatter";
+import { dateChangeHandler } from "@utils/input-formatter";
+import { hasUserInDatabase } from "@utils/database";
 import { userFormValidations } from "@utils/validations";
 import { UserFormData } from "@my-types/signup";
 import { getSignupErrorMessage } from "@utils/error-message";
@@ -28,16 +29,6 @@ const SignUpForm: React.FC<Props> = (props) => {
     return false;
   };
 
-  const dateChangeHandler = (curDate: string, prevDate: string) => {
-    let changedDate = curDate;
-    if (curDate + "/" === prevDate) {
-      changedDate = curDate.substr(0, curDate.length - 1);
-    } else {
-       changedDate = formatDate(curDate);
-    }
-    return changedDate;
-  }
-
   const changeFormStateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
     if (id === "data_nascimento") {
@@ -55,6 +46,10 @@ const SignUpForm: React.FC<Props> = (props) => {
     if (!hasError) onSubmit();
   };
 
+  const testHandler = async () => {
+    console.log(await hasUserInDatabase({ id_usuario: 49 }));
+  };
+
   useEffect(() => {
     setCanSubmit(!hasErrorInInputs(formState));
   }, [formState]);
@@ -66,7 +61,8 @@ const SignUpForm: React.FC<Props> = (props) => {
         isInputValid={userFormValidations.nome(formState.nome)}
         value={formState.nome}
         errorMessage={getSignupErrorMessage("nome")}
-        placeholder="Nome*"
+        shoulRemoveAditionalSpaces={true}
+        placeholder="Nome"
         onChange={changeFormStateHandler}
       />
       <FormInput
@@ -82,6 +78,7 @@ const SignUpForm: React.FC<Props> = (props) => {
         isInputValid={userFormValidations.telefone(formState.telefone)}
         value={formState.telefone}
         errorMessage={getSignupErrorMessage("telefone")}
+        shoulRemoveAditionalSpaces={true}
         onChange={changeFormStateHandler}
         placeholder="Telefone*"
       />
@@ -90,6 +87,7 @@ const SignUpForm: React.FC<Props> = (props) => {
         isInputValid={userFormValidations.email(formState.email)}
         value={formState.email}
         errorMessage={getSignupErrorMessage("email")}
+        shoulRemoveAditionalSpaces={true}
         placeholder="Email*"
         onChange={changeFormStateHandler}
       />
@@ -111,7 +109,7 @@ const SignUpForm: React.FC<Props> = (props) => {
         placeholder="Confirme a senha*"
         onChange={changeFormStateHandler}
       />
-      <p>Preencha os campos obrigatórios marcados com *.</p>
+      <p onClick={testHandler}>Preencha os campos obrigatórios marcados com *.</p>
       <SignupFormActions onBack={onBack} disabled={!canSubmit} />
     </Wrapper>
   );

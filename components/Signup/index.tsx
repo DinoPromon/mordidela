@@ -28,16 +28,18 @@ const Signup: React.FC = () => {
   const [addressFormData, setAddressFormData] = useState<AddressFormData>(addressInitialState);
 
   const sendRequest = async () => {
-    await fetch("/api/auth/signup", {
+    const response = await fetch("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({
-        userData: signupFormData,
-        addressData: addressFormData,
+        userFormData: signupFormData,
+        addressFormData: addressFormData,
       }),
       headers: {
         "Content-Type": "application/json",
       },
     });
+
+    const data = await response.json();
   };
 
   const addressFormBackHandler = () => {

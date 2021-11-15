@@ -5,6 +5,7 @@ import AddressFormActions from "./AddressFormActions";
 import { FormInput } from "@components/shared";
 import { AddressFormData } from "@my-types/signup";
 import { addressFormValidations } from "@utils/validations";
+import { removeAditionalSpaces } from "@utils/input-formatter";
 
 type Props = {
   state: AddressFormData;
@@ -49,6 +50,7 @@ const AddressForm: React.FC<Props> = (props) => {
         id="logradouro"
         isInputValid={addressFormValidations.logradouro(formState.logradouro)}
         placeholder="Logradouro*"
+        shoulRemoveAditionalSpaces={true}
         value={formState.logradouro}
         onChange={changeFormStateHandler}
       />
@@ -56,6 +58,7 @@ const AddressForm: React.FC<Props> = (props) => {
         type="text"
         id="numero"
         isInputValid={addressFormValidations.numero(formState.numero)}
+        shoulRemoveAditionalSpaces={true}
         value={formState.numero}
         placeholder="Número*"
         onChange={changeFormStateHandler}
@@ -64,6 +67,7 @@ const AddressForm: React.FC<Props> = (props) => {
         type="text"
         id="bairro"
         isInputValid={addressFormValidations.bairro(formState.bairro)}
+        shoulRemoveAditionalSpaces={true}
         value={formState.bairro}
         placeholder="Bairro*"
         onChange={changeFormStateHandler}
@@ -72,6 +76,7 @@ const AddressForm: React.FC<Props> = (props) => {
         type="text"
         id="complemento"
         isInputValid={true}
+        shoulRemoveAditionalSpaces={true}
         value={formState.complemento}
         placeholder="Complemento"
         onChange={changeFormStateHandler}

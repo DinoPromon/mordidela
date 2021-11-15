@@ -35,7 +35,18 @@ export const formatDate = (date: string) => {
   return outputDate.join("").substr(0, 14);
 };
 
-export const removeDuplicateSpace = (input: string) => {
+export const removeAditionalSpaces = (input: string) => {
+  input = input.trim();
   const duplicateSpacePattern = /\s+/g;
   return input.replace(duplicateSpacePattern, ' ');
+}
+
+export const dateChangeHandler = (curDate: string, prevDate: string) => {
+  let changedDate = curDate;
+  if (curDate + "/" === prevDate) {
+    changedDate = curDate.substr(0, curDate.length - 1);
+  } else {
+     changedDate = formatDate(curDate);
+  }
+  return changedDate;
 }

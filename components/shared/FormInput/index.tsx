@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 
 import { getInputColor } from "./utils";
-import { removeDuplicateSpace } from "@utils/input-formatter";
+import { removeAditionalSpaces } from "@utils/input-formatter";
 import Wrapper from "./styled";
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
   id: string;
   placeholder: string;
   errorMessage?: string;
+  shoulRemoveAditionalSpaces?: boolean;
+  verifyDatabase?: (str: string) => boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isInputValid: boolean;
 };
@@ -17,15 +19,15 @@ type Props = {
 const FormInput: React.FC<Props> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOnFocus, setIsOnFocus] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(props.errorMessage);
 
   const focusHandler = () => {
     setIsOnFocus(true);
   };
 
   const blurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
-    event.target.value = removeDuplicateSpace(event.target.value.trim());
-    if(props.onChange)
-      props.onChange(event);
+    if (props.shoulRemoveAditionalSpaces) event.target.value = removeAditionalSpaces(event.target.value);
+    if (props.onChange) props.onChange(event);
     setIsOnFocus(false);
   };
 
@@ -39,7 +41,8 @@ const FormInput: React.FC<Props> = (props) => {
 
   const isInputTouched = props.value.length > 0;
 
-  const shouldShowErrorMessage = !props.isInputValid && isInputTouched && !isOnFocus && props.errorMessage !== "";
+  const shouldShowErrorMessage =
+    !props.isInputValid && isInputTouched && !isOnFocus && props.errorMessage !== "";
 
   return (
     <Wrapper
@@ -60,7 +63,7 @@ const FormInput: React.FC<Props> = (props) => {
           ref={inputRef}
         />
       </fieldset>
-      {shouldShowErrorMessage && <p>{props.errorMessage}</p>}
+      {shouldShowErrorMessage && <p>{}</p>}
     </Wrapper>
   );
 };

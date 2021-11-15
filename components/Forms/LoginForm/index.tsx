@@ -23,7 +23,7 @@ const LoginForm: React.FC<Props> = (props) => {
       const isValid = loginFormValidations[key](formInputs[key]);
       if (!isValid) return key;
     }
-		return false;
+    return false;
   };
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +39,7 @@ const LoginForm: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-		setCanSubmit(!hasErrorInIputs(formState));
+    setCanSubmit(!hasErrorInIputs(formState));
   }, [formState]);
 
   return (
@@ -51,6 +51,7 @@ const LoginForm: React.FC<Props> = (props) => {
         value={formState.email}
         onChange={changeHandler}
         errorMessage={getLoginErrorMessage("email")}
+        shoulRemoveAditionalSpaces={true}
         placeholder="Email"
       />
       <FormInput
