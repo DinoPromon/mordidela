@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Wrapper = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 
   & > p {
     font-size: 13px;

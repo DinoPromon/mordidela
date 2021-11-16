@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Wrapper from "./styled";
 import { AddressForm, SignUpForm } from "@components/Forms";
 import { UserFormData, AddressFormData } from "@my-types/signup";
+import { Response } from "@my-types/request";
 
 const signupInitialState: UserFormData = Object.freeze({
   nome: "",
@@ -28,18 +29,28 @@ const Signup: React.FC = () => {
   const [addressFormData, setAddressFormData] = useState<AddressFormData>(addressInitialState);
 
   const sendRequest = async () => {
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({
-        userFormData: signupFormData,
-        addressFormData: addressFormData,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({
+          userFormData: signupFormData,
+          addressFormData: addressFormData,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
 
-    const data = await response.json();
+      if (!response.ok) return { error: true, message: data.message } as Response;
+
+      setSignupFormData(signupInitialState);
+      setAddressFormData(addressInitialState);
+      return { error: false, message: data.message } as Response;
+    } catch (e) {
+      const error = e as Error;
+      return { error: true, message: error.message } as Response;
+    }
   };
 
   const addressFormBackHandler = () => {
@@ -51,7 +62,7 @@ const Signup: React.FC = () => {
   };
 
   const signupFormBackHandler = () => {
-    router.push('/login');
+    router.push("/login");
   };
 
   return (

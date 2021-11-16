@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import Wrapper from "../styled";
 import AddressFormActions from "./AddressFormActions";
+import FormRequestStatus from "@components/shared/FormRequestStatus";
+import { Response } from "@my-types/request";
 import { FormInput } from "@components/shared";
 import { AddressFormData } from "@my-types/signup";
 import { addressFormValidations } from "@utils/validations";
-import { removeAditionalSpaces } from "@utils/input-formatter";
 
 type Props = {
   state: AddressFormData;
   setState: React.Dispatch<React.SetStateAction<AddressFormData>>;
   onBack: () => void;
-  onSubmit: () => void;
+  onSubmit: () => Promise<Response>;
 };
 
 const AddressForm: React.FC<Props> = (props) => {
   const { state: formState, setState: setFormState, onBack, onSubmit } = props;
   const [canSubmit, setCanSubmit] = useState(false);
+  const [request, setRequest] = useState({ error: "", isLoading: false, success: false });
 
   const hasErrorInInputs = (formInputs: typeof formState) => {
     for (let k in addressFormValidations) {
@@ -33,10 +36,18 @@ const AddressForm: React.FC<Props> = (props) => {
     });
   };
 
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const hasError = hasErrorInInputs(formState);
-    if (!hasError) onSubmit();
+    if (!hasError) {
+      setRequest({ ...request, isLoading: true });
+      const response = await onSubmit();
+      setRequest({
+        success: !response.error,
+        isLoading: false,
+        error: response.error ? response.message : "",
+      });
+    }
   };
 
   useEffect(() => {
@@ -82,7 +93,12 @@ const AddressForm: React.FC<Props> = (props) => {
         onChange={changeFormStateHandler}
       />
       <p>Preencha os campos obrigatórios marcados com *.</p>
-      <AddressFormActions onBack={onBack} disabled={!canSubmit} />
+      <FormRequestStatus
+        isLoading={request.isLoading}
+        errorMessage={request.error}
+        successMessage={request.success ? "Inserido com sucesso. Redirecionando para Login." : ""}
+      />
+      <AddressFormActions onBack={onBack} disabled={!canSubmit} success={request.success} />
     </Wrapper>
   );
 };

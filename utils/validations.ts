@@ -4,6 +4,7 @@ import {
   AddressFormValidations,
   LoginFormValidations,
 } from "@my-types/validation";
+import { AddressFormData, UserFormData } from "@my-types/signup";
 
 const emailValidation: Validation = (email: string) => {
   const regex = /^[\w][\w\d.]+@([\w]{3,}).([\w.]{3,})/;
@@ -27,8 +28,8 @@ const confirmedPasswordValidation: Validation = (password: string, confirmedPass
 
 const phoneValidation = (phone: string) => {
   const phoneRegex = /^\d{11}$/;
-  if(isNaN(parseInt(phone))) return false;
-  if(!phoneRegex.test(phone)) return false;
+  if (isNaN(parseInt(phone))) return false;
+  if (!phoneRegex.test(phone)) return false;
   return true;
 };
 
@@ -68,4 +69,25 @@ export const addressFormValidations: AddressFormValidations = {
 export const loginFormValidations: LoginFormValidations = {
   email: emailValidation,
   senha: passwordValidation,
+};
+
+export const hasErrorInUserForm = (userFormData: UserFormData) => {
+  for (const k in userFormData) {
+    const key = k as keyof UserFormData;
+    const isValid = userFormValidations[key](userFormData[key], userFormData["senha_confirmada"]);
+    // se preciso mostrar o campo errado, trocar hasError para key
+    if (!isValid) return true;
+  }
+
+  return false;
+};
+
+export const hasErrorInAddressForm = (addressFormData: AddressFormData) => {
+  for (const k in addressFormData) {
+    const key = k as keyof AddressFormData;
+    const isValid = addressFormValidations[key](addressFormData[key]);
+    if (!isValid) return true;
+  }
+
+  return false;
 };

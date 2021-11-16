@@ -4,7 +4,6 @@ import Wrapper from "../styled";
 import SignupFormActions from "./SignupFormActions";
 import { FormInput } from "@components/shared";
 import { dateChangeHandler } from "@utils/input-formatter";
-import { hasUserInDatabase } from "@utils/database";
 import { userFormValidations } from "@utils/validations";
 import { UserFormData } from "@my-types/signup";
 import { getSignupErrorMessage } from "@utils/error-message";
@@ -44,10 +43,6 @@ const SignUpForm: React.FC<Props> = (props) => {
     event.preventDefault();
     const hasError = hasErrorInInputs(formState);
     if (!hasError) onSubmit();
-  };
-
-  const testHandler = async () => {
-    console.log(await hasUserInDatabase({ id_usuario: 49 }));
   };
 
   useEffect(() => {
@@ -109,7 +104,7 @@ const SignUpForm: React.FC<Props> = (props) => {
         placeholder="Confirme a senha*"
         onChange={changeFormStateHandler}
       />
-      <p onClick={testHandler}>Preencha os campos obrigatórios marcados com *.</p>
+      <p>Preencha os campos obrigatórios marcados com *.</p>
       <SignupFormActions onBack={onBack} disabled={!canSubmit} />
     </Wrapper>
   );

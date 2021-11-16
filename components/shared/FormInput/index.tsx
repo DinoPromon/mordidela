@@ -63,7 +63,7 @@ const FormInput: React.FC<Props> = (props) => {
           ref={inputRef}
         />
       </fieldset>
-      {shouldShowErrorMessage && <p>{}</p>}
+      {shouldShowErrorMessage && <p>{errorMessage}</p>}
     </Wrapper>
   );
 };

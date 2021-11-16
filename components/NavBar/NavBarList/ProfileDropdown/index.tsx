@@ -17,19 +17,10 @@ const ProfileDropdown: React.FC = (props) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick={showDropdownHandler}>
       <FontAwesomeIcon icon={faUser} size="lg" color="white" /> Aristóteles{" "}
-      {
-        <FontAwesomeIcon
-          icon={getDropdownIcon()}
-          size="lg"
-          color="white"
-          onClick={showDropdownHandler}
-        />
-      }
-      {showDropdown && (
-        <DropdownList isShowingDropdown={showDropdown} setShowDropdown={setShowDropdown} />
-      )}
+      {<FontAwesomeIcon icon={getDropdownIcon()} size="lg" color="white" />}
+      {showDropdown && <DropdownList isShowingDropdown={showDropdown} setShowDropdown={setShowDropdown} />}
     </Wrapper>
   );
 };
