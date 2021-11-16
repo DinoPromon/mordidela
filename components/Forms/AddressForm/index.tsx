@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 
 import Wrapper from "../styled";
 import AddressFormActions from "./AddressFormActions";

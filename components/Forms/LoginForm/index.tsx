@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { signIn } from "next-auth/client";
 
 import Wrapper from "../styled";
 import LoginFormActions from "./LoginFormActions";
@@ -7,13 +8,13 @@ import { getLoginErrorMessage } from "@utils/error-message";
 import { FormInput } from "@components/shared";
 import { LoginFormData } from "@my-types/login";
 
-type Props = {
-  state: LoginFormData;
-  setState: React.Dispatch<React.SetStateAction<LoginFormData>>;
-};
+const initialLoginData: LoginFormData = Object.freeze({
+  email: "",
+  senha: "",
+});
 
-const LoginForm: React.FC<Props> = (props) => {
-  const { state: formState, setState: setFormState } = props;
+const LoginForm: React.FC = (props) => {
+  const [formState, setFormState] = useState<LoginFormData>(initialLoginData);
   const [errorMessage, setErrorMessage] = useState("");
   const [canSubmit, setCanSubmit] = useState(false);
 
@@ -33,9 +34,15 @@ const LoginForm: React.FC<Props> = (props) => {
     });
   };
 
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("todo");
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: formState.email,
+      senha: formState.senha,
+    });
+
+    console.log(result);
   };
 
   useEffect(() => {
