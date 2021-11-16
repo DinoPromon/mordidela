@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { signIn } from "next-auth/client";
 
 import Wrapper from "../styled";
 import LoginFormActions from "./LoginFormActions";
+import FormRequestStatus from "@components/shared/FormRequestStatus";
 import { loginFormValidations } from "@utils/validations";
 import { getLoginErrorMessage } from "@utils/error-message";
 import { FormInput } from "@components/shared";
@@ -14,8 +16,9 @@ const initialLoginData: LoginFormData = Object.freeze({
 });
 
 const LoginForm: React.FC = (props) => {
+  const router = useRouter();
   const [formState, setFormState] = useState<LoginFormData>(initialLoginData);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [request, setRequest] = useState({ error: "", isLoading: false, success: false });
   const [canSubmit, setCanSubmit] = useState(false);
 
   const hasErrorInIputs = (formInputs: LoginFormData) => {
@@ -36,18 +39,37 @@ const LoginForm: React.FC = (props) => {
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const result = await signIn("credentials", {
-      redirect: false,
-      email: formState.email,
-      senha: formState.senha,
-    });
+    setRequest({ ...request, isLoading: true });
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: formState.email,
+        senha: formState.senha,
+      });
 
-    console.log(result);
+      console.log(result, formState.email, formState.senha);
+
+      if (!result || result.error) {
+        throw new Error(result ? result.error : "Não foi possível realizar o login.");
+      }
+
+      setRequest({ isLoading: false, success: true, error: "" });
+
+      const timer = setTimeout(() => {
+        router.replace("/");
+        return () => clearTimeout(timer);
+      }, 2000);
+    } catch (e) {
+      const error = e as Error;
+      setRequest({ isLoading: false, success: false, error: error.message });
+    }
   };
 
   useEffect(() => {
     setCanSubmit(!hasErrorInIputs(formState));
   }, [formState]);
+
+  const shouldShowRequestStatus = request.isLoading || request.error || request.success;
 
   return (
     <Wrapper onSubmit={submitHandler}>
@@ -70,7 +92,14 @@ const LoginForm: React.FC = (props) => {
         errorMessage={getLoginErrorMessage("senha")}
         placeholder="Senha"
       />
-      {errorMessage !== "" && <p>{errorMessage}</p>}
+      {shouldShowRequestStatus && (
+        <FormRequestStatus
+          errorMessage={request.error}
+          isLoading={request.isLoading}
+          successMessage={request.success ? "Logado com sucesso. Redirecionando para página inicial" : ""}
+        />
+      )}
+
       <LoginFormActions disabled={!canSubmit} />
     </Wrapper>
   );

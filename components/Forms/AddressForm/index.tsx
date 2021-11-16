@@ -53,6 +53,8 @@ const AddressForm: React.FC<Props> = (props) => {
     setCanSubmit(!hasErrorInInputs(formState));
   }, [formState]);
 
+  const shouldShowRequestStatus = request.isLoading || request.error || request.success;
+
   return (
     <Wrapper onSubmit={submitHandler}>
       <FormInput
@@ -92,11 +94,13 @@ const AddressForm: React.FC<Props> = (props) => {
         onChange={changeFormStateHandler}
       />
       <p>Preencha os campos obrigatórios marcados com *.</p>
-      <FormRequestStatus
-        isLoading={request.isLoading}
-        errorMessage={request.error}
-        successMessage={request.success ? "Inserido com sucesso. Redirecionando para Login." : ""}
-      />
+      {shouldShowRequestStatus && (
+        <FormRequestStatus
+          isLoading={request.isLoading}
+          errorMessage={request.error}
+          successMessage={request.success ? "Inserido com sucesso. Redirecionando para Login." : ""}
+        />
+      )}
       <AddressFormActions onBack={onBack} disabled={!canSubmit} success={request.success} />
     </Wrapper>
   );

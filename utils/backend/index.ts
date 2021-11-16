@@ -4,10 +4,10 @@ export const getUserByEmail = async (email: string) => {
   const query = `SELECT email, senha FROM usuario WHERE email=?`;
 
   try {
-    const result = await mysql.query(query, [email]);
+    const result = await mysql.query(query, [email]) as any;
     await mysql.end();
-
-    return (result as { email: string, senha: string });
+    console.log(result);
+    return (result[0] as { email: string, senha: string });
   } catch (e) {
     const error = e as Error;
     return null;

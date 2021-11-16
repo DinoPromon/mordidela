@@ -1,3 +1,5 @@
+import { getSession } from "next-auth/client";
+import { useEffect } from "react";
 import type { GetStaticProps } from "next";
 import type { ReactElement } from "react";
 import { NavBarFooter } from "@components/Layouts";
@@ -6,6 +8,11 @@ import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
 
 const HomePage: NextPageWithLayout = () => {
+  useEffect(() => {
+    getSession().then((session) => {
+      console.log(session);
+    });
+  }, []);
   return <div>hello</div>;
 };
 
