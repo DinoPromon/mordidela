@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import Wrapper from "../styled";
 import AddressFormActions from "./AddressFormActions";
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const AddressForm: React.FC<Props> = (props) => {
+  const router = useRouter();
   const { state: formState, setState: setFormState, onBack, onSubmit } = props;
   const [canSubmit, setCanSubmit] = useState(false);
   const [request, setRequest] = useState({ error: "", isLoading: false, success: false });
@@ -46,6 +48,8 @@ const AddressForm: React.FC<Props> = (props) => {
         isLoading: false,
         error: response.error ? response.message : "",
       });
+
+      if (!response.error) router.replace("/login");
     }
   };
 
@@ -98,7 +102,7 @@ const AddressForm: React.FC<Props> = (props) => {
         <FormRequestStatus
           isLoading={request.isLoading}
           errorMessage={request.error}
-          successMessage={request.success ? "Inserido com sucesso. Redirecionando para Login." : ""}
+          // successMessage={request.success ? "Inserido com sucesso. Redirecionando para Login." : ""}
         />
       )}
       <AddressFormActions onBack={onBack} disabled={!canSubmit} success={request.success} />

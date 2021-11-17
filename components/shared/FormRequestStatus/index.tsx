@@ -6,7 +6,7 @@ import Wrapper, { Text } from './styled';
 type Props = {
   errorMessage: string,
   isLoading: boolean,
-  successMessage: string
+  successMessage?: string
 }
 
 const FormRequestStatus: React.FC<Props> = (props) => {

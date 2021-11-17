@@ -89,10 +89,8 @@ const LoginForm: React.FC = (props) => {
         <FormRequestStatus
           errorMessage={request.error}
           isLoading={request.isLoading}
-          successMessage={request.success ? "Logado com sucesso. Redirecionando para página inicial" : ""}
         />
       )}
-
       <LoginFormActions disabled={!canSubmit} />
     </Wrapper>
   );
