@@ -9,7 +9,7 @@ const CustomForm = styled.form`
   /* align-items: center; */
   /* gap: 0.5rem; */
   width: 80vw;
-  max-width: 720px;
+  max-width: 100%;
 
   & > div {
     position: relative;
