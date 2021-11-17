@@ -12,17 +12,9 @@ type Props = {
 };
 
 const NavBarList: React.FC<Props> = (props) => {
-  const [sessionStatus, setSessionStatus] = useState<"loading" | "loggedin" | "loggedout">("loading");
   const openSideBar = () => {
     props.setShowSideBar(true);
   };
-
-  useEffect(() => {
-    getSession().then((session) => {
-      if (session) setSessionStatus("loggedin");
-      else setSessionStatus("loggedout");
-    });
-  }, [setSessionStatus]);
 
   return (
     <Wrapper>
@@ -33,8 +25,7 @@ const NavBarList: React.FC<Props> = (props) => {
         <FontAwesomeIcon icon={faShoppingCart} size="lg" color="white" />
       </li>
       <li>
-        {sessionStatus === "loggedout" && <Link href="/login">Login</Link>}
-        {sessionStatus === "loggedin" && <ProfileDropdown />}
+        <ProfileDropdown />
       </li>
     </Wrapper>
   );

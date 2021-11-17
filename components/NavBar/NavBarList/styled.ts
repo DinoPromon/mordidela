@@ -10,11 +10,6 @@ const Wrapper = styled.ul`
     font-weight: bold;
     margin: 1rem 1.5rem;
 
-    & > a {
-      text-decoration: none;
-      color: inherit;
-    }
-
     &:nth-of-type(2) {
       float: right;
     }
