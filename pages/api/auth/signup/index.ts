@@ -4,26 +4,13 @@ import { treatErrorMessage } from "@utils/database";
 import { AddressFormData, UserFormData } from "@my-types/signup";
 import { hasErrorInAddressForm, hasErrorInUserForm } from "@utils/validations";
 import { removeAditionalSpaces } from "@utils/input-formatter";
+import {
+  transformDate,
+  getDDDFromTelefone,
+  getNumberFromTelefone,
+} from "database/signup/data-transformations";
 
 import mysql from "database";
-
-const transformDate = (date: string) => {
-  const fragmentedDate = date.split('/');
-  fragmentedDate.reverse();
-  const formatedDate = fragmentedDate.join('-');
-
-  return formatedDate;
-};
-
-const getDDDFromTelefone = (telefone: string) => {
-  const cleanedTelefone = telefone.replace(/[\(\)-]/, '');
-  return cleanedTelefone.substring(0, 2);
-};
-
-const getNumberFromTelefone = (telefone: string) => {
-  const cleanedTelefone = telefone.replace(/[\(\)-]/, '');
-  return cleanedTelefone.substring(2);
-};
 
 const handler: NextApiHandler = async (req, res) => {
   const { userFormData, addressFormData } = req.body as {

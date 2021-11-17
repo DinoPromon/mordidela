@@ -9,7 +9,7 @@ export const getSignupErrorMessage = (key?: keyof UserFormValidations): string =
     case "email":
       return "Por favor, insira um email válido.";
     case "senha":
-      return "Senha necessita ter ao menos 5 caracteres e 3 números.";
+      return "Senha necessita ter ao menos 8 caracteres alfa numéricos, sendo ao menos 1 deles um dígito.";
     case "telefone":
       return "Por favor, insira o número do telefone com DDD.";
     case "senha_confirmada":
@@ -35,7 +35,7 @@ export const getLoginErrorMessage = (key?: keyof LoginFormValidations): string =
     case "email":
       return "Email aparenta ser inválido. Certeza que escreveu corretamente?";
     case "senha":
-      return "Verifique sua senha. A mesma não segue o mínimo exigido de 5 caracteres e 3 números.";
+      return "Verifique sua senha. A mesma não segue o mínimo exigido de 8 caracteres alfa numéricos com ao menos 1 dígito.";
   }
   return "";
 };
