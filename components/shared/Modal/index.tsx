@@ -8,7 +8,7 @@ type Props = {
 };
 
 const Modal: React.FC<Props> = (props) => {
-  const { ref: modalRef, isComponentVisible, setIsComponentVisible } = useComponentVisible(true);
+  const { ref: modalRef, isComponentVisible } = useComponentVisible(true);
 
   useEffect(() => {
     if (!isComponentVisible) props.onClose();

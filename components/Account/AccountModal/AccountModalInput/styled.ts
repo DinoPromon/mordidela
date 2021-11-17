@@ -17,7 +17,6 @@ const Wrapper = styled.div<Props>`
 
   & > input {
     width: 100%;
-    padding: 0.5rem;
     height: 40px;
     border: none;
     background: none;
