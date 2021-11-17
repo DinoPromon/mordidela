@@ -1,6 +1,6 @@
 import React from "react";
 
-import GeneralData from "../GeneralData";
+import GeneralData from "./GeneralData";
 import Modal from "@components/shared/Modal";
 
 type Props = {

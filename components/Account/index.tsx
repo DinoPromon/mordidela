@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-
-import Wrapper from "./styled";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import Wrapper from "./styled";
+import AccountModal from "./AccountModal";
+import AccountInfoList from "./AccountInfoList";
 import { PURPLE } from "@utils/colors";
-import GeneralDataModal from "./GeneralDataModal";
 
 const Account: React.FC = () => {
   // mudar para nome do modal. e.g. displayedModal: 'generalData' | 'address' | 'undefined'
@@ -20,16 +21,13 @@ const Account: React.FC = () => {
 
   return (
     <Wrapper>
-      {showModal && <GeneralDataModal onClose={closeModalHandler} />}
+      {showModal && <AccountModal onClose={closeModalHandler} />}
       <div>
         <div>
           <FontAwesomeIcon icon={faUser} size="5x" color={PURPLE} />
         </div>
         <h3>| Aristóteles da Silva |</h3>
-        <button onClick={openModalHandler}>Dados gerais</button>
-        <button onClick={openModalHandler}>Endereços</button>
-        <button onClick={openModalHandler}>Pedidos</button>
-        <button onClick={openModalHandler}>Cupons</button>
+        <AccountInfoList onClick={openModalHandler} />
       </div>
     </Wrapper>
   );
