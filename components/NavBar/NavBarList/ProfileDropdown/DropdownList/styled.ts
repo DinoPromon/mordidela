@@ -20,8 +20,8 @@ export const unmountAnimation = keyframes`
 `;
 
 type Props = {
-  animation: ReturnType<typeof keyframes>
-}
+  animation: ReturnType<typeof keyframes>;
+};
 
 const Wrapper = styled.ul<Props>`
   position: absolute;
@@ -35,7 +35,7 @@ const Wrapper = styled.ul<Props>`
   border-radius: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
-  animation: ${props => props.animation} ${DROPDOWN_ANIMATION_TIME}ms ease-out forwards;
+  animation: ${(props) => props.animation} ${DROPDOWN_ANIMATION_TIME}ms ease-out forwards;
 
   &::after {
     content: "";
@@ -52,10 +52,18 @@ const Wrapper = styled.ul<Props>`
     color: ${PURPLE};
     padding: 0.5rem 0;
 
-    & > a{
+    &:hover {
+      cursor: pointer;
+    }
+    
+    & > a {
       color: ${PURPLE};
       padding: 0.5rem 0;
       text-decoration: none;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 `;

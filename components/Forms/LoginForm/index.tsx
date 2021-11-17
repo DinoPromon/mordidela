@@ -47,18 +47,11 @@ const LoginForm: React.FC = (props) => {
         senha: formState.senha,
       });
 
-      console.log(result, formState.email, formState.senha);
-
       if (!result || result.error) {
         throw new Error(result ? result.error : "Não foi possível realizar o login.");
       }
 
-      setRequest({ isLoading: false, success: true, error: "" });
-
-      const timer = setTimeout(() => {
-        router.replace("/");
-        return () => clearTimeout(timer);
-      }, 2000);
+      router.replace("/");
     } catch (e) {
       const error = e as Error;
       setRequest({ isLoading: false, success: false, error: error.message });

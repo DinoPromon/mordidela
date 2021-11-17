@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { signOut } from "next-auth/client";
 import Link from "next/link";
 
 import useComponentVisible from "@hooks/useComponenteVisible";
@@ -16,6 +17,10 @@ const DropdownList: React.FC<Props> = (props) => {
 
   const { ref: dropdownRef, isComponentVisible } = useComponentVisible(isShowingDropdown);
 
+  const logoutHandler = () => {
+    signOut();
+  };
+
   useEffect(() => {
     setDropdownAnimation(isComponentVisible ? renderAnimation : unmountAnimation);
     const timer = setTimeout(() => {
@@ -31,7 +36,7 @@ const DropdownList: React.FC<Props> = (props) => {
         <Link href="/minha-conta">Minha conta</Link>
       </li>
       <li>Pedidos</li>
-      <li>Sair</li>
+      <li onClick={logoutHandler}>Sair</li>
     </Wrapper>
   );
 };
