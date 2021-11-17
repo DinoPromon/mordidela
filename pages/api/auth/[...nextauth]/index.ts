@@ -7,6 +7,7 @@ export default NextAuth({
   session: {
     jwt: true,
   },
+  secret: "amnjlsokendhiija",
   providers: [
     Providers.Credentials({
       name: "credentials",

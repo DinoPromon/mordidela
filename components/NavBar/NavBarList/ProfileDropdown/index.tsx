@@ -9,6 +9,7 @@ import DropdownList from "./DropdownList";
 
 const ProfileDropdown: React.FC = (props) => {
   const [sessionStatus, setSessionStatus] = useState<"loading" | "loggedin" | "loggedout">("loading");
+  const [nome, setNome] = useState<string>();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const getDropdownIcon = () => {
@@ -19,11 +20,35 @@ const ProfileDropdown: React.FC = (props) => {
     setShowDropdown((prevState) => !prevState);
   };
 
+  const getUserName = async (email: string) => {
+    const response = await fetch(`/api/users?email=${email}&limit=1`);
+    const result = await response.json();
+    console.log(result);
+    if (!response.ok) {
+      throw new Error(result.message);
+    }
+
+    return result;
+  };
+
+  const handleLoggedIn = async () => {
+    try {
+      const session = await getSession();
+      if (session) {
+        const data = await getUserName(session.user?.email as string);
+        setNome(data[0].nome.split(' ')[0]);
+        setSessionStatus("loggedin");
+        return;
+      }
+      setSessionStatus("loggedout");
+    } catch (e) {
+      const error = e as Error;
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    getSession().then((session) => {
-      if (session) setSessionStatus("loggedin");
-      else setSessionStatus("loggedout");
-    });
+    handleLoggedIn();
   }, [setSessionStatus]);
 
   return (
@@ -31,7 +56,7 @@ const ProfileDropdown: React.FC = (props) => {
       <FontAwesomeIcon icon={faUser} size="lg" color="white" />
       {sessionStatus === "loggedin" && (
         <Fragment>
-          <span>Aristóteles</span>
+          <span>{nome}</span>
           <FontAwesomeIcon icon={getDropdownIcon()} size="lg" color="white" />
         </Fragment>
       )}

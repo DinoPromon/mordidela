@@ -26,16 +26,19 @@ type Props = {
 const Wrapper = styled.ul<Props>`
   position: absolute;
   text-align: center;
-  margin-top: 0.5rem;
   z-index: 2;
   background-color: white;
-  width: 110%;
+  width: 100%;
+  min-width: 120px;
+  max-width: 130px;
   font-weight: bold;
   list-style: none;
   border-radius: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-
   animation: ${(props) => props.animation} ${DROPDOWN_ANIMATION_TIME}ms ease-out forwards;
+  left: 0;
+  right: 0;
+  margin: 0.5rem auto;
 
   &::after {
     content: "";
@@ -55,7 +58,7 @@ const Wrapper = styled.ul<Props>`
     &:hover {
       cursor: pointer;
     }
-    
+
     & > a {
       color: ${PURPLE};
       padding: 0.5rem 0;
