@@ -20,7 +20,7 @@ const handler: NextApiHandler = async (req, res) => {
     }
     const formatedConditions = paramsWithValues.join(" and ");
 
-    const formatedQuery = `SELECT nome, email FROM vw_usuario WHERE ${formatedConditions}`;
+    const formatedQuery = `SELECT nome, email, autorizacao FROM vw_usuario WHERE ${formatedConditions}`;
 
     try {
       const result = (await mysql.query(formatedQuery, Object.values(query))) as any;

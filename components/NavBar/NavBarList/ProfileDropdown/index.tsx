@@ -23,7 +23,6 @@ const ProfileDropdown: React.FC = (props) => {
   const getUserName = async (email: string) => {
     const response = await fetch(`/api/users?email=${email}&limit=1`);
     const result = await response.json();
-    console.log(result);
     if (!response.ok) {
       throw new Error(result.message);
     }
@@ -36,14 +35,13 @@ const ProfileDropdown: React.FC = (props) => {
       const session = await getSession();
       if (session) {
         const data = await getUserName(session.user?.email as string);
-        setNome(data[0].nome.split(' ')[0]);
+        setNome(data[0].nome.split(" ")[0]);
         setSessionStatus("loggedin");
         return;
       }
       setSessionStatus("loggedout");
     } catch (e) {
       const error = e as Error;
-      console.log(error);
     }
   };
 

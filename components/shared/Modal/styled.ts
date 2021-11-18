@@ -28,7 +28,6 @@ const Wrapper = styled.div`
     scroll-behavior: smooth;
     scrollbar-color: #C9BFD1 transparent;
     scrollbar-width: thin;
-    scroll
     &::-webkit-scrollbar {
       width: 8px;
       height: 8px;
