@@ -9,6 +9,7 @@ import { loginFormValidations } from "@utils/validations";
 import { getLoginErrorMessage } from "@utils/error-message";
 import { FormInput } from "@components/shared";
 import { LoginFormData } from "@my-types/login";
+import { RequestState } from "@my-types/request";
 
 const initialLoginData: LoginFormData = Object.freeze({
   email: "",
@@ -18,7 +19,7 @@ const initialLoginData: LoginFormData = Object.freeze({
 const LoginForm: React.FC = (props) => {
   const router = useRouter();
   const [formState, setFormState] = useState<LoginFormData>(initialLoginData);
-  const [request, setRequest] = useState({ error: "", isLoading: false, success: false });
+  const [request, setRequest] = useState<RequestState>({ error: "", isLoading: false, success: false });
   const [canSubmit, setCanSubmit] = useState(false);
 
   const hasErrorInIputs = (formInputs: LoginFormData) => {

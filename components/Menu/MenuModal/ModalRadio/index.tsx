@@ -5,7 +5,7 @@ const ModalRadio: React.FC = () => {
   return (
     <Wrapper>
         <label htmlFor="caixa-media">Caixa média - 600g
-            <input type="radio" id="caixa-media" name="input-tamanho" checked/>
+            <input type="radio" id="caixa-media" name="input-tamanho"/>
             <span></span>
             <p>R$ 20,90</p>
         </label>

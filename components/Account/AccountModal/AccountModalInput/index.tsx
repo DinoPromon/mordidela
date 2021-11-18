@@ -6,6 +6,7 @@ type Props = {
   id: string;
   placeholder: string;
   disabled?: boolean;
+  value: string;
 };
 
 const GeneralDataInput: React.FC<Props> = (props) => {
@@ -29,7 +30,7 @@ const GeneralDataInput: React.FC<Props> = (props) => {
       onBlur={blurHandler}
       isDisabled={!!props.disabled}
     >
-      <input type="text" id={props.id} ref={inputRef} disabled={props.disabled} />
+      <input type="text" id={props.id} ref={inputRef} disabled={props.disabled} value={props.value} />
       <label htmlFor={props.id}>{props.placeholder}</label>
     </Wrapper>
   );

@@ -3,9 +3,6 @@ import { PINK, PURPLE } from "@utils/colors";
 
 const Wrapper = styled.div`
   position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1;
   left: 0;
   top: 0;
@@ -14,13 +11,17 @@ const Wrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
 
   & > div {
-    position: relative;
+    position: absolute;
     background-color: white;
     width: 90%;
     max-width: 600px;
     margin: auto;
     border-radius: 0.5rem;
     overflow: hidden;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    left: 0;
 
     & > span {
       font-size: 2rem;

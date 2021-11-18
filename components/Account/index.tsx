@@ -27,7 +27,7 @@ const Account: React.FC<Props> = (props) => {
 
   return (
     <Wrapper>
-      {showModal && <AccountModal onClose={closeModalHandler} />}
+      {showModal && <AccountModal onClose={closeModalHandler} id_usuario={id_usuario}/>}
       <div>
         <div>
           <FontAwesomeIcon icon={faUser} size="5x" color={PURPLE} />

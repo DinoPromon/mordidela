@@ -11,6 +11,7 @@ type Props = {
 
 const FormRequestStatus: React.FC<Props> = (props) => {
   const { errorMessage, isLoading, successMessage } = props;
+
   return (
     <Wrapper>
       {isLoading && <Loading color="blue" /> }
