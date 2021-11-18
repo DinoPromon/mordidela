@@ -1,18 +1,24 @@
 import type { ReactElement } from "react";
-import type { GetServerSideProps } from 'next';
-import { getSession, useSession } from "next-auth/client";
+import type { GetServerSideProps } from "next";
+import type { Session } from "next-auth";
+import { getSession } from "next-auth/client";
 
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
 import Account from "@components/Account";
 
-type Props = {
-  email: string;
-}
+type UserInSession = {
+  nome: string,
+  id_usuario: string
+};
 
-const AccountPage: NextPageWithLayout = (props) => {
-  const [session, loading] = useSession();
-  return <Account />;
+type Props = {
+  user: UserInSession
+};
+
+const AccountPage: NextPageWithLayout<Props> = (props) => {
+  const { nome, id_usuario } = props.user;
+  return <Account nome={nome} id_usuario={id_usuario} />;
 };
 
 AccountPage.getLayout = function getLayout(page: ReactElement) {
@@ -32,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      session
+      user: session.user as UserInSession,
     },
   };
 };

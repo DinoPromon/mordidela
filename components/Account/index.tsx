@@ -7,7 +7,13 @@ import AccountModal from "./AccountModal";
 import AccountInfoList from "./AccountInfoList";
 import { PURPLE } from "@utils/colors";
 
-const Account: React.FC = () => {
+type Props = {
+  nome: string,
+  id_usuario: string
+};
+
+const Account: React.FC<Props> = (props) => {
+  const { nome, id_usuario } = props;
   // mudar para nome do modal. e.g. displayedModal: 'generalData' | 'address' | 'undefined'
   const [showModal, setShowModal] = useState(false);
 
@@ -26,7 +32,7 @@ const Account: React.FC = () => {
         <div>
           <FontAwesomeIcon icon={faUser} size="5x" color={PURPLE} />
         </div>
-        <h3>| Aristóteles da Silva |</h3>
+        <h3>| {nome} |</h3>
         <AccountInfoList onClick={openModalHandler} />
       </div>
     </Wrapper>

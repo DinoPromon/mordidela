@@ -34,8 +34,8 @@ const ProfileDropdown: React.FC = (props) => {
     try {
       const session = await getSession();
       if (session) {
-        const data = await getUserName(session.user?.email as string);
-        setNome(data[0].nome.split(" ")[0]);
+        const { nome } = session.user as { nome: string };
+        setNome(nome.split(" ")[0]);
         setSessionStatus("loggedin");
         return;
       }

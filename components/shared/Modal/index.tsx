@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import useComponentVisible from "@hooks/useComponenteVisible";
 import Wrapper from "./styled";
+import Scroller from "./Scroller";
 
 type Props = {
   onClose: () => void;
@@ -18,7 +19,7 @@ const Modal: React.FC<Props> = (props) => {
     <Wrapper>
       <div ref={modalRef as React.Ref<HTMLDivElement>}>
         <span onClick={props.onClose}>&times;</span>
-        {props.children}
+        <Scroller>{props.children}</Scroller>
       </div>
     </Wrapper>
   );
