@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 
 import { getInputColor } from "./utils";
-import { removeAditionalSpaces } from "@utils/input-formatter";
+import { removeAditionalSpaces } from "@utils/formatters/input-formatter";
 import Wrapper from "./styled";
 
 type Props = {
@@ -11,7 +11,6 @@ type Props = {
   placeholder: string;
   errorMessage?: string;
   shoulRemoveAditionalSpaces?: boolean;
-  verifyDatabase?: (str: string) => boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isInputValid: boolean;
 };
@@ -19,7 +18,6 @@ type Props = {
 const FormInput: React.FC<Props> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOnFocus, setIsOnFocus] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(props.errorMessage);
 
   const focusHandler = () => {
     setIsOnFocus(true);
@@ -63,7 +61,7 @@ const FormInput: React.FC<Props> = (props) => {
           ref={inputRef}
         />
       </fieldset>
-      {shouldShowErrorMessage && <p>{errorMessage}</p>}
+      {shouldShowErrorMessage && <p>{props.errorMessage}</p>}
     </Wrapper>
   );
 };

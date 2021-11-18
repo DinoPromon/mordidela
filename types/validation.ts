@@ -1,5 +1,5 @@
 import { LoginFormData } from "./login";
-import { AddressFormData, UserFormData } from "./signup";
+import { AddressFormData, GeneralDataForm, UserFormData } from "./forms";
 
 export type Validation = (x: string, y?: string) => boolean;
 
@@ -13,4 +13,8 @@ export type AddressFormValidations = {
 
 export type LoginFormValidations = {
   [key in keyof LoginFormData]: Validation;
-}
+};
+
+export type GeneralDataFormValidations = {
+  [key in keyof GeneralDataForm]: Validation;
+};

@@ -7,6 +7,7 @@ type Props = {
   placeholder: string;
   disabled?: boolean;
   value: string;
+  setValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const GeneralDataInput: React.FC<Props> = (props) => {
@@ -22,7 +23,7 @@ const GeneralDataInput: React.FC<Props> = (props) => {
     setIsOnFocus(false);
   };
 
-  const shouldGoTop = isOnFocus || !!inputRef.current?.value;
+  const shouldGoTop = isOnFocus || props.value.length > 0;
   return (
     <Wrapper
       shouldGoTop={shouldGoTop}
@@ -30,7 +31,14 @@ const GeneralDataInput: React.FC<Props> = (props) => {
       onBlur={blurHandler}
       isDisabled={!!props.disabled}
     >
-      <input type="text" id={props.id} ref={inputRef} disabled={props.disabled} value={props.value} />
+      <input
+        type="text"
+        id={props.id}
+        ref={inputRef}
+        disabled={props.disabled}
+        value={props.value}
+        onChange={props.setValue}
+      />
       <label htmlFor={props.id}>{props.placeholder}</label>
     </Wrapper>
   );

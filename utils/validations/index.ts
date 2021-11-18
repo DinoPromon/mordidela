@@ -1,5 +1,5 @@
-import { UserFormValidations, AddressFormValidations, LoginFormValidations } from "@my-types/validation";
-import { AddressFormData, UserFormData } from "@my-types/signup";
+import { UserFormValidations, AddressFormValidations, LoginFormValidations, GeneralDataFormValidations } from "@my-types/validation";
+import { AddressFormData, UserFormData } from "@my-types/forms";
 
 import { nameValidation } from "./name";
 import { phoneValidation } from "./phone";
@@ -39,6 +39,11 @@ export const loginFormValidations: LoginFormValidations = {
   email: emailValidation,
   senha: passwordValidation,
 };
+
+export const generalDataValidation: GeneralDataFormValidations = {
+  nome: nameValidation,
+  data_nascimento: dateValidation
+}
 
 export const hasErrorInUserForm = (userFormData: UserFormData) => {
   for (const k in userFormData) {

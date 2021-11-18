@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 import GeneralData from "./GeneralData";
 import Modal from "@components/shared/Modal";
-
 type Props = {
   id_usuario: string;
   onClose: () => void;

@@ -1,9 +1,9 @@
 import type { NextApiHandler } from "next";
 
-import { treatErrorMessage } from "@utils/database";
+import { treatErrorMessage } from "@utils/transformation/error";
 import { AddressFormData, UserFormData } from "@my-types/signup";
 import { hasErrorInAddressForm, hasErrorInUserForm } from "@utils/validations";
-import { removeAditionalSpaces } from "@utils/input-formatter";
+import { removeAditionalSpaces } from "@utils/formatters/input-formatter";
 import {
   transformDate,
   getDDDFromTelefone,

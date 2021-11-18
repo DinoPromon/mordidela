@@ -2,6 +2,7 @@ import type { NextApiHandler } from "next";
 
 import mysql from "database";
 import { getSession } from "next-auth/client";
+import { transformDateFromDBToClient } from "@utils/transformation/date";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
@@ -14,13 +15,17 @@ const handler: NextApiHandler = async (req, res) => {
   const id_usuario = query.id_usuario as string;
 
   if (req.method === "GET") {
-    const formatedQuery = `SELECT nome, email, autorizacao FROM vw_usuario WHERE id_usuario = ?`;
+    const formatedQuery = `SELECT nome, email, autorizacao, data_nascimento FROM vw_usuario WHERE id_usuario = ?`;
 
     try {
       const result = (await mysql.query(formatedQuery, [id_usuario])) as any;
       await mysql.end();
 
-      const response = result.slice(0, 1);
+      const response = {
+        ...result[0],
+        data_nascimento: transformDateFromDBToClient(result[0].data_nascimento),
+      };
+
       return res.status(200).json(response);
     } catch (e) {
       const error = e as Error;

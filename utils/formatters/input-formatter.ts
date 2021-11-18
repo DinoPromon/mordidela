@@ -17,7 +17,7 @@ const transformDayOrMonth = (subStr: string, maxValue: number) => {
   return subStr;
 };
 
-export const formatDate = (date: string) => {
+export const formatDateInput = (date: string) => {
   let input = date;
   if (/\D\/$/.test(date)) {
     input = date.substr(0, date.length - 3);
@@ -46,7 +46,7 @@ export const dateChangeHandler = (curDate: string, prevDate: string) => {
   if (curDate + "/" === prevDate) {
     changedDate = curDate.substr(0, curDate.length - 1);
   } else {
-     changedDate = formatDate(curDate);
+     changedDate = formatDateInput(curDate);
   }
   return changedDate;
 }
