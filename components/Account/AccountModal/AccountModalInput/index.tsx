@@ -30,7 +30,6 @@ const GeneralDataInput: React.FC<Props> = (props) => {
       isDisabled={!!props.disabled}
     >
       <input type="text" id={props.id} ref={inputRef} disabled={props.disabled} />
-      <span></span>
       <label htmlFor={props.id}>{props.placeholder}</label>
     </Wrapper>
   );

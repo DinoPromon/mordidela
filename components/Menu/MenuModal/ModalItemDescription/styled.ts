@@ -27,6 +27,25 @@ const Wrapper = styled.form`
         margin-bottom: 0.5rem;
         color: ${PURPLE};
     }
+
+    & > textarea {
+        background-color: white;
+        width: 100%;
+        padding: 5px;
+        text-align: center;
+        margin-top: 1rem;
+        border-radius: 0.25rem;
+        border: 1px ${PURPLE} solid;
+        outline: none;
+        resize: none;
+    }
+
+    & > div:last-child {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        align-items: center;
+    }
 `;
 
 export default Wrapper;

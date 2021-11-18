@@ -8,13 +8,12 @@ const Wrapper = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
-  /* overflow: auto; */
   background-color: rgba(0, 0, 0, 0.3);
   overflow-y: auto;
 
   & > div {
     background-color: white;
-    margin: auto;
+    margin: 2rem auto;
     padding: 20px;
     width: 90%;
     max-width: 600px;
