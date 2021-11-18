@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
 
   & > div {
+    position: relative;
     background-color: white;
     width: 90%;
     max-width: 600px;
@@ -25,8 +26,8 @@ const Wrapper = styled.div`
       font-size: 2rem;
       color: ${PINK};
       position: absolute;
-      right: 5px;
-      top: 0;
+      right: 12px;
+      top: 5px;
       cursor: pointer;
     }
   }
