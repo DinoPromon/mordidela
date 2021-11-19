@@ -4,7 +4,6 @@ import { getAllProducts } from "database/products";
 
 export const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
-    const query = "SELECT id_produto, nome, imagem, id_categoria, id_desconto, disponivel FROM produto";
     try {
       const products = await getAllProducts();
       return res.status(200).json(products);
@@ -14,7 +13,7 @@ export const handler: NextApiHandler = async (req, res) => {
     }
   }
 
-  res.status(400).json({ message: 'Requisição inválida.' });
+  res.status(400).json({ message: "Requisição inválida." });
   res.end();
 };
 

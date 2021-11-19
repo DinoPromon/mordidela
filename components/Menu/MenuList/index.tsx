@@ -2,7 +2,6 @@ import React from "react";
 
 import List from "./styled";
 import MenuItem from "./MenuItem";
-import MenuFilter from "./MenuFilter";
 import { Product } from "@my-types/product";
 
 
@@ -12,9 +11,10 @@ type Props = {
 }
 
 const MenuList: React.FC<Props> = (props) => {
+  const { products } = props;
   return (
     <List>
-      <MenuFilter/>
+  
       <MenuItem onClick={props.onShowModal}/>
     </List>
   );
