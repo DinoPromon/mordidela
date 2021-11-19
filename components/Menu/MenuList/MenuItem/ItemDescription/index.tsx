@@ -2,11 +2,15 @@ import React from "react";
 
 import Wrapper from "./styled";
 
-const ItemDescription: React.FC = (props) => {
+type Props = {
+  nome: string
+}
+
+const ItemDescription: React.FC<Props> = (props) => {
   return (
     <Wrapper>
-      <span>CAIXA DE BATATA</span>
-      <span>R$ 10,90</span>
+      <span>{props.nome.toLocaleUpperCase()}</span>
+      <span>R$5,90 - R$10,90</span>
     </Wrapper>
   );
 };

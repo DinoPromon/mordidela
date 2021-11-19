@@ -7,6 +7,7 @@ import ItemDescription from "./ItemDescription";
 
 type Props = {
   onClick: () => void;
+  nome: string
 }
 
 const MenuItem: React.FC<Props> = (props) => {
@@ -17,8 +18,8 @@ const MenuItem: React.FC<Props> = (props) => {
 
   return (
     <Item onClick={clickHandler}>
-      <ItemImage src="/images/caixa-batata.png" alt="Caixa de batata"/>
-      <ItemDescription />
+      <ItemImage src="/images/caixa-batata.png" alt={`Imagem ilustrativa de ${props.nome}`}/>
+      <ItemDescription nome={props.nome}/>
     </Item>
   );
 };

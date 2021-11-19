@@ -32,7 +32,7 @@ const Account: React.FC<Props> = (props) => {
         <div>
           <FontAwesomeIcon icon={faUser} size="5x" color={PURPLE} />
         </div>
-        <h3>| {nome} |</h3>
+        <h3>{nome}</h3>
         <AccountInfoList onClick={openModalHandler} />
       </div>
     </Wrapper>

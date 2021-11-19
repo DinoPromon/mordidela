@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { FOOTER_HEIGHT, NAVBAR_HEIGHT } from "@utils/styles";
+import { PURPLE } from "@utils/colors";
 
 const Wrapper = styled.div`
   min-height: calc(100vh - ${FOOTER_HEIGHT} - ${NAVBAR_HEIGHT});
