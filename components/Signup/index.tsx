@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import Wrapper from "./styled";
 import { AddressForm, SignUpForm } from "@components/Forms";
-import { UserFormData, AddressFormData } from "@my-types/signup";
+import { UserFormData, AddressFormData } from "@my-types/forms";
 import { Response } from "@my-types/request";
 
 const signupInitialState: UserFormData = Object.freeze({

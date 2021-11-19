@@ -8,38 +8,42 @@ import { generalDataValidation } from "@utils/validations";
 import { RequestState } from "@my-types/request";
 import { GeneralDataForm } from "@my-types/forms";
 import FormRequestStatus from "@components/shared/FormRequestStatus";
+import Usuario from "@my-types/database/models/Usuario";
 
 type GeneralDataState = {
   nome: string;
   data_nascimento: string;
   email: string;
+  telefone: string;
 };
 
-const initialState = Object.freeze<GeneralDataState>({ nome: "", data_nascimento: "", email: "" });
+const initialFormState = Object.freeze<GeneralDataState>({
+  nome: "",
+  data_nascimento: "",
+  email: "",
+  telefone: "",
+});
+
+const initialRequestState = Object.freeze<RequestState>({ error: "", isLoading: true, success: false });
 
 type Props = {
   id_usuario: string;
 };
 
 const GeneralData: React.FC<Props> = (props) => {
-  const [state, setState] = useState(initialState);
-  const [requestState, setRequestState] = useState<RequestState>({
-    error: "",
-    isLoading: true,
-    success: false,
-  });
+  const [state, setState] = useState<GeneralDataState>(initialFormState);
+  const [requestState, setRequestState] = useState<RequestState>(initialRequestState);
 
   const getUserInfo = async () => {
     setRequestState({ ...requestState, isLoading: true });
     try {
       const response = await fetch(`/api/users?id_usuario=${props.id_usuario}`);
-      const result = await response.json();
+      const result = (await response.json());
 
       if (!response.ok) {
         throw new Error(result.message);
       }
-
-      setState({ nome: result.nome, email: result.email, data_nascimento: result.data_nascimento });
+      setState({ ...result });
       setRequestState({ isLoading: false, success: true, error: "" });
     } catch (e) {
       const error = e as Error;
@@ -92,6 +96,12 @@ const GeneralData: React.FC<Props> = (props) => {
             placeholder="Email"
             disabled={true}
             value={state.email}
+            setValue={changeStateHandler}
+          />
+          <GeneralDataInput
+            id="telefone"
+            placeholder="Telefone"
+            value={state.telefone || ""}
             setValue={changeStateHandler}
           />
           <FormButton type="submit">Salvar</FormButton>

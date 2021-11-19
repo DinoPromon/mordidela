@@ -1,7 +1,7 @@
 import type { NextApiHandler } from "next";
 
 import { treatErrorMessage } from "@utils/transformation/error";
-import { AddressFormData, UserFormData } from "@my-types/signup";
+import { AddressFormData, UserFormData } from "@my-types/forms";
 import { hasErrorInAddressForm, hasErrorInUserForm } from "@utils/validations";
 import { removeAditionalSpaces } from "@utils/formatters/input-formatter";
 import {

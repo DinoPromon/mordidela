@@ -14,7 +14,7 @@ const FormRequestStatus: React.FC<Props> = (props) => {
 
   return (
     <Wrapper>
-      {isLoading && <Loading color="blue" /> }
+      {isLoading && <Loading color="#1c1cf0" /> }
       {!isLoading && errorMessage && <Text color="red">{errorMessage}</Text>}
       {!isLoading && successMessage && <Text color="green">{successMessage}</Text>}
     </Wrapper>

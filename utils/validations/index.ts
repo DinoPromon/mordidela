@@ -1,4 +1,9 @@
-import { UserFormValidations, AddressFormValidations, LoginFormValidations, GeneralDataFormValidations } from "@my-types/validation";
+import {
+  UserFormValidations,
+  AddressFormValidations,
+  LoginFormValidations,
+  GeneralDataFormValidations,
+} from "@my-types/validation";
 import { AddressFormData, UserFormData } from "@my-types/forms";
 
 import { nameValidation } from "./name";
@@ -42,8 +47,9 @@ export const loginFormValidations: LoginFormValidations = {
 
 export const generalDataValidation: GeneralDataFormValidations = {
   nome: nameValidation,
-  data_nascimento: dateValidation
-}
+  data_nascimento: dateValidation,
+  telefone: phoneValidation,
+};
 
 export const hasErrorInUserForm = (userFormData: UserFormData) => {
   for (const k in userFormData) {

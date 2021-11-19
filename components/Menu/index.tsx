@@ -5,8 +5,13 @@ import Wrapper from "./styled";
 
 import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
+import { Product } from "@my-types/product";
 
-const Menu = () => {
+type Props = {
+  products: Product[]
+}
+
+const Menu: React.FC<Props> = (props) => {
   const [showModal, setShowModal] = useState(false);
 
   const showModalHandler = () => {
@@ -21,7 +26,7 @@ const Menu = () => {
     <Wrapper>
       {showModal && <MenuModal onClose={closeModalHandler}/>}
       <MenuHeader />
-      <MenuList onShowModal={showModalHandler} />
+      <MenuList onShowModal={showModalHandler} products={props.products}/>
     </Wrapper>
   );
 };

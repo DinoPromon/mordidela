@@ -1,21 +1,4 @@
-const padDayOrMonth = (num: number, max: number) => {
-  return num > parseInt(max.toString()[0]) && num.toString().length === 1 ? "0" + num : num.toString();
-};
-
-const getDayOrMonthAsNumber = (str: string, maxValue: number) => {
-  let number = parseInt(str);
-  if (isNaN(number) || number <= 0 || number > maxValue) return 1;
-  return number;
-};
-
-
-const transformDayOrMonth = (subStr: string, maxValue: number) => {
-  if (subStr[0] !== "0" || subStr === "00") {
-    const number = getDayOrMonthAsNumber(subStr, maxValue);
-    subStr = padDayOrMonth(number, maxValue);
-  }
-  return subStr;
-};
+import { transformDayOrMonth } from "@utils/transformation/date";
 
 export const formatDateInput = (date: string) => {
   let input = date;
@@ -38,15 +21,15 @@ export const formatDateInput = (date: string) => {
 export const removeAditionalSpaces = (input: string) => {
   input = input.trim();
   const duplicateSpacePattern = /\s+/g;
-  return input.replace(duplicateSpacePattern, ' ');
-}
+  return input.replace(duplicateSpacePattern, " ");
+};
 
 export const dateChangeHandler = (curDate: string, prevDate: string) => {
   let changedDate = curDate;
   if (curDate + "/" === prevDate) {
     changedDate = curDate.substr(0, curDate.length - 1);
   } else {
-     changedDate = formatDateInput(curDate);
+    changedDate = formatDateInput(curDate);
   }
   return changedDate;
-}
+};

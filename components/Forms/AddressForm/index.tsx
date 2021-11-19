@@ -6,7 +6,7 @@ import AddressFormActions from "./AddressFormActions";
 import FormRequestStatus from "@components/shared/FormRequestStatus";
 import { Response } from "@my-types/request";
 import { FormInput } from "@components/shared";
-import { AddressFormData } from "@my-types/signup";
+import { AddressFormData } from "@my-types/forms";
 import { addressFormValidations } from "@utils/validations";
 
 type Props = {

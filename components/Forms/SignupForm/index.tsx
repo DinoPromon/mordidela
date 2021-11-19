@@ -5,7 +5,7 @@ import SignupFormActions from "./SignupFormActions";
 import { FormInput } from "@components/shared";
 import { dateChangeHandler } from "@utils/formatters/input-formatter";
 import { userFormValidations } from "@utils/validations";
-import { UserFormData } from "@my-types/signup";
+import { UserFormData } from "@my-types/forms";
 import { getSignupErrorMessage } from "@utils/error-message";
 
 type Props = {

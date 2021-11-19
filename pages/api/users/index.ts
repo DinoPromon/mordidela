@@ -2,7 +2,8 @@ import type { NextApiHandler } from "next";
 
 import mysql from "database";
 import { getSession } from "next-auth/client";
-import { transformDateFromDBToClient } from "@utils/transformation/date";
+import { transformDateFromDBToClient, padDayOrMonth } from "@utils/transformation/date";
+import { ViewUsuario } from "@my-types/database/models/views";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
@@ -15,15 +16,22 @@ const handler: NextApiHandler = async (req, res) => {
   const id_usuario = query.id_usuario as string;
 
   if (req.method === "GET") {
-    const formatedQuery = `SELECT nome, email, autorizacao, data_nascimento FROM vw_usuario WHERE id_usuario = ?`;
+    const formatedQuery = `SELECT nome, email, autorizacao, data_nascimento, ddd, numero FROM vw_usuario WHERE id_usuario = ?`;
 
     try {
-      const result = (await mysql.query(formatedQuery, [id_usuario])) as any;
+      const result = (await mysql.query(formatedQuery, [id_usuario])) as Omit<
+        ViewUsuario,
+        "id_usuario" | "senha"
+      >[];
+      const user = result[0];
       await mysql.end();
 
       const response = {
-        ...result[0],
-        data_nascimento: transformDateFromDBToClient(result[0].data_nascimento),
+        nome: user.nome,
+        email: user.email,
+        autorizacao: user.autorizacao,
+        data_nascimento: transformDateFromDBToClient(user.data_nascimento as string),
+        telefone: `${user.ddd}${result[0].numero}`,
       };
 
       return res.status(200).json(response);

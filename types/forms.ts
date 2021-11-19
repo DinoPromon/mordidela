@@ -17,4 +17,5 @@ export type AddressFormData = {
 export type GeneralDataForm = {
   nome: string;
   data_nascimento: string;
+  telefone: string
 };

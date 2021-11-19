@@ -24,8 +24,8 @@ const Wrapper = styled.div<Props>`
     position: absolute;
     width: 48px;
     height: 48px;
-    margin: 6px;
-    border: 6px solid #fff;
+    margin: 5px;
+    border: 5px solid transparent;
     border-radius: 50%;
     animation: ${loadingRotation} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: ${(props) => props.color} transparent transparent transparent;
