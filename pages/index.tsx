@@ -3,12 +3,15 @@
 import type { GetStaticProps } from "next";
 import type { ReactElement } from "react";
 import { NavBarFooter } from "@components/Layouts";
+import Home from "@components/Home";
 // import Head from 'next/head'
 
 import { NextPageWithLayout } from "@my-types/next-page";
 
 const HomePage: NextPageWithLayout = () => {
-  return <div>hello</div>;
+  return(
+    <Home/>
+  );
 };
 
 HomePage.getLayout = function getLayout(page: ReactElement) {

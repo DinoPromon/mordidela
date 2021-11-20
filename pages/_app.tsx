@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     overflow-y: auto;
     background-color: #fafafa;
+    color: #3b3b3b;
   }
 
   #__next {

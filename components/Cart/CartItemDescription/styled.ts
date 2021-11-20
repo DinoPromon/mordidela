@@ -1,0 +1,46 @@
+import { PINK, PURPLE } from "@utils/colors";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+
+    & > div {
+        display: flex;
+        position: relative;
+
+        & > span {
+            color: ${PINK};
+            font-weight: bold;
+            padding-right: 5px;
+        }
+
+        & > h2 {
+            font-weight: normal;
+        }
+
+        & > div {
+            display: flex;
+            position: absolute;
+            right: 0;
+            gap: 0.5rem;
+            align-items: center;
+
+            & > span {
+                cursor: pointer;
+            }
+
+            & > p {
+                color: ${PURPLE};
+                font-weight: bold;
+
+            }
+        }
+    }
+
+    & > p {
+        font-size: 13px;
+        margin-bottom: 0.5rem;
+    }
+
+`;
+
+export default Wrapper;
