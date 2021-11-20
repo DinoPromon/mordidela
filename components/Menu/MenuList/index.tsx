@@ -18,6 +18,7 @@ const MenuList: React.FC<Props> = (props) => {
           onClick={props.onShowModal}
           nome={product.nome}
           key={`${product.nome}-${product.id_produto}`}
+          id_produto={product.id_produto}
         />
       ))}
     </List>
