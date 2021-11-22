@@ -10,7 +10,7 @@ type Props = {
   onDecrement: () => void;
 };
 
-const ModalQuantityCounter: React.FC<Props> = (props) => {
+const ItemCounter: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       <button type="button" onClick={props.onDecrement}>
@@ -24,4 +24,4 @@ const ModalQuantityCounter: React.FC<Props> = (props) => {
   );
 };
 
-export default ModalQuantityCounter;
+export default ItemCounter;

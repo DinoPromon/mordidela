@@ -1,5 +1,3 @@
-import { PURPLE } from "@utils/colors";
-import { PINK } from "@utils/colors";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -12,7 +10,6 @@ const Wrapper = styled.div`
 
   & > span {
     font-weight: bold;
-    color: #3b3b3b;
   }
 
   & > button {

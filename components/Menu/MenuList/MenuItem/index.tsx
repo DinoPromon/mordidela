@@ -7,7 +7,7 @@ import ItemDescription from "./ItemDescription";
 import image from "next/image";
 
 type Props = {
-  onClick: () => void;
+  onClick: (id: string, image: string) => void;
   id_produto: string;
   nome: string;
 };
@@ -16,7 +16,7 @@ const MenuItem: React.FC<Props> = (props) => {
   const [imageSrc, setImageSrc] = useState("/images/logo.svg");
 
   const clickHandler = () => {
-    props.onClick();
+    props.onClick(props.id_produto, imageSrc);
   };
 
   const getImage = async () => {
@@ -28,8 +28,7 @@ const MenuItem: React.FC<Props> = (props) => {
     });
     const base64Image = await response.text();
     const url = `data:image/png;base64,${base64Image}`;
-    if(base64Image)
-      setImageSrc(url);
+    if (base64Image) setImageSrc(url);
   };
 
   useEffect(() => {
@@ -38,7 +37,7 @@ const MenuItem: React.FC<Props> = (props) => {
 
   return (
     <Item onClick={clickHandler}>
-      <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${props.nome}`} />
+      {imageSrc && <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${props.nome}`} />}
       <ItemDescription nome={props.nome} />
     </Item>
   );

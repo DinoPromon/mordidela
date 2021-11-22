@@ -5,7 +5,7 @@ import MenuItem from "./MenuItem";
 import { Product } from "@my-types/product";
 
 type Props = {
-  onShowModal: () => void;
+  onItemClick: (id: string, image: string) => void
   products: Product[];
 };
 
@@ -15,7 +15,7 @@ const MenuList: React.FC<Props> = (props) => {
     <List>
       {products.map((product) => (
         <MenuItem
-          onClick={props.onShowModal}
+          onClick={props.onItemClick}
           nome={product.nome}
           key={`${product.nome}-${product.id_produto}`}
           id_produto={product.id_produto}

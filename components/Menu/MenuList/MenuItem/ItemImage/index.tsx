@@ -13,7 +13,7 @@ const ItemImage: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       {/* <Image src={props.src} alt={props.alt} loading="lazy" width={240} height={240}/> */}
-      <Image src={props.src} alt={props.alt} loading="lazy" width={240} height={240}/>
+      <img src={props.src} alt={props.alt} loading="lazy"/>
     </Wrapper>
   );
 };

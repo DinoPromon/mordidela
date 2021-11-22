@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import Image from "next/image";
-import ModalRadio from "./ModalRadio";
-import CustomForm from './styled';
-import ModalCheckboxSabor from "./ModalCheckboxSabor";
-import ModalCheckboxAdicional from "./ModalCheckboxAdicional";
-import ModalQuantityCounter from "./ModalQuantityCounter";
+
+import CustomForm from "./styled";
+import ItemSizesList from "./ItemSizesList";
+import ItemFlavorsList from "./ItemFlavorsList";
+import ItemAddsList from "./ItemAddsList";
+import ItemCounter from "./ItemCounter";
 import { FormButton } from "@components/shared";
 
-const ModalItem: React.FC = () => {
+type Props = {
+  image: string
+};
+
+const ModalItem: React.FC<Props> = (props) => {
   const [quantity, setQuantity] = useState(1);
 
   const incrementHandler = () => {
@@ -21,19 +25,14 @@ const ModalItem: React.FC = () => {
   return (
     <CustomForm>
       <h2>Caixa de batata</h2>
-      <div>
-        <Image src="/images/caixa-batata.png" alt="Caixa de Batata" width={200} height={200} />
-      </div>
+      <img src={props.image} alt="Caixa de Batata" loading="lazy" />
       <p>Porção de batata gourmet com tempero cítrico especial</p>
-      <h3>Tamanho</h3>
-      <ModalRadio />
-      <h3>Sabores</h3>
-      <ModalCheckboxSabor />
-      <h3>Adicionais</h3>
-      <ModalCheckboxAdicional />
+      <ItemSizesList />
+      <ItemFlavorsList />
+      <ItemAddsList />
       <textarea name="observacao" placeholder="Alguma observação?" rows={2} />
       <div>
-        <ModalQuantityCounter
+        <ItemCounter
           quantity={quantity}
           onDecrement={decrementHandler}
           onIncrement={incrementHandler}

@@ -31,5 +31,11 @@ export async function getProductSizesByName(productName: string) {
     "id_produto" | "preco_padrao" | "tamanho"
   >[];
   const serializedResult = serialize(result);
-  return result.length > 0 ? serializedResult : null;
+  return result.length > 0 ? serializedResult : [];
+}
+
+export async function getProductSizesById(productId: string) {
+  const name = await getProductNameById(productId);
+  if(!name) throw new Error("Produto não existente.");
+  return await getProductSizesByName(name);
 }

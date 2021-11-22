@@ -1,4 +1,3 @@
-import { PURPLE } from "@utils/colors";
 import { PINK } from "@utils/colors";
 import styled from "styled-components";
 
@@ -9,7 +8,6 @@ const Wrapper = styled.div`
     margin-bottom: 0.75rem;
     cursor: pointer;
     padding-left: 25px;
-    color: #3b3b3b;
     text-align: left;
     -webkit-user-select: none;
     -moz-user-select: none;

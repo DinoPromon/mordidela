@@ -1,4 +1,4 @@
-import { getProductNameById, getProductSizesByName } from "database/products";
+import { getProductNameById, getProductSizesById, getProductSizesByName } from "database/products";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
@@ -6,11 +6,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === "GET") {
     try {
-      const nome = await getProductNameById(productId as string);
-      if (!nome) return res.status(400).json({ message: "Produto não encontrado." });
-
-      const result = await getProductSizesByName(nome);
-      if (!result) return res.status(400).json({ message: `Nenhum produto com nome ${nome} encontrado.` });
+      const result = await getProductSizesById(productId as string);
 
       return res.status(200).json(result);
     } catch (e) {

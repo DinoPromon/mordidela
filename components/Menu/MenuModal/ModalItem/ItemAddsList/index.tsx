@@ -1,9 +1,10 @@
 import React from "react";
 import Wrapper from "./styled";
 
-const ModalCheckboxAdicional: React.FC = () => {
+const ItemAddsList: React.FC = () => {
   return (
     <Wrapper>
+      <h3>Adicionais</h3>
       <label htmlFor="barbecue">
         Barbecue
         <input type="checkbox" id="barbecue" name="input-barbecue"></input>
@@ -44,4 +45,4 @@ const ModalCheckboxAdicional: React.FC = () => {
   );
 };
 
-export default ModalCheckboxAdicional;
+export default ItemAddsList;

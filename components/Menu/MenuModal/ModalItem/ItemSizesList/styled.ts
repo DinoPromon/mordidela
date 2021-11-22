@@ -9,7 +9,6 @@ const Wrapper = styled.div`
     margin-bottom: 0.75rem;
     cursor: pointer;
     padding-left: 25px;
-    color: #3b3b3b;
     text-align: left;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -27,33 +26,16 @@ const Wrapper = styled.div`
       top: 50%;
       transform: translateY(-50%);
       left: 0;
-      height: 1rem;
-      width: 1rem;
+      height: 14px;
+      width: 14px;
       background-color: white;
-      border-radius: 3px;
+      border-radius: 50%;
       outline: 1px ${PINK} solid;
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
 
-    & > span:after {
-      content: "";
-      position: absolute;
-      display: none;
-    }
-
-    & input:checked ~ span:after {
-      display: block;
-    }
-
-    & > span:after {
-      left: 4px;
-      width: 5px;
-      height: 10px;
-      border: solid ${PINK};
-      border-width: 0 3px 3px 0;
-      -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-      transform: rotate(45deg);
+    & > input:checked ~ span {
+      background-color: ${PINK};
     }
 
     & > p {

@@ -2,6 +2,18 @@ import { PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
 const CustomForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+
+  & > img {
+    display: block;
+    max-height: 180px;
+    max-height: 180px;
+    margin: 0 auto;
+  }
+
   & > h2 {
     font-size: 20px;
     text-transform: uppercase;
@@ -10,19 +22,14 @@ const CustomForm = styled.form`
   }
 
   & > div {
-    text-align: center;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 
-  & > p {
-    color: #3b3b3b;
-  }
-
-  & > h3 {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    color: ${PURPLE};
+    & > h3 {
+      padding: 0.25rem 0;
+      color: ${PURPLE};
+    }
   }
 
   & > textarea {
@@ -39,6 +46,7 @@ const CustomForm = styled.form`
 
   & > div:last-child {
     display: flex;
+    flex-direction: row;
     justify-content: flex-end;
     gap: 1rem;
     align-items: center;
