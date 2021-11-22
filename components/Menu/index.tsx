@@ -11,9 +11,8 @@ type Props = {
 
 const Menu: React.FC<Props> = (props) => {
   const [showModal, setShowModal] = useState(false);
-  const [modalItemId, setModalItemId] = useState<string>('21');
+  const [modalItemId, setModalItemId] = useState<string>();
   const [modalItemImage, setModalItemImg] = useState<string>("/images/logo.svg");
-
 
   const closeModalHandler = () => {
     setShowModal(false);
@@ -23,13 +22,17 @@ const Menu: React.FC<Props> = (props) => {
     setModalItemImg(image);
     setShowModal(true);
     setModalItemId(itemId);
-  }
+  };
+
+  const changeModalImage = (image: string) => {
+    setModalItemImg(image);
+  };
 
   return (
     <Fragment>
       {showModal && <MenuModal onClose={closeModalHandler} itemId={modalItemId} image={modalItemImage} />}
       <MenuHeader />
-      <MenuList products={props.products} onItemClick={changeModalItem}/>
+      <MenuList products={props.products} onItemClick={changeModalItem} changeModalImage={changeModalImage} />
     </Fragment>
   );
 };

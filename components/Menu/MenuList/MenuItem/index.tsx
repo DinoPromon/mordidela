@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import Item from "./styled";
 import ItemImage from "./ItemImage";
 import ItemDescription from "./ItemDescription";
-import image from "next/image";
 
 type Props = {
   onClick: (id: string, image: string) => void;
+  changeModalImage: (img: string) => void;
   id_produto: string;
   nome: string;
 };
@@ -28,7 +28,10 @@ const MenuItem: React.FC<Props> = (props) => {
     });
     const base64Image = await response.text();
     const url = `data:image/png;base64,${base64Image}`;
-    if (base64Image) setImageSrc(url);
+    if (base64Image) {
+      setImageSrc(url);
+      props.changeModalImage(url);
+    }
   };
 
   useEffect(() => {
