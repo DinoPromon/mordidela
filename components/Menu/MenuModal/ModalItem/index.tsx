@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import ModalRadio from "../ModalRadio";
-import Wrapper from "./styled";
-import ModalCheckboxSabor from "../ModalCheckboxSabor";
-import ModalCheckboxAdicional from "../ModalCheckboxAdicional";
-import ModalQuantityCounter from "../ModalQuantityCounter";
+import ModalRadio from "./ModalRadio";
+import CustomForm from './styled';
+import ModalCheckboxSabor from "./ModalCheckboxSabor";
+import ModalCheckboxAdicional from "./ModalCheckboxAdicional";
+import ModalQuantityCounter from "./ModalQuantityCounter";
 import { FormButton } from "@components/shared";
 
-const ModalItemDescription: React.FC = () => {
+const ModalItem: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
 
   const incrementHandler = () => {
@@ -19,7 +19,7 @@ const ModalItemDescription: React.FC = () => {
   };
 
   return (
-    <Wrapper>
+    <CustomForm>
       <h2>Caixa de batata</h2>
       <div>
         <Image src="/images/caixa-batata.png" alt="Caixa de Batata" width={200} height={200} />
@@ -40,8 +40,8 @@ const ModalItemDescription: React.FC = () => {
         />
         <FormButton type="submit">Adicionar - R$20,90</FormButton>
       </div>
-    </Wrapper>
+    </CustomForm>
   );
 };
 
-export default ModalItemDescription;
+export default ModalItem;

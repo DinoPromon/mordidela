@@ -1,13 +1,11 @@
 import { PURPLE } from "@utils/colors";
-import { PINK } from "@utils/colors";
 import styled from "styled-components";
 
-const Wrapper = styled.form`
+const CustomForm = styled.form`
   & > h2 {
     font-size: 20px;
     text-transform: uppercase;
     text-align: center;
-    /* color: #3b3b3b; */
     color: ${PURPLE};
   }
 
@@ -47,4 +45,4 @@ const Wrapper = styled.form`
   }
 `;
 
-export default Wrapper;
+export default CustomForm;

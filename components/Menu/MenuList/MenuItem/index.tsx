@@ -13,7 +13,7 @@ type Props = {
 };
 
 const MenuItem: React.FC<Props> = (props) => {
-  const [imageSrc, setImageSrc] = useState("");
+  const [imageSrc, setImageSrc] = useState("/images/logo.svg");
 
   const clickHandler = () => {
     props.onClick();
@@ -28,7 +28,8 @@ const MenuItem: React.FC<Props> = (props) => {
     });
     const base64Image = await response.text();
     const url = `data:image/png;base64,${base64Image}`;
-    setImageSrc(url);
+    if(base64Image)
+      setImageSrc(url);
   };
 
   useEffect(() => {
