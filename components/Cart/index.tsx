@@ -1,6 +1,7 @@
 import { FormButton } from "@components/shared";
 import React from "react";
 import CartAdicionalDescription from "./CartAdicionalDescription";
+import CartCupom from "./CartCupom";
 import CartEntrega from "./CartEntrega";
 import CartItemDescription from "./CartItemDescription";
 import CartSubtotal from "./CartSubtotal";
@@ -18,10 +19,10 @@ const Cart: React.FC = () => {
       <CartAdicionalDescription/>
       <CartSubtotal/>
       <CartEntrega/>
+      <CartCupom/>
       <CartTotal/>
       <div>
         <FormButton type="submit">Finalizar pedido</FormButton>
-
       </div>
     </Wrapper>
   );

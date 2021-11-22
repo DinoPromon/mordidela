@@ -2,7 +2,7 @@ import { PINK, PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-    margin-top: 5rem;
+    margin-top: 3rem;
 
     & > div {
         display: flex;
