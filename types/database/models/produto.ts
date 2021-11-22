@@ -1,11 +1,14 @@
+import { Categoria } from "./categoria";
+import { Desconto } from "./desconto";
+
 export type Produto = {
   id_produto: string;
   preco_padrao: number;
   nome: string;
+  imagem: string;
   disponivel: boolean;
   descricao: string;
   tamanho: string;
   qtde_max_sabor: number;
-  id_categoria: number;
-  id_desconto: number | null;
-};
+} & Pick<Categoria, "id_categoria"> &
+  Partial<Pick<Desconto, "id_desconto">>;

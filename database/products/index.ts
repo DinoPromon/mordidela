@@ -1,19 +1,35 @@
-import mysql from "database";
+import mysql, { serialize } from "database";
 
+import { Produto } from "@my-types/database/models/produto";
 import { Product } from "@my-types/product";
 
 export async function getAllProducts() {
   const query = "SELECT id_produto, nome, id_categoria, id_desconto, disponivel FROM produto";
-  const result = (await mysql.query(query)) as any[]
-  const products: Product[] = [];
-  for (let i in result) {
-    products.push({ ...result[i] } as Product);
-  }
-  return products;
+  const result = (await mysql.query(query)) as Product[];
+
+  return serialize(result);
 }
 
 export async function getProductImageById(productId: string) {
-  const query = "SELECT imagem FROM produto WHERE id_produto = ?";
-  const result = (await mysql.query(query, [productId])) as any;
-  return result[0];
+  const query = "SELECT imagem FROM produto WHERE id_produto=?";
+  const result = (await mysql.query(query, [productId])) as Pick<Produto, "imagem">[];
+  const serializedResult = serialize(result);
+  return result.length > 0 ? serializedResult[0] : null;
+}
+
+export async function getProductNameById(productId: string) {
+  const query = "SELECT nome FROM produto WHERE id_produto=?";
+  const result = (await mysql.query(query, [productId])) as Pick<Produto, "nome">[];
+  const serializedResult = serialize(result);
+  return result.length > 0 ? serializedResult[0].nome : null;
+}
+
+export async function getProductSizesByName(productName: string) {
+  const query = "SELECT id_produto, preco_padrao, tamanho FROM produto WHERE nome=?";
+  const result = (await mysql.query(query, [productName])) as Pick<
+    Produto,
+    "id_produto" | "preco_padrao" | "tamanho"
+  >[];
+  const serializedResult = serialize(result);
+  return result.length > 0 ? serializedResult : null;
 }

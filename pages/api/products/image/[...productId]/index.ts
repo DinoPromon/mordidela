@@ -9,7 +9,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const image = await getProductImageById(productId as string);
-      if (image === undefined) return res.status(400).json({ message: "Produto não encontrado." });
+      if (!image) return res.status(400).json({ message: "Produto não encontrado." });
 
       return res.setHeader("Content-Type", "text").status(200).send(image.imagem);
     } catch (e) {
