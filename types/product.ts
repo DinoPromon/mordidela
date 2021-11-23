@@ -25,3 +25,5 @@ export type ProductOptions = {
   tamanho: Size[];
 };
 
+export type ProductInfo = Pick<Produto, "nome" | "descricao" | "qtde_max_sabor">
+

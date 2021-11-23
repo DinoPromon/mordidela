@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ModalItem from "./ModalItem";
 import Modal from "@components/shared/Modal";
 
-import { ProductOptions } from "@my-types/product";
+import { ProductOptions, ProductInfo } from "@my-types/product";
 import { RequestState } from "@my-types/request";
 import FormRequestStatus from "@components/shared/FormRequestStatus";
 
@@ -19,6 +19,7 @@ const MenuModal: React.FC<Props> = (props) => {
     success: false,
   });
   const [itemOptions, setItemOptions] = useState<ProductOptions>({ adicional: [], sabor: [], tamanho: [] });
+  const [itemInfo, setItemInfo] = useState<ProductInfo>({ nome: "", descricao: "", qtde_max_sabor: 0 });
 
   useEffect(() => {
     async function fetchProductData() {
@@ -27,6 +28,11 @@ const MenuModal: React.FC<Props> = (props) => {
         const result = (await response.json()) as any;
         if (!response.ok) throw new Error(result.message);
         setItemOptions(result as ProductOptions);
+        setItemInfo({
+          nome: result.nome,
+          descricao: result.descricao,
+          qtde_max_sabor: result.qtde_max_sabor,
+        });
         setRequestStatus({ success: true, error: "", isLoading: false });
       } catch (e) {
         const error = e as Error;
@@ -41,7 +47,7 @@ const MenuModal: React.FC<Props> = (props) => {
       {requestStatus.isLoading && (
         <FormRequestStatus isLoading={requestStatus.isLoading} errorMessage={requestStatus.error} />
       )}
-      {requestStatus.success && <ModalItem image={props.image} options={itemOptions} />}
+      {requestStatus.success && <ModalItem image={props.image} options={itemOptions} info={itemInfo} />}
     </Modal>
   );
 };

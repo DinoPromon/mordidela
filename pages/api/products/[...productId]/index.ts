@@ -2,19 +2,21 @@ import type { NextApiHandler } from "next";
 import mysql from "database";
 import { getAddsByProductId } from "database/adds";
 import { getFlavosrByProductId } from "database/flavors";
-import { getProductSizesById } from "database/products";
+import { getProductById, getProductSizesById } from "database/products";
 
 const handler: NextApiHandler = async (req, res) => {
   const { productId } = req.query;
 
   if (req.method === "GET") {
     try {
+      const product = await getProductById(productId as string);
       const adds = await getAddsByProductId(productId as string);
       const flavors = await getFlavosrByProductId(productId as string);
       const sizes = await getProductSizesById(productId as string);
       await mysql.end();
       
       const info = {
+        ...product,
         adicional: adds,
         sabor: flavors,
         tamanho: sizes

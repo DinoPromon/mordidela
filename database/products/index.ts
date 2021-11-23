@@ -35,7 +35,17 @@ export async function getProductSizesByName(productName: string) {
 
 export async function getProductSizesById(productId: string) {
   const name = await getProductNameById(productId);
-  if(!name) throw new Error("Produto não existente.");
+  if (!name) throw new Error("Produto não existente.");
   const sizes = await getProductSizesByName(name);
   return sizes;
+}
+
+export async function getProductById(productId: string) {
+  const query = "SELECT nome, descricao, qtde_max_sabor FROM produto WHERE id_produto = ?";
+  const result = (await mysql.query(query, [productId])) as Pick<
+    Produto,
+    "nome" | "descricao" | "qtde_max_sabor"
+  >[];
+  if (!result.length) throw new Error("Produto não existente.");
+  return result[0];
 }

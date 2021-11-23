@@ -5,16 +5,17 @@ import ItemSizesList from "./ItemSizesList";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
-import { ProductOptions } from "@my-types/product";
+import { ProductInfo, ProductOptions } from "@my-types/product";
 import { FormButton } from "@components/shared";
 
 type Props = {
   image: string;
   options: ProductOptions;
+  info: ProductInfo;
 };
 
 const ModalItem: React.FC<Props> = (props) => {
-  const { options } = props;
+  const { options, info } = props;
   const [quantity, setQuantity] = useState(1);
 
   const incrementHandler = () => {
@@ -27,9 +28,9 @@ const ModalItem: React.FC<Props> = (props) => {
 
   return (
     <CustomForm>
-      <h2>Caixa de batata</h2>
+      <h2>{info.nome}</h2>
       <img src={props.image} alt="Caixa de Batata" loading="lazy" />
-      <p>Porção de batata gourmet com tempero cítrico especial</p>
+      <p>{info.descricao}</p>
       {options.tamanho.length > 0 && <ItemSizesList items={options.tamanho} />}
       {options.sabor.length > 0 && <ItemFlavorsList items={options.sabor} />}
       {options.adicional.length > 0 && <ItemAddsList items={options.adicional} />}
