@@ -1,5 +1,6 @@
-import { getAddsByProductId } from "database/adds";
 import type { NextApiHandler } from "next";
+import mysql from "database";
+import { getAddsByProductId } from "database/adds";
 
 const handler: NextApiHandler = async (req, res) => {
   const { productId } = req.query;
@@ -7,6 +8,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const result = await getAddsByProductId(productId as string);
+      await mysql.end();
       return res.status(200).json(result);
     } catch (e) {
       const error = e as Error;

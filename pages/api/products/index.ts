@@ -1,4 +1,5 @@
 import type { NextApiHandler } from "next";
+import mysql from "database";
 
 import { getAllProducts } from "database/products";
 
@@ -6,6 +7,7 @@ export const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const products = await getAllProducts();
+      await mysql.end();
       return res.status(200).json(products);
     } catch (e) {
       const error = e as Error;

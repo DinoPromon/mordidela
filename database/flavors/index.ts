@@ -20,6 +20,5 @@ export async function getFlavosrByProductId(productId: string) {
     }
     return flavors;
   }
-
   return [];
 }

@@ -6,7 +6,6 @@ import { Product } from "@my-types/product";
 export async function getAllProducts() {
   const query = "SELECT id_produto, nome, id_categoria, id_desconto, disponivel FROM produto";
   const result = (await mysql.query(query)) as Product[];
-
   return serialize(result);
 }
 
@@ -37,5 +36,6 @@ export async function getProductSizesByName(productName: string) {
 export async function getProductSizesById(productId: string) {
   const name = await getProductNameById(productId);
   if(!name) throw new Error("Produto não existente.");
-  return await getProductSizesByName(name);
+  const sizes = await getProductSizesByName(name);
+  return sizes;
 }

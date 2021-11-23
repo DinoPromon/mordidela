@@ -24,15 +24,22 @@ const Menu: React.FC<Props> = (props) => {
     setModalItemId(itemId);
   };
 
-  const changeModalImage = (image: string) => {
-    setModalItemImg(image);
+  const changeModalImage = (itemId: string, image: string) => {
+    if (showModal && modalItemId === itemId) {
+      setModalItemImg(image);
+    }
   };
 
   return (
     <Fragment>
       {showModal && <MenuModal onClose={closeModalHandler} itemId={modalItemId} image={modalItemImage} />}
       <MenuHeader />
-      <MenuList products={props.products} onItemClick={changeModalItem} changeModalImage={changeModalImage} />
+      <MenuList
+        products={props.products}
+        onItemClick={changeModalItem}
+        changeModalImage={changeModalImage}
+        isShowingModal={showModal}
+      />
     </Fragment>
   );
 };

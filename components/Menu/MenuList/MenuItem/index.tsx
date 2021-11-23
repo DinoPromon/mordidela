@@ -7,7 +7,7 @@ import ItemDescription from "./ItemDescription";
 
 type Props = {
   onClick: (id: string, image: string) => void;
-  changeModalImage: (img: string) => void;
+  changeModalImage: (id: string, img: string) => void;
   id_produto: string;
   nome: string;
 };
@@ -30,17 +30,17 @@ const MenuItem: React.FC<Props> = (props) => {
     const url = `data:image/png;base64,${base64Image}`;
     if (base64Image) {
       setImageSrc(url);
-      props.changeModalImage(url);
     }
   };
 
   useEffect(() => {
     getImage();
-  }, []);
+    if (imageSrc !== "/images/logo.svg") props.changeModalImage(props.id_produto, imageSrc);
+  }, [imageSrc]);
 
   return (
     <Item onClick={clickHandler}>
-      {imageSrc && <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${props.nome}`} />}
+      <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${props.nome}`} />
       <ItemDescription nome={props.nome} />
     </Item>
   );

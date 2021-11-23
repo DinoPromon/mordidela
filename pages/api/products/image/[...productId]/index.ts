@@ -1,5 +1,7 @@
+import type { NextApiHandler } from "next";
+import mysql from "database";
+
 import { getProductImageById } from "database/products";
-import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
   const { productId } = req.query;
@@ -9,6 +11,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const image = await getProductImageById(productId as string);
+      await mysql.end();
       if (!image) return res.status(400).json({ message: "Produto não encontrado." });
 
       return res.setHeader("Content-Type", "text").status(200).send(image.imagem);

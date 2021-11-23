@@ -5,13 +5,15 @@ import MenuItem from "./MenuItem";
 import { Product } from "@my-types/product";
 
 type Props = {
-  onItemClick: (id: string, image: string) => void
-  changeModalImage: (img: string)  => void
+  onItemClick: (id: string, image: string) => void;
+  changeModalImage: (id: string, img: string) => void
+  isShowingModal: boolean;
   products: Product[];
 };
 
 const MenuList: React.FC<Props> = (props) => {
   const { products } = props;
+
   return (
     <List>
       {products.map((product) => (
