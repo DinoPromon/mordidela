@@ -12,7 +12,7 @@ export default NextAuth({
       async authorize(credentials, req) {
         const user = await getUserByEmail(credentials.email);
         if (!user) {
-          throw new Error("Email não cadastrado!");
+          throw new Error("Dados incorretos! Verifique seu email ou senha.");
         }
 
         const areEquals = arePasswordsEquals(credentials.senha, user.senha);

@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 
 import Wrapper from "./styled";
 import { LoginForm } from "@components/Forms";
-import { LoginFormData } from "@my-types/login";
 import { PINK } from "@utils/colors";
 
 const Login: React.FC = () => {

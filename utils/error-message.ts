@@ -33,9 +33,9 @@ export const getAddressErrorMessage = (key?: keyof AddressFormValidations): stri
 export const getLoginErrorMessage = (key?: keyof LoginFormValidations): string => {
   switch (key) {
     case "email":
-      return "Email aparenta ser inválido. Certeza que escreveu corretamente?";
+      return "Verfique seu email.";
     case "senha":
-      return "Verifique sua senha. A mesma não segue o mínimo exigido de 8 caracteres alfa numéricos com ao menos 1 dígito.";
+      return "Verifique sua senha.";
   }
   return "";
 };

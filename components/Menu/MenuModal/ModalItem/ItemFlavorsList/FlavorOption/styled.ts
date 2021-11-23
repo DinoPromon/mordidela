@@ -1,11 +1,10 @@
-import { PINK } from "@utils/colors";
 import styled from "styled-components";
-import CustomLabel from "../CustomLabel";
+import CustomLabel from "../../CustomLabel";
+import { PINK } from "@utils/colors";
 
-const CustomList = styled.ul`
+const ListItem = styled.li`
   & > label {
     ${CustomLabel}
-
     & > input {
       position: absolute;
       opacity: 0;
@@ -48,4 +47,4 @@ const CustomList = styled.ul`
   }
 `;
 
-export default CustomList;
+export default ListItem;

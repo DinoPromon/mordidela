@@ -1,8 +1,9 @@
-import { PINK } from "@utils/colors";
 import styled from "styled-components";
-import CustomLabel from "../CustomLabel";
 
-const CustomList = styled.ul`
+import CustomLabel from "../../CustomLabel";
+import { PINK, PURPLE } from "@utils/colors";
+
+const ListItem = styled.li`
   & > label {
     ${CustomLabel}
 
@@ -24,7 +25,6 @@ const CustomList = styled.ul`
       outline: 1px ${PINK} solid;
       outline-offset: 2px;
     }
-
     & > span:after {
       content: "";
       position: absolute;
@@ -45,7 +45,14 @@ const CustomList = styled.ul`
       -ms-transform: rotate(45deg);
       transform: rotate(45deg);
     }
+
+    & > p {
+      position: absolute;
+      right: 0;
+      color: ${PURPLE};
+      font-weight: bold;
+    }
   }
 `;
 
-export default CustomList;
+export default ListItem;

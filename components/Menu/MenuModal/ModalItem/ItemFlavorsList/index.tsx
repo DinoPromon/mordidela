@@ -1,16 +1,28 @@
 import React from "react";
-import Wrapper from "./styled";
 
-const ItemFlavorsList: React.FC = () => {
+import CustomList from "./styled";
+import FlavorOption from "./FlavorOption";
+import { Flavor } from "@my-types/product";
+
+type Props = {
+  items: Flavor[];
+};
+
+const ItemFlavorsList: React.FC<Props> = (props) => {
+  const { items } = props;
+
   return (
-    <Wrapper>
+    <CustomList>
       <h3>Sabores</h3>
-      <label htmlFor="nenhum-sabor">
-        Nenhum sabor para selecionar
-        <input type="checkbox" id="nenhum-sabor" name="input-sabor"></input>
-        <span></span>
-      </label>
-    </Wrapper>
+      {items.map((sabor) => (
+        <FlavorOption
+          key={`sabor-${sabor.id_sabor}`}
+          label={sabor.nome}
+          name={`input-${sabor.nome}`}
+          id={sabor.id_sabor}
+        />
+      ))}
+    </CustomList>
   );
 };
 

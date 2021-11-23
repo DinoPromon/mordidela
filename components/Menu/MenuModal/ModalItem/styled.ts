@@ -4,7 +4,7 @@ import styled from "styled-components";
 const CustomForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 0 0.5rem;
 
   & > img {
@@ -21,13 +21,13 @@ const CustomForm = styled.form`
     color: ${PURPLE};
   }
 
-  & > div {
+  & > ul {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    list-style: none;
+    gap: 0.75rem;
 
     & > h3 {
-      padding: 0.25rem 0;
       color: ${PURPLE};
     }
   }

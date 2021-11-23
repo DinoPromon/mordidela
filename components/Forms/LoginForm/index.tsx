@@ -32,6 +32,7 @@ const LoginForm: React.FC = (props) => {
   };
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (request.error) setRequest({ ...request, error: "" });
     setFormState({
       ...formState,
       [event.target.id]: event.target.value,
@@ -87,10 +88,7 @@ const LoginForm: React.FC = (props) => {
         placeholder="Senha"
       />
       {shouldShowRequestStatus && (
-        <FormRequestStatus
-          errorMessage={request.error}
-          isLoading={request.isLoading}
-        />
+        <FormRequestStatus errorMessage={request.error} isLoading={request.isLoading} />
       )}
       <LoginFormActions disabled={!canSubmit} />
     </Wrapper>

@@ -1,9 +1,8 @@
-import { PURPLE } from "@utils/colors";
-import { PINK } from "@utils/colors";
-import CustomLabel from "../CustomLabel";
 import styled from "styled-components";
+import { PINK, PURPLE } from "@utils/colors";
+import CustomLabel from "../../CustomLabel";
 
-const CustomList = styled.ul`
+const ListItem = styled.li`
   & > label {
     ${CustomLabel}
 
@@ -39,4 +38,4 @@ const CustomList = styled.ul`
   }
 `;
 
-export default CustomList;
+export default ListItem;
