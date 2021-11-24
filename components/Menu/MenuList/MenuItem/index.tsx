@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 
-// import Batata from "@images/caixa-batata.png";
-import Item from "./styled";
+import ListItem from './styled';
 import ItemImage from "./ItemImage";
 import ItemDescription from "./ItemDescription";
+import { Product } from "@my-types/product";
 
 type Props = {
   onClick: (id: string, image: string) => void;
   changeModalImage: (id: string, img: string) => void;
-  id_produto: string;
-  nome: string;
+  item: Product;
 };
 
 const MenuItem: React.FC<Props> = (props) => {
+  const { item } = props;
   const [imageSrc, setImageSrc] = useState("");
 
   const clickHandler = () => {
-    props.onClick(props.id_produto, imageSrc);
+    props.onClick(item.id_produto, imageSrc);
   };
 
   const getImage = async () => {
-    const response = await fetch(`/api/products/image/${props.id_produto}`, {
+    const response = await fetch(`/api/products/image/${item.id_produto}`, {
       method: "GET",
       headers: {
         "Content-Type": "text",
@@ -33,14 +33,14 @@ const MenuItem: React.FC<Props> = (props) => {
 
   useEffect(() => {
     getImage();
-    if (imageSrc !== "/images/logo.svg") props.changeModalImage(props.id_produto, imageSrc);
+    if (imageSrc !== "/images/logo.svg") props.changeModalImage(item.id_produto, imageSrc);
   }, [imageSrc]);
 
   return (
-    <Item onClick={clickHandler}>
-      <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${props.nome}`} />
-      <ItemDescription nome={props.nome} />
-    </Item>
+    <ListItem onClick={clickHandler}>
+      <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${item.nome}`} />
+      <ItemDescription name={`${item.nome} - ${item.tamanho}`} price={item.preco_padrao} />
+    </ListItem>
   );
 };
 

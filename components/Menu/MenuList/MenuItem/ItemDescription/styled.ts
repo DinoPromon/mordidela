@@ -6,16 +6,15 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  /* justify-content: space-between; */
   justify-content: center;
-  background-color: white;
+  text-align: center;
+  gap: 0.5rem;
   color: white;
   padding: 1em 0;
-  background-color: ${ORANGE};
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
+  background-color: ${ORANGE};
+
   cursor: pointer;
 
   & > span {

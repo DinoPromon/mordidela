@@ -6,18 +6,25 @@ import React from "react";
 
 type Props = {
   quantity: number;
-  onIncrement: () => void;
-  onDecrement: () => void;
+  setQuantity: React.Dispatch<React.SetStateAction<number>>
 };
 
 const ItemCounter: React.FC<Props> = (props) => {
+  function decrementHandler() {
+    props.setQuantity(prevState => prevState > 0 ? prevState-1 : prevState);
+  }
+
+  function incrementHandler() {
+    props.setQuantity(prevState => prevState + 1);
+  }
+
   return (
     <Wrapper>
-      <button type="button" onClick={props.onDecrement}>
+      <button type="button" onClick={decrementHandler}>
         <FontAwesomeIcon icon={faMinusCircle} size="lg" color={PURPLE} />
       </button>
       <span>{props.quantity}</span>
-      <button type="button" onClick={props.onIncrement}>
+      <button type="button" onClick={incrementHandler}>
         <FontAwesomeIcon icon={faPlusCircle} size="lg" color={PURPLE} />
       </button>
     </Wrapper>

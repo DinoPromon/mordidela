@@ -4,8 +4,8 @@ import type { ReactElement } from "react";
 import Menu from "@components/Menu";
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
-import { Product } from "@my-types/product";
 import { getAllProducts } from "database/products";
+import { Product } from "@my-types/product";
 
 type Props = {
   products: Product[];

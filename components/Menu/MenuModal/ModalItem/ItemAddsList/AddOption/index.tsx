@@ -16,7 +16,7 @@ const AddOption: React.FC<Props> = (props) => {
     <ListItem>
       <label htmlFor={id}>
         {label}
-        <input type="checkbox" id={id} name={name}></input>
+        <input type="checkbox" id={id} name={name} value={price}></input>
         <span></span>
         <p>R$ {transformPriceToString(price)}</p>
       </label>

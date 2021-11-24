@@ -1,16 +1,20 @@
 import React from "react";
 
 import Wrapper from "./styled";
+import { transformPriceToString } from "@utils/transformation/price";
 
 type Props = {
-  nome: string
+  name: string
+  price: number
 }
 
 const ItemDescription: React.FC<Props> = (props) => {
+  const { name, price } = props;
+
   return (
     <Wrapper>
-      <span>{props.nome.toLocaleUpperCase()}</span>
-      <span>R$5,90 - R$10,90</span>
+      <span>{name.toLocaleUpperCase()}</span>
+      <span>R$ {transformPriceToString(price)}</span>
     </Wrapper>
   );
 };

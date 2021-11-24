@@ -6,15 +6,7 @@ import { CategoriaAdicional } from "@my-types/database/models/categoria_adiciona
 export async function getAddsIdByCategoryId(categoryId: string) {
   const query = "SELECT id_adicional FROM categoria_adicional WHERE id_categoria = ?";
   const result = (await mysql.query(query, [categoryId])) as Pick<CategoriaAdicional, "id_adicional">[];
-  if (result.length > 0) {
-    const serializedResult = serialize(result);
-    const ids: CategoriaAdicional["id_adicional"][] = [];
-    for (let i in serializedResult) {
-      ids.push(serializedResult[i].id_adicional);
-    }
-    return ids;
-  }
-  return [];
+  return result.length > 0 ? serialize(result) : [];
 }
 
 export async function getAddById(addId: string) {
@@ -29,8 +21,8 @@ export async function getAddsByProductId(productId: string) {
   if (!categoryId) throw new Error(`Produto ${productId} não possui categoria.`);
   const addIds = await getAddsIdByCategoryId(categoryId);
   const adds: Adicional[] = [];
-  for (let addId in addIds) {
-    const add = await getAddById(addId);
+  for (let i in addIds) {
+    const add = await getAddById(addIds[i].id_adicional);
     add && adds.push(add);
   }
   return adds;

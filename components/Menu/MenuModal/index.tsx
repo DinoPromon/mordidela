@@ -18,8 +18,8 @@ const MenuModal: React.FC<Props> = (props) => {
     isLoading: true,
     success: false,
   });
-  const [itemOptions, setItemOptions] = useState<ProductOptions>({ adicional: [], sabor: [], tamanho: [] });
-  const [itemInfo, setItemInfo] = useState<ProductInfo>({ nome: "", descricao: "", qtde_max_sabor: 0 });
+  const [itemOptions, setItemOptions] = useState<ProductOptions>({ adicional: [], sabor: [] });
+  const [itemInfo, setItemInfo] = useState<ProductInfo>();
 
   useEffect(() => {
     async function fetchProductData() {
@@ -27,11 +27,12 @@ const MenuModal: React.FC<Props> = (props) => {
         const response = await fetch(`/api/products/${props.itemId}`);
         const result = (await response.json()) as any;
         if (!response.ok) throw new Error(result.message);
-        setItemOptions(result as ProductOptions);
+        setItemOptions({ adicional: result.adicional, sabor: result.sabor  });
         setItemInfo({
           nome: result.nome,
           descricao: result.descricao,
           qtde_max_sabor: result.qtde_max_sabor,
+          preco_padrao: result.preco_padrao
         });
         setRequestStatus({ success: true, error: "", isLoading: false });
       } catch (e) {
@@ -47,7 +48,7 @@ const MenuModal: React.FC<Props> = (props) => {
       {requestStatus.isLoading && (
         <FormRequestStatus isLoading={requestStatus.isLoading} errorMessage={requestStatus.error} />
       )}
-      {requestStatus.success && <ModalItem image={props.image} options={itemOptions} info={itemInfo} />}
+      {requestStatus.success && itemInfo && <ModalItem image={props.image} options={itemOptions} info={itemInfo} />}
     </Modal>
   );
 };

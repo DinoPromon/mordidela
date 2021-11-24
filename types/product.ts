@@ -1,6 +1,6 @@
 import { Produto } from "./database/models/produto";
 
-export type Product = Omit<Produto, "preco_padrao" | "descricao" | "tamanho" | "imagem">;
+export type Product = Omit<Produto, "qtde_max_sabor" | "descricao" | "imagem">;
 
 export type Add = {
   id_adicional: string;
@@ -22,8 +22,6 @@ export type Size = {
 export type ProductOptions = {
   adicional: Add[];
   sabor: Flavor[];
-  tamanho: Size[];
 };
 
-export type ProductInfo = Pick<Produto, "nome" | "descricao" | "qtde_max_sabor">
-
+export type ProductInfo = Pick<Produto, "nome" | "descricao" | "qtde_max_sabor" | "preco_padrao">;

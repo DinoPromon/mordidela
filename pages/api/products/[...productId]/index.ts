@@ -2,7 +2,7 @@ import type { NextApiHandler } from "next";
 import mysql from "database";
 import { getAddsByProductId } from "database/adds";
 import { getFlavosrByProductId } from "database/flavors";
-import { getProductById, getProductSizesById } from "database/products";
+import { getProductById } from "database/products";
 
 const handler: NextApiHandler = async (req, res) => {
   const { productId } = req.query;
@@ -12,14 +12,12 @@ const handler: NextApiHandler = async (req, res) => {
       const product = await getProductById(productId as string);
       const adds = await getAddsByProductId(productId as string);
       const flavors = await getFlavosrByProductId(productId as string);
-      const sizes = await getProductSizesById(productId as string);
       await mysql.end();
       
       const info = {
         ...product,
         adicional: adds,
         sabor: flavors,
-        tamanho: sizes
       };
       return res.status(200).json(info);
     } catch (e) {

@@ -19,9 +19,8 @@ const MenuList: React.FC<Props> = (props) => {
       {products.map((product) => (
         <MenuItem
           onClick={props.onItemClick}
-          nome={product.nome}
+          item={product}
           key={`${product.nome}-${product.id_produto}`}
-          id_produto={product.id_produto}
           changeModalImage={props.changeModalImage}
         />
       ))}
