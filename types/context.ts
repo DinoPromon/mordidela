@@ -7,6 +7,7 @@ export type CartProduct = {
   quantity: number;
   size: string;
   name: string;
+  orderNote?: string,
   standard_price: number;
   adds: Adicional[];
   flavors: Sabor[];
@@ -19,4 +20,5 @@ export type CartContextState = {
   addProductToCart: (product: CartProduct) => void;
   removeProductFromCart: (product: CartProduct) => void;
   getProductTotalPrice: (id: string) => number | void;
+  changeDeliveryPrice: (price: number) => void
 };

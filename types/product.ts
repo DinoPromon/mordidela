@@ -24,4 +24,7 @@ export type ProductOptions = {
   sabor: Flavor[];
 };
 
-export type ProductInfo = Pick<Produto, "nome" | "descricao" | "qtde_max_sabor" | "preco_padrao">;
+export type ProductInfo = Pick<
+  Produto,
+  "nome" | "descricao" | "qtde_max_sabor" | "preco_padrao" | "id_produto" | "tamanho"
+>;

@@ -7,6 +7,7 @@ const CartContext = createContext({
   addProductToCart(product: CartProduct) {},
   removeProductFromCart(product: CartProduct) {},
   getProductTotalPrice(id: string): number | void {},
+  changeDeliveryPrice(price: number) {},
 } as CartContextState);
 
 export default CartContext;

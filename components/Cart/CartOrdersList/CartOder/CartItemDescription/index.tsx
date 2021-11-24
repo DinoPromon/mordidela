@@ -8,15 +8,14 @@ import Wrapper from "./styled";
 const CartItemDescription: React.FC = () => {
   return (
     <Wrapper>
-        <div>
-            <span>1x</span>
-            <h2>Caixa de batata</h2>
-            <div>
-                <span><FontAwesomeIcon icon={faTrash} size="sm" color={PINK} /></span>
-                <p>R$ 20,90</p>
-            </div>
-        </div>
-        <p>Tamanho: Caixa média - 600g</p>
+      <span>1x</span>
+      <h2>Caixa de batata</h2>
+      <div>
+        <span>
+          <FontAwesomeIcon icon={faTrash} size="sm" color={PINK} />
+        </span>
+        <p>R$ 20,90</p>
+      </div>
     </Wrapper>
   );
 };

@@ -1,4 +1,5 @@
 import { transformDayOrMonth } from "@utils/transformation/date";
+import { removeSpaces } from "@utils/transformation/string";
 
 export const formatDateInput = (date: string) => {
   let input = date;
@@ -32,4 +33,12 @@ export const dateChangeHandler = (curDate: string, prevDate: string) => {
     changedDate = formatDateInput(curDate);
   }
   return changedDate;
+};
+
+export const cupomFormat = (text: string) => {
+  return text.toLocaleUpperCase();
+};
+
+export const formatProductId = (name: string, addsAmount: number, flavorsAmount: number, id: string) => {
+  return `${removeSpaces(name)}-${addsAmount}-${flavorsAmount}-${id}`;
 };

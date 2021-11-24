@@ -25,6 +25,10 @@ const CartContextProvider: React.FC = (props) => {
     }
   }
 
+  function changeDeliveryPrice(price: number) {
+    setDeliveryPrice(price);
+  }
+
   function calculateProductTotalPrice(product: CartProduct) {
     const standardPrice = product.standard_price;
     const addsPrice = product.adds.reduce((acc, cur) => (acc += cur.preco), 0);
@@ -36,7 +40,8 @@ const CartContextProvider: React.FC = (props) => {
     products: products,
     addProductToCart,
     getProductTotalPrice,
-    removeProductFromCart
+    removeProductFromCart,
+    changeDeliveryPrice
   };
 
   return <CartContext.Provider value={context}>{props.children}</CartContext.Provider>;
