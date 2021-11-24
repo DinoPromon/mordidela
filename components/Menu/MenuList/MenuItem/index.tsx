@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import ListItem from './styled';
+import ListItem from "./styled";
 import ItemImage from "./ItemImage";
 import ItemDescription from "./ItemDescription";
 import { Product } from "@my-types/product";
@@ -13,7 +13,7 @@ type Props = {
 
 const MenuItem: React.FC<Props> = (props) => {
   const { item } = props;
-  const [imageSrc, setImageSrc] = useState("");
+  const [imageSrc, setImageSrc] = useState("/images/fallback.png");
 
   const clickHandler = () => {
     props.onClick(item.id_produto, imageSrc);
@@ -28,12 +28,13 @@ const MenuItem: React.FC<Props> = (props) => {
     });
     const base64Image = await response.text();
     const url = `data:image/png;base64,${base64Image}`;
-    setImageSrc(base64Image ? url : "/images/fallback.png");
+    if(base64Image)
+      setImageSrc(url);
   };
 
   useEffect(() => {
     getImage();
-    if (imageSrc !== "/images/logo.svg") props.changeModalImage(item.id_produto, imageSrc);
+    props.changeModalImage(item.id_produto, imageSrc);
   }, [imageSrc]);
 
   return (
