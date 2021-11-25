@@ -10,56 +10,84 @@ import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
 import { transformPriceToString } from "@utils/transformation/price";
 import { formatProductId } from "@utils/formatters/input-formatter";
+import { Sabor } from "@my-types/database/models/sabor";
+import { Adicional } from "@my-types/database/models/adicional";
 
 type Props = {
   image: string;
   options: ProductOptions;
   info: ProductInfo;
+  closeModal: () => void;
 };
 
 const ModalItem: React.FC<Props> = (props) => {
-  const { options, info } = props;
-  const [productOrder, setProductOrder] = useState<CartProduct>({ 
-    adds: [], 
-    flavors: [], 
+  const { options, info, closeModal } = props;
+  const [productOrder, setProductOrder] = useState<CartProduct>({
+    adds: [],
+    flavors: [],
     id: `${formatProductId(info.nome, 0, 0, info.id_produto)}`,
     name: info.nome,
     product_id: info.id_produto,
     quantity: 1,
     size: info.tamanho,
-    standard_price: info.preco_padrao
+    standard_price: info.preco_padrao,
+    orderNote: ""
   });
-  const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(props.info.preco_padrao);
-  const [flavors, setFlavors] = useState<number[]>([]);
-  const [note, setNote] = useState<string>();
   const { addProductToCart } = useContext(CartContext);
 
-  const canSubmit = options.sabor.length ? flavors.length > 0 : true;
+  const canSubmit = options.sabor.length ? productOrder.flavors.length > 0 : true;
 
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (canSubmit) console.log();
+    if (canSubmit) {
+      console.log(productOrder);
+      addProductToCart(productOrder);
+      closeModal();
+    }
   }
 
-  function addFlavor(flavorId: number) {
-    setFlavors((prevState) => [...prevState, flavorId]);
+  function addFlavor(flavor: Sabor) {
+    setProductOrder((prevState) => ({
+      ...prevState,
+      flavors: [...prevState.flavors, flavor],
+    }));
   }
 
-  function removeFlavor(flavorId: number) {
-    setFlavors((prevState) => prevState.filter((id) => id !== flavorId));
+  function removeFlavor(flavor: Sabor) {
+    setProductOrder((prevState) => ({
+      ...prevState,
+      flavors: prevState.flavors.filter((item) => item.id_sabor !== flavor.id_sabor),
+    }));
+  }
+
+  function addAditional(add: Adicional) {
+    setProductOrder((prevState) => ({
+      ...prevState,
+      adds: [...prevState.adds, add],
+    }));
+  }
+
+  function removeAditional(add: Adicional) {
+    setProductOrder((prevState) => ({
+      ...prevState,
+      adds: prevState.adds.filter((item) => item.id_adicional !== add.id_adicional),
+    }));
   }
 
   function noteBlurHandler(event: React.FocusEvent<HTMLTextAreaElement>) {
     const { value } = event.target;
-    setNote(value);
+    setProductOrder((prevState) => ({
+      ...prevState,
+      orderNote: value,
+    }));
   }
 
   function changeQuantity(quantity: number) {
     setProductOrder({
       ...productOrder,
-      quantity: quantity
-    })
+      quantity: quantity,
+    });
   }
 
   return (
@@ -71,17 +99,24 @@ const ModalItem: React.FC<Props> = (props) => {
         <ItemFlavorsList
           items={options.sabor}
           maxFlavor={info.qtde_max_sabor}
-          flavorsAmount={flavors.length}
+          flavorsAmount={productOrder.flavors.length}
           onAddFlavor={addFlavor}
           onRemoveFlavor={removeFlavor}
         />
       )}
-      {options.adicional.length > 0 && <ItemAddsList items={options.adicional} setPrice={setPrice} />}
+      {options.adicional.length > 0 && (
+        <ItemAddsList
+          items={options.adicional}
+          setPrice={setPrice}
+          onAddAditional={addAditional}
+          onRemoveAditional={removeAditional}
+        />
+      )}
       <textarea name="observacao" placeholder="Alguma observação?" rows={2} onBlur={noteBlurHandler} />
       <div>
-        <ItemCounter quantity={quantity} setQuantity={setQuantity} />
+        <ItemCounter quantity={productOrder.quantity} setQuantity={changeQuantity} />
         <FormButton type="submit" disabled={!canSubmit}>
-          Adicionar - R${transformPriceToString(price * quantity)}
+          Adicionar - R${transformPriceToString(price * productOrder.quantity)}
         </FormButton>
       </div>
     </CustomForm>

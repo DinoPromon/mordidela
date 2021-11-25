@@ -6,16 +6,18 @@ import React from "react";
 
 type Props = {
   quantity: number;
-  setQuantity: React.Dispatch<React.SetStateAction<number>>
+  setQuantity: (quantity: number) => void;
 };
 
 const ItemCounter: React.FC<Props> = (props) => {
+  const { quantity, setQuantity } = props;
+
   function decrementHandler() {
-    props.setQuantity(prevState => prevState > 0 ? prevState-1 : prevState);
+    return quantity > 0 && setQuantity(quantity - 1);
   }
 
   function incrementHandler() {
-    props.setQuantity(prevState => prevState + 1);
+    setQuantity(quantity + 1);
   }
 
   return (

@@ -27,12 +27,14 @@ const MenuModal: React.FC<Props> = (props) => {
         const response = await fetch(`/api/products/${props.itemId}`);
         const result = (await response.json()) as any;
         if (!response.ok) throw new Error(result.message);
-        setItemOptions({ adicional: result.adicional, sabor: result.sabor  });
+        setItemOptions({ adicional: result.adicional, sabor: result.sabor });
         setItemInfo({
           nome: result.nome,
           descricao: result.descricao,
           qtde_max_sabor: result.qtde_max_sabor,
-          preco_padrao: result.preco_padrao
+          preco_padrao: result.preco_padrao,
+          tamanho: result.tamanho,
+          id_produto: result.id_produto,
         });
         setRequestStatus({ success: true, error: "", isLoading: false });
       } catch (e) {
@@ -48,7 +50,9 @@ const MenuModal: React.FC<Props> = (props) => {
       {requestStatus.isLoading && (
         <FormRequestStatus isLoading={requestStatus.isLoading} errorMessage={requestStatus.error} />
       )}
-      {requestStatus.success && itemInfo && <ModalItem image={props.image} options={itemOptions} info={itemInfo} />}
+      {requestStatus.success && itemInfo && (
+        <ModalItem image={props.image} options={itemOptions} info={itemInfo} closeModal={props.onClose} />
+      )}
     </Modal>
   );
 };

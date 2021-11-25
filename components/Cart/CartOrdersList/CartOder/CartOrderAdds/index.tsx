@@ -1,20 +1,23 @@
 import React from "react";
 
 import Wrapper from "./styled";
+import { Adicional } from "@my-types/database/models/adicional";
+import { transformPriceToString } from "@utils/transformation/price";
 
-const CartOrderAdds: React.FC = () => {
+type Props = {
+  adds: Adicional[];
+};
+
+const CartOrderAdds: React.FC<Props> = (props) => {
+  const { adds } = props;
+
   return (
     <Wrapper>
-      <p>
-        Adicional: Barbecue <span>R$ 2,00</span>
-      </p>
-      <p>
-        Adicional: Mostarda e mel <span>R$ 2,00</span>
-      </p>
-
-      <p>
-        Adicional: Cheddar cremoso <span>R$ 2,00</span>
-      </p>
+      {adds.map((add) => (
+        <p key={`add-${add.id_adicional}`}>
+          Adicional: {add.nome} <span>R$ {transformPriceToString(add.preco)}</span>
+        </p>
+      ))}
     </Wrapper>
   );
 };

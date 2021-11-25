@@ -3,27 +3,33 @@ import React from "react";
 import CustomList from "./styled";
 import FlavorOption from "./FlavorOption";
 import { Flavor } from "@my-types/product";
+import { Sabor } from "@my-types/database/models/sabor";
 
 type Props = {
   items: Flavor[];
   flavorsAmount: number;
   maxFlavor: number;
-  onAddFlavor: (flavorId: number) => void;
-  onRemoveFlavor: (flavorId: number) => void;
+  onAddFlavor: (flavor: Sabor) => void;
+  onRemoveFlavor: (flavor: Sabor) => void;
 };
 
 const ItemFlavorsList: React.FC<Props> = (props) => {
   const { items, maxFlavor, flavorsAmount, onAddFlavor, onRemoveFlavor } = props;
 
+  function getFlavorById(id: string) {
+    return items.find((item) => {
+      return String(item.id_sabor) === id;
+    });
+  }
+
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { checked, value } = event.target;
-    const id = Number(value);
-    if(checked) {
+    const flavor = getFlavorById(value);
+    if (checked) {
       const canAdd = flavorsAmount < maxFlavor;
       event.target.checked = canAdd;
-      return canAdd && onAddFlavor(id);
-    }
-    onRemoveFlavor(id);
+      return canAdd && flavor && onAddFlavor(flavor);
+    } else flavor && onRemoveFlavor(flavor);
   }
 
   return (

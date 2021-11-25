@@ -1,12 +1,21 @@
 import React from "react";
 
-import CustomList from './styled';
+import CustomList from "./styled";
 import CartOrder from "./CartOder";
+import { CartProduct } from "@my-types/context";
 
-const CartOrdersList: React.FC = () => {
+type Props = {
+  products: CartProduct[];
+};
+
+const CartOrdersList: React.FC<Props> = (props) => {
+  const { products } = props;
+
   return (
     <CustomList>
-      <CartOrder />
+      {products.map((product) => (
+        <CartOrder product={product} key={product.id} />
+      ))}
     </CustomList>
   );
 };

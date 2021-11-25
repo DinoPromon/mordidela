@@ -4,7 +4,8 @@ import { Produto } from "@my-types/database/models/produto";
 import { Product } from "@my-types/product";
 
 export async function getAllProducts() {
-  const query = "SELECT id_produto, nome, id_categoria, id_desconto, disponivel, preco_padrao, tamanho FROM produto ORDER BY id_categoria";
+  const query =
+    "SELECT id_produto, nome, id_categoria, id_desconto, disponivel, preco_padrao, tamanho FROM produto ORDER BY id_categoria";
   const result = (await mysql.query(query)) as Product[];
   return serialize(result);
 }
@@ -41,11 +42,9 @@ export async function getProductSizesById(productId: string) {
 }
 
 export async function getProductById(productId: string) {
-  const query = "SELECT nome, descricao, qtde_max_sabor, preco_padrao FROM produto WHERE id_produto = ?";
-  const result = (await mysql.query(query, [productId])) as Pick<
-    Produto,
-    "nome" | "descricao" | "qtde_max_sabor" | "preco_padrao"
-  >[];
+  const query =
+    "SELECT id_produto, nome, descricao, qtde_max_sabor, preco_padrao, disponivel, tamanho FROM produto WHERE id_produto = ?";
+  const result = (await mysql.query(query, [productId])) as Omit<Produto, "imagem">[];
   if (!result.length) throw new Error("Produto não existente.");
   return result[0];
 }
