@@ -16,7 +16,7 @@ const ItemAddsList: React.FC<Props> = (props) => {
   const { items, setPrice, onAddAditional, onRemoveAditional } = props;
 
   function getAddIdFromInputId(inputId: string) {
-    const pattern = /[\d+]$/;
+    const pattern = /\d+$/;
     const id = inputId.match(pattern);
     console.log(id);
     if (id) return id[0];

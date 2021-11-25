@@ -41,7 +41,6 @@ const ModalItem: React.FC<Props> = (props) => {
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (canSubmit) {
-      console.log(productOrder);
       addProductToCart(productOrder);
       closeModal();
     }
