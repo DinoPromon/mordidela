@@ -16,7 +16,7 @@ const List = styled.ul`
   
   @media (min-width: 1100px ) {
     grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 1rem;
+    column-gap: 2rem;
   }
 `;
 
