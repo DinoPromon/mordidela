@@ -4,7 +4,8 @@ const Wrapper = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  padding: 0.5rem 0;
+  gap: 0.75rem;
   width: 100%;
   text-align: center;
 

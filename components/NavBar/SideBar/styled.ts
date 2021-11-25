@@ -58,7 +58,8 @@ const Aside = styled.aside<Props>`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem;
+    padding: 1rem 0;
+    margin-top: 1rem;
   }
 `;
 
