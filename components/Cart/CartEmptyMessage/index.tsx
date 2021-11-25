@@ -5,7 +5,7 @@ import Wrapper from './styled';
 const CartEmptyMessage = () => {
   return (
     <Wrapper>
-      <span>Carrinho Vazio.</span>
+      <span>Carrinho vazio</span>
       {/* <p>Escolha nossos produtos clicando <span>aqui</span>.</p> */}
     </Wrapper>
   );

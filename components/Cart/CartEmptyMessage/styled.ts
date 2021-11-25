@@ -7,9 +7,9 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   padding: 2rem 0;
-
+  
   & > span {
-    
+    font-size: 30px;
     color: ${PINK};
   }
 `;

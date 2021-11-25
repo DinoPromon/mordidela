@@ -9,6 +9,9 @@ import { FormButton } from "@components/shared";
 
 import CustomForm from "./styled";
 import { transformPriceToString } from "@utils/transformation/price";
+import CartPaymentSelect from "./CartPaymentSelect";
+import CartTroco from "./CartTroco";
+import CartPaymentValue from "./CartPaymentValue";
 
 const Cart: React.FC = () => {
   const cartCtx = useContext(CartContext);
@@ -41,6 +44,9 @@ const Cart: React.FC = () => {
             Entrega: <span>R$ 3,50</span>
           </p>
           <CartCupom />
+          <CartPaymentSelect/>
+          <CartTroco/>
+          <CartPaymentValue/>
           <p>
             Total: <span>R$ {transformPriceToString(totalPrice)}</span>
           </p>
