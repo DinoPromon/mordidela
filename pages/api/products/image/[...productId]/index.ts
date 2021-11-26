@@ -1,7 +1,7 @@
 import type { NextApiHandler } from "next";
 import mysql from "database";
 
-import { getProductImageById } from "database/products";
+import { getProductImageById } from "@controllers/products";
 
 const handler: NextApiHandler = async (req, res) => {
   const { productId } = req.query;

@@ -1,8 +1,8 @@
-import { Adicional } from "./database/models/adicional";
-import { Sabor } from "./database/models/sabor";
+import Adicional from "@models/adicional";
+import Sabor from "@models/sabor";
 
 export type CartProduct = {
-  id: string;
+  key: string;
   product_id: string;
   quantity: number;
   size: string;
@@ -18,7 +18,6 @@ export type CartContextState = {
   id_cupom?: string;
   products: CartProduct[];
   addProductToCart: (product: CartProduct) => void;
-  removeProductFromCart: (product: CartProduct) => void;
-  getProductTotalPrice: (id: string) => number | void;
+  removeProductFromCart: (key: string) => void;
   changeDeliveryPrice: (price: number) => void
 };

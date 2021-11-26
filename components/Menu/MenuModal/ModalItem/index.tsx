@@ -4,15 +4,14 @@ import CustomForm from "./styled";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
-import Adicional from '@models/adicional';
-import Sabor from '@models/sabor';
+import Adicional from "@models/adicional";
+import Sabor from "@models/sabor";
 import { CartContext } from "@store/cart";
 import { ProductInfo, ProductOptions } from "@my-types/product";
 import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
 import { transformPriceToString } from "@utils/transformation/price";
 import { formatProductId } from "@utils/formatters/input-formatter";
-
 
 type Props = {
   image: string;
@@ -26,18 +25,20 @@ const ModalItem: React.FC<Props> = (props) => {
   const [productOrder, setProductOrder] = useState<CartProduct>({
     adds: [],
     flavors: [],
-    id: `${formatProductId(info.nome, 0, 0, info.id_produto)}`,
+    key: `${formatProductId(info.nome, info.id_produto, 0, 0)}`,
     name: info.nome,
     product_id: info.id_produto,
     quantity: 1,
     size: info.tamanho,
     standard_price: info.preco_padrao,
-    orderNote: ""
+    orderNote: "",
   });
   const [price, setPrice] = useState(props.info.preco_padrao);
   const { addProductToCart } = useContext(CartContext);
 
   const canSubmit = options.sabor.length ? productOrder.flavors.length > 0 : true;
+
+  const getProductKey = formatProductId.bind(null, info.nome, info.id_produto);
 
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,6 +51,7 @@ const ModalItem: React.FC<Props> = (props) => {
   function addFlavor(flavor: Sabor) {
     setProductOrder((prevState) => ({
       ...prevState,
+      key: getProductKey(prevState.flavors.length + 1, prevState.adds.length),
       flavors: [...prevState.flavors, flavor],
     }));
   }
@@ -57,6 +59,7 @@ const ModalItem: React.FC<Props> = (props) => {
   function removeFlavor(flavor: Sabor) {
     setProductOrder((prevState) => ({
       ...prevState,
+      key: getProductKey(prevState.flavors.length - 1, prevState.adds.length),
       flavors: prevState.flavors.filter((item) => item.id_sabor !== flavor.id_sabor),
     }));
   }
@@ -64,6 +67,7 @@ const ModalItem: React.FC<Props> = (props) => {
   function addAditional(add: Adicional) {
     setProductOrder((prevState) => ({
       ...prevState,
+      key: getProductKey(prevState.flavors.length, prevState.adds.length + 1),
       adds: [...prevState.adds, add],
     }));
   }
@@ -71,6 +75,7 @@ const ModalItem: React.FC<Props> = (props) => {
   function removeAditional(add: Adicional) {
     setProductOrder((prevState) => ({
       ...prevState,
+      key: getProductKey(prevState.flavors.length, prevState.adds.length - 1),
       adds: prevState.adds.filter((item) => item.id_adicional !== add.id_adicional),
     }));
   }

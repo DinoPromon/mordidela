@@ -4,7 +4,7 @@ import Pedido from '@models/pedido';
 
 const handler: NextApiHandler = (req, res) => {
   if(req.method === 'POST') {
-
+    
   }
 };
 

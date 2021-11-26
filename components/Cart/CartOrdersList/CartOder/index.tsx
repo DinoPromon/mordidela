@@ -24,6 +24,7 @@ const CartOrder: React.FC<Props> = (props) => {
   return (
     <ListItem>
       <CartItemDescription
+        productKey={product.key}
         standard_price={product.standard_price}
         productName={product.name}
         productSize={product.size}

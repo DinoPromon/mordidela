@@ -14,7 +14,7 @@ const CartOrdersList: React.FC<Props> = (props) => {
   return (
     <CustomList>
       {products.map((product) => (
-        <CartOrder product={product} key={product.id} />
+        <CartOrder product={product} key={product.key} />
       ))}
     </CustomList>
   );

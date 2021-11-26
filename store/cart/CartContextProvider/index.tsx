@@ -7,41 +7,36 @@ const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
 
-  function addProductToCart(product: CartProduct) {
-    setProducts((prevState) => [...prevState, product]);
-  }
-
-  function removeProductFromCart(product: CartProduct) {
+  function incrementProductQuantity(key: string) {
     setProducts((prevState) =>
-      prevState.filter((item) => {
-        item.id !== product.id;
+      prevState.map((item) => {
+        if (item.key === key) return { ...item, quantity: item.quantity + 1 };
+        return { ...item };
       })
     );
   }
 
-  function getProductTotalPrice(id: string) {
-    for (const i in products) {
-      if (products[i].id === id) return calculateProductTotalPrice(products[i]);
+  function addProductToCart(product: CartProduct) {
+    for (let i in products) {
+      if (products[i].key === product.key) return incrementProductQuantity(product.key);
     }
+    setProducts((prevState) => [...prevState, product]);
+  }
+
+  function removeProductFromCart(key: string) {
+    setProducts((prevState) => prevState.filter((item) => item.key !== key));
   }
 
   function changeDeliveryPrice(price: number) {
     setDeliveryPrice(price);
   }
 
-  function calculateProductTotalPrice(product: CartProduct) {
-    const standardPrice = product.standard_price;
-    const addsPrice = product.adds.reduce((acc, cur) => (acc += cur.preco), 0);
-    return standardPrice + addsPrice;
-  }
-
   const context: CartContextState = {
     delivery_price: deliveryPrice,
     products: products,
     addProductToCart,
-    getProductTotalPrice,
     removeProductFromCart,
-    changeDeliveryPrice
+    changeDeliveryPrice,
   };
 
   return <CartContext.Provider value={context}>{props.children}</CartContext.Provider>;

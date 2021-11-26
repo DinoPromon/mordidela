@@ -21,7 +21,7 @@ const Cart: React.FC = () => {
     return products.reduce((acc, cur) => {
       const standardPrice = cur.standard_price;
       const addsPrice = cur.adds.reduce((accAdd, curAdd) => (accAdd += curAdd.preco), 0);
-      return (acc += (standardPrice + addsPrice)*cur.quantity);
+      return (acc += (standardPrice + addsPrice) * cur.quantity);
     }, 0);
   }
 
@@ -44,9 +44,9 @@ const Cart: React.FC = () => {
             Entrega: <span>R$ 3,50</span>
           </p>
           <CartCupom />
-          <CartPaymentSelect/>
-          <CartTroco/>
-          <CartPaymentValue/>
+          <CartPaymentSelect />
+          <CartTroco />
+          <CartPaymentValue />
           <p>
             Total: <span>R$ {transformPriceToString(totalPrice)}</span>
           </p>

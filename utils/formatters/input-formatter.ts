@@ -42,6 +42,6 @@ export const cupomFormat = (text: string) => {
   return text.slice(0, text.length - 1);
 };
 
-export const formatProductId = (name: string, addsAmount: number, flavorsAmount: number, id: string) => {
+export const formatProductId = (name: string, id: string, addsAmount: number, flavorsAmount: number) => {
   return `${removeSpaces(name)}-${addsAmount}-${flavorsAmount}-${id}`;
 };

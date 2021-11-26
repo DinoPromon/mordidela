@@ -2,11 +2,10 @@ import React from "react";
 
 import CustomList from "./styled";
 import FlavorOption from "./FlavorOption";
-import { Flavor } from "@my-types/product";
-import { Sabor } from "@my-types/database/models/sabor";
+import Sabor from "@models/sabor";
 
 type Props = {
-  items: Flavor[];
+  items: Sabor[];
   flavorsAmount: number;
   maxFlavor: number;
   onAddFlavor: (flavor: Sabor) => void;
