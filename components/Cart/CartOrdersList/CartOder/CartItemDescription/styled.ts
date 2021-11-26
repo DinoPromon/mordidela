@@ -2,8 +2,9 @@ import { PINK, PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  display: flex;
-  position: relative;
+  display: grid;
+  grid-template-columns: 1rem 5fr 2fr;
+  column-gap: 0.5rem;
 
   & > span {
     color: ${PINK};
@@ -17,11 +18,8 @@ const Wrapper = styled.div`
 
   & > div {
     display: flex;
-    position: absolute;
-    right: 0;
     gap: 0.5rem;
-    align-items: center;
-
+    justify-content: flex-end;
     & > span {
       cursor: pointer;
     }
