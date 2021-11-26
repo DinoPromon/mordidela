@@ -4,7 +4,7 @@ import type { ReactElement } from "react";
 import Menu from "@components/Menu";
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
-import { getAllProducts } from "database/products";
+import { getAllProducts } from "@controllers/products";
 import { Product } from "@my-types/product";
 
 type Props = {

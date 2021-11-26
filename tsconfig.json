@@ -5,6 +5,7 @@
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
+      "@controllers/*": ["database/controllers/*"],
       "@my-types/*": ["types/*"],
       "@store/*": ["store/*"],
       "@models/*": ["database/models/*"]

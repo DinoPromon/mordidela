@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { arePasswordsEquals } from "@utils/validations";
-import { getUserByEmail } from "database/users";
+import { getUserByEmail } from "@controllers/users";
 
 export default NextAuth({
   session: {
