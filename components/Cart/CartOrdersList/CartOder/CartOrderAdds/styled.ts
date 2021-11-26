@@ -6,16 +6,16 @@ const Wrapper = styled.div`
   flex-direction: column;
   position: relative;
   padding: 2px 0;
-  margin-left: 1.5rem;
+  font-size: inherit;
 
   & > p {
     position: relative;
     width: 100%;
-    font-size: 13px;
+    font-size: inherit;
 
     & > span {
-      font-size: 13px;
       font-weight: bold;
+      font-size:inherit;
       color: ${PURPLE};
       position: absolute;
       right: 0;

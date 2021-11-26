@@ -12,6 +12,15 @@ type Props = {
 const CartOrder: React.FC<Props> = (props) => {
   const { product } = props;
 
+  function getFlavorsAsString() {
+    let string = "";
+    for (let i = 0; i < product.flavors.length - 1; i++) {
+      string += `${product.flavors[i].nome}, `;
+    }
+    string += `${product.flavors[product.flavors.length - 1].nome}.`;
+    return string;
+  }
+
   return (
     <ListItem>
       <CartItemDescription
@@ -20,7 +29,10 @@ const CartOrder: React.FC<Props> = (props) => {
         productSize={product.size}
         quantity={product.quantity}
       />
-      <CartOrderAdds adds={product.adds}/>
+      <div>
+        <CartOrderAdds adds={product.adds} />
+        {!!product.flavors.length && <p>Sabores: {getFlavorsAsString()}</p>}
+      </div>
     </ListItem>
   );
 };
