@@ -1,4 +1,4 @@
-import { Categoria } from "@my-types/database/models/categoria";
+import Categoria from '@models/categoria';
 import mysql, { serialize } from "database";
 
 export async function getCategoryIdByProductId(productId: string) {

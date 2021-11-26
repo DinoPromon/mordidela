@@ -26,3 +26,11 @@ const getDayOrMonthAsNumber = (str: string, maxValue: number) => {
   if (isNaN(number) || number <= 0 || number > maxValue) return 1;
   return number;
 };
+
+export const transformDate = (date: string) => {
+  const fragmentedDate = date.split('/');
+  fragmentedDate.reverse();
+  const formatedDate = fragmentedDate.join('-');
+
+  return formatedDate;
+};

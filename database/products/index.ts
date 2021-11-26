@@ -1,6 +1,5 @@
 import mysql, { serialize } from "database";
-
-import { Produto } from "@my-types/database/models/produto";
+import Produto from '@models/produto';
 import { Product } from "@my-types/product";
 
 export async function getAllProducts() {

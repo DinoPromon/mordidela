@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { AppPropsWithLayout } from "@my-types/next-page";
+import { CartContextProvider } from "@store/cart";
 
 const GlobalStyle = createGlobalStyle`
   * {

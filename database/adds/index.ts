@@ -1,7 +1,7 @@
 import mysql, { serialize } from "database";
-import { Adicional } from "@my-types/database/models/adicional";
+import Adicional from '@models/adicional';
+import CategoriaAdicional from "@models/categoria_adicional";
 import { getCategoryIdByProductId } from "database/category";
-import { CategoriaAdicional } from "@my-types/database/models/categoria_adicional";
 
 export async function getAddsIdByCategoryId(categoryId: string) {
   const query = "SELECT id_adicional FROM categoria_adicional WHERE id_categoria = ?";

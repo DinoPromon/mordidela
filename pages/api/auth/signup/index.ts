@@ -4,11 +4,8 @@ import { treatErrorMessage } from "@utils/transformation/error";
 import { AddressFormData, UserFormData } from "@my-types/forms";
 import { hasErrorInAddressForm, hasErrorInUserForm } from "@utils/validations";
 import { removeAditionalSpaces } from "@utils/formatters/input-formatter";
-import {
-  transformDate,
-  getDDDFromTelefone,
-  getNumberFromTelefone,
-} from "database/signup/data-transformations";
+import { transformDate } from "@utils/transformation/date";
+import { getDDDFromTelefone, getNumberFromTelefone } from "@utils/transformation/telefone";
 
 import mysql from "database";
 

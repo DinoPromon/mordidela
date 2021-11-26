@@ -1,7 +1,7 @@
 import React from "react";
 
 import Wrapper from "./styled";
-import { Adicional } from "@my-types/database/models/adicional";
+import Adicional from '@models/adicional';
 import { transformPriceToString } from "@utils/transformation/price";
 
 type Props = {

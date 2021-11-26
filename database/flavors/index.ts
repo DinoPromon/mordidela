@@ -1,6 +1,6 @@
 import mysql, { serialize } from "database";
-import { ProdutoSabor } from "@my-types/database/models/produto_sabor";
-import { Sabor } from "@my-types/database/models/sabor";
+import Sabor from "@models/sabor";
+import ProdutoSabor from "@models/produto_sabor";
 
 export async function getFlavorById(flavorId: string) {
   const query = "SELECT * FROM sabor WHERE id_sabor = ?";

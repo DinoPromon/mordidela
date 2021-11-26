@@ -2,7 +2,7 @@ import React from "react";
 
 import CustomList from "./styled";
 import AddOption from "./AddOption";
-import { Adicional } from "@my-types/database/models/adicional";
+import Adicional from "@models/adicional";
 import { Add } from "@my-types/product";
 
 type Props = {
