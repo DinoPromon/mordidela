@@ -25,7 +25,7 @@ const ModalItem: React.FC<Props> = (props) => {
   const [productOrder, setProductOrder] = useState<CartProduct>({
     adds: [],
     flavors: [],
-    key: `${formatProductId(info.nome, info.id_produto, 0, 0)}`,
+    key: `${formatProductId(info.nome, info.id_produto, [], [])}`,
     name: info.nome,
     product_id: info.id_produto,
     quantity: 1,
@@ -49,35 +49,47 @@ const ModalItem: React.FC<Props> = (props) => {
   }
 
   function addFlavor(flavor: Sabor) {
-    setProductOrder((prevState) => ({
-      ...prevState,
-      key: getProductKey(prevState.flavors.length + 1, prevState.adds.length),
-      flavors: [...prevState.flavors, flavor],
-    }));
+    setProductOrder((prevState) => {
+      const flavors = [...prevState.flavors, flavor];
+      return {
+        ...prevState,
+        key: getProductKey(prevState.adds, flavors),
+        flavors,
+      };
+    });
   }
 
   function removeFlavor(flavor: Sabor) {
-    setProductOrder((prevState) => ({
-      ...prevState,
-      key: getProductKey(prevState.flavors.length - 1, prevState.adds.length),
-      flavors: prevState.flavors.filter((item) => item.id_sabor !== flavor.id_sabor),
-    }));
+    setProductOrder((prevState) => {
+      const flavors = prevState.flavors.filter((item) => item.id_sabor !== flavor.id_sabor);
+      return {
+        ...prevState,
+        key: getProductKey(prevState.adds, flavors),
+        flavors,
+      };
+    });
   }
 
   function addAditional(add: Adicional) {
-    setProductOrder((prevState) => ({
-      ...prevState,
-      key: getProductKey(prevState.flavors.length, prevState.adds.length + 1),
-      adds: [...prevState.adds, add],
-    }));
+    setProductOrder((prevState) => {
+      const adds = [...prevState.adds, add];
+      return {
+        ...prevState,
+        key: getProductKey(adds, prevState.flavors),
+        adds,
+      };
+    });
   }
 
   function removeAditional(add: Adicional) {
-    setProductOrder((prevState) => ({
-      ...prevState,
-      key: getProductKey(prevState.flavors.length, prevState.adds.length - 1),
-      adds: prevState.adds.filter((item) => item.id_adicional !== add.id_adicional),
-    }));
+    setProductOrder((prevState) => {
+      const adds = prevState.adds.filter((item) => item.id_adicional !== add.id_adicional);
+      return {
+        ...prevState,
+        key: getProductKey(adds, prevState.flavors),
+        adds,
+      };
+    });
   }
 
   function noteBlurHandler(event: React.FocusEvent<HTMLTextAreaElement>) {
