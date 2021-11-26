@@ -36,7 +36,10 @@ export const dateChangeHandler = (curDate: string, prevDate: string) => {
 };
 
 export const cupomFormat = (text: string) => {
-  return text.toLocaleUpperCase();
+  const pattern = /[a-zA-Z0-9]$/;
+  console.log(pattern.test(text));
+  if (pattern.test(text)) return text.toLocaleUpperCase();
+  return text.slice(0, text.length - 1);
 };
 
 export const formatProductId = (name: string, addsAmount: number, flavorsAmount: number, id: string) => {
