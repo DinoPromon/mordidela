@@ -10,8 +10,8 @@ type Produto = {
   descricao: string;
   tamanho: string;
   qtde_max_sabor: number;
-  id_categoria: Pick<Categoria, "id_categoria">;
-  id_desconto: Pick<Desconto, "id_desconto"> | null;
+  id_categoria: Categoria['id_categoria'];
+  id_desconto: Desconto['id_desconto'] | null;
 };
 
 export default Produto;

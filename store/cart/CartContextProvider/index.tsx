@@ -1,11 +1,11 @@
-import { CartProduct } from "@my-types/context";
+import { CartOrder, CartProduct } from "@my-types/context";
 import React, { useState } from "react";
 import { CartContextState } from "@my-types/context";
 import CartContext from "../cart-context";
 
 const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
-  const [deliveryPrice, setDeliveryPrice] = useState(0);
+  const [order, setOrder] = useState<CartOrder>({});
 
   function incrementProductQuantity(key: string) {
     setProducts((prevState) =>
@@ -28,15 +28,50 @@ const CartContextProvider: React.FC = (props) => {
   }
 
   function changeDeliveryPrice(price: number) {
-    setDeliveryPrice(price);
+    setOrder({
+      ...order,
+      delivery_price: price,
+    });
+  }
+
+  function setOrderType(type: CartOrder["order_type"]) {
+    setOrder({
+      ...order,
+      order_type: type,
+    });
+  }
+
+  function setPaymentAmount(amount: CartOrder["payment_amount"]) {
+    setOrder({
+      ...order,
+      payment_amount: amount,
+    });
+  }
+
+  function setCupom(id: CartOrder["id_cupom"]) {
+    setOrder({
+      ...order,
+      id_cupom: id,
+    });
+  }
+
+  function setPaymentType(type: CartOrder["payment_type"]) {
+    setOrder({
+      ...order,
+      payment_type: type,
+    });
   }
 
   const context: CartContextState = {
-    delivery_price: deliveryPrice,
     products: products,
+    order,
     addProductToCart,
     removeProductFromCart,
     changeDeliveryPrice,
+    setCupom,
+    setOrderType,
+    setPaymentAmount,
+    setPaymentType,
   };
 
   return <CartContext.Provider value={context}>{props.children}</CartContext.Provider>;

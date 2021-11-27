@@ -1,6 +1,7 @@
 import Adicional from "@models/adicional";
 import Sabor from "@models/sabor";
 import { transformDayOrMonth } from "@utils/transformation/date";
+import { transformPriceStringToNumber, transformPriceToString } from "@utils/transformation/price";
 import { removeSpaces } from "@utils/transformation/string";
 
 export const formatDateInput = (date: string) => {
@@ -54,4 +55,14 @@ export const formatProductId = (name: string, id: string, adds: Adicional[], fla
     .sort((a, b) => a - b)
     .join("-");
   return `${removeSpaces(name)}-${addsIds}-${flavorsIds}-${id}`;
+};
+
+export const formatPrice = (inputText: string) => {
+  const pattern = /\d$/;
+
+  if (pattern.test(inputText)) {
+    const price = transformPriceStringToNumber(inputText);
+    return transformPriceToString(price);
+  }
+  return inputText.slice(0, inputText.length - 1);
 };

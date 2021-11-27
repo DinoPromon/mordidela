@@ -8,7 +8,6 @@ import { generalDataValidation } from "@utils/validations";
 import { RequestState } from "@my-types/request";
 import { GeneralDataForm } from "@my-types/forms";
 import FormRequestStatus from "@components/shared/FormRequestStatus";
-import Usuario from "@my-types/database/models/Usuario";
 
 type GeneralDataState = {
   nome: string;

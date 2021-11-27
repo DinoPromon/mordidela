@@ -6,7 +6,7 @@ type Endereco = {
   numero: string;
   bairro: string;
   complemento: string;
-  id_usuario: Pick<Usuario, "id_usuario">;
+  id_usuario: Usuario['id_usuario'];
   id_entrega: 1;
 };
 

@@ -25,6 +25,7 @@ const ModalItem: React.FC<Props> = (props) => {
   const [productOrder, setProductOrder] = useState<CartProduct>({
     adds: [],
     flavors: [],
+    total_price: info.preco_padrao,
     key: `${formatProductId(info.nome, info.id_produto, [], [])}`,
     name: info.nome,
     product_id: info.id_produto,
@@ -75,6 +76,7 @@ const ModalItem: React.FC<Props> = (props) => {
       const adds = [...prevState.adds, add];
       return {
         ...prevState,
+        total_price: prevState.total_price + add.preco,
         key: getProductKey(adds, prevState.flavors),
         adds,
       };
@@ -86,6 +88,7 @@ const ModalItem: React.FC<Props> = (props) => {
       const adds = prevState.adds.filter((item) => item.id_adicional !== add.id_adicional);
       return {
         ...prevState,
+        total_price: prevState.total_price - add.preco,
         key: getProductKey(adds, prevState.flavors),
         adds,
       };

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { PINK, PURPLE } from "@utils/colors";
 
 const Wrapper = styled.div`
-
   & > h3 {
     display: flex;
     justify-content: center;
@@ -11,7 +10,7 @@ const Wrapper = styled.div`
     color: ${PURPLE};
   }
 
-& > div{
+  & > div {
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -51,7 +50,7 @@ const Wrapper = styled.div`
       }
 
       & > div {
-          padding-right: 5px;
+        padding-right: 5px;
       }
     }
   }
