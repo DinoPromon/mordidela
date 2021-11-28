@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { Provider } from "next-auth/client";
 import { createGlobalStyle } from "styled-components";
 
 import { AppPropsWithLayout } from "@my-types/next-page";

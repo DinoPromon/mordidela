@@ -2,8 +2,8 @@ import type { NextApiHandler } from "next";
 
 import mysql from "database";
 import { getSession } from "next-auth/client";
-import { transformDateFromDBToClient, padDayOrMonth } from "@utils/transformation/date";
-import { ViewUsuario } from "@my-types/database/models/views";
+import { transformDateFromDBToClient } from "@utils/transformation/date";
+import ViewUsuario from "@models/views";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });

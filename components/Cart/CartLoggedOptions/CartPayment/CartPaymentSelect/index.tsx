@@ -12,7 +12,7 @@ type Props = {
 };
 
 const CartPaymentSelect: React.FC<Props> = (props) => {
-  const { setPaymentType } = useContext(CartContext);
+  const { setPaymentType, order } = useContext(CartContext);
 
   function changePaymentType(event: React.ChangeEvent<HTMLInputElement>) {
     const { value: type } = event.target as { value: CartOrder["payment_type"] };
@@ -34,6 +34,7 @@ const CartPaymentSelect: React.FC<Props> = (props) => {
             id="debito"
             name="input-tipo-pagamento"
             value="debito"
+            defaultChecked={order.payment_type === "debito"}
             onChange={changePaymentType}
           />
           <span></span>
@@ -48,6 +49,7 @@ const CartPaymentSelect: React.FC<Props> = (props) => {
             id="credito"
             name="input-tipo-pagamento"
             value="credito"
+            defaultChecked={order.payment_type === "credito"}
             onChange={changePaymentType}
           />
           <span></span>
@@ -62,6 +64,7 @@ const CartPaymentSelect: React.FC<Props> = (props) => {
             id="dinheiro"
             name="input-tipo-pagamento"
             value="dinheiro"
+            defaultChecked={order.payment_type === "dinheiro"}
             onChange={changePaymentType}
           />
           <span></span>

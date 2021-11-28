@@ -1,16 +1,17 @@
-import React, { useContext, Fragment, useState } from "react";
+import React, { useContext, Fragment, useState, useEffect } from "react";
+import { getSession } from "next-auth/client";
+import type { Session } from "next-auth";
 
 import CustomForm from "./styled";
 import CartOrdersList from "./CartOrdersList";
-import CartCupom from "./CartCupom";
 import CartDeliveryType from "./CartDeliveryType";
 import CartEmptyMessage from "./CartEmptyMessage";
-import CartPayment from "./CartPayment";
+import CartLoggedOptions from "./CartLoggedOptions";
 import { CartContext } from "@store/cart";
-import { FormButton } from "@components/shared";
 import { transformPriceToString } from "@utils/transformation/price";
 
 const Cart: React.FC = () => {
+  const [session, setSession] = useState<Session | null>(null);
   const { products, order } = useContext(CartContext);
   const [isPaymentOk, setIsPaymentOk] = useState(false);
 
@@ -22,16 +23,27 @@ const Cart: React.FC = () => {
 
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (session) {
+      return console.log(order, products);
+    }
+    return console.log("é necessário estar logado para finalizar pedidos.");
   }
 
+  useEffect(() => {
+    async function hasSession() {
+      setSession(await getSession());
+    }
+    if (!session) {
+      hasSession();
+    }
+  }, []);
+
   const subTotalPrice = getSubTotalPrice();
-  const totalPrice = subTotalPrice + 3.5;
 
   return (
     <CustomForm onSubmit={submitHandler}>
-      {!products.length ? (
-        <CartEmptyMessage />
-      ) : (
+      {!products.length && <CartEmptyMessage />}
+      {products.length > 0 && (
         <Fragment>
           <h2>Seu pedido</h2>
           <CartDeliveryType />
@@ -39,15 +51,15 @@ const Cart: React.FC = () => {
           <p>
             Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
           </p>
-          <p>
-            Entrega: <span>R$ 3,50</span>
-          </p>
-          <CartCupom />
-          <CartPayment totalPrice={totalPrice} onSetIsPaymentOk={setIsPaymentOk}/>
-          <p>
-            Total: <span>R$ {transformPriceToString(totalPrice)}</span>
-          </p>
-          <FormButton type="submit" disabled={!canSubmit}>Finalizar pedido</FormButton>
+          {session && (
+            <CartLoggedOptions
+              canSubmit={canSubmit}
+              onSetIsPaymentOk={setIsPaymentOk}
+              subTotalPrice={subTotalPrice}
+              userId={session.user.id_usuario}
+            />
+          )}
+          {!session && <p>Faça login para continuar sua compra!</p>}
         </Fragment>
       )}
     </CustomForm>

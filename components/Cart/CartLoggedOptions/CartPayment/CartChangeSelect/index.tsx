@@ -17,13 +17,20 @@ const CartChangeSelect: React.FC<Props> = (props) => {
       setPaymentAmount(0);
     } else props.onSetNeedChange(true);
   }
-  
+
   return (
     <Wrapper>
       <h3>Precisa de troco? </h3>
       <label htmlFor="nao">
         Não
-        <input type="radio" id="nao" name="input-tipo-troco" value="no" onChange={changeHandler} />
+        <input
+          type="radio"
+          id="nao"
+          name="input-tipo-troco"
+          value="no"
+          onChange={changeHandler}
+          defaultChecked={true}
+        />
         <span></span>
       </label>
       <label htmlFor="sim">
