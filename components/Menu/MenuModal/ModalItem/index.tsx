@@ -112,7 +112,7 @@ const ModalItem: React.FC<Props> = (props) => {
 
   return (
     <CustomForm onSubmit={submitHandler}>
-      <h2>{info.nome}</h2>
+      <h2>{info.nome} - {info.tamanho}</h2>
       <img src={props.image} alt="Caixa de Batata" loading="lazy" />
       <p>{info.descricao}</p>
       {options.sabor.length > 0 && (

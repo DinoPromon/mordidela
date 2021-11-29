@@ -33,7 +33,7 @@ const ItemFlavorsList: React.FC<Props> = (props) => {
 
   return (
     <CustomList>
-      <h3>Escolha até {maxFlavor} sabores.</h3>
+      <h3>Escolha até {maxFlavor} sabores</h3>
       {items.map((sabor) => (
         <FlavorOption
           key={`sabor-${sabor.id_sabor}`}
