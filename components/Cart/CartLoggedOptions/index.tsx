@@ -2,11 +2,11 @@ import React, { Fragment, useContext, useEffect } from "react";
 
 import CartPayment from "./CartPayment";
 import CartCupom from "./CartCupom";
+import Usuario from "@models/usuario";
+import Entrega from "@models/entrega";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
 import { transformPriceToString } from "@utils/transformation/price";
-import Usuario from "@models/usuario";
-import Entrega from "@models/entrega";
 
 type Props = {
   canSubmit: boolean;
@@ -38,6 +38,11 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
         </p>
       )}
       <CartCupom />
+      {order.valor_desconto && (
+        <p>
+          Desconto aplicado: <span>{order.valor_desconto}%</span>
+        </p>
+      )}
       <CartPayment totalPrice={totalPrice} onSetIsPaymentOk={props.onSetIsPaymentOk} />
       <p>
         Total: <span>R$ {transformPriceToString(totalPrice)}</span>

@@ -19,7 +19,9 @@ const Cart: React.FC = () => {
   const canSubmit = isPaymentOk && order.order_type !== undefined;
 
   function getSubTotalPrice() {
-    return products.reduce((acc, cur) => (acc += cur.total_price), 0);
+    const subTotal = products.reduce((acc, cur) => (acc += cur.total_price), 0);
+    if (order.valor_desconto) return ((100 - order.valor_desconto) * subTotal) / 100;
+    return subTotal;
   }
 
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {

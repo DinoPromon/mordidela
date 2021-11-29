@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { CartContextState, CartOrder, CartProduct } from "@my-types/context";
+import Cupom from "@models/cupom";
 
 const CartContext = createContext({
   products: [],
@@ -9,7 +10,8 @@ const CartContext = createContext({
   getProductTotalPrice(id: string): number | void {},
   changeDeliveryPrice(price: number) {},
   setPaymentAmount(amount: CartOrder["payment_amount"]) {},
-  setCupom(id: CartOrder["id_cupom"]) {},
+  removeCupom() {},
+  setCupom(id: Cupom["id_cupom"], codigo: Cupom["id_cupom"], valor_desconto: Cupom["valor_desconto"]) {},
   setOrderType(type: CartOrder["order_type"]) {},
   setPaymentType(type: CartOrder["payment_type"]) {},
 } as CartContextState);

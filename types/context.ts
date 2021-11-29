@@ -21,6 +21,8 @@ export type CartProduct = {
 
 export type CartOrder = {
   id_cupom?: Cupom["id_cupom"];
+  codigo_cupom?: Cupom["codigo"];
+  valor_desconto?: Cupom["valor_desconto"];
   delivery_price?: Pedido["preco_entrega"];
   order_type?: Pedido["tipo_entrega"];
   payment_type?: Pedido["tipo_pagamento"];
@@ -33,7 +35,12 @@ export type CartContextState = {
   addProductToCart: (product: CartProduct) => void;
   removeProductFromCart: (key: string) => void;
   changeDeliveryPrice: (price: number) => void;
-  setCupom: (id: CartOrder["id_cupom"]) => void;
+  setCupom: (
+    id: Cupom["id_cupom"],
+    codigo: Cupom["id_cupom"],
+    valor_desconto: Cupom["valor_desconto"]
+  ) => void;
+  removeCupom: () => void;
   setOrderType: (type: CartOrder["order_type"]) => void;
   setPaymentType: (type: CartOrder["payment_type"]) => void;
   setPaymentAmount: (amount: CartOrder["payment_amount"]) => void;

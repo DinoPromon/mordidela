@@ -2,6 +2,7 @@ import { CartOrder, CartProduct } from "@my-types/context";
 import React, { useState } from "react";
 import { CartContextState } from "@my-types/context";
 import CartContext from "../cart-context";
+import Cupom from "@models/cupom";
 
 const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
@@ -48,11 +49,21 @@ const CartContextProvider: React.FC = (props) => {
     });
   }
 
-  function setCupom(id: CartOrder["id_cupom"]) {
+  function setCupom(
+    id: Cupom["id_cupom"],
+    codigo: Cupom["id_cupom"],
+    valor_desconto: Cupom["valor_desconto"]
+  ) {
     setOrder({
       ...order,
       id_cupom: id,
+      codigo_cupom: codigo,
+      valor_desconto,
     });
+  }
+
+  function removeCupom() {
+    setOrder({ ...order, id_cupom: undefined, codigo_cupom: undefined, valor_desconto: undefined });
   }
 
   function setPaymentType(type: CartOrder["payment_type"]) {
@@ -69,6 +80,7 @@ const CartContextProvider: React.FC = (props) => {
     removeProductFromCart,
     changeDeliveryPrice,
     setCupom,
+    removeCupom,
     setOrderType,
     setPaymentAmount,
     setPaymentType,
