@@ -29,7 +29,7 @@ export async function getCupomByCodigo(codigo: Cupom["codigo"]) {
 export async function canUsuarioUseCupom(id_usuario: Usuario["id_usuario"], codigo: Cupom["codigo"]) {
   const cupom = await getCupomByCodigo(codigo);
   if (cupom) {
-    const query = "SELECT foi_usado FROM usuario_cupom WHERE id_usuario = ? AND id_cupom = ?";
+    const query = "SELECT foi_usado FROM usuario_cupom WHERE id_usuario = ? AND id_cupom = ? ORDER BY foi_usado ASC";
     const result = (await mysql.query(query, [id_usuario, cupom.id_cupom])) as Pick<
       UsuarioCupom,
       "foi_usado"
@@ -39,6 +39,7 @@ export async function canUsuarioUseCupom(id_usuario: Usuario["id_usuario"], codi
       return !cupom.qtde_min_pedido ? cupom : undefined;
     }
 
+    console.log(cupom);
     if (result[0].foi_usado || !isCupomAvailable(cupom.data_inicio, cupom.data_fim)) return;
     return cupom;
   }

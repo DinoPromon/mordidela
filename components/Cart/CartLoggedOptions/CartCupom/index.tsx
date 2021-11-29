@@ -17,7 +17,7 @@ const CartCupom: React.FC = () => {
   async function getCupom() {
     const response = await fetch(`/api/cupom?codigo=${inputCupom}`);
     const { cupom } = (await response.json()) as { cupom: Cupom };
-    if (cupom) setCupom(cupom.id_cupom, cupom.codigo, cupom.valor_desconto);
+    if (cupom) setCupom(cupom);
   }
 
   function clickHandler() {

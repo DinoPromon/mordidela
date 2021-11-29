@@ -7,19 +7,29 @@ import Entrega from "@models/entrega";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
 import { transformPriceToString } from "@utils/transformation/price";
+import { RequestState } from "@my-types/request";
+import Loading from "@components/shared/Loading";
 
 type Props = {
   canSubmit: boolean;
   onSetIsPaymentOk: React.Dispatch<React.SetStateAction<boolean>>;
   subTotalPrice: number;
   userId: Usuario["id_usuario"];
+  request: RequestState;
 };
 
 const CartLoggedOptions: React.FC<Props> = (props) => {
   const { order, changeDeliveryPrice } = useContext(CartContext);
 
   const isDelivery = order.order_type === "entrega";
-  const totalPrice = props.subTotalPrice + (isDelivery ? (order.delivery_price as number) : 0);
+
+  function getTotalPrice() {
+    if (isDelivery && order.tipo_cupom !== "entrega")
+      return props.subTotalPrice + (order.delivery_price as number);
+    return props.subTotalPrice;
+  }
+
+  const totalPrice = getTotalPrice();
 
   useEffect(() => {
     async function getDeliveryPrice() {
@@ -32,13 +42,14 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
 
   return (
     <Fragment>
-      {isDelivery && (
+      {isDelivery && order.tipo_cupom !== "entrega" && (
         <p>
           Entrega: <span>R$ {transformPriceToString(order.delivery_price as number)}</span>
         </p>
       )}
       <CartCupom />
-      {order.valor_desconto && (
+      {order.tipo_cupom === "entrega" && <p>Desconto de entrega aplicado.</p>}
+      {order.tipo_cupom === "pedido" && order.valor_desconto && (
         <p>
           Desconto aplicado: <span>{order.valor_desconto}%</span>
         </p>
@@ -47,9 +58,17 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
       <p>
         Total: <span>R$ {transformPriceToString(totalPrice)}</span>
       </p>
-      <FormButton type="submit" disabled={!props.canSubmit}>
-        Finalizar pedido
-      </FormButton>
+      <div>
+        {props.request.isLoading && <Loading />}
+        {!props.request.isLoading && (
+          <Fragment>
+            {!props.request.error && <p>{props.request.error}</p>}
+            <FormButton type="submit" disabled={!props.canSubmit}>
+              Finalizar pedido
+            </FormButton>
+          </Fragment>
+        )}
+      </div>
     </Fragment>
   );
 };

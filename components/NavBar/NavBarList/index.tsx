@@ -32,7 +32,7 @@ const NavBarList: React.FC<Props> = (props) => {
     <Wrapper>
       {showModal && (
         <Modal onClose={closeModalHandler}>
-          <Cart />
+          <Cart onCloseModal={closeModalHandler}/>
         </Modal>
       )}
       <li onClick={openSideBar}>

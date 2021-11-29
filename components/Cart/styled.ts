@@ -32,8 +32,11 @@ const CustomForm = styled.form`
     }
   }
 
-  & > button {
+  & > div:last-child {
     align-self: center;
+    & > p {
+      color: red
+    }
   }
 `;
 

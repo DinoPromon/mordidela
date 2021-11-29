@@ -49,16 +49,13 @@ const CartContextProvider: React.FC = (props) => {
     });
   }
 
-  function setCupom(
-    id: Cupom["id_cupom"],
-    codigo: Cupom["id_cupom"],
-    valor_desconto: Cupom["valor_desconto"]
-  ) {
+  function setCupom(cupom: Partial<Cupom>) {
     setOrder({
       ...order,
-      id_cupom: id,
-      codigo_cupom: codigo,
-      valor_desconto,
+      id_cupom: cupom.id_cupom,
+      codigo_cupom: cupom.codigo,
+      valor_desconto: cupom.valor_desconto,
+      tipo_cupom: cupom.tipo
     });
   }
 
@@ -73,10 +70,16 @@ const CartContextProvider: React.FC = (props) => {
     });
   }
 
+  function resetCart() {
+    setOrder({});
+    setProducts([]);
+  }
+
   const context: CartContextState = {
     products: products,
     order,
     addProductToCart,
+    resetCart,
     removeProductFromCart,
     changeDeliveryPrice,
     setCupom,

@@ -11,9 +11,10 @@ const CartContext = createContext({
   changeDeliveryPrice(price: number) {},
   setPaymentAmount(amount: CartOrder["payment_amount"]) {},
   removeCupom() {},
-  setCupom(id: Cupom["id_cupom"], codigo: Cupom["id_cupom"], valor_desconto: Cupom["valor_desconto"]) {},
+  setCupom(cupom: Partial<Cupom>) {},
   setOrderType(type: CartOrder["order_type"]) {},
   setPaymentType(type: CartOrder["payment_type"]) {},
+  resetCart() {},
 } as CartContextState);
 
 export default CartContext;
