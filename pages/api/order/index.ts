@@ -32,7 +32,7 @@ const handler: NextApiHandler = async (req, res) => {
           id_pedido,
           id_produto: produtosJson[i].id_produto,
           quantidade: produtosJson[i].quantidade,
-          observacao: produtosJson[i].observacao,
+          observacao: produtosJson[i].observacao === '' ? null : produtosJson[i].observacao,
         });
       }
       await mysql.end();

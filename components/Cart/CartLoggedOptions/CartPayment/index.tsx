@@ -30,7 +30,7 @@ const CartPayment: React.FC<Props> = (props) => {
     <Wrapper>
       <CartPaymentSelect onSetShowChange={setShowChange} />
       {showChange && <CartChangeSelect onSetNeedChange={setNeedChange} />}
-      {needChange && <CartPaymentValue totalPrice={props.totalPrice} />}
+      {needChange && showChange && <CartPaymentValue totalPrice={props.totalPrice} />}
     </Wrapper>
   );
 };
