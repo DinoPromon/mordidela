@@ -4,7 +4,6 @@ import Pedido from "@models/pedido";
 import PedidoProduto from "@models/pedido_produto";
 import Produto from "@models/produto";
 import Sabor from "@models/sabor";
-import Usuario from "@models/usuario";
 
 export type CartProduct = {
   key: string;
