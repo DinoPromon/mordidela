@@ -8,7 +8,7 @@ type Props = {
 };
 
 const CartChangeSelect: React.FC<Props> = (props) => {
-  const { setPaymentAmount } = useContext(CartContext);
+  const { setPaymentAmount, order } = useContext(CartContext);
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target as { value: "no" | "yes" };
@@ -29,13 +29,20 @@ const CartChangeSelect: React.FC<Props> = (props) => {
           name="input-tipo-troco"
           value="no"
           onChange={changeHandler}
-          defaultChecked={true}
+          defaultChecked={(order.payment_amount as number) === 0}
         />
         <span></span>
       </label>
       <label htmlFor="sim">
         Sim
-        <input type="radio" id="sim" name="input-tipo-troco" value="yes" onChange={changeHandler} />
+        <input
+          type="radio"
+          id="sim"
+          name="input-tipo-troco"
+          value="yes"
+          onChange={changeHandler}
+          defaultChecked={(order.payment_amount as number) > 0}
+        />
         <span></span>
       </label>
     </Wrapper>

@@ -4,16 +4,17 @@ import Pedido from "@models/pedido";
 import PedidoProduto from "@models/pedido_produto";
 import Produto from "@models/produto";
 import Sabor from "@models/sabor";
+import Usuario from "@models/usuario";
 
 export type CartProduct = {
   key: string;
-  product_id: Produto['id_produto'];
-  size: Produto['tamanho'];
-  name: Produto['nome'];
-  quantity: PedidoProduto['quantidade'];
-  orderNote?: PedidoProduto['observacao'];
-  standard_price: Produto['preco_padrao'];
-  total_price: PedidoProduto['preco_pedido'];
+  product_id: Produto["id_produto"];
+  size: Produto["tamanho"];
+  name: Produto["nome"];
+  quantity: PedidoProduto["quantidade"];
+  orderNote?: PedidoProduto["observacao"];
+  standard_price: Produto["preco_padrao"];
+  total_price: PedidoProduto["preco_pedido"];
   adds: Adicional[];
   flavors: Sabor[];
 };

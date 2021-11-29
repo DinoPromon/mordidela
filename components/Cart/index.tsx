@@ -12,6 +12,7 @@ import { transformPriceToString } from "@utils/transformation/price";
 
 const Cart: React.FC = () => {
   const [session, setSession] = useState<Session | null>(null);
+  const [isLoadingSession, setIsLoadingSession] = useState(true);
   const { products, order } = useContext(CartContext);
   const [isPaymentOk, setIsPaymentOk] = useState(false);
 
@@ -24,6 +25,29 @@ const Cart: React.FC = () => {
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (session) {
+      const produtos = products.map((item, index) => ({
+        id_produto: item.product_id,
+        quantidade: item.quantity,
+        observacao: item.orderNote,
+        adicionais: JSON.stringify(item.adds.map((add) => add.id_adicional)),
+        sabores: JSON.stringify(item.flavors.map((flavor) => flavor.id_sabor)),
+      }));
+
+      const pedido = {
+        troco_para: order.payment_amount,
+        id_cupom: order.id_cupom,
+        tipo_pagamento: order.payment_type,
+        tipo_entrega: order.order_type,
+        id_usuario: session.user.id_usuario,
+      };
+
+      fetch("/api/order", {
+        method: "POST",
+        body: JSON.stringify({ produtos, pedido }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       return console.log(order, products);
     }
     return console.log("é necessário estar logado para finalizar pedidos.");
@@ -31,7 +55,9 @@ const Cart: React.FC = () => {
 
   useEffect(() => {
     async function hasSession() {
-      setSession(await getSession());
+      const result = await getSession();
+      setSession(result);
+      setIsLoadingSession(false);
     }
     if (!session) {
       hasSession();
@@ -51,7 +77,7 @@ const Cart: React.FC = () => {
           <p>
             Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
           </p>
-          {session && (
+          {session && !isLoadingSession && (
             <CartLoggedOptions
               canSubmit={canSubmit}
               onSetIsPaymentOk={setIsPaymentOk}
@@ -59,7 +85,7 @@ const Cart: React.FC = () => {
               userId={session.user.id_usuario}
             />
           )}
-          {!session && <p>Faça login para continuar sua compra!</p>}
+          {!session && !isLoadingSession && <p>Faça login para continuar sua compra!</p>}
         </Fragment>
       )}
     </CustomForm>

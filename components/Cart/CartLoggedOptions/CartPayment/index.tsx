@@ -15,8 +15,8 @@ const CartPayment: React.FC<Props> = (props) => {
   const {
     order: { payment_amount, payment_type },
   } = useContext(CartContext);
-  const [needChange, setNeedChange] = useState(false);
-  const [showChange, setShowChange] = useState(false);
+  const [needChange, setNeedChange] = useState((payment_amount as number) > 0);
+  const [showChange, setShowChange] = useState(payment_type === "dinheiro");
 
   useEffect(() => {
     if (needChange) {

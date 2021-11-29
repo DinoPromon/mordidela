@@ -8,7 +8,6 @@ type Pedido = {
   data_confirmacao: string;
   status_pedido: "rejeitado" | "pendente" | "confirmado";
   preco_entrega: number;
-  observacao: string;
   tipo_entrega: "entrega" | "balcao";
   tipo_pagamento: "dinheiro" | "credito" | "debito";
   troco_para: number;
