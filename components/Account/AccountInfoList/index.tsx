@@ -1,10 +1,10 @@
 import React from "react";
 
-import CustomList from './styled';
+import CustomList from "./styled";
 
 type Props = {
-  onClick: () => void
-}
+  onClick: () => void;
+};
 
 const AccountInfoList: React.FC<Props> = (props) => {
   const { onClick: openModalHandler } = props;
@@ -15,13 +15,13 @@ const AccountInfoList: React.FC<Props> = (props) => {
         <button onClick={openModalHandler}>Dados gerais</button>
       </li>
       <li>
-        <button onClick={openModalHandler}>Endereços</button>
+        <button>Endereços</button>
       </li>
       <li>
-        <button onClick={openModalHandler}>Pedidos</button>
+        <button>Pedidos</button>
       </li>
       <li>
-        <button onClick={openModalHandler}>Cupons</button>
+        <button>Cupons</button>
       </li>
     </CustomList>
   );
