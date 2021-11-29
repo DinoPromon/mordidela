@@ -22,27 +22,34 @@ const MenuModal: React.FC<Props> = (props) => {
   const [itemInfo, setItemInfo] = useState<ProductInfo>();
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchProductData() {
       try {
         const response = await fetch(`/api/products/${props.itemId}`);
         const result = (await response.json()) as any;
         if (!response.ok) throw new Error(result.message);
-        setItemOptions({ adicional: result.adicional, sabor: result.sabor });
-        setItemInfo({
-          nome: result.nome,
-          descricao: result.descricao,
-          qtde_max_sabor: result.qtde_max_sabor,
-          preco_padrao: result.preco_padrao,
-          tamanho: result.tamanho,
-          id_produto: result.id_produto,
-        });
-        setRequestStatus({ success: true, error: "", isLoading: false });
+        if (isMounted) {
+          setItemOptions({ adicional: result.adicional, sabor: result.sabor });
+          setItemInfo({
+            nome: result.nome,
+            descricao: result.descricao,
+            qtde_max_sabor: result.qtde_max_sabor,
+            preco_padrao: result.preco_padrao,
+            tamanho: result.tamanho,
+            id_produto: result.id_produto,
+          });
+          setRequestStatus({ success: true, error: "", isLoading: false });
+        }
       } catch (e) {
         const error = e as Error;
-        setRequestStatus({ success: false, error: error.message, isLoading: false });
+        if (isMounted) setRequestStatus({ success: false, error: error.message, isLoading: false });
       }
     }
     fetchProductData();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (

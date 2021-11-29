@@ -19,22 +19,28 @@ const MenuItem: React.FC<Props> = (props) => {
     props.onClick(item.id_produto, imageSrc);
   };
 
-  const getImage = async () => {
-    const response = await fetch(`/api/products/image/${item.id_produto}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "text",
-      },
-    });
-    const base64Image = await response.text();
-    const url = `data:image/png;base64,${base64Image}`;
-    if(base64Image)
-      setImageSrc(url);
-  };
-
   useEffect(() => {
+    let isMounted = true;
+    async function getImage() {
+      try {
+        const response = await fetch(`/api/products/image/${item.id_produto}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "text",
+          },
+        });
+        const base64Image = await response.text();
+        const url = `data:image/png;base64,${base64Image}`;
+        if (base64Image) isMounted && setImageSrc(url);
+      } catch (e) {
+        const error = e as Error;
+      }
+    }
     getImage();
-    props.changeModalImage(item.id_produto, imageSrc);
+    isMounted && props.changeModalImage(item.id_produto, imageSrc);
+    return () => {
+      isMounted = false;
+    };
   }, [imageSrc]);
 
   return (
