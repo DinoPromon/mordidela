@@ -26,6 +26,8 @@ const GlobalStyle = createGlobalStyle`
   #__next {
     display: flex;
     flex-direction: column;
+    overflow-y: inherit;
+    overflow-x: inherit;
   }
 `;
 

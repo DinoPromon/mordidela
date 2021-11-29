@@ -3,12 +3,15 @@ import { PINK, PURPLE } from "@utils/colors";
 
 const Wrapper = styled.div`
   position: fixed;
-  z-index: 1;
-  left: 0;
   top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 
   & > div {
     position: absolute;
