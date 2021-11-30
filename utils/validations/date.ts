@@ -8,7 +8,8 @@ export const dateValidation: Validation = (date: string) => {
 
   if (isNaN(dateAsTimestamp)) return false;
 
-  if (dateAsTimestamp > Date.now()) return false;
+  const curYear = new Date().getUTCFullYear();
+  if (curYear - year < 10 || curYear - year > 130) return false;
 
   return true;
 };
