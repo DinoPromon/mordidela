@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { Provider } from "next-auth/client";
 import { createGlobalStyle } from "styled-components";
 
 import { AppPropsWithLayout } from "@my-types/next-page";
@@ -34,11 +33,15 @@ const GlobalStyle = createGlobalStyle`
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
 
-  return getLayout(
-    <Fragment>
-      <GlobalStyle />
-      <Component {...pageProps} />
-    </Fragment>
+  return (
+    <CartContextProvider>
+      {getLayout(
+        <Fragment>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </Fragment>
+      )}
+    </CartContextProvider>
   );
 }
 

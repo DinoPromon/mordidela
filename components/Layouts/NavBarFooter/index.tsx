@@ -6,11 +6,11 @@ import { CartContextProvider } from "@store/cart";
 
 const NavBarFooter: React.FC = (props) => {
   return (
-    <CartContextProvider>
+    <Fragment>
       <NavBar />
       {props.children}
       <Footer />
-    </CartContextProvider>
+    </Fragment>
   );
 };
 
