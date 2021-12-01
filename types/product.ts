@@ -1,4 +1,4 @@
-import { Produto } from "./database/models/produto";
+import Produto from "@models/produto";
 
 export type Product = Omit<Produto, "qtde_max_sabor" | "descricao" | "imagem">;
 
@@ -11,12 +11,6 @@ export type Add = {
 export type Flavor = {
   id_sabor: string;
   nome: string;
-};
-
-export type Size = {
-  id_produto: string;
-  preco_padrao: number;
-  tamanho: string;
 };
 
 export type ProductOptions = {

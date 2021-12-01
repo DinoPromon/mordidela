@@ -1,21 +1,24 @@
+import Endereco from "@models/endereco";
+import Usuario from "@models/usuario";
+
 export type UserFormData = {
-  nome: string;
-  data_nascimento: string;
+  nome: Usuario["nome"];
+  data_nascimento: Usuario["data_nascimento"];
   telefone: string;
-  email: string;
-  senha: string;
-  senha_confirmada: string;
+  email: Usuario["email"];
+  senha: Usuario["senha"];
+  senha_confirmada: Usuario["senha"];
 };
 
 export type AddressFormData = {
-  logradouro: string;
-  numero: string;
-  bairro: string;
-  complemento: string;
+  logradouro: Endereco["logradouro"];
+  numero: Endereco["numero"];
+  bairro: Endereco["bairro"];
+  complemento: Endereco["complemento"];
 };
 
 export type GeneralDataForm = {
-  nome: string;
-  data_nascimento: string;
-  telefone: string
+  nome: Usuario["nome"];
+  data_nascimento: Usuario["id_usuario"];
+  telefone: string;
 };
