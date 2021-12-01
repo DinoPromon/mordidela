@@ -8,14 +8,13 @@ type Props = {
 };
 
 const Modal: React.FC<Props> = (props) => {
-  const [offsetY, setOffsetY] = useState(0);
+  const [offsetY, setOffsetY] = useState(window.scrollY);
   const { ref: modalRef, isComponentVisible } = useComponentVisible(true);
 
   useEffect(() => {
-    if (isComponentVisible) {
-      setOffsetY(window.scrollY);
+    if (isComponentVisible)
       document.body.setAttribute("style", `position: fixed; top: -${window.scrollY}px; left 0; right:0`);
-    }
+
     if (!isComponentVisible) props.onClose();
 
     return () => {
