@@ -5,8 +5,7 @@ import { ViewCategoriaAdicional } from "@models/views";
 import { getCategoryIdByProductId } from "@controllers/category";
 
 export async function getAllRelatedAdds() {
-  const query =
-    "SELECT ca.id_categoria, ca.id_adicional, a.nome, a.preco FROM categoria_adicional ca JOIN categoria c ON c.id_categoria = ca.id_categoria JOIN adicional a ON ca.id_adicional = a.id_adicional ORDER BY id_categoria ASC";
+  const query = "SELECT * FROM vw_categoria_adicional";
   const result = (await mysql.query(query)) as ViewCategoriaAdicional[];
   await mysql.end();
   return serialize(result);
