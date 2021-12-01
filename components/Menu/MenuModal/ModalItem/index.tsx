@@ -7,7 +7,7 @@ import ItemCounter from "./ItemCounter";
 import Adicional from "@models/adicional";
 import Sabor from "@models/sabor";
 import { CartContext } from "@store/cart";
-import { ProductInfo, ProductOptions } from "@my-types/product";
+import { MenuProduct } from "@my-types/product";
 import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
 import { transformPriceToString } from "@utils/transformation/price";
@@ -15,31 +15,30 @@ import { formatProductId } from "@utils/formatters/input-formatter";
 
 type Props = {
   image: string;
-  options: ProductOptions;
-  info: ProductInfo;
+  item: MenuProduct;
   closeModal: () => void;
 };
 
 const ModalItem: React.FC<Props> = (props) => {
-  const { options, info, closeModal } = props;
+  const { item, closeModal, image } = props;
   const [productOrder, setProductOrder] = useState<CartProduct>({
     adds: [],
     flavors: [],
-    total_price: info.preco_padrao,
-    key: `${formatProductId(info.nome, info.id_produto, [], [])}`,
-    name: info.nome,
-    product_id: info.id_produto,
+    total_price: item.preco_padrao,
+    key: `${formatProductId(item.nome, item.id_produto, [], [])}`,
+    name: item.nome,
+    product_id: item.id_produto,
     quantity: 1,
-    size: info.tamanho,
-    standard_price: info.preco_padrao,
+    size: item.tamanho,
+    standard_price: item.preco_padrao,
     orderNote: "",
   });
-  const [price, setPrice] = useState(props.info.preco_padrao);
+  const [price, setPrice] = useState(item.preco_padrao);
   const { addProductToCart } = useContext(CartContext);
 
-  const canSubmit = options.sabor.length ? productOrder.flavors.length > 0 : true;
+  const canSubmit = item.flavors.length ? productOrder.flavors.length > 0 : true;
 
-  const getProductKey = formatProductId.bind(null, info.nome, info.id_produto);
+  const getProductKey = formatProductId.bind(null, item.nome, item.id_produto);
 
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -112,21 +111,21 @@ const ModalItem: React.FC<Props> = (props) => {
 
   return (
     <CustomForm onSubmit={submitHandler}>
-      <h2>{info.nome} - {info.tamanho}</h2>
-      <img src={props.image} alt="Caixa de Batata" loading="lazy" />
-      <p>{info.descricao}</p>
-      {options.sabor.length > 0 && (
+      <h2>{item.nome} - {item.tamanho}</h2>
+      <img src={image} alt="Caixa de Batata" loading="lazy" />
+      <p>{item.descricao}</p>
+      {item.flavors.length > 0 && (
         <ItemFlavorsList
-          items={options.sabor}
-          maxFlavor={info.qtde_max_sabor}
+          items={item.flavors}
+          maxFlavor={item.qtde_max_sabor}
           flavorsAmount={productOrder.flavors.length}
           onAddFlavor={addFlavor}
           onRemoveFlavor={removeFlavor}
         />
       )}
-      {options.adicional.length > 0 && (
+      {item.adds.length > 0 && (
         <ItemAddsList
-          items={options.adicional}
+          items={item.adds}
           setPrice={setPrice}
           onAddAditional={addAditional}
           onRemoveAditional={removeAditional}

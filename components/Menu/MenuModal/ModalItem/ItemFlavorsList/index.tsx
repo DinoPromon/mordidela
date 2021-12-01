@@ -3,11 +3,12 @@ import React from "react";
 import CustomList from "./styled";
 import FlavorOption from "./FlavorOption";
 import Sabor from "@models/sabor";
+import Produto from "@models/produto";
 
 type Props = {
   items: Sabor[];
   flavorsAmount: number;
-  maxFlavor: number;
+  maxFlavor: Produto['qtde_max_sabor'];
   onAddFlavor: (flavor: Sabor) => void;
   onRemoveFlavor: (flavor: Sabor) => void;
 };
@@ -25,7 +26,7 @@ const ItemFlavorsList: React.FC<Props> = (props) => {
     const { checked, value } = event.target;
     const flavor = getFlavorById(value);
     if (checked) {
-      const canAdd = flavorsAmount < maxFlavor;
+      const canAdd = maxFlavor ? flavorsAmount < maxFlavor : true;
       event.target.checked = canAdd;
       return canAdd && flavor && onAddFlavor(flavor);
     } else flavor && onRemoveFlavor(flavor);

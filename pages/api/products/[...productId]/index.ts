@@ -12,8 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
       const product = await getProductById(productId as string);
       const adds = await getAddsByProductId(productId as string);
       const flavors = await getFlavosrByProductId(productId as string);
-      await mysql.end();
-      
+  
       const info = {
         ...product,
         adicional: adds,

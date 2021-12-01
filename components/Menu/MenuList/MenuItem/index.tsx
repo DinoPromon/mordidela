@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import ListItem from "./styled";
 import ItemImage from "./ItemImage";
 import ItemDescription from "./ItemDescription";
-import { Product } from "@my-types/product";
+import { MenuProduct } from "@my-types/product";
 
 type Props = {
-  onClick: (id: string, image: string) => void;
+  onClick: (item: MenuProduct, image: string) => void;
   changeModalImage: (id: string, img: string) => void;
-  item: Product;
+  item: MenuProduct;
 };
 
 const MenuItem: React.FC<Props> = (props) => {
@@ -16,7 +16,7 @@ const MenuItem: React.FC<Props> = (props) => {
   const [imageSrc, setImageSrc] = useState("/images/fallback.png");
 
   const clickHandler = () => {
-    props.onClick(item.id_produto, imageSrc);
+    props.onClick(item, imageSrc);
   };
 
   useEffect(() => {

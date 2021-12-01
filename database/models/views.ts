@@ -1,6 +1,12 @@
 import Usuario from "./usuario";
 import Telefone from "./telefone";
+import CategoriaAdicional from "./categoria_adicional";
+import Adicional from "./adicional";
+import ProdutoSabor from "./produto_sabor";
+import Sabor from "./sabor";
 
-type ViewUsuario = Usuario & Omit<Telefone, 'id_telefone'>;
+export type ViewUsuario = Usuario & Omit<Telefone, "id_telefone">;
 
-export default ViewUsuario;
+export type ViewCategoriaAdicional = CategoriaAdicional & Pick<Adicional, "nome" | "preco">;
+
+export type ViewProdutoSabor = ProdutoSabor & Pick<Sabor, "nome">;

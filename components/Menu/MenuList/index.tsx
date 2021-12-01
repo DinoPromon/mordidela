@@ -2,13 +2,13 @@ import React from "react";
 
 import List from "./styled";
 import MenuItem from "./MenuItem";
-import { Product } from "@my-types/product";
+import { MenuProduct } from "@my-types/product";
 
 type Props = {
-  onItemClick: (id: string, image: string) => void;
+  onItemClick: (item: MenuProduct, image: string) => void;
   changeModalImage: (id: string, img: string) => void
   isShowingModal: boolean;
-  products: Product[];
+  products: MenuProduct[];
 };
 
 const MenuList: React.FC<Props> = (props) => {

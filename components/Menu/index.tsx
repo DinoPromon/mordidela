@@ -3,36 +3,36 @@ import React, { useState, Fragment } from "react";
 import MenuHeader from "./MenuHeader";
 import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
-import { Product } from "@my-types/product";
+import { MenuProduct } from "@my-types/product";
 
 type Props = {
-  products: Product[];
+  products: MenuProduct[];
 };
 
 const Menu: React.FC<Props> = (props) => {
   const [showModal, setShowModal] = useState(false);
-  const [modalItemId, setModalItemId] = useState<string>();
+  const [modalItem, setModalItem] = useState<MenuProduct>();
   const [modalItemImage, setModalItemImg] = useState<string>("/images/logo.svg");
 
   const closeModalHandler = () => {
     setShowModal(false);
   };
 
-  const changeModalItem = (itemId: string, image: string) => {
+  const changeModalItem = (item: MenuProduct, image: string) => {
     setModalItemImg(image);
     setShowModal(true);
-    setModalItemId(itemId);
+    setModalItem(item);
   };
 
   const changeModalImage = (itemId: string, image: string) => {
-    if (showModal && modalItemId === itemId) {
+    if (showModal && modalItem?.id_produto === itemId) {
       setModalItemImg(image);
     }
   };
 
   return (
     <Fragment>
-      {showModal && <MenuModal onClose={closeModalHandler} itemId={modalItemId} image={modalItemImage} />}
+      {showModal && <MenuModal onClose={closeModalHandler} item={modalItem} image={modalItemImage} />}
       <MenuHeader />
       <MenuList
         products={props.products}
