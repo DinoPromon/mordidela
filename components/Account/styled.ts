@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     align-items: center;
     gap: 1.25rem;
 
-    & > div {
+    & > span {
       margin-top: 1rem;
     }
 

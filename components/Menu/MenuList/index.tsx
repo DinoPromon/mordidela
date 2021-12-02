@@ -13,7 +13,6 @@ type Props = {
 const MenuList: React.FC<Props> = (props) => {
   const { products } = props;
 
-  console.log('renderizado');
   return (
     <List>
       {products.map((product) => (
