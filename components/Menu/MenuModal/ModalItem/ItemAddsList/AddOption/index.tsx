@@ -1,6 +1,7 @@
 import React from "react";
 
 import { transformPriceToString } from "@utils/transformation/price";
+import { InputCheckbox } from "@components/shared";
 import ListItem from "./styled";
 
 type Props = {
@@ -17,12 +18,10 @@ const AddOption: React.FC<Props> = (props) => {
   const inputId = `add-${id}`;
   return (
     <ListItem>
-      <label htmlFor={inputId}>
+      <InputCheckbox id={inputId} value={price} name={name} onChange={onChange}>
         {label}
-        <input type="checkbox" id={inputId} name={name} value={price} onChange={onChange}></input>
-        <span></span>
         <p>R$ {transformPriceToString(price)}</p>
-      </label>
+      </InputCheckbox>
     </ListItem>
   );
 };
