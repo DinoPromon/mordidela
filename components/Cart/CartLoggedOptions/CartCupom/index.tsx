@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import Wrapper from "./styled";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
-import { cupomFormat } from "@utils/formatters/input-formatter";
+import { cupomFormat } from "@utils/formatters";
 import Cupom from "@models/cupom";
 
 const CartCupom: React.FC = () => {

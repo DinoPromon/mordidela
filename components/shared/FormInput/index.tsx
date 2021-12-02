@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 
 import { getInputColor } from "./utils";
-import { removeAditionalSpaces } from "@utils/formatters/input-formatter";
+import { removeAditionalSpaces } from "@utils/formatters";
 import Wrapper from "./styled";
 
 type Props = {

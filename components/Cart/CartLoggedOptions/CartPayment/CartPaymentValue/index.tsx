@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import Wrapper from "./styled";
 import { CartContext } from "@store/cart";
-import { formatPrice } from "@utils/formatters/input-formatter";
+import { formatPrice } from "@utils/formatters";
 import { transformPriceStringToNumber, transformPriceToString } from "@utils/transformation/price";
 
 type Props = {

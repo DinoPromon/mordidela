@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Wrapper from "../styled";
 import SignupFormActions from "./SignupFormActions";
 import { FormInput } from "@components/shared";
-import { dateChangeHandler } from "@utils/formatters/input-formatter";
+import { dateChangeHandler } from "@utils/formatters";
 import { userFormValidations } from "@utils/validations";
 import { UserFormData } from "@my-types/forms";
 import { getSignupErrorMessage } from "@utils/error-message";

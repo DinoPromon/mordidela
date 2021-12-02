@@ -10,8 +10,8 @@ import { CartContext } from "@store/cart";
 import { MenuProduct } from "@my-types/product";
 import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
+import { formatProductId } from "@utils/formatters";
 import { transformPriceToString } from "@utils/transformation/price";
-import { formatProductId } from "@utils/formatters/input-formatter";
 
 type Props = {
   image: string;
@@ -111,7 +111,9 @@ const ModalItem: React.FC<Props> = (props) => {
 
   return (
     <CustomForm onSubmit={submitHandler}>
-      <h2>{item.nome} - {item.tamanho}</h2>
+      <h2>
+        {item.nome} - {item.tamanho}
+      </h2>
       <img src={image} alt="Caixa de Batata" loading="lazy" />
       <p>{item.descricao}</p>
       {item.flavors.length > 0 && (

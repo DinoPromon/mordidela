@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import CustomForm from "./styled";
 import GeneralDataInput from "../AccountModalInput";
 import { FormButton } from "@components/shared";
-import { dateChangeHandler } from "@utils/formatters/input-formatter";
+import { dateChangeHandler } from "@utils/formatters";
 import { generalDataValidation } from "@utils/validations";
 import { RequestState } from "@my-types/request";
 import { GeneralDataForm } from "@my-types/forms";
@@ -37,7 +37,7 @@ const GeneralData: React.FC<Props> = (props) => {
     setRequestState({ ...requestState, isLoading: true });
     try {
       const response = await fetch(`/api/users?id_usuario=${props.id_usuario}`);
-      const result = (await response.json());
+      const result = await response.json();
 
       if (!response.ok) {
         throw new Error(result.message);
