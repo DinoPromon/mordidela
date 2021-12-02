@@ -8,72 +8,82 @@ const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
   const [order, setOrder] = useState<CartOrder>({});
 
-  function incrementProductQuantity(key: string) {
+  const incrementProductQuantity = React.useCallback((key: string) => {
     setProducts((prevState) =>
       prevState.map((item) => {
         if (item.key === key) return { ...item, quantity: item.quantity + 1 };
         return { ...item };
       })
     );
-  }
+  }, []);
 
-  function addProductToCart(product: CartProduct) {
-    for (let i in products) {
-      if (products[i].key === product.key) return incrementProductQuantity(product.key);
-    }
-    setProducts((prevState) => [...prevState, product]);
-  }
+  const addProductToCart = React.useCallback((product: CartProduct) => {
+    setProducts((prevState) => {
+      for (const i in prevState) {
+        if (prevState[i].key === product.key) {
+          incrementProductQuantity(product.key);
+          return prevState;
+        }
+      }
+      return [...prevState, product];
+    });
+  }, []);
 
   function removeProductFromCart(key: string) {
     setProducts((prevState) => prevState.filter((item) => item.key !== key));
   }
 
-  function changeDeliveryPrice(price: number) {
-    setOrder({
-      ...order,
+  const changeDeliveryPrice = React.useCallback((price: number) => {
+    setOrder((prevState) => ({
+      ...prevState,
       delivery_price: price,
-    });
-  }
+    }));
+  }, []);
 
-  function setOrderType(type: CartOrder["order_type"]) {
-    setOrder({
-      ...order,
+  const setOrderType = React.useCallback((type: CartOrder["order_type"]) => {
+    setOrder((prevState) => ({
+      ...prevState,
       order_type: type,
-    });
-  }
+    }));
+  }, []);
 
-  function setPaymentAmount(amount: CartOrder["payment_amount"]) {
-    setOrder({
-      ...order,
+  const setPaymentAmount = React.useCallback((amount: CartOrder["payment_amount"]) => {
+    setOrder((prevState) => ({
+      ...prevState,
       payment_amount: amount,
-    });
-  }
+    }));
+  }, []);
 
-  function setCupom(cupom: Partial<Cupom>) {
-    setOrder({
-      ...order,
+  const setCupom = React.useCallback((cupom: Partial<Cupom>) => {
+    setOrder((prevState) => ({
+      ...prevState,
       id_cupom: cupom.id_cupom,
       codigo_cupom: cupom.codigo,
       valor_desconto: cupom.valor_desconto,
-      tipo_cupom: cupom.tipo
-    });
-  }
+      tipo_cupom: cupom.tipo,
+    }));
+  }, []);
 
-  function removeCupom() {
-    setOrder({ ...order, id_cupom: undefined, codigo_cupom: undefined, valor_desconto: undefined });
-  }
+  const removeCupom = React.useCallback(() => {
+    setOrder((prevState) => ({
+      ...prevState,
+      id_cupom: undefined,
+      codigo_cupom: undefined,
+      valor_desconto: undefined,
+    }));
+  }, []);
 
-  function setPaymentType(type: CartOrder["payment_type"]) {
-    setOrder({
-      ...order,
+  const setPaymentType = React.useCallback((type: CartOrder["payment_type"]) => {
+    setOrder((prevState) => ({
+      ...prevState,
       payment_type: type,
-    });
-  }
+    }));
+  }, []);
 
-  function resetCart() {
+  const resetCart = React.useCallback(() => {
     setOrder({});
     setProducts([]);
-  }
+  }, []);
 
   const context: CartContextState = {
     products: products,

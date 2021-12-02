@@ -12,6 +12,6 @@ export async function insertPedidoProdutoSabor(
     params.push(id_pedido, id_produto, sabores[i]);
   }
   const query = `INSERT INTO pedido_produto_sabor(id_pedido,id_produto,id_sabor) VALUES ${values.join(", ")}`;
-
   const result = await mysql.query(query, params);
+  await mysql.end();
 }

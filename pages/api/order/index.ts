@@ -1,15 +1,22 @@
 import { NextApiHandler } from "next";
+import { getSession } from "next-auth/client";
 
 import { insertPedido } from "@controllers/order";
 import { insertPedidoProdutoAdicional } from "@controllers/order_product_add";
 import { insertPedidoProdutoSabor } from "@controllers/order_product_flavor";
 import { insertPedidoProduto } from "@controllers/order_product";
-import mysql from "database";
 
 const handler: NextApiHandler = async (req, res) => {
+  const session = await getSession();
+  if (!session) return res.status(401).json({ message: "É necessário autenticação para este endpoint." });
+
   if (req.method === "POST") {
     try {
       const { produtos, pedido } = req.body;
+
+      if (pedido.id_usuario !== session.user.id_usuario)
+        return res.status(401).json({ message: "Não pode inserir pedidos para outro usuário." });
+
       const produtosJson = produtos.map((p: any) => ({
         ...p,
         adicionais: JSON.parse(p.adicionais),
@@ -32,10 +39,9 @@ const handler: NextApiHandler = async (req, res) => {
           id_pedido,
           id_produto: produtosJson[i].id_produto,
           quantidade: produtosJson[i].quantidade,
-          observacao: produtosJson[i].observacao === '' ? null : produtosJson[i].observacao,
+          observacao: produtosJson[i].observacao === "" ? null : produtosJson[i].observacao,
         });
       }
-      await mysql.end();
 
       return res.status(200).json({ success: true });
     } catch (e) {

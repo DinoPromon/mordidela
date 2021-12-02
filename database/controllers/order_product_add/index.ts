@@ -15,4 +15,5 @@ export async function insertPedidoProdutoAdicional(
     ", "
   )}`;
   const result = await mysql.query(query, params);
+  await mysql.end();
 }
