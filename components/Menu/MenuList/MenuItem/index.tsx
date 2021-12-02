@@ -7,7 +7,7 @@ import { MenuProduct } from "@my-types/product";
 
 type Props = {
   onClick: (item: MenuProduct, image: string) => void;
-  changeModalImage: (id: string, img: string) => void;
+  changeModalImage: (img: string) => void;
   item: MenuProduct;
 };
 
@@ -37,11 +37,11 @@ const MenuItem: React.FC<Props> = (props) => {
       }
     }
     getImage();
-    isMounted && props.changeModalImage(item.id_produto, imageSrc);
+    isMounted && props.changeModalImage(imageSrc);
     return () => {
       isMounted = false;
     };
-  }, [imageSrc]);
+  }, [imageSrc, item.id_produto]);
 
   return (
     <ListItem onClick={clickHandler}>

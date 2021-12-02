@@ -24,7 +24,7 @@ const CartPayment: React.FC<Props> = (props) => {
       return props.onSetIsPaymentOk(true);
     }
     props.onSetIsPaymentOk(payment_type !== undefined);
-  }, [needChange, showChange, payment_amount, payment_type]);
+  }, [needChange, showChange, payment_amount, payment_type, props.totalPrice]);
 
   return (
     <Wrapper>

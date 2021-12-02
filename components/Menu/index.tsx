@@ -14,32 +14,25 @@ const Menu: React.FC<Props> = (props) => {
   const [modalItem, setModalItem] = useState<MenuProduct>();
   const [modalItemImage, setModalItemImg] = useState<string>("/images/logo.svg");
 
-  const closeModalHandler = () => {
+  const closeModalHandler = React.useCallback(() => {
     setShowModal(false);
-  };
+  }, []);
 
-  const changeModalItem = (item: MenuProduct, image: string) => {
+  const changeModalItem = React.useCallback((item: MenuProduct, image: string) => {
     setModalItemImg(image);
     setShowModal(true);
     setModalItem(item);
-  };
+  }, []);
 
-  const changeModalImage = (itemId: string, image: string) => {
-    if (showModal && modalItem?.id_produto === itemId) {
-      setModalItemImg(image);
-    }
-  };
+  const changeModalImage = React.useCallback((image: string) => {
+    setModalItemImg(image);
+  }, []);
 
   return (
     <Fragment>
       {showModal && <MenuModal onClose={closeModalHandler} item={modalItem} image={modalItemImage} />}
       <MenuHeader />
-      <MenuList
-        products={props.products}
-        onItemClick={changeModalItem}
-        changeModalImage={changeModalImage}
-        isShowingModal={showModal}
-      />
+      <MenuList products={props.products} onItemClick={changeModalItem} changeModalImage={changeModalImage} />
     </Fragment>
   );
 };

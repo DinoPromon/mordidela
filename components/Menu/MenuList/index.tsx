@@ -6,14 +6,14 @@ import { MenuProduct } from "@my-types/product";
 
 type Props = {
   onItemClick: (item: MenuProduct, image: string) => void;
-  changeModalImage: (id: string, img: string) => void
-  isShowingModal: boolean;
+  changeModalImage: (img: string) => void
   products: MenuProduct[];
 };
 
 const MenuList: React.FC<Props> = (props) => {
   const { products } = props;
 
+  console.log('renderizado');
   return (
     <List>
       {products.map((product) => (
@@ -28,4 +28,4 @@ const MenuList: React.FC<Props> = (props) => {
   );
 };
 
-export default MenuList;
+export default React.memo(MenuList);

@@ -38,7 +38,7 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
       changeDeliveryPrice(result.preco_entrega);
     }
     getDeliveryPrice();
-  }, []);
+  }, [changeDeliveryPrice]);
 
   return (
     <Fragment>

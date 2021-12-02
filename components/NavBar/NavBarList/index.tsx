@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { getSession } from "next-auth/client";
-import Link from "next/link";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
