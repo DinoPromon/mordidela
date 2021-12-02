@@ -26,12 +26,12 @@ const CartItemDescription: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       <span>{quantity}x</span>
-      <h2>
+      <p>
         {productName} - {productSize}
-      </h2>
+      </p>
       <div>
         <span>
-          <FontAwesomeIcon icon={faTrash} size="sm" color={PINK} onClick={removeProductHandler}/>
+          <FontAwesomeIcon icon={faTrash} size="sm" color={PINK} onClick={removeProductHandler} />
         </span>
         <p>R$ {transformPriceToString(standard_price)}</p>
       </div>

@@ -25,9 +25,8 @@ const Cart: React.FC<Props> = (props) => {
   const canSubmit = isPaymentOk && order.order_type !== undefined;
 
   function getSubTotalPrice() {
-    const subTotal = products.reduce((acc, cur) => (acc += cur.total_price*cur.quantity), 0);
-    if (order.tipo_cupom === "pedido" && order.valor_desconto)
-      return ((100 - order.valor_desconto) * subTotal) / 100;
+    const subTotal = products.reduce((acc, cur) => (acc += cur.total_price * cur.quantity), 0);
+    if (order.tipo_cupom === "pedido" && order.valor_desconto) return ((100 - order.valor_desconto) * subTotal) / 100;
     return subTotal;
   }
 
@@ -82,9 +81,7 @@ const Cart: React.FC<Props> = (props) => {
       setSession(result);
       setIsLoadingSession(false);
     }
-    if (!session) {
-      hasSession();
-    }
+    if (!session) hasSession();
   }, []);
 
   const subTotalPrice = getSubTotalPrice();

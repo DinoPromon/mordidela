@@ -6,6 +6,7 @@ import Wrapper from "./styled";
 import { CartContext } from "@store/cart";
 import { PURPLE } from "@utils/colors";
 import { CartOrder } from "@my-types/context";
+import { InputRadio } from "@components/shared";
 
 type Props = {
   onSetShowChange: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,55 +21,48 @@ const CartPaymentSelect: React.FC<Props> = (props) => {
     props.onSetShowChange(type === "dinheiro");
   }
 
+  const inputName = "input-tipo-pagamento";
+
   return (
     <Wrapper>
       <h3>Como vai ser o pagamento?</h3>
       <div>
-        <label htmlFor="debito">
+        <InputRadio
+          id="debito"
+          name={inputName}
+          value="debito"
+          defaultCheked={order.payment_type === "debito"}
+          onChange={changePaymentType}
+        >
           <div>
             <FontAwesomeIcon icon={faCreditCard} size="sm" color={PURPLE} />
           </div>
           Débito
-          <input
-            type="radio"
-            id="debito"
-            name="input-tipo-pagamento"
-            value="debito"
-            defaultChecked={order.payment_type === "debito"}
-            onChange={changePaymentType}
-          />
-          <span></span>
-        </label>
-        <label htmlFor="credito">
+        </InputRadio>
+        <InputRadio
+          id="credito"
+          name={inputName}
+          value="credito"
+          defaultCheked={order.payment_type === "credito"}
+          onChange={changePaymentType}
+        >
           <div>
             <FontAwesomeIcon icon={faCreditCard} size="sm" color={PURPLE} />
           </div>
           Crédito
-          <input
-            type="radio"
-            id="credito"
-            name="input-tipo-pagamento"
-            value="credito"
-            defaultChecked={order.payment_type === "credito"}
-            onChange={changePaymentType}
-          />
-          <span></span>
-        </label>
-        <label htmlFor="dinheiro">
+        </InputRadio>
+        <InputRadio
+          id="dinheiro"
+          name={inputName}
+          value="dinheiro"
+          defaultCheked={order.payment_type === "dinheiro"}
+          onChange={changePaymentType}
+        >
           <div>
             <FontAwesomeIcon icon={faMoneyBillWave} size="sm" color={PURPLE} />
           </div>
           Dinheiro
-          <input
-            type="radio"
-            id="dinheiro"
-            name="input-tipo-pagamento"
-            value="dinheiro"
-            defaultChecked={order.payment_type === "dinheiro"}
-            onChange={changePaymentType}
-          />
-          <span></span>
-        </label>
+        </InputRadio>
       </div>
     </Wrapper>
   );

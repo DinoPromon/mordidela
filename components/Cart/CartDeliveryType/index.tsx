@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import Wrapper from "./styled";
 import { CartContext } from "@store/cart";
 import { CartOrder } from "@my-types/context";
+import { InputRadio } from "@components/shared";
 
 const CartDeliveryType: React.FC = () => {
   const { setOrderType, order } = useContext(CartContext);
@@ -12,32 +13,28 @@ const CartDeliveryType: React.FC = () => {
     setOrderType(type);
   }
 
+  const inputName = "input-tipo-entrega";
+
   return (
     <Wrapper>
-      <label htmlFor="entrega">
+      <InputRadio
+        id="entrega"
+        name={inputName}
+        onChange={changeHandler}
+        value="entrega"
+        defaultCheked={order.order_type === "entrega"}
+      >
         Delivery
-        <input
-          type="radio"
-          id="entrega"
-          name="input-tipo-entrega"
-          value="entrega"
-          onChange={changeHandler}
-          defaultChecked={order.order_type === "entrega"}
-        />
-        <span></span>
-      </label>
-      <label htmlFor="balcao">
+      </InputRadio>
+      <InputRadio
+        id="balcao"
+        name={inputName}
+        onChange={changeHandler}
+        value="balcao"
+        defaultCheked={order.order_type === "balcao"}
+      >
         Balcão
-        <input
-          type="radio"
-          id="balcao"
-          name="input-tipo-entrega"
-          value="balcao"
-          onChange={changeHandler}
-          defaultChecked={order.order_type === "balcao"}
-        />
-        <span></span>
-      </label>
+      </InputRadio>
     </Wrapper>
   );
 };

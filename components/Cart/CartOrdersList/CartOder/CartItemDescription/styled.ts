@@ -12,10 +12,6 @@ const Wrapper = styled.div`
     padding-right: 5px;
   }
 
-  & > h2 {
-    font-weight: normal;
-  }
-
   & > div {
     display: flex;
     gap: 0.5rem;

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 
 import Wrapper from "./styled";
+import { InputRadio } from "@components/shared";
 import { CartContext } from "@store/cart";
 
 type Props = {
@@ -18,33 +19,29 @@ const CartChangeSelect: React.FC<Props> = (props) => {
     } else props.onSetNeedChange(true);
   }
 
+  const inputName = "input-tipo-troco";
+
   return (
     <Wrapper>
       <h3>Precisa de troco? </h3>
-      <label htmlFor="nao">
+      <InputRadio
+        id="nao"
+        name={inputName}
+        value="no"
+        onChange={changeHandler}
+        defaultCheked={(order.payment_amount as number) === 0}
+      >
         Não
-        <input
-          type="radio"
-          id="nao"
-          name="input-tipo-troco"
-          value="no"
-          onChange={changeHandler}
-          defaultChecked={(order.payment_amount as number) === 0}
-        />
-        <span></span>
-      </label>
-      <label htmlFor="sim">
+      </InputRadio>
+      <InputRadio
+        id="sim"
+        name={inputName}
+        value="yes"
+        onChange={changeHandler}
+        defaultCheked={(order.payment_amount as number) > 0}
+      >
         Sim
-        <input
-          type="radio"
-          id="sim"
-          name="input-tipo-troco"
-          value="yes"
-          onChange={changeHandler}
-          defaultChecked={(order.payment_amount as number) > 0}
-        />
-        <span></span>
-      </label>
+      </InputRadio>
     </Wrapper>
   );
 };
