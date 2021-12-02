@@ -13,7 +13,7 @@ const InputCheckbox: React.FC<Props> = (props) => {
   return (
     <CustomLabel htmlFor={props.id}>
       {props.children}
-      <input type="checkbox" id={props.id} name={props.name} onChange={props.onChange} value={props.id}></input>
+      <input type="checkbox" id={props.id} name={props.name} onChange={props.onChange} value={props.value}></input>
       <span></span>
     </CustomLabel>
   );
