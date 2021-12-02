@@ -51,10 +51,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
     return flavors;
   }
-
+  let menuProducts: MenuProduct[] = [];
+  let error = true;
   try {
-    const menuProducts: MenuProduct[] = [];
-    const a = {} as Flavor;
     const products = await getAllProducts();
     const adds = await getAllRelatedAdds();
     const flavors = await getAllRelatedFlavors();
@@ -66,24 +65,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
         flavors: getProductFlavors(flavors, products[i].id_produto),
       });
     }
-
-    return {
-      props: {
-        products: menuProducts,
-        error: false,
-      },
-      revalidate: 600,
-    };
   } catch (e) {
-    const error = e as Error;
-    return {
-      props: {
-        products: [],
-        error: true,
-      },
-      revalidate: 600,
-    };
+    error = true;
   }
+  return {
+    props: {
+      products: menuProducts,
+      error,
+    },
+    revalidate: 600,
+  };
 };
 
 export default MenuPage;
