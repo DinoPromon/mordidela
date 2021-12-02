@@ -26,11 +26,7 @@ const handler: NextApiHandler = async (req, res) => {
       const id_pedido = await insertPedido(pedido);
       for (const i in produtosJson) {
         if (produtosJson[i].adicionais.length) {
-          await insertPedidoProdutoAdicional(
-            id_pedido,
-            produtosJson[i].id_produto,
-            produtosJson[i].adicionais
-          );
+          await insertPedidoProdutoAdicional(id_pedido, produtosJson[i].id_produto, produtosJson[i].adicionais);
         }
         if (produtosJson[i].sabores.length) {
           await insertPedidoProdutoSabor(id_pedido, produtosJson[i].id_produto, produtosJson[i].sabores);
