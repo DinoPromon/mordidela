@@ -1,5 +1,4 @@
-import { transformPriceStringToNumber } from "@utils/transformation/price";
-import { transformPriceToString } from "@utils/transformation/price";
+import { transformPriceToString, transformPriceStringToNumber } from "@utils/transformation";
 
 export function formatPrice(inputText: string) {
   const pattern = /\d$/;

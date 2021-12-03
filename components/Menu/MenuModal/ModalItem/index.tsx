@@ -11,7 +11,7 @@ import { MenuProduct } from "@my-types/product";
 import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
 import { formatProductId } from "@utils/formatters";
-import { transformPriceToString } from "@utils/transformation/price";
+import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   image: string;

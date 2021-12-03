@@ -9,7 +9,7 @@ import CartEmptyMessage from "./CartEmptyMessage";
 import CartLoggedOptions from "./CartLoggedOptions";
 import { CartContext } from "@store/cart";
 import { RequestState } from "@my-types/request";
-import { transformPriceToString } from "@utils/transformation/price";
+import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   onCloseModal: () => void;

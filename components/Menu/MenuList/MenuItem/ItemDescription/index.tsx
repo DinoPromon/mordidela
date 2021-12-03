@@ -1,7 +1,7 @@
 import React from "react";
 
 import Wrapper from "./styled";
-import { transformPriceToString } from "@utils/transformation/price";
+import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   name: string

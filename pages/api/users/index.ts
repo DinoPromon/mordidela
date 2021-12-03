@@ -2,7 +2,7 @@ import type { NextApiHandler } from "next";
 
 import mysql from "database";
 import { getSession } from "next-auth/client";
-import { transformDateFromDBToClient } from "@utils/transformation/date";
+import { transformDateFromDBToClient } from "@utils/transformation";
 import { ViewUsuario } from "@models/views";
 
 const handler: NextApiHandler = async (req, res) => {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { transformPriceToString } from "@utils/transformation/price";
+import { transformPriceToString } from "@utils/transformation";
 import { InputCheckbox } from "@components/shared";
 import ListItem from "./styled";
 

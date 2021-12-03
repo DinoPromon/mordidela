@@ -1,11 +1,11 @@
 import type { NextApiHandler } from "next";
 
-import { treatErrorMessage } from "@utils/transformation/error";
+import { treatErrorMessage } from "@utils/transformation";
 import { AddressFormData, UserFormData } from "@my-types/forms";
 import { hasErrorInAddressForm, hasErrorInUserForm } from "@utils/validations";
 import { removeAditionalSpaces } from "@utils/formatters";
 import { transformDate } from "@utils/transformation/date";
-import { getDDDFromTelefone, getNumberFromTelefone } from "@utils/transformation/telefone";
+import { getDDDFromTelefone, getNumberFromTelefone } from "@utils/transformation";
 
 import mysql from "database";
 

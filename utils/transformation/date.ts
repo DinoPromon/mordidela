@@ -1,6 +1,12 @@
-export const padDayOrMonth = (num: number, max: number) => {
+function padDayOrMonth(num: number, max: number) {
   return num > parseInt(max.toString()[0]) && num.toString().length === 1 ? "0" + num : num.toString();
-};
+}
+
+function getDayOrMonthAsNumber(str: string, maxValue: number) {
+  let number = parseInt(str);
+  if (isNaN(number) || number <= 0 || number > maxValue) return 1;
+  return number;
+}
 
 export const transformDateFromDBToClient = (databaseDate: string) => {
   const date = new Date(databaseDate);
@@ -21,16 +27,10 @@ export const transformDayOrMonth = (subStr: string, maxValue: number) => {
   return subStr;
 };
 
-const getDayOrMonthAsNumber = (str: string, maxValue: number) => {
-  let number = parseInt(str);
-  if (isNaN(number) || number <= 0 || number > maxValue) return 1;
-  return number;
-};
-
 export const transformDate = (date: string) => {
-  const fragmentedDate = date.split('/');
+  const fragmentedDate = date.split("/");
   fragmentedDate.reverse();
-  const formatedDate = fragmentedDate.join('-');
+  const formatedDate = fragmentedDate.join("-");
 
   return formatedDate;
 };

@@ -5,7 +5,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Wrapper from "./styled";
 import { PINK } from "@utils/colors";
 import { CartContext } from "@store/cart";
-import { transformPriceToString } from "@utils/transformation/price";
+import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   productKey: string;

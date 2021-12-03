@@ -4,11 +4,11 @@ import CartPayment from "./CartPayment";
 import CartCupom from "./CartCupom";
 import Usuario from "@models/usuario";
 import Entrega from "@models/entrega";
+import Loading from "@components/shared/Loading";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
-import { transformPriceToString } from "@utils/transformation/price";
+import { transformPriceToString } from "@utils/transformation";
 import { RequestState } from "@my-types/request";
-import Loading from "@components/shared/Loading";
 
 type Props = {
   canSubmit: boolean;

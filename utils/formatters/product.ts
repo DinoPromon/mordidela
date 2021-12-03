@@ -1,6 +1,6 @@
 import Adicional from "@models/adicional";
 import Sabor from "@models/sabor";
-import { removeSpaces } from "@utils/transformation/string";
+import { removeSpaces } from "@utils/transformation";
 
 export function formatProductId(name: string, id: string, adds: Adicional[], flavors: Sabor[]) {
   const addsIds = adds

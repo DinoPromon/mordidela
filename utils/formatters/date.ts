@@ -1,4 +1,4 @@
-import { transformDayOrMonth } from "@utils/transformation/date";
+import { transformDayOrMonth } from "@utils/transformation";
 
 export function formatDateInput(date: string) {
   let input = date;

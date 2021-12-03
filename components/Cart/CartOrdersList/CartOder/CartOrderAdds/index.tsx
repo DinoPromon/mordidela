@@ -2,7 +2,7 @@ import React from "react";
 
 import Wrapper from "./styled";
 import Adicional from '@models/adicional';
-import { transformPriceToString } from "@utils/transformation/price";
+import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   adds: Adicional[];

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Wrapper from "../styled";
 import SignupFormActions from "./SignupFormActions";
 import { FormInput } from "@components/shared";
-import { dateChangeHandler } from "@utils/formatters";
+import { dateChangeHandler, phoneNumberChangeHandler } from "@utils/formatters";
 import { userFormValidations } from "@utils/validations";
 import { UserFormData } from "@my-types/forms";
 import { getSignupErrorMessage } from "@utils/error-message";
@@ -30,13 +30,12 @@ const SignUpForm: React.FC<Props> = (props) => {
 
   const changeFormStateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
-    if (id === "data_nascimento") {
-      event.target.value = dateChangeHandler(event.target.value, formState[id]);
-    }
-    setFormState({
-      ...formState,
+    if (id === "data_nascimento") event.target.value = dateChangeHandler(event.target.value, formState[id]);
+    else if (id === "telefone") event.target.value = phoneNumberChangeHandler(event.target.value, formState[id]);
+    setFormState((prevState) => ({
+      ...prevState,
       [id]: event.target.value,
-    });
+    }));
   };
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
