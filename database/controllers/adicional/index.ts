@@ -2,7 +2,7 @@ import mysql, { serialize } from "database";
 import Adicional from "@models/adicional";
 import CategoriaAdicional from "@models/categoria_adicional";
 import { ViewCategoriaAdicional } from "@models/views";
-import { getCategoryIdByProductId } from "@controllers/category";
+import { getCategoryIdByProductId } from "@controllers/categoria";
 
 export async function getAllRelatedAdds() {
   const query = "SELECT * FROM vw_categoria_adicional";

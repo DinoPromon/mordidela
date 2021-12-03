@@ -7,26 +7,26 @@ import Sabor from "@models/sabor";
 
 export type CartProduct = {
   key: string;
-  product_id: Produto["id_produto"];
-  size: Produto["tamanho"];
+  flavors: Sabor[];
+  adds: Adicional[];
   name: Produto["nome"];
+  size: Produto["tamanho"];
+  product_id: Produto["id_produto"];
   quantity: PedidoProduto["quantidade"];
   orderNote?: PedidoProduto["observacao"];
   standard_price: Produto["preco_padrao"];
   total_price: PedidoProduto["preco_pedido"];
-  adds: Adicional[];
-  flavors: Sabor[];
 };
 
 export type CartOrder = {
-  id_cupom?: Cupom["id_cupom"];
   tipo_cupom?: Cupom["tipo"];
+  id_cupom?: Cupom["id_cupom"];
   codigo_cupom?: Cupom["codigo"];
+  order_type?: Pedido["tipo_entrega"];
+  payment_amount?: Pedido["troco_para"];
   valor_desconto?: Cupom["valor_desconto"];
   delivery_price?: Pedido["preco_entrega"];
-  order_type?: Pedido["tipo_entrega"];
   payment_type?: Pedido["tipo_pagamento"];
-  payment_amount?: Pedido["troco_para"];
 };
 
 export type CartContextState = {

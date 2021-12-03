@@ -1,7 +1,7 @@
 import mysql, { serialize } from "database";
 import Pedido from "@models/pedido";
 import { getCupomById } from "@controllers/cupom";
-import { getDeliveryPriceByUserId } from "@controllers/delivery";
+import { getDeliveryPriceByUserId } from "@controllers/entrega";
 
 type PedidoData = Pick<Pedido, "id_usuario" | "tipo_pagamento" | "tipo_entrega" | "id_cupom" | "troco_para">;
 

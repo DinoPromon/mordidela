@@ -1,16 +1,17 @@
 import type { GetStaticProps } from "next";
 import type { ReactElement } from "react";
 
+import Sabor from "@models/sabor";
 import Menu from "@components/Menu";
-import { NavBarFooter } from "@components/Layouts";
-import { NextPageWithLayout } from "@my-types/next-page";
-import { getAllProducts } from "@controllers/products";
-import { Add, Flavor, MenuProduct } from "@my-types/product";
-import { getAllRelatedAdds } from "@controllers/adds";
+import Adicional from "@models/adicional";
 import Categoria from "@models/categoria";
+import Produto, { MenuProduct } from "@models/produto";
+import { NavBarFooter } from "@components/Layouts";
+import { getAllProducts } from "@controllers/produto";
+import { NextPageWithLayout } from "@my-types/next-page";
+import { getAllRelatedAdds } from "@controllers/adicional";
+import { getAllRelatedFlavors } from "@controllers/sabor";
 import { ViewCategoriaAdicional, ViewProdutoSabor } from "@models/views";
-import { getAllRelatedFlavors } from "@controllers/flavors";
-import Produto from "@models/produto";
 
 type Props = {
   products: MenuProduct[];
@@ -27,7 +28,7 @@ MenuPage.getLayout = function getLayout(page: ReactElement) {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   function getCategoryAdds(relatedAdds: ViewCategoriaAdicional[], id: Categoria["id_categoria"]) {
-    const adds: Add[] = [];
+    const adds: Adicional[] = [];
     for (const i in relatedAdds) {
       if (relatedAdds[i].id_categoria === id) {
         adds.push({
@@ -42,7 +43,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   function getProductFlavors(relatedFlavors: ViewProdutoSabor[], id: Produto["id_produto"]) {
-    const flavors: Flavor[] = [];
+    const flavors: Sabor[] = [];
     for (const i in relatedFlavors) {
       if (relatedFlavors[i].id_produto === id) {
         flavors.push({ id_sabor: relatedFlavors[i].id_sabor, nome: relatedFlavors[i].nome });

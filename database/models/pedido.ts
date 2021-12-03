@@ -16,4 +16,6 @@ type Pedido = {
   id_endereco: Endereco['id_endereco'];
 };
 
+export type CartPedido = Pick<Pedido, "troco_para" | "id_cupom" | "tipo_pagamento" | "tipo_entrega" | "id_usuario">;
+
 export default Pedido;

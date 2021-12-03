@@ -1,5 +1,8 @@
-import Categoria from "./categoria";
+import Sabor from "./sabor";
 import Desconto from "./desconto";
+import Adicional from "./adicional";
+import Categoria from "./categoria";
+import PedidoProduto from "./pedido_produto";
 
 type Produto = {
   id_produto: string;
@@ -12,6 +15,15 @@ type Produto = {
   qtde_max_sabor: number | null;
   id_categoria: Categoria["id_categoria"];
   id_desconto: Desconto["id_desconto"] | null;
+};
+
+export type ProdutoWithoutImage = Omit<Produto, "imagem">;
+
+export type MenuProduct = { adds: Adicional[]; flavors: Sabor[] } & ProdutoWithoutImage;
+
+export type CartProduto = Pick<PedidoProduto, "id_produto" | "observacao" | "quantidade"> & {
+  adicionais: Adicional["id_adicional"][] | Adicional["id_adicional"];
+  sabores: Sabor["id_sabor"][] | Adicional["id_adicional"];
 };
 
 export default Produto;

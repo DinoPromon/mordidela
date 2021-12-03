@@ -3,10 +3,9 @@ import React from "react";
 import CustomList from "./styled";
 import AddOption from "./AddOption";
 import Adicional from "@models/adicional";
-import { Add } from "@my-types/product";
 
 type Props = {
-  items: Add[];
+  items: Adicional[];
   setPrice: React.Dispatch<React.SetStateAction<number>>;
   onAddAditional: (add: Adicional) => void;
   onRemoveAditional: (add: Adicional) => void;

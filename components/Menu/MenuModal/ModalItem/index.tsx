@@ -7,7 +7,7 @@ import ItemCounter from "./ItemCounter";
 import Adicional from "@models/adicional";
 import Sabor from "@models/sabor";
 import { CartContext } from "@store/cart";
-import { MenuProduct } from "@my-types/product";
+import { MenuProduct } from "@models/produto";
 import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
 import { formatProductId } from "@utils/formatters";

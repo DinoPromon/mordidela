@@ -1,4 +1,4 @@
-import { getDeliveryPriceByUserId } from "@controllers/delivery";
+import { getDeliveryPriceByUserId } from "@controllers/entrega";
 import Usuario from "@models/usuario";
 import { NextApiHandler } from "next";
 

@@ -1,7 +1,7 @@
 import type { NextApiHandler } from "next";
 import mysql from "database";
 
-import { getAllProducts } from "@controllers/products";
+import { getAllProducts } from "@controllers/produto";
 
 export const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {

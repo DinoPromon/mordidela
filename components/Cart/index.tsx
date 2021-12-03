@@ -34,7 +34,7 @@ const Cart: React.FC<Props> = (props) => {
     event.preventDefault();
     try {
       if (session) {
-        const produtos = products.map((item, index) => ({
+        const produtos = products.map((item) => ({
           id_produto: item.product_id,
           quantidade: item.quantity,
           observacao: item.orderNote,
