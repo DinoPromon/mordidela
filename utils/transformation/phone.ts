@@ -10,5 +10,6 @@ export const getNumberFromTelefone = (telefone: string) => {
 
 export function clearPhoneNumber(number: string) {
   const clearPattern = /[\s\(\)-]/g;
+  if (!number.length) return number;
   return number.replaceAll(clearPattern, "");
 }
