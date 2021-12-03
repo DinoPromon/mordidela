@@ -4,6 +4,7 @@ import mysql from "database";
 import { getSession } from "next-auth/client";
 import { transformDateFromDBToClient } from "@utils/transformation";
 import { ViewUsuario } from "@models/views";
+import { formatPhoneNumber } from "@utils/formatters/phone";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
@@ -19,10 +20,7 @@ const handler: NextApiHandler = async (req, res) => {
     const formatedQuery = `SELECT nome, email, autorizacao, data_nascimento, ddd, numero FROM vw_usuario WHERE id_usuario = ?`;
 
     try {
-      const result = (await mysql.query(formatedQuery, [id_usuario])) as Omit<
-        ViewUsuario,
-        "id_usuario" | "senha"
-      >[];
+      const result = (await mysql.query(formatedQuery, [id_usuario])) as Omit<ViewUsuario, "id_usuario" | "senha">[];
       const user = result[0];
       await mysql.end();
 
@@ -31,7 +29,7 @@ const handler: NextApiHandler = async (req, res) => {
         email: user.email,
         autorizacao: user.autorizacao,
         data_nascimento: transformDateFromDBToClient(user.data_nascimento as string),
-        telefone: `${user.ddd}${result[0].numero}`,
+        telefone: formatPhoneNumber(`${user.ddd}${result[0].numero}`),
       };
 
       return res.status(200).json(response);

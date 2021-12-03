@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import CustomForm from "./styled";
 import GeneralDataInput from "../AccountModalInput";
 import { FormButton } from "@components/shared";
-import { dateChangeHandler } from "@utils/formatters";
+import { dateChangeHandler, phoneNumberChangeHandler } from "@utils/formatters";
 import { generalDataValidation } from "@utils/validations";
 import { RequestState } from "@my-types/request";
 import { GeneralDataForm } from "@my-types/forms";
@@ -53,10 +53,11 @@ const GeneralData: React.FC<Props> = (props) => {
   const changeStateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
     if (id === "data_nascimento") event.target.value = dateChangeHandler(event.target.value, state[id]);
-    setState({
-      ...state,
+    if (id === "telefone") event.target.value = phoneNumberChangeHandler(event.target.value, state[id]);
+    setState((prevState) => ({
+      ...prevState,
       [id]: event.target.value,
-    });
+    }));
   };
 
   const hasErrorInInputs = (formInputs: GeneralDataState) => {

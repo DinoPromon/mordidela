@@ -10,7 +10,7 @@ type Props = {
   setValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const GeneralDataInput: React.FC<Props> = (props) => {
+const AccountModalInput: React.FC<Props> = (props) => {
   // tirar use ref depois
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOnFocus, setIsOnFocus] = useState(false);
@@ -44,4 +44,4 @@ const GeneralDataInput: React.FC<Props> = (props) => {
   );
 };
 
-export default GeneralDataInput;
+export default AccountModalInput;

@@ -13,10 +13,12 @@ const moveTop = css`
 
 const Wrapper = styled.div<Props>`
   position: relative;
+  color: inherit;
   border-bottom: 1px solid ${props => props.isDisabled ? "#adadad" : PURPLE};
 
   & > input {
     width: 100%;
+    color: inherit;
     height: 40px;
     border: none;
     background: none;
