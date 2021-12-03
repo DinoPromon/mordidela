@@ -3,37 +3,38 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Wrapper from "./styled";
+import { PURPLE } from "@utils/colors";
 import AccountModal from "./AccountModal";
 import AccountInfoList from "./AccountInfoList";
-import { PURPLE } from "@utils/colors";
+import { ProfileModalContent } from "@my-types/profile";
 
 type Props = {
-  nome: string,
-  id_usuario: string
+  nome: string;
+  id_usuario: string;
 };
 
 const Account: React.FC<Props> = (props) => {
   const { nome, id_usuario } = props;
   // mudar para nome do modal. e.g. displayedModal: 'generalData' | 'address' | 'undefined'
-  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState<ProfileModalContent>(null);
 
-  const closeModalHandler = () => {
-    setShowModal(false);
-  };
+  function changeModalHandler(content: ProfileModalContent) {
+    setModalContent(content);
+  }
 
-  const openModalHandler = () => {
-    setShowModal(true);
-  };
+  function closeModalHandler() {
+    setModalContent(null);
+  }
 
   return (
     <Wrapper>
-      {showModal && <AccountModal onClose={closeModalHandler} id_usuario={id_usuario}/>}
+      {modalContent && <AccountModal id_usuario={id_usuario} content={modalContent} onClose={closeModalHandler} />}
       <div>
         <span>
           <FontAwesomeIcon icon={faUser} size="5x" color={PURPLE} />
         </span>
         <h3>{nome}</h3>
-        <AccountInfoList onClick={openModalHandler} />
+        <AccountInfoList onChangeModal={changeModalHandler} />
       </div>
     </Wrapper>
   );
