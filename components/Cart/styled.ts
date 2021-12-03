@@ -33,7 +33,10 @@ const CustomForm = styled.form`
   }
 
   & > div:last-child {
-    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
     & > p {
       color: red
     }

@@ -67,11 +67,10 @@ const Cart: React.FC<Props> = (props) => {
         }
         return;
       }
-      return console.log("é necessário estar logado para finalizar pedidos.");
+      throw new Error('É necessário estar logado para finalizar pedidos.');
     } catch (e) {
       const error = e as Error;
       setRequest({ error: error.message, isLoading: false, success: false });
-      console.log(error.message);
     }
   }
 

@@ -62,7 +62,7 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
         {props.request.isLoading && <Loading />}
         {!props.request.isLoading && (
           <Fragment>
-            {!props.request.error && <p>{props.request.error}</p>}
+            {props.request.error && <p>{props.request.error}</p>}
             <FormButton type="submit" disabled={!props.canSubmit}>
               Finalizar pedido
             </FormButton>
