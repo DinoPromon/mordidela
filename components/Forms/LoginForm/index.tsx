@@ -5,11 +5,11 @@ import { signIn } from "next-auth/client";
 import Wrapper from "../styled";
 import LoginFormActions from "./LoginFormActions";
 import FormRequestStatus from "@components/shared/FormRequestStatus";
-import { loginFormValidations } from "@utils/validations";
-import { getLoginErrorMessage } from "@utils/error-message";
 import { FormInput } from "@components/shared";
 import { LoginFormData } from "@my-types/login";
 import { RequestState } from "@my-types/request";
+import { loginFormValidations } from "@utils/validations";
+import { getLoginErrorMessage } from "@utils/error-message";
 
 const initialLoginData: LoginFormData = Object.freeze({
   email: "",
@@ -41,22 +41,24 @@ const LoginForm: React.FC = (props) => {
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setRequest({ ...request, isLoading: true });
-    try {
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: formState.email,
-        senha: formState.senha,
-      });
+    if (canSubmit) {
+      setRequest({ ...request, isLoading: true });
+      try {
+        const result = await signIn("credentials", {
+          redirect: false,
+          email: formState.email,
+          senha: formState.senha,
+        });
 
-      if (!result || result.error) {
-        throw new Error(result ? result.error : "Não foi possível realizar o login.");
+        if (!result || result.error) {
+          throw new Error(result ? result.error : "Não foi possível realizar o login.");
+        }
+
+        router.replace("/");
+      } catch (e) {
+        const error = e as Error;
+        setRequest({ isLoading: false, success: false, error: error.message });
       }
-
-      router.replace("/");
-    } catch (e) {
-      const error = e as Error;
-      setRequest({ isLoading: false, success: false, error: error.message });
     }
   };
 
@@ -87,9 +89,7 @@ const LoginForm: React.FC = (props) => {
         errorMessage={getLoginErrorMessage("senha")}
         placeholder="Senha"
       />
-      {shouldShowRequestStatus && (
-        <FormRequestStatus errorMessage={request.error} isLoading={request.isLoading} />
-      )}
+      {shouldShowRequestStatus && <FormRequestStatus errorMessage={request.error} isLoading={request.isLoading} />}
       <LoginFormActions disabled={!canSubmit} />
     </Wrapper>
   );
