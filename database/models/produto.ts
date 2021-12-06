@@ -23,7 +23,7 @@ export type MenuProduct = { adds: Adicional[]; flavors: Sabor[] } & ProdutoWitho
 
 export type CartProduto = Pick<PedidoProduto, "id_produto" | "observacao" | "quantidade"> & {
   adicionais: Adicional["id_adicional"][] | Adicional["id_adicional"];
-  sabores: Sabor["id_sabor"][] | Adicional["id_adicional"];
+  sabores: Sabor["id_sabor"][] | Sabor['id_sabor'];
 };
 
 export default Produto;

@@ -16,7 +16,7 @@ const handler: NextApiHandler = async (req, res) => {
       case "POST":
         const { produtos, pedido } = req.body as { produtos: CartProduto[]; pedido: CartPedido };
         if (pedido.id_usuario !== session.user.id_usuario)
-          return res.status(401).json({ message: "Não pode inserir pedidos para outro usuário." });
+          return res.status(403).json({ message: "Não pode inserir pedidos para outro usuário." });
 
         const produtosJson = produtos.map((p) => ({
           ...p,

@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 
+import OrdersList from "./OrdersList";
 import { RequestState } from "@my-types/request";
 import { FormRequestStatus } from "@components/shared";
 
@@ -24,7 +25,7 @@ const UserOrders: React.FC = (props) => {
   }, []);
 
   return request.success ? (
-    <p>hello</p>
+    <OrdersList />
   ) : (
     <FormRequestStatus errorMessage={request.error} isLoading={request.isLoading} />
   );

@@ -5,7 +5,7 @@ import Usuario from "./usuario";
 type Pedido = {
   id_pedido: string;
   data_pedido: string;
-  data_confirmacao: string;
+  data_confirmacao: string | null;
   status_pedido: "rejeitado" | "pendente" | "confirmado";
   preco_entrega: number;
   tipo_entrega: "entrega" | "balcao";
