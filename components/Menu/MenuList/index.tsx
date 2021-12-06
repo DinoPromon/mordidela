@@ -2,7 +2,7 @@ import React from "react";
 
 import List from "./styled";
 import MenuItem from "./MenuItem";
-import { MenuProduct } from "@my-types/product";
+import { MenuProduct } from "@models/produto";
 
 type Props = {
   onItemClick: (item: MenuProduct, image: string) => void;

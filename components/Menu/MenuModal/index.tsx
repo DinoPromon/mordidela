@@ -1,8 +1,9 @@
 import React from "react";
+
 import ModalItem from "./ModalItem";
 import Modal from "@components/shared/Modal";
+import { MenuProduct } from "@models/produto";
 
-import { MenuProduct } from "@my-types/product";
 type Props = {
   onClose: () => void;
   item?: MenuProduct;

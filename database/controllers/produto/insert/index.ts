@@ -1,5 +1,5 @@
 import Pedido from "@models/pedido";
-import { CartProduto } from "@my-types/pedido";
+import { CartProduto } from "@models/produto";
 
 import { insertPedidoProduto } from "@controllers/pedido_produto";
 import { insertPedidoProdutoSabor } from "@controllers/pedido_produto_sabor";

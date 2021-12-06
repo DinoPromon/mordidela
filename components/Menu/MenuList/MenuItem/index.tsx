@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import ListItem from "./styled";
 import ItemImage from "./ItemImage";
 import ItemDescription from "./ItemDescription";
-import { MenuProduct } from "@my-types/product";
+import { MenuProduct } from "@models/produto";
 
 type Props = {
   onClick: (item: MenuProduct, image: string) => void;
