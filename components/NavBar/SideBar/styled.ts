@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
 import { SIDEBAR_MAX_WIDTH, SIDEBAR_WIDTH } from "@utils/styles";
-import { PURPLE_TRANS } from "@utils/colors";
+import { PURPLE } from "@utils/colors";
 
 export const SIDEBAR_ANIMATION_TIME = 150;
 
@@ -36,7 +36,7 @@ const Aside = styled.aside<Props>`
   height: 100vh;
   width: ${SIDEBAR_WIDTH};
   max-width: ${SIDEBAR_MAX_WIDTH};
-  background-color: ${PURPLE_TRANS};
+  background-color: ${PURPLE};
 
   animation: ${(props) => props.animation} ${SIDEBAR_ANIMATION_TIME}ms ease-out forwards;
 
