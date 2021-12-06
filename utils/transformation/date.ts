@@ -19,6 +19,13 @@ export const transformDateFromDBToClient = (databaseDate: string) => {
   return clientDate;
 };
 
+export function getHourFromDate(dateAsString: string) {
+  const date = new Date(dateAsString);
+  const hours = date.getHours();
+  const minute = date.getMinutes();
+  return `${hours}:${minute}`;
+}
+
 export const transformDayOrMonth = (subStr: string, maxValue: number) => {
   if (subStr[0] !== "0" || subStr === "00") {
     const number = getDayOrMonthAsNumber(subStr, maxValue);
