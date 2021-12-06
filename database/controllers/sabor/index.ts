@@ -10,7 +10,7 @@ export async function getAllRelatedFlavors() {
   return serialize(result);
 }
 
-export async function getFlavorById(flavorId: string) {
+export async function getSaborById(flavorId: string) {
   const query = "SELECT * FROM sabor WHERE id_sabor = ?";
   const result = (await mysql.query(query, [flavorId])) as Sabor[];
   await mysql.end();
@@ -18,14 +18,14 @@ export async function getFlavorById(flavorId: string) {
   return result.length > 0 ? serializedResult[0] : null;
 }
 
-export async function getFlavosrByProductId(productId: string) {
+export async function getSaboresByIdProduto(productId: string) {
   const query = "SELECT id_sabor FROM produto_sabor WHERE id_produto = ?";
   const productFlavorsId = (await mysql.query(query, [productId])) as Pick<ProdutoSabor, "id_sabor">[];
   await mysql.end();
   if (productFlavorsId.length > 0) {
     const flavors: Sabor[] = [];
     for (const flavorId in productFlavorsId) {
-      const flavor = await getFlavorById(flavorId);
+      const flavor = await getSaborById(flavorId);
       flavor !== null && flavors.push(flavor);
     }
     return flavors;

@@ -2,12 +2,11 @@ import React, { useState, useEffect, Fragment } from "react";
 
 import CustomForm from "./styled";
 import GeneralDataInput from "../AccountModalInput";
-import { FormButton } from "@components/shared";
-import { dateChangeHandler, phoneNumberChangeHandler } from "@utils/formatters";
-import { generalDataValidation } from "@utils/validations";
 import { RequestState } from "@my-types/request";
 import { GeneralDataForm } from "@my-types/forms";
-import FormRequestStatus from "@components/shared/FormRequestStatus";
+import { generalDataValidation } from "@utils/validations";
+import { FormButton, FormRequestStatus } from "@components/shared";
+import { dateChangeHandler, phoneNumberChangeHandler } from "@utils/formatters";
 
 type GeneralDataState = {
   nome: string;
@@ -34,7 +33,7 @@ const GeneralData: React.FC<Props> = (props) => {
   const [requestState, setRequestState] = useState<RequestState>(initialRequestState);
 
   const getUserInfo = async () => {
-    setRequestState({ ...requestState, isLoading: true });
+    setRequestState((prevState) => ({ ...prevState, isLoading: true }));
     try {
       const response = await fetch(`/api/users?id_usuario=${props.id_usuario}`);
       const result = await response.json();

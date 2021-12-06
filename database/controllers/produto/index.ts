@@ -1,3 +1,3 @@
-import { getAllProducts, getProductById, getProductImageById, getProductSizesById } from "./select";
+import { getAllProduto, getProdutoById, getImagemProdutoById, getTamanhoProdutoById } from "./select";
 import { insertAllProdutosFromPedido } from "./insert";
-export { getAllProducts, getProductById, getProductImageById, getProductSizesById, insertAllProdutosFromPedido };
+export { getAllProduto, getProdutoById, getImagemProdutoById, getTamanhoProdutoById, insertAllProdutosFromPedido };

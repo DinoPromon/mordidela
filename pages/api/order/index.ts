@@ -4,8 +4,8 @@ import { getSession } from "next-auth/client";
 import { insertPedido } from "@controllers/pedido";
 import { CartPedido } from "@models/pedido";
 import { CartProduto } from "@models/produto";
+import { getAllPedidosFromUsuario } from "@controllers/pedido";
 import { insertAllProdutosFromPedido } from "@controllers/produto";
-import { getAllOrdersFromUser } from "@controllers/pedido/select";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
@@ -29,7 +29,7 @@ const handler: NextApiHandler = async (req, res) => {
 
         return res.status(200).json({ success: true });
       case "GET":
-        const orders = await getAllOrdersFromUser(session.user.id_usuario);
+        const orders = await getAllPedidosFromUsuario(session.user.id_usuario);
 
         return res.status(200).json(orders);
       default:

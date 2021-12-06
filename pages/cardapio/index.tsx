@@ -7,7 +7,7 @@ import Adicional from "@models/adicional";
 import Categoria from "@models/categoria";
 import Produto, { MenuProduct } from "@models/produto";
 import { NavBarFooter } from "@components/Layouts";
-import { getAllProducts } from "@controllers/produto";
+import { getAllProduto } from "@controllers/produto";
 import { NextPageWithLayout } from "@my-types/next-page";
 import { getAllRelatedAdds } from "@controllers/adicional";
 import { getAllRelatedFlavors } from "@controllers/sabor";
@@ -55,7 +55,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let menuProducts: MenuProduct[] = [];
   let error = true;
   try {
-    const products = await getAllProducts();
+    const products = await getAllProduto();
     const adds = await getAllRelatedAdds();
     const flavors = await getAllRelatedFlavors();
 

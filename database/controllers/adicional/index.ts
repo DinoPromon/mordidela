@@ -2,7 +2,7 @@ import mysql, { serialize } from "database";
 import Adicional from "@models/adicional";
 import CategoriaAdicional from "@models/categoria_adicional";
 import { ViewCategoriaAdicional } from "@models/views";
-import { getCategoryIdByProductId } from "@controllers/categoria";
+import { getIdCategoriaByIdProduto } from "@controllers/categoria";
 
 export async function getAllRelatedAdds() {
   const query = "SELECT * FROM vw_categoria_adicional";
@@ -27,7 +27,7 @@ export async function getAddById(addId: string) {
 }
 
 export async function getAddsByProductId(productId: string) {
-  const categoryId = await getCategoryIdByProductId(productId);
+  const categoryId = await getIdCategoriaByIdProduto(productId);
   if (!categoryId) throw new Error(`Produto ${productId} não possui categoria.`);
   const addIds = await getAddsIdByCategoryId(categoryId);
   const adds: Adicional[] = [];

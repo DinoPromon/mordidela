@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { arePasswordsEquals } from "@utils/validations";
-import { getUserByEmail } from "@controllers/users";
+import { getUsuarioByEmail } from "@controllers/users";
 
 export default NextAuth({
   session: {
@@ -10,7 +10,7 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       async authorize(credentials, req) {
-        const user = await getUserByEmail(credentials.email);
+        const user = await getUsuarioByEmail(credentials.email);
         if (!user) {
           throw new Error("Dados incorretos! Verifique seu email ou senha.");
         }

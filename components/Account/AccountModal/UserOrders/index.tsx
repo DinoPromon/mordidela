@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import Loading from "@components/shared/Loading";
 import { RequestState } from "@my-types/request";
+import { FormRequestStatus } from "@components/shared";
 
 const UserOrders: React.FC = (props) => {
   const [request, setRequest] = useState<RequestState>({ error: "", isLoading: true, success: false });
@@ -15,18 +15,18 @@ const UserOrders: React.FC = (props) => {
     } catch (e) {
       const error = e as Error;
       console.log(error);
-      setRequest({ error: "", success: false, isLoading: false });
+      setRequest({ error: error.message, success: false, isLoading: false });
     }
   }
 
   useEffect(() => {
     getUserOrders();
   }, []);
-  return (
-    <Fragment>
-      {request.isLoading && <Loading />}
-      {request.success && <p>hello</p>}
-    </Fragment>
+
+  return request.success ? (
+    <p>hello</p>
+  ) : (
+    <FormRequestStatus errorMessage={request.error} isLoading={request.isLoading} />
   );
 };
 

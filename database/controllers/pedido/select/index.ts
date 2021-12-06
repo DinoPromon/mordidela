@@ -2,7 +2,7 @@ import Usuario from "@models/usuario";
 import mysql, { serialize } from "database";
 import { ViewPedidoForClient } from "@models/views";
 
-export async function getAllOrdersFromUser(id_usuario: Usuario["id_usuario"]) {
+export async function getAllPedidosFromUsuario(id_usuario: Usuario["id_usuario"]) {
   const query = `
     SELECT endereco, data_pedido, data_confirmacao, status_pedido, tipo_entrega, tipo_pagamento, troco_para, valor_total, troco
     FROM vw_pedido

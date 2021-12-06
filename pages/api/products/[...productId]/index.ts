@@ -1,17 +1,17 @@
 import type { NextApiHandler } from "next";
-import mysql from "database";
+
+import { getProdutoById } from "@controllers/produto";
+import { getSaboresByIdProduto } from "@controllers/sabor";
 import { getAddsByProductId } from "@controllers/adicional";
-import { getFlavosrByProductId } from "@controllers/sabor";
-import { getProductById } from "@controllers/produto";
 
 const handler: NextApiHandler = async (req, res) => {
   const { productId } = req.query;
 
   if (req.method === "GET") {
     try {
-      const product = await getProductById(productId as string);
+      const product = await getProdutoById(productId as string);
       const adds = await getAddsByProductId(productId as string);
-      const flavors = await getFlavosrByProductId(productId as string);
+      const flavors = await getSaboresByIdProduto(productId as string);
   
       const info = {
         ...product,

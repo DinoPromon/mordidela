@@ -1,7 +1,7 @@
 import type { NextApiHandler } from "next";
 import mysql from "database";
 
-import { getProductImageById } from "@controllers/produto";
+import { getImagemProdutoById } from "@controllers/produto";
 
 const handler: NextApiHandler = async (req, res) => {
   const { productId } = req.query;
@@ -10,7 +10,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === "GET") {
     try {
-      const image = await getProductImageById(productId as string);
+      const image = await getImagemProdutoById(productId as string);
       await mysql.end();
       if (!image) return res.status(400).json({ message: "Produto não encontrado." });
 
