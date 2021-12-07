@@ -6,7 +6,7 @@ import { MenuProduct } from "@models/produto";
 
 type Props = {
   onItemClick: (item: MenuProduct, image: string) => void;
-  changeModalImage: (img: string) => void
+  changeModalImage: (id_produto: MenuProduct['id_produto'], img: string) => void
   products: MenuProduct[];
 };
 

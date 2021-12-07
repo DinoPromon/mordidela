@@ -7,13 +7,15 @@ import { MenuProduct } from "@models/produto";
 
 type Props = {
   onClick: (item: MenuProduct, image: string) => void;
-  changeModalImage: (img: string) => void;
+  changeModalImage: (id_produto: MenuProduct["id_produto"], img: string) => void;
   item: MenuProduct;
 };
 
+const imageFallback = "/images/fallback.png";
+
 const MenuItem: React.FC<Props> = (props) => {
   const { item } = props;
-  const [imageSrc, setImageSrc] = useState("/images/fallback.png");
+  const [imageSrc, setImageSrc] = useState(imageFallback);
 
   const clickHandler = () => {
     props.onClick(item, imageSrc);
@@ -21,27 +23,32 @@ const MenuItem: React.FC<Props> = (props) => {
 
   useEffect(() => {
     let isMounted = true;
+    let url: string;
     async function getImage() {
       try {
         const response = await fetch(`/api/products/image/${item.id_produto}`, {
           method: "GET",
           headers: {
-            "Content-Type": "text",
+            "Content-Type": "blob",
           },
         });
-        const base64Image = await response.text();
-        const url = `data:image/png;base64,${base64Image}`;
-        if (base64Image) isMounted && setImageSrc(url);
+        const blob = await response.blob();
+        url = URL.createObjectURL(blob);
+        if (blob) isMounted && blob.size && setImageSrc(url);
       } catch (e) {
         const error = e as Error;
       }
     }
     getImage();
-    isMounted && props.changeModalImage(imageSrc);
     return () => {
+      if(url) URL.revokeObjectURL(url);
       isMounted = false;
     };
-  }, [imageSrc, item.id_produto]);
+  }, [item.id_produto]);
+
+  useEffect(() => {
+    props.changeModalImage(item.id_produto, imageSrc);
+  }, [imageSrc]);
 
   return (
     <ListItem onClick={clickHandler}>

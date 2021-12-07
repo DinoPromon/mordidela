@@ -5,7 +5,6 @@ import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
 import { MenuProduct } from "@models/produto";
 
-
 type Props = {
   products: MenuProduct[];
 };
@@ -25,9 +24,9 @@ const Menu: React.FC<Props> = (props) => {
     setModalItem(item);
   }, []);
 
-  const changeModalImage = React.useCallback((image: string) => {
-    setModalItemImg(image);
-  }, []);
+  const changeModalImage = React.useCallback((id_produto: MenuProduct["id_produto"], image: string) => {
+    if (modalItem?.id_produto === id_produto) setModalItemImg(image);
+  }, [modalItem?.id_produto]);
 
   return (
     <Fragment>

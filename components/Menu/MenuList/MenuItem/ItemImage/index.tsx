@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 import Wrapper from "./styled";
 
@@ -11,7 +12,14 @@ type Props = {
 const ItemImage: React.FC<Props> = (props) => {
   return (
     <Wrapper>
-      <img src={props.src} alt={props.alt} loading="lazy"/>
+        <Image
+          src={props.src}
+          alt={props.alt}
+          loading="lazy"
+          layout="fill"
+          objectFit="scale-down"
+          placeholder="empty"
+        />
     </Wrapper>
   );
 };

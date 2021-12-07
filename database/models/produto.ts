@@ -8,7 +8,7 @@ type Produto = {
   id_produto: string;
   preco_padrao: number;
   nome: string;
-  imagem: string | null;
+  imagem: Blob | null;
   disponivel: boolean;
   descricao: string | null;
   tamanho: string;

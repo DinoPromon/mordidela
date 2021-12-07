@@ -10,11 +10,10 @@ const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === "GET") {
     try {
-      const image = await getImagemProdutoById(productId as string);
+      const result = await getImagemProdutoById(productId as string);
       await mysql.end();
-      if (!image) return res.status(400).json({ message: "Produto não encontrado." });
-
-      return res.setHeader("Content-Type", "text").status(200).send(image.imagem);
+      if (!result) return res.status(400).json({ message: "Produto não encontrado." });
+      return res.setHeader("Content-Type", "blob").status(200).send(result.imagem);
     } catch (e) {
       const error = e as Error;
       console.log(error.message);
