@@ -60,17 +60,17 @@ const Cart: React.FC<Props> = (props) => {
             },
           });
           const result = await response.json();
-          if (!response.ok) throw new Error(result.message);
+          if (!response.ok) throw new Error(result.message || "");
           setRequest({ error: "", isLoading: false, success: true });
           props.onCloseModal();
           resetCart();
         }
         return;
       }
-      throw new Error('É necessário estar logado para finalizar pedidos.');
+      throw new Error("É necessário estar logado para finalizar pedidos.");
     } catch (e) {
-      // const error = e as Error;
-      // setRequest({ error: error.message, isLoading: false, success: false });
+      const error = e as Error;
+      setRequest({ error: error.message, isLoading: false, success: false });
     }
   }
 
@@ -91,7 +91,7 @@ const Cart: React.FC<Props> = (props) => {
       {products.length > 0 && (
         <Fragment>
           <h2>Seu pedido</h2>
-          <CartDeliveryType />
+          {session && <CartDeliveryType />}
           <CartOrdersList products={products} />
           <p>
             Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>

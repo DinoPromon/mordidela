@@ -18,12 +18,6 @@ const CustomFooter = styled.footer`
     font-weight: 400;
     line-height: 3rem;
   }
-
-  & > img {
-    max-height: 85px;
-    max-width: 100%;
-    margin-top: 1rem;
-  }
 `;
 
 export default CustomFooter;

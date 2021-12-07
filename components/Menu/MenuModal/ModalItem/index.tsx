@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 
 import CustomForm from "./styled";
+import ItemImage from './ItemImage';
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
@@ -103,10 +104,10 @@ const ModalItem: React.FC<Props> = (props) => {
   }
 
   function changeQuantity(quantity: number) {
-    setProductOrder({
-      ...productOrder,
+    setProductOrder((prevState) => ({
+      ...prevState,
       quantity: quantity,
-    });
+    }));
   }
 
   return (
@@ -114,7 +115,7 @@ const ModalItem: React.FC<Props> = (props) => {
       <h2>
         {item.nome} - {item.tamanho}
       </h2>
-      <img src={image} alt="Caixa de Batata" loading="lazy" />
+      <ItemImage src={image} alt={item.nome} />
       <p>{item.descricao}</p>
       {item.flavors.length > 0 && (
         <ItemFlavorsList
