@@ -8,17 +8,12 @@ import { PURPLE } from "@utils/colors";
 import { CartOrder } from "@my-types/context";
 import { InputRadio } from "@components/shared";
 
-type Props = {
-  onSetShowChange: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const CartPaymentSelect: React.FC<Props> = (props) => {
+const CartPaymentSelect: React.FC = (props) => {
   const { setPaymentType, order } = useContext(CartContext);
 
   function changePaymentType(event: React.ChangeEvent<HTMLInputElement>) {
     const { value: type } = event.target as { value: CartOrder["payment_type"] };
     setPaymentType(type);
-    props.onSetShowChange(type === "dinheiro");
   }
 
   const inputName = "input-tipo-pagamento";

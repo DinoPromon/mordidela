@@ -1,14 +1,15 @@
 import React, { Fragment, useContext, useEffect } from "react";
 
-import CartPayment from "./CartPayment";
 import CartCupom from "./CartCupom";
 import Usuario from "@models/usuario";
 import Entrega from "@models/entrega";
+import CartPayment from "./CartPayment";
+import DeliveryPrice from "./DeliveryPrice";
 import Loading from "@components/shared/Loading";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
-import { transformPriceToString } from "@utils/transformation";
 import { RequestState } from "@my-types/request";
+import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   canSubmit: boolean;
@@ -24,8 +25,7 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
   const isDelivery = order.order_type === "entrega";
 
   function getTotalPrice() {
-    if (isDelivery && order.tipo_cupom !== "entrega")
-      return props.subTotalPrice + (order.delivery_price as number);
+    if (isDelivery && order.tipo_cupom !== "entrega") return props.subTotalPrice + (order.delivery_price as number);
     return props.subTotalPrice;
   }
 
@@ -40,13 +40,11 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
     getDeliveryPrice();
   }, [changeDeliveryPrice]);
 
+  const shouldShowDeliveryPrice = isDelivery && order.tipo_cupom !== "entrega";
+
   return (
     <Fragment>
-      {isDelivery && order.tipo_cupom !== "entrega" && (
-        <p>
-          Entrega: <span>R$ {transformPriceToString(order.delivery_price as number)}</span>
-        </p>
-      )}
+      <DeliveryPrice deliveryPrice={order.delivery_price as number} shoulShowDeliveryPrice={shouldShowDeliveryPrice} />
       <CartCupom />
       {order.tipo_cupom === "entrega" && <p>Desconto de entrega aplicado.</p>}
       {order.tipo_cupom === "pedido" && order.valor_desconto && (

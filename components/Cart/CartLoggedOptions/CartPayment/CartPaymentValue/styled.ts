@@ -1,12 +1,23 @@
-import { PINK, PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+import { PINK, PURPLE } from "@utils/colors";
+import { fadeDuration, fadeIn, fadeOut } from "@utils/animations";
+
+type Props = {
+  shouldShowComponent: boolean;
+};
+
+const Wrapper = styled.div<Props>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+
+  animation-name: ${(props) => (props.shouldShowComponent ? fadeIn : fadeOut)};
+  animation-duration: ${fadeDuration}ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
 
   & > h3 {
     color: ${PURPLE};
@@ -33,7 +44,7 @@ const Wrapper = styled.div`
     }
 
     & > p {
-        padding: 0 0.5rem;
+      padding: 0 0.5rem;
     }
   }
 `;
