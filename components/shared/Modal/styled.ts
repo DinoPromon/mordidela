@@ -1,8 +1,43 @@
-import styled from "styled-components";
-import { PINK, PURPLE } from "@utils/colors";
+import styled, { keyframes } from "styled-components";
 
-const Wrapper = styled.div`
+import { PINK  } from "@utils/colors";
+
+const openAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const closeAnimation = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+`;
+
+type Props = {
+  isCloseAnimation: boolean;
+  duration: number;
+};
+
+const Wrapper = styled.div<Props>`
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: 0;
   right: 0;
   bottom: 0;
@@ -10,21 +45,20 @@ const Wrapper = styled.div`
   z-index: 999;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
   overflow: hidden;
 
   & > div {
-    position: absolute;
+    position: relative;
     background-color: white;
     width: 90%;
     max-width: 600px;
-    margin: auto;
     border-radius: 0.5rem;
     overflow: hidden;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0;
-    left: 0;
+    animation-name: ${(props) => (props.isCloseAnimation ? closeAnimation : openAnimation)};
+    animation-duration: ${(props) => `${props.duration}ms`};
+    animation-timing-function: ${(props) => (props.isCloseAnimation ? "ease-out" : "ease-out")};
+    animation-fill-mode: forwards;
 
     & > span {
       font-size: 2rem;

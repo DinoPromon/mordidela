@@ -11,11 +11,18 @@ const Modal: React.FC<Props> = (props) => {
   const [offsetY, setOffsetY] = useState(window.scrollY);
   const { ref: modalRef, isComponentVisible } = useComponentVisible(true);
 
+  const duration = 400;
+
   useEffect(() => {
     if (isComponentVisible)
       document.body.setAttribute("style", `position: fixed; top: -${window.scrollY}px; left 0; right:0`);
 
-    if (!isComponentVisible) props.onClose();
+    if (!isComponentVisible) {
+      const timer = setTimeout(() => {
+        props.onClose();
+        return () => clearTimeout(timer);
+      }, duration + 100);
+    }
 
     return () => {
       document.body.setAttribute("style", "");
@@ -24,7 +31,7 @@ const Modal: React.FC<Props> = (props) => {
   }, [isComponentVisible]);
 
   return (
-    <Wrapper>
+    <Wrapper isCloseAnimation={!isComponentVisible} duration={duration}>
       <div ref={modalRef as React.Ref<HTMLDivElement>}>
         <span onClick={props.onClose}>&times;</span>
         <Scroller>{props.children}</Scroller>
