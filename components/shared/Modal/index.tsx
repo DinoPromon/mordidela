@@ -9,9 +9,13 @@ type Props = {
 
 const Modal: React.FC<Props> = (props) => {
   const [offsetY, setOffsetY] = useState(window.scrollY);
-  const { ref: modalRef, isComponentVisible } = useComponentVisible(true);
+  const { ref: modalRef, isComponentVisible, setIsComponentVisible } = useComponentVisible(true);
 
   const duration = 400;
+
+  function buttonCloseHandler() {
+    setIsComponentVisible(false);
+  }
 
   useEffect(() => {
     if (isComponentVisible)
@@ -33,7 +37,7 @@ const Modal: React.FC<Props> = (props) => {
   return (
     <Wrapper isCloseAnimation={!isComponentVisible} duration={duration}>
       <div ref={modalRef as React.Ref<HTMLDivElement>}>
-        <span onClick={props.onClose}>&times;</span>
+        <span onClick={buttonCloseHandler}>&times;</span>
         <Scroller>{props.children}</Scroller>
       </div>
     </Wrapper>
