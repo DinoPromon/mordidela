@@ -8,6 +8,7 @@ import CartDeliveryType from "./CartDeliveryType";
 import CartEmptyMessage from "./CartEmptyMessage";
 import CartLoggedOptions from "./CartLoggedOptions";
 import { CartContext } from "@store/cart";
+import { Modal } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
 
@@ -15,7 +16,7 @@ type Props = {
   onCloseModal: () => void;
 };
 
-const Cart: React.FC<Props> = (props) => {
+const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoadingSession, setIsLoadingSession] = useState(true);
   const [request, setRequest] = useState<RequestState>({ error: "", isLoading: false, success: false });
@@ -62,7 +63,7 @@ const Cart: React.FC<Props> = (props) => {
           const result = await response.json();
           if (!response.ok) throw new Error(result.message || "");
           setRequest({ error: "", isLoading: false, success: true });
-          props.onCloseModal();
+          onCloseModal();
           resetCart();
         }
         return;
@@ -86,29 +87,31 @@ const Cart: React.FC<Props> = (props) => {
   const subTotalPrice = getSubTotalPrice();
 
   return (
-    <CustomForm onSubmit={submitHandler}>
-      {!products.length && <CartEmptyMessage />}
-      {products.length > 0 && (
-        <Fragment>
-          <h2>Seu pedido</h2>
-          {session && <CartDeliveryType />}
-          <CartOrdersList products={products} />
-          <p>
-            Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
-          </p>
-          {session && !isLoadingSession && (
-            <CartLoggedOptions
-              canSubmit={canSubmit}
-              onSetIsPaymentOk={setIsPaymentOk}
-              subTotalPrice={subTotalPrice}
-              userId={session.user.id_usuario}
-              request={request}
-            />
-          )}
-          {!session && !isLoadingSession && <p>Faça login para continuar sua compra!</p>}
-        </Fragment>
-      )}
-    </CustomForm>
+    <Modal onClose={onCloseModal}>
+      <CustomForm onSubmit={submitHandler}>
+        {!products.length && <CartEmptyMessage />}
+        {products.length > 0 && (
+          <Fragment>
+            <h2>Seu pedido</h2>
+            {session && <CartDeliveryType />}
+            <CartOrdersList products={products} />
+            <p>
+              Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
+            </p>
+            {session && !isLoadingSession && (
+              <CartLoggedOptions
+                canSubmit={canSubmit}
+                onSetIsPaymentOk={setIsPaymentOk}
+                subTotalPrice={subTotalPrice}
+                userId={session.user.id_usuario}
+                request={request}
+              />
+            )}
+            {!session && !isLoadingSession && <p>Faça login para continuar sua compra!</p>}
+          </Fragment>
+        )}
+      </CustomForm>
+    </Modal>
   );
 };
 

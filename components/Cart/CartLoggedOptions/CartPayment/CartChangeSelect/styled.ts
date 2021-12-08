@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { fadeIn, fadeOut, fadeDuration } from "@utils/animations";
+import { fadeAnimation } from "@utils/animations";
 import { PURPLE } from "@utils/colors";
 
 type Props = {
@@ -13,11 +13,7 @@ const Wrapper = styled.div<Props>`
   gap: 1rem;
   justify-content: center;
 
-  animation-name: ${(props) => (props.shouldShowComponent ? fadeIn : fadeOut)};
-  animation-duration: ${fadeDuration}ms;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-out;
-
+  ${(props) => fadeAnimation(props.shouldShowComponent)}
   & > h3 {
     color: ${PURPLE};
   }
