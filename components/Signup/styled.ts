@@ -11,6 +11,11 @@ const Wrapper = styled.div`
   gap: 1.5rem;
   max-width: 400px;
 
+  .image-wrapper {
+    position: relative;
+    height: 140px;
+  }
+
   & > img {
     align-self: center;
     width: 150px;

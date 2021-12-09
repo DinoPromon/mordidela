@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 import Wrapper from "./styled";
-import { AddressForm, SignUpForm } from "@components/Forms";
-import { UserFormData, AddressFormData } from "@my-types/forms";
 import { Response } from "@my-types/request";
+import { UserFormData, AddressFormData } from "@my-types/forms";
+import { AddressForm, SignUpForm } from "@components/Forms";
 
 const signupInitialState: UserFormData = Object.freeze({
   nome: "",
@@ -67,10 +68,14 @@ const Signup: React.FC = () => {
 
   return (
     <Wrapper>
-      <img
-        src={isAddressForm ? "/images/address.svg" : "/images/profile_pic.svg"}
-        alt="Ícone de criação de perfil."
-      />
+      <div className="image-wrapper">
+        <Image
+          src={isAddressForm ? "/images/address.svg" : "/images/profile_pic.svg"}
+          alt="Ícone de criação de perfil."
+          layout="fill"
+          objectFit="scale-down"
+        />
+      </div>
       {isAddressForm ? (
         <AddressForm
           onSubmit={sendRequest}
