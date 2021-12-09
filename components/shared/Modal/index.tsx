@@ -36,7 +36,7 @@ const Modal: React.FC<Props> = (props) => {
 
   return (
     <Wrapper isCloseAnimation={!isComponentVisible} duration={duration} shouldShowComponent={isComponentVisible}>
-      <div ref={modalRef as React.Ref<HTMLDivElement>}>
+      <div ref={modalRef as React.Ref<HTMLDivElement>} id="modal-content-container" >
         <span onClick={buttonCloseHandler}>&times;</span>
         <Scroller>{props.children}</Scroller>
       </div>

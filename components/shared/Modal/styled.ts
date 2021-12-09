@@ -6,7 +6,7 @@ import { fadeAnimation, fadeDuration } from "@utils/animations";
 const openAnimation = keyframes`
   from {
     opacity: 0;
-    transform: translateY(-20%);
+    transform: translateY(clamp(-80px, -100px, -20%));
   }
 
   to {
@@ -24,7 +24,7 @@ const closeAnimation = keyframes`
     opacity: 1;
   }
   100% {
-    transform: translateY(-20%);
+    transform: translateY(clamp(-40px, -60px, -20%));
     opacity: 0;
   }
 `;
@@ -51,7 +51,7 @@ const Wrapper = styled.div<Props>`
   overflow: hidden;
   ${(props) => fadeAnimation(props.shouldShowComponent, fadeDuration - 70)}
 
-  & > div {
+  #modal-content-container {
     position: relative;
     background-color: white;
     width: 90%;
