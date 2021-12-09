@@ -20,10 +20,10 @@ export function phoneNumberChangeHandler(curNumber: string, prevNumber: string) 
   const failPattern = /(\D)$/;
   const clearNumber = clearPhoneNumber(curNumber);
 
+  if (failPattern.test(curNumber) && curNumber.length > prevNumber.length) return prevNumber;
   if (clearNumber.length < 2) return clearNumber;
   if (curNumber === prevNumber.slice(0, -1)) return curNumber;
-
-  if (failPattern.test(curNumber) || clearNumber.length > 11) return prevNumber;
+  if (clearNumber.length > 11) return prevNumber;
 
   return formatPhoneNumber(clearNumber);
 }
