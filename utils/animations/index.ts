@@ -5,9 +5,9 @@ import fadeOut from "./fade-out";
 
 const fadeDuration = 200;
 
-const fadeAnimation = (shouldShowComponent: boolean) => css`
+const fadeAnimation = (shouldShowComponent: boolean, duration: number) => css`
   animation-name: ${shouldShowComponent ? fadeIn : fadeOut};
-  animation-duration: ${fadeDuration}ms;
+  animation-duration: ${duration}ms;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
 `;

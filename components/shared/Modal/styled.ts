@@ -1,11 +1,7 @@
 import styled, { keyframes, css } from "styled-components";
 
 import { PINK } from "@utils/colors";
-import { fadeAnimation } from "@utils/animations";
-
-type AnimationProps = {
-  color: string;
-};
+import { fadeAnimation, fadeDuration } from "@utils/animations";
 
 const openAnimation = keyframes`
   from {
@@ -51,9 +47,9 @@ const Wrapper = styled.div<Props>`
   z-index: 999;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.35);
   overflow: hidden;
-  ${(props) => fadeAnimation(props.shouldShowComponent)}
+  ${(props) => fadeAnimation(props.shouldShowComponent, fadeDuration - 70)}
 
   & > div {
     position: relative;

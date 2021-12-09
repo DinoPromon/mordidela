@@ -4,22 +4,25 @@ import Image from "next/image";
 import Wrapper from "./styled";
 
 type Props = {
-  src: string;
+  src?: string;
   alt: string;
   loading?: "lazy" | "eager";
 };
 
-const ItemImage: React.FC<Props> = (props) => {
+const ItemImage: React.FC<Props> = ({ src, alt, loading }) => {
   return (
     <Wrapper>
+      {src && (
         <Image
-          src={props.src}
-          alt={props.alt}
-          loading="lazy"
+          src={src}
+          alt={alt}
+          loading={loading || "lazy"}
           layout="fill"
           objectFit="scale-down"
-          placeholder="empty"
+          blurDataURL={src}
+          placeholder="blur"
         />
+      )}
     </Wrapper>
   );
 };

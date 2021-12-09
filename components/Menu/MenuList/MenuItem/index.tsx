@@ -6,16 +6,16 @@ import ItemDescription from "./ItemDescription";
 import { MenuProduct } from "@models/produto";
 
 type Props = {
-  onClick: (item: MenuProduct, image: string) => void;
-  changeModalImage: (id_produto: MenuProduct["id_produto"], img: string) => void;
+  onClick: (item: MenuProduct, img?: string) => void;
+  changeModalImage: (id_produto: MenuProduct["id_produto"], img?: string) => void;
   item: MenuProduct;
 };
 
-const imageFallback = "/images/fallback.png";
+const imgFallback = "/images/fallback.png";
 
 const MenuItem: React.FC<Props> = (props) => {
   const { item } = props;
-  const [imageSrc, setImageSrc] = useState(imageFallback);
+  const [imageSrc, setImageSrc] = useState<string>();
 
   const clickHandler = () => {
     props.onClick(item, imageSrc);
@@ -34,14 +34,14 @@ const MenuItem: React.FC<Props> = (props) => {
         });
         const blob = await response.blob();
         url = URL.createObjectURL(blob);
-        if (blob) isMounted && blob.size && setImageSrc(url);
+        if (isMounted) setImageSrc(blob.size > 0 ? url : imgFallback);
       } catch (e) {
         const error = e as Error;
       }
     }
     getImage();
     return () => {
-      if(url) URL.revokeObjectURL(url);
+      if (url) URL.revokeObjectURL(url);
       isMounted = false;
     };
   }, [item.id_produto]);

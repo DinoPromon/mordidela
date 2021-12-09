@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { PINK, PURPLE } from "@utils/colors";
-import { fadeAnimation } from "@utils/animations";
+import { fadeAnimation, fadeDuration } from "@utils/animations";
 
 type Props = {
   shouldShowComponent: boolean;
@@ -14,7 +14,7 @@ const Wrapper = styled.div<Props>`
   align-items: center;
   gap: 0.5rem;
 
-  ${(props) => fadeAnimation(props.shouldShowComponent)}
+  ${(props) => fadeAnimation(props.shouldShowComponent, fadeDuration)}
   & > h3 {
     color: ${PURPLE};
   }

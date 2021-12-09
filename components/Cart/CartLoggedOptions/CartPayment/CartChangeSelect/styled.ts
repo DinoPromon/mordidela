@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { fadeAnimation } from "@utils/animations";
+import { fadeAnimation, fadeDuration } from "@utils/animations";
 import { PURPLE } from "@utils/colors";
 
 type Props = {
@@ -13,7 +13,7 @@ const Wrapper = styled.div<Props>`
   gap: 1rem;
   justify-content: center;
 
-  ${(props) => fadeAnimation(props.shouldShowComponent)}
+  ${(props) => fadeAnimation(props.shouldShowComponent, fadeDuration)}
   & > h3 {
     color: ${PURPLE};
   }
