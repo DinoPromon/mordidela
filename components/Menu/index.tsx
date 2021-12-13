@@ -18,14 +18,14 @@ const Menu: React.FC<Props> = (props) => {
     setShowModal(false);
   }, []);
 
-  const changeModalItem = React.useCallback((item: MenuProduct, image: string) => {
-    setModalItemImg(image);
+  const changeModalItem = React.useCallback((item: MenuProduct, image?: string) => {
+    setModalItemImg(image as string);
     setShowModal(true);
     setModalItem(item);
   }, []);
 
-  const changeModalImage = React.useCallback((id_produto: MenuProduct["id_produto"], image: string) => {
-    if (modalItem?.id_produto === id_produto) setModalItemImg(image);
+  const changeModalImage = React.useCallback((id_produto: MenuProduct["id_produto"], image?: string) => {
+    if (modalItem?.id_produto === id_produto) setModalItemImg(image as string);
   }, [modalItem?.id_produto]);
 
   return (
