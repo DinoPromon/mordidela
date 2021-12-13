@@ -25,7 +25,7 @@ const CustomForm = styled.form`
     display: flex;
     flex-direction: column;
     list-style: none;
-    gap: 0.75rem;
+    gap: 0.5rem;
 
     & > h3 {
       color: ${PURPLE};
@@ -34,10 +34,12 @@ const CustomForm = styled.form`
 
   & > textarea {
     background-color: white;
+    font-family: inherit;
+    color: inherit;
+    margin: 0.5rem 0;
     width: 100%;
-    padding: 5px;
+    padding: 0.5rem;
     text-align: center;
-    margin-top: 1rem;
     border-radius: 0.25rem;
     border: 1px ${PURPLE} solid;
     outline: none;
