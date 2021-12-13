@@ -82,7 +82,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       setIsLoadingSession(false);
     }
     if (!session) hasSession();
-  }, []);
+  }, [session]);
 
   const subTotalPrice = getSubTotalPrice();
 
