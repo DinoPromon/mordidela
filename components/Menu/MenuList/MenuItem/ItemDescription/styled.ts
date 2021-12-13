@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   & > span {
     font-size: 1rem;
     font-weight: 500;
-    padding: 0 0.75rem;
+    padding: 0 0.25rem;
   }
 `;
 
