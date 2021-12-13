@@ -4,7 +4,7 @@ const Wrapper = styled.div`
   position: relative; 
   width: 100%;
   cursor: pointer;
-  height: 25vh;
+  height: 200px;
 `;
 
 export default Wrapper;

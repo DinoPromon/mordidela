@@ -18,7 +18,7 @@ const ItemImage: React.FC<Props> = ({ src, alt, loading }) => {
           alt={alt}
           loading={loading || "lazy"}
           layout="fill"
-          objectFit="scale-down"
+          objectFit="contain"
           blurDataURL={src}
           placeholder="blur"
         />
