@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #fafafa;
+  color: #3b3b3b;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  overflow-y: inherit;
+  overflow-x: inherit;
+}
