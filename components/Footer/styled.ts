@@ -16,7 +16,6 @@ const CustomFooter = styled.footer`
   & > h3 {
     text-align: center;
     letter-spacing: 3px;
-    font-size: 1.25rem;
     font-weight: 600;
   }
 `;
