@@ -5,6 +5,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import SideBarList from "./SideBarList";
+import { MordidelaLogoWithLabel } from "@components/shared";
 import useComponentVisible from "@hooks/useComponenteVisible";
 import Aside, { renderAnimation, unmountAnimation, SIDEBAR_ANIMATION_TIME } from "./styled";
 
@@ -41,7 +42,7 @@ const SideBar: React.FC<Props> = (props) => {
       </button>
       <Link href="/" passHref>
         <a onClick={closeHandler}>
-          <Image src="/images/label_logo.png" alt="Logo do mordidela." width={110} height={90} layout="intrinsic" />
+          <MordidelaLogoWithLabel />
         </a>
       </Link>
       <SideBarList onClose={closeHandler} />

@@ -5,5 +5,6 @@ import InputCheckbox from "./InputCheckbox";
 import FormRequestStatus from "./FormRequestStatus";
 import Loading from "./Loading";
 import Modal from "./Modal";
+import MordidelaLogoWithLabel from "./MordidelaLogoWithLabel";
 
-export { FormButton, FormInput, InputRadio, InputCheckbox, FormRequestStatus, Loading, Modal };
+export { FormButton, FormInput, InputRadio, InputCheckbox, FormRequestStatus, Loading, Modal, MordidelaLogoWithLabel };

@@ -54,12 +54,8 @@ const Aside = styled.aside<Props>`
   }
 
   & > a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 0;
-    margin-top: 1rem;
+    text-decoration: none;
+    margin-top: 1.25rem;
   }
 `;
 

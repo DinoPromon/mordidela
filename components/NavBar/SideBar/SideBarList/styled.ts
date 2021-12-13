@@ -12,7 +12,7 @@ const Wrapper = styled.ul`
   & > li {
     padding: 0.5rem 0;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 500;
     letter-spacing: 1px;
     color: white;
     & > a {

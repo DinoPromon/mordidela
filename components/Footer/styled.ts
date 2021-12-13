@@ -7,16 +7,17 @@ const CustomFooter = styled.footer`
   margin-top: auto;
   color: white;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  text-align: center;
-  height: 180px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
 
   & > h3 {
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 3rem;
+    text-align: center;
+    letter-spacing: 3px;
+    font-size: 1.25rem;
+    font-weight: 600;
   }
 `;
 
