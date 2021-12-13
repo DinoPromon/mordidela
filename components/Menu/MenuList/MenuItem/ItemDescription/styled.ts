@@ -14,13 +14,11 @@ const Wrapper = styled.div`
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   background-color: ${ORANGE};
-
   cursor: pointer;
 
   & > span {
-    letter-spacing: 1px;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 500;
     padding: 0 0.75rem;
   }
 `;

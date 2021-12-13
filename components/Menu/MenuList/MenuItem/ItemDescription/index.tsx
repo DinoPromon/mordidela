@@ -13,7 +13,7 @@ const ItemDescription: React.FC<Props> = (props) => {
 
   return (
     <Wrapper>
-      <span>{name.toLocaleUpperCase()}</span>
+      <span>{name.toLocaleLowerCase()}</span>
       <span>R$ {transformPriceToString(price)}</span>
     </Wrapper>
   );
