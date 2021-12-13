@@ -14,11 +14,11 @@ type Props = {
 const imgFallback = "/images/fallback.png";
 
 const MenuItem: React.FC<Props> = (props) => {
-  const { item } = props;
+  const { item, onClick, changeModalImage } = props;
   const [imageSrc, setImageSrc] = useState<string>();
 
   const clickHandler = () => {
-    props.onClick(item, imageSrc);
+    onClick(item, imageSrc);
   };
 
   useEffect(() => {
@@ -47,8 +47,8 @@ const MenuItem: React.FC<Props> = (props) => {
   }, [item.id_produto]);
 
   useEffect(() => {
-    props.changeModalImage(item.id_produto, imageSrc);
-  }, [imageSrc]);
+    changeModalImage(item.id_produto, imageSrc);
+  }, [changeModalImage, item.id_produto, imageSrc]);
 
   return (
     <ListItem onClick={clickHandler}>
