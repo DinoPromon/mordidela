@@ -13,7 +13,7 @@ const ItemCounter: React.FC<Props> = (props) => {
   const { quantity, setQuantity } = props;
 
   function decrementHandler() {
-    return quantity > 0 && setQuantity(quantity - 1);
+    quantity > 1 && setQuantity(quantity - 1);
   }
 
   function incrementHandler() {
