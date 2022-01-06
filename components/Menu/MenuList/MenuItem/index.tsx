@@ -15,10 +15,10 @@ const imgFallback = "/images/fallback.png";
 
 const MenuItem: React.FC<Props> = (props) => {
   const { item, onClick, changeModalImage } = props;
-  const [imageSrc, setImageSrc] = useState<string>();
+  const [imageSrc, setImageSrc] = useState<string>("");
 
   const clickHandler = () => {
-    onClick(item, imageSrc);
+    if (imageSrc) onClick(item, imageSrc);
   };
 
   useEffect(() => {
