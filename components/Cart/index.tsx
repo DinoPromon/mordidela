@@ -11,6 +11,7 @@ import { CartContext } from "@store/cart";
 import { Modal } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
+import CartAddress from "./CartAddress";
 
 type Props = {
   onCloseModal: () => void;
@@ -94,6 +95,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           <Fragment>
             <h2>Seu pedido</h2>
             {session && <CartDeliveryType />}
+            <CartAddress />
             <CartOrdersList products={products} />
             <p>
               Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
