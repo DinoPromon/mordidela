@@ -1,13 +1,14 @@
 import { ViewPedidoForClient } from "@models/views";
 import React from "react";
 
-import Item from "./styled";
+import { ColoredText, Item } from "./styled";
+import { PURPLE, PINK } from "@utils/colors";
 import {
+  toCamelCase,
+  getHourFromDate,
+  transformDeliveryType,
   transformPriceToString,
   transformDateFromDBToClient,
-  transformDeliveryType,
-  getHourFromDate,
-  toCamelCase,
 } from "@utils/transformation";
 
 type Props = {
@@ -20,9 +21,10 @@ const OrderHistory: React.FC<Props> = (props) => {
   return (
     <Item>
       <p>
-        Pedido <span>Nº {order.id_pedido}</span> realizado em{" "}
-        <span>{transformDateFromDBToClient(order.data_pedido)}</span> às{" "}
-        <span>{getHourFromDate(order.data_pedido)}</span> - Total: R$ <span>{transformPriceToString(order.valor_total)}</span>
+        Pedido <ColoredText color={PINK}>Nº {order.id_pedido}</ColoredText> realizado em{" "}
+        <ColoredText color={PURPLE}>{transformDateFromDBToClient(order.data_pedido)}</ColoredText> às{" "}
+        <ColoredText color={PINK}>{getHourFromDate(order.data_pedido)}</ColoredText> - Total: R${" "}
+        <ColoredText color={PURPLE}>{transformPriceToString(order.valor_total)}</ColoredText>
       </p>
       <p>Tipo da entrega: {transformDeliveryType(order.tipo_entrega)}</p>
       <p>Endereço: {order.endereco}</p>
