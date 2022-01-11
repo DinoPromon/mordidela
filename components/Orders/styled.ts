@@ -1,18 +1,19 @@
 import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-
-  padding: 2rem 0;
-  width: 100%;
-  width: 85%;
-  margin: 0 auto;
-  & > h1 {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-    padding: 1rem 0;
-    color: ${PURPLE};
-  }
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
-export default Wrapper;
+export const Titulo = styled.span`
+  display: flex;
+  font-size: 2.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: ${PURPLE};
+  align-items: center;
+  justify-content: center;
+`;
