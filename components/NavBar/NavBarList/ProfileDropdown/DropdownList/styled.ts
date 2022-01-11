@@ -23,7 +23,7 @@ type Props = {
   animation: ReturnType<typeof keyframes>;
 };
 
-const Wrapper = styled.ul<Props>`
+export const DropdownListContainer = styled.ul<Props>`
   position: absolute;
   text-align: center;
   z-index: 2;
@@ -52,23 +52,24 @@ const Wrapper = styled.ul<Props>`
   }
 
   & > li {
+  }
+`;
+
+export const DropdownListItem = styled.li`
+  color: ${PURPLE};
+  padding: 0.5rem 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  & > a {
     color: ${PURPLE};
     padding: 0.5rem 0;
+    text-decoration: none;
 
     &:hover {
       cursor: pointer;
     }
-
-    & > a {
-      color: ${PURPLE};
-      padding: 0.5rem 0;
-      text-decoration: none;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
   }
 `;
-
-export default Wrapper;

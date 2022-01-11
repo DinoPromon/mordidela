@@ -4,7 +4,13 @@ import Link from "next/link";
 
 import useComponentVisible from "@hooks/useComponenteVisible";
 
-import Wrapper, { unmountAnimation, renderAnimation, DROPDOWN_ANIMATION_TIME } from "./styled";
+import {
+  unmountAnimation,
+  renderAnimation,
+  DropdownListItem,
+  DropdownListContainer,
+  DROPDOWN_ANIMATION_TIME,
+} from "./styled";
 
 type Props = {
   isShowingDropdown: boolean;
@@ -31,13 +37,15 @@ const DropdownList: React.FC<Props> = (props) => {
   }, [isComponentVisible, setShowDropdown]);
 
   return (
-    <Wrapper ref={dropdownRef as React.Ref<HTMLUListElement>} animation={dropdownAnimation}>
-      <li>
+    <DropdownListContainer ref={dropdownRef as React.Ref<HTMLUListElement>} animation={dropdownAnimation}>
+      <DropdownListItem>
         <Link href="/minha-conta">Minha conta</Link>
-      </li>
-      <li>Pedidos</li>
-      <li onClick={logoutHandler}>Sair</li>
-    </Wrapper>
+      </DropdownListItem>
+      <DropdownListItem>
+        <Link href="/pedidos">Pedidos</Link>
+      </DropdownListItem>
+      <DropdownListItem onClick={logoutHandler}>Sair</DropdownListItem>
+    </DropdownListContainer>
   );
 };
 
