@@ -1,18 +1,20 @@
 import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const OrdersContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 3rem;
 
-  padding: 2rem 0;
-  width: 100%;
-  width: 85%;
-  margin: 0 auto;
-  & > h1 {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-    padding: 1rem 0;
-    color: ${PURPLE};
+  @media (max-width: 600px) {
+    padding: 1rem 1.5rem;
   }
 `;
 
-export default Wrapper;
+export const OrdersTitle = styled.h1`
+  display: flex;
+  font-size: 2.5rem;
+  margin: 1rem 0;
+  font-weight: bold;
+  color: ${PURPLE};
+`;

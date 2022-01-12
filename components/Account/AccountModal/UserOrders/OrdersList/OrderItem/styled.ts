@@ -6,7 +6,7 @@ type Props = {
   statusPedido: Pedido["status_pedido"];
 };
 
-const Item = styled.li<Props>`
+/* const Item = styled.li<Props>`
   & > ul {
     list-style: none;
     display: flex;
@@ -20,6 +20,29 @@ const Item = styled.li<Props>`
       }
     }
   }
+`; */
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > h3 {
+    & > span {
+      color: ${PURPLE};
+      font-weight: normal;
+    }
+  }
+  & > p {
+    cursor: pointer;
+    font-size: 14px;
+    color: ${PURPLE};
+  }
+
+  & > span {
+   font-weight: bold;
+   color: ${PURPLE};
+  }
+
 `;
 
-export default Item;
+export default Wrapper;

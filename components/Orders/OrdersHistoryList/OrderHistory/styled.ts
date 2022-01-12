@@ -1,21 +1,33 @@
-import styled from "styled-components";
 import { PURPLE, PINK } from "@utils/colors";
+import styled from "styled-components";
 
-const Item = styled.li`
+type ColoredTextProps = {
+  color: string;
+};
+
+export const OrderHistoryItem = styled.li`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+`;
 
-  & > p {
-    & > span {
-      &:nth-child(odd) {
-        color: ${PINK};
-      }
-      &:nth-child(even) {
-        color: ${PURPLE}
-      }
-    }
+export const ColoredText = styled.span<ColoredTextProps>`
+  color: ${(props) => props.color};
+  font-weight: bold;
+`;
+
+export const MoreDetails = styled.span`
+  color: ${PURPLE};
+  font-weight: bold;
+  align-self: flex-start;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
-export default Item;
+
