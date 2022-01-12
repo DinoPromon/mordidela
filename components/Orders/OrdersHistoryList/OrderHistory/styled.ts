@@ -5,7 +5,7 @@ type ColoredTextProps = {
   color: string;
 };
 
-export const Item = styled.li`
+export const OrderHistoryItem = styled.li`
   display: flex;
   flex-direction: column;
   background-color: white;
