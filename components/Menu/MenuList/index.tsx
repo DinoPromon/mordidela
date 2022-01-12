@@ -14,18 +14,16 @@ const MenuList: React.FC<Props> = (props) => {
   const { products } = props;
 
   return (
-    <main>
-      <List>
-        {products.map((product) => (
-          <MenuItem
-            onClick={props.onItemClick}
-            item={product}
-            key={`${product.nome}-${product.id_produto}`}
-            changeModalImage={props.changeModalImage}
-          />
-        ))}
-      </List>
-    </main>
+    <List>
+      {products.map((product) => (
+        <MenuItem
+          onClick={props.onItemClick}
+          item={product}
+          key={`${product.nome}-${product.id_produto}`}
+          changeModalImage={props.changeModalImage}
+        />
+      ))}
+    </List>
   );
 };
 
