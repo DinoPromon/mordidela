@@ -5,6 +5,7 @@ export const FilterContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  white-space: nowrap;
   padding: 0 1.5rem;
   width: 100%;
 
