@@ -2,16 +2,21 @@ import React, { useContext, Fragment, useState, useEffect } from "react";
 import { getSession } from "next-auth/client";
 import type { Session } from "next-auth";
 
-import CustomForm from "./styled";
+/* import CustomForm from "./styled"; */
 import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";
 import CartEmptyMessage from "./CartEmptyMessage";
 import CartLoggedOptions from "./CartLoggedOptions";
 import { CartContext } from "@store/cart";
-import { Modal } from "@components/shared";
+import { FormButton, Modal } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
 import CartAddress from "./CartAddress";
+/* import { CartOrderConfirmedIcon, CartOrderConfirmedMessage } from "./styled"; */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
+import CustomForm from "./styled";
+
 
 type Props = {
   onCloseModal: () => void;
@@ -113,6 +118,18 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           </Fragment>
         )}
       </CustomForm>
+
+      {/* Confirmação do pedido */}
+      {/* <CartOrderConfirmation>Tem certeza que deseja finalizar seu pedido?</CartOrderConfirmation>
+      <CartOrderConfirmationButtons>
+        <FormButton>Não</FormButton>
+        <FormButton>Sim</FormButton>
+      </CartOrderConfirmationButtons> */}
+
+      {/* Pedido realizado com sucesso */}
+      {/* <CartOrderConfirmedIcon><FontAwesomeIcon icon={faCheckCircle} size="5x" color="green" /></CartOrderConfirmedIcon>
+      <CartOrderConfirmedMessage>Pedido realizado com sucesso!</CartOrderConfirmedMessage> */}
+
     </Modal>
   );
 };

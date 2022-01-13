@@ -28,8 +28,7 @@ const NavBarList: React.FC<Props> = (props) => {
 
   return (
     <Wrapper>
-      {/* {showModal && <Cart onCloseModal={closeModalHandler} />} */}
-      {showModal && <Modal onClose={closeModalHandler} />}
+      {showModal && <Cart onCloseModal={closeModalHandler} />}
       <li onClick={openSideBar}>
         <FontAwesomeIcon icon={faBars} size="lg" color="white" />
       </li>

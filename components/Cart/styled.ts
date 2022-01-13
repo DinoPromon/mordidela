@@ -44,3 +44,44 @@ const CustomForm = styled.form`
 `;
 
 export default CustomForm;
+
+// CSS da confirmação do pedido
+/* export const CartOrderConfirmation = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-top: 2rem;
+`;
+
+export const CartOrderConfirmationButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+
+  & > button:nth-child(odd) {
+    background-color: red;
+  }
+
+  & > button:nth-child(even) {
+    background-color: green;
+  }
+`; */
+
+// CSS de pedido confirmado
+/* export const CartOrderConfirmedIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+`;
+
+export const CartOrderConfirmedMessage = styled.div`
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+`; */
