@@ -1,8 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Link from "next/link";
 import { getSession } from "next-auth/client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import { FaUserAlt, FaAngleDown, FaAngleUp } from "react-icons/fa/index";
 
 import Wrapper from "./styled";
 import DropdownList from "./DropdownList";
@@ -11,10 +10,6 @@ const ProfileDropdown: React.FC = (props) => {
   const [sessionStatus, setSessionStatus] = useState<"loading" | "loggedin" | "loggedout">("loading");
   const [nome, setNome] = useState<string>();
   const [showDropdown, setShowDropdown] = useState(false);
-
-  const getDropdownIcon = () => {
-    return showDropdown ? faAngleUp : faAngleDown;
-  };
 
   const showDropdownHandler = () => {
     setShowDropdown((prevState) => !prevState);
@@ -51,11 +46,15 @@ const ProfileDropdown: React.FC = (props) => {
 
   return (
     <Wrapper onClick={showDropdownHandler}>
-      <FontAwesomeIcon icon={faUser} size="lg" color="white" />
+      <FaUserAlt size={24} color="white" style={{ verticalAlign: "middle" }} />
       {sessionStatus === "loggedin" && (
         <Fragment>
           <span>{nome}</span>
-          <FontAwesomeIcon icon={getDropdownIcon()} size="lg" color="white" />
+          {showDropdown ? (
+            <FaAngleUp size={24} color="white" style={{ verticalAlign: "middle" }} />
+          ) : (
+            <FaAngleDown size={24} color="white" style={{ verticalAlign: "middle" }} />
+          )}
         </Fragment>
       )}
       {sessionStatus === "loggedout" && <Link href="/login">Login</Link>}

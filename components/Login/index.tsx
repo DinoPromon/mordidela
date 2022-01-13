@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { FiArrowLeft } from "react-icons/fi/index";
 
 import Wrapper from "./styled";
 import { LoginForm } from "@components/Forms";
@@ -18,7 +17,7 @@ const Login: React.FC = () => {
   return (
     <Wrapper>
       <span onClick={backHandler}>
-        <FontAwesomeIcon icon={faArrowLeft} color={PINK} size="lg" />
+        <FiArrowLeft size={30} color={PINK} />
       </span>
       <img src="/images/logo.svg" alt="Logo do mordidela" />
       <p>

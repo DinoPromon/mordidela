@@ -1,8 +1,5 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { faFacebook } from "@fortawesome/free-brands-svg-icons";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { BsInstagram, BsFacebook, BsWhatsapp } from "react-icons/bs/index";
 
 import CustomList from "./styled";
 
@@ -11,7 +8,7 @@ const MediaList: React.FC = () => {
     <CustomList>
       <li>
         <a target="_blank" href="https://www.instagram.com/mordidela.goioere/" rel="noreferrer" className="icon-link">
-          <FontAwesomeIcon icon={faInstagram} size="2x" color="white" />
+          <BsInstagram size={30} color="white" />
         </a>
       </li>
       <li>
@@ -21,7 +18,7 @@ const MediaList: React.FC = () => {
           rel="noreferrer"
           className="icon-link"
         >
-          <FontAwesomeIcon icon={faFacebook} size="2x" color="white" />
+          <BsFacebook size={30} color="white" />
         </a>
       </li>
       <li>
@@ -31,7 +28,7 @@ const MediaList: React.FC = () => {
           rel="noreferrer"
           className="icon-link"
         >
-          <FontAwesomeIcon icon={faWhatsapp} size="2x" color="white" />
+          <BsWhatsapp size={30} color="white" />
         </a>
       </li>
     </CustomList>
