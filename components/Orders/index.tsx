@@ -1,14 +1,15 @@
 import React from "react";
 
-import Wrapper from "./styled";
+import { OrdersContainer, OrdersTitle } from "./styled";
 import OrdersHistoryList from "./OrdersHistoryList";
+import { PageContainer } from "@components/shared";
 
 const Orders: React.FC = (props) => {
   return (
-    <Wrapper>
-      <h1># PEDIDOS</h1>
+    <PageContainer>
+      <OrdersTitle>Pedidos</OrdersTitle>
       <OrdersHistoryList />
-    </Wrapper>
+    </PageContainer>
   );
 };
 

@@ -1,9 +1,9 @@
 import React, { useState, Fragment } from "react";
 
-import MenuHeader from "./MenuHeader";
 import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
 import { MenuProduct } from "@models/produto";
+import { PageContainer, PageTitle } from "@components/shared";
 
 type Props = {
   products: MenuProduct[];
@@ -24,16 +24,19 @@ const Menu: React.FC<Props> = (props) => {
     setModalItem(item);
   }, []);
 
-  const changeModalImage = React.useCallback((id_produto: MenuProduct["id_produto"], image?: string) => {
-    if (modalItem?.id_produto === id_produto) setModalItemImg(image as string);
-  }, [modalItem?.id_produto]);
+  const changeModalImage = React.useCallback(
+    (id_produto: MenuProduct["id_produto"], image?: string) => {
+      if (modalItem?.id_produto === id_produto) setModalItemImg(image as string);
+    },
+    [modalItem?.id_produto]
+  );
 
   return (
-    <Fragment>
+    <PageContainer>
       {showModal && <MenuModal onClose={closeModalHandler} item={modalItem} image={modalItemImage} />}
-      <MenuHeader />
+      <PageTitle>Cardápio</PageTitle>
       <MenuList products={props.products} onItemClick={changeModalItem} changeModalImage={changeModalImage} />
-    </Fragment>
+    </PageContainer>
   );
 };
 

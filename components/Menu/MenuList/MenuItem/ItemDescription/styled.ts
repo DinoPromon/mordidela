@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { ORANGE } from "@utils/colors";
+import { ORANGE, PINK } from "@utils/colors";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   padding: 1em 0;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
-  background-color: ${ORANGE};
+  background-color: ${PINK};
   cursor: pointer;
 
   & > span {

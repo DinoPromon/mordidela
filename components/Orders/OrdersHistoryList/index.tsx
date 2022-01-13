@@ -1,6 +1,6 @@
 import React from "react";
 
-import CustomList from "./styled";
+import { OrdersHistoryListContainer } from "./styled";
 import OrderHistory from "./OrderHistory";
 import { ViewPedidoForClient } from "@models/views";
 
@@ -57,9 +57,11 @@ const DUMMY_DATA = Object.freeze([
 
 const OrdersHistoryList: React.FC = (props) => {
   return (
-    <CustomList>
-      {DUMMY_DATA.map(data => <OrderHistory key={data.id_pedido} order={data as ViewPedidoForClient}/>)}
-    </CustomList>
+    <OrdersHistoryListContainer>
+      {DUMMY_DATA.map((data) => (
+        <OrderHistory key={data.id_pedido} order={data as ViewPedidoForClient} />
+      ))}
+    </OrdersHistoryListContainer>
   );
 };
 
