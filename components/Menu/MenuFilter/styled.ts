@@ -1,3 +1,4 @@
+import { PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
 export const FilterContainer = styled.div`
@@ -26,10 +27,10 @@ export const FilterListContainer = styled.ul`
 `;
 
 export const FilterItem = styled.li`
-  background-color: rgba(255, 0, 0, 0.1);
+  background-color: white;
   margin: 10px;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 100px;
 `;
 
 export const FilterSelector = styled.button`
@@ -37,6 +38,8 @@ export const FilterSelector = styled.button`
   width: 100%;
   background: transparent;
   outline: none;
+  color: ${PURPLE};
+  font-weight: bold;
 `;
 
 export const FilterArrowButton = styled.button`

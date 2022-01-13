@@ -24,22 +24,31 @@ const MenuFilter: React.FC = () => {
       </FilterArrowButton>
       <FilterListContainer ref={filterListRef}>
         <FilterItem>
-          <FilterSelector>Teste_Gigantesco</FilterSelector>
+          <FilterSelector>Todas as categorias</FilterSelector>
         </FilterItem>
         <FilterItem>
-          <FilterSelector>Teste_Gigantesco</FilterSelector>
+          <FilterSelector>Cones</FilterSelector>
         </FilterItem>
         <FilterItem>
-          <FilterSelector>Teste_Gigantesco</FilterSelector>
+          <FilterSelector>Caixas</FilterSelector>
         </FilterItem>
         <FilterItem>
-          <FilterSelector>Teste_Gigantesco</FilterSelector>
+          <FilterSelector>Salgados</FilterSelector>
         </FilterItem>
         <FilterItem>
-          <FilterSelector>Teste_Gigantesco</FilterSelector>
+          <FilterSelector>Combos</FilterSelector>
         </FilterItem>
         <FilterItem>
-          <FilterSelector>Teste_Gigantesco</FilterSelector>
+          <FilterSelector>Pratos executivos</FilterSelector>
+        </FilterItem>
+        <FilterItem>
+          <FilterSelector>Lanches</FilterSelector>
+        </FilterItem>
+        <FilterItem>
+          <FilterSelector>Cremes gelados</FilterSelector>
+        </FilterItem>
+        <FilterItem>
+          <FilterSelector>Bebidas</FilterSelector>
         </FilterItem>
       </FilterListContainer>
       <FilterArrowButton className="right-arrow-button" onClick={rightArrowClickHandler}>
