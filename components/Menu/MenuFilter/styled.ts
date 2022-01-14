@@ -1,4 +1,4 @@
-import { PURPLE } from "@utils/colors";
+import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
 
 export const FilterContainer = styled.div`
@@ -32,6 +32,7 @@ export const FilterItem = styled.li`
   margin: 10px;
   padding: 10px;
   border-radius: 100px;
+  border: 1px solid ${PURPLE};
 `;
 
 export const FilterSelector = styled.button`
@@ -47,6 +48,7 @@ export const FilterArrowButton = styled.button`
   border: none;
   outline: none;
   background: transparent;
+  color: ${PURPLE};
   &:hover {
     cursor: pointer;
   }
