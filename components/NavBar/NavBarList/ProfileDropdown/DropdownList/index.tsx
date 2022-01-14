@@ -39,10 +39,16 @@ const DropdownList: React.FC<Props> = (props) => {
   return (
     <DropdownListContainer ref={dropdownRef as React.Ref<HTMLUListElement>} animation={dropdownAnimation}>
       <DropdownListItem>
-        <Link href="/minha-conta">Minha conta</Link>
+        <Link href="/dados-gerais">Dados gerais</Link>
+      </DropdownListItem>
+      <DropdownListItem>
+        <Link href="/enderecos">Endereços</Link>
       </DropdownListItem>
       <DropdownListItem>
         <Link href="/pedidos">Pedidos</Link>
+      </DropdownListItem>
+      <DropdownListItem>
+        <Link href="/cupons">Cupons</Link>
       </DropdownListItem>
       <DropdownListItem onClick={logoutHandler}>Sair</DropdownListItem>
     </DropdownListContainer>

@@ -1,12 +1,12 @@
 import React from "react";
 import type { ReactElement } from "react";
 
-import Orders from "@components/Orders";
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
 
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
+import Addresses from "@components/Addresses";
 
 type UserInSession = {
   nome: string,
@@ -17,12 +17,12 @@ type Props = {
   user: UserInSession
 }
 
-const OrdersPage: NextPageWithLayout<Props> = (props) => {
+const GeneralDataPage: NextPageWithLayout<Props> = (props) => {
   const { nome, id_usuario } = props.user;
-  return <Orders></Orders>;
+  return <Addresses></Addresses>;
 };
 
-OrdersPage.getLayout = function getLayout(page: ReactElement) {
+GeneralDataPage.getLayout = function getLayout(page: ReactElement) {
   return <NavBarFooter>{page}</NavBarFooter>;
 };
 
@@ -44,4 +44,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default OrdersPage;
+export default GeneralDataPage;
