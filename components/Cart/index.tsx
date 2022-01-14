@@ -1,22 +1,26 @@
 import React, { useContext, Fragment, useState, useEffect } from "react";
 import { getSession } from "next-auth/client";
 import type { Session } from "next-auth";
-
-/* import CustomForm from "./styled"; */
+import { BsCheck2Circle } from "react-icons/bs/index";
 import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";
 import CartEmptyMessage from "./CartEmptyMessage";
 import CartLoggedOptions from "./CartLoggedOptions";
 import { CartContext } from "@store/cart";
-import { FormButton, Modal } from "@components/shared";
+import { FormButton, Loading, Modal } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
 import CartAddress from "./CartAddress";
-/* import { CartOrderConfirmedIcon, CartOrderConfirmedMessage } from "./styled"; */
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
-import CustomForm from "./styled";
-
+import {
+  CartOrderConfirmation,
+  CartOrderConfirmationButtons,
+  CartForm,
+  CartFormTitle,
+  CartOrderConfirmedIcon,
+  CartFormSubtotalText,
+  CartFormLoginText,
+  CartOrderConfirmedMessage,
+} from "./styled";
 
 type Props = {
   onCloseModal: () => void;
@@ -27,6 +31,8 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const [isLoadingSession, setIsLoadingSession] = useState(true);
   const [request, setRequest] = useState<RequestState>({ error: "", isLoading: false, success: false });
   const { products, order, resetCart } = useContext(CartContext);
+  const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
   const [isPaymentOk, setIsPaymentOk] = useState(false);
 
   const canSubmit = isPaymentOk && order.order_type !== undefined;
@@ -35,6 +41,10 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     const subTotal = products.reduce((acc, cur) => (acc += cur.total_price * cur.quantity), 0);
     if (order.tipo_cupom === "pedido" && order.valor_desconto) return ((100 - order.valor_desconto) * subTotal) / 100;
     return subTotal;
+  }
+
+  function changeShouldShowConfirmation(shouldShow: boolean) {
+    setShouldShowConfirmation(shouldShow);
   }
 
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
@@ -69,7 +79,8 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           const result = await response.json();
           if (!response.ok) throw new Error(result.message || "");
           setRequest({ error: "", isLoading: false, success: true });
-          onCloseModal();
+          setIsOrderConfirmed(true);
+          // onCloseModal();
           resetCart();
         }
         return;
@@ -80,6 +91,8 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       setRequest({ error: error.message, isLoading: false, success: false });
     }
   }
+
+  const isCartEmpty = products.length === 0;
 
   useEffect(() => {
     async function hasSession() {
@@ -94,42 +107,56 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
   return (
     <Modal onClose={onCloseModal}>
-      <CustomForm onSubmit={submitHandler}>
-        {!products.length && <CartEmptyMessage />}
-        {products.length > 0 && (
-          <Fragment>
-            <h2>Seu pedido</h2>
-            {session && <CartDeliveryType />}
-            <CartAddress />
-            <CartOrdersList products={products} />
-            <p>
-              Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
-            </p>
-            {session && !isLoadingSession && (
-              <CartLoggedOptions
-                canSubmit={canSubmit}
-                onSetIsPaymentOk={setIsPaymentOk}
-                subTotalPrice={subTotalPrice}
-                userId={session.user.id_usuario}
-                request={request}
-              />
-            )}
-            {!session && !isLoadingSession && <p>Faça login para continuar sua compra!</p>}
-          </Fragment>
-        )}
-      </CustomForm>
-
-      {/* Confirmação do pedido */}
-      {/* <CartOrderConfirmation>Tem certeza que deseja finalizar seu pedido?</CartOrderConfirmation>
-      <CartOrderConfirmationButtons>
-        <FormButton>Não</FormButton>
-        <FormButton>Sim</FormButton>
-      </CartOrderConfirmationButtons> */}
-
-      {/* Pedido realizado com sucesso */}
-      {/* <CartOrderConfirmedIcon><FontAwesomeIcon icon={faCheckCircle} size="5x" color="green" /></CartOrderConfirmedIcon>
-      <CartOrderConfirmedMessage>Pedido realizado com sucesso!</CartOrderConfirmedMessage> */}
-
+      {request.isLoading && <Loading />}
+      {isOrderConfirmed && !request.isLoading ? (
+        <Fragment>
+          <CartOrderConfirmedIcon>
+            <BsCheck2Circle size={50} color="green" />
+          </CartOrderConfirmedIcon>
+          <CartOrderConfirmedMessage>Pedido realizado com sucesso!</CartOrderConfirmedMessage>
+        </Fragment>
+      ) : (
+        <CartForm onSubmit={submitHandler}>
+          {isCartEmpty ? (
+            <CartEmptyMessage />
+          ) : (
+            <Fragment>
+              {shouldShowConfirmation ? (
+                <Fragment>
+                  <CartOrderConfirmation>Tem certeza que deseja finalizar seu pedido?</CartOrderConfirmation>
+                  <CartOrderConfirmationButtons>
+                    <FormButton onClick={changeShouldShowConfirmation.bind(null, false)}>Não</FormButton>
+                    <FormButton type="submit">Sim</FormButton>
+                  </CartOrderConfirmationButtons>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <CartFormTitle>Seu pedido</CartFormTitle>
+                  {session && <CartDeliveryType />}
+                  <CartAddress />
+                  <CartOrdersList products={products} />
+                  <CartFormSubtotalText>
+                    Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
+                  </CartFormSubtotalText>
+                  {session && !isLoadingSession && (
+                    <CartLoggedOptions
+                      canSubmit={canSubmit}
+                      onChangeShouldShowConfirmation={changeShouldShowConfirmation}
+                      onSetIsPaymentOk={setIsPaymentOk}
+                      subTotalPrice={subTotalPrice}
+                      userId={session.user.id_usuario}
+                      request={request}
+                    />
+                  )}
+                  {!session && !isLoadingSession && (
+                    <CartFormLoginText>Faça login para continuar sua compra!</CartFormLoginText>
+                  )}
+                </Fragment>
+              )}
+            </Fragment>
+          )}
+        </CartForm>
+      )}
     </Modal>
   );
 };

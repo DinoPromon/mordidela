@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import CustomText from "./styled";
+import { CartFormRightAlignText } from "../styled";
 import useFadeAnimation from "@hooks/useFadeAnimation";
 import { transformPriceToString } from "@utils/transformation";
 
@@ -15,9 +15,9 @@ const DeliveryPrice: React.FC<Props> = (props) => {
   return (
     <Fragment>
       {showComponent && (
-        <CustomText shouldShowComponent={props.shoulShowDeliveryPrice}>
+        <CartFormRightAlignText shouldShowComponent={props.shoulShowDeliveryPrice}>
           Entrega: <span>R$ {transformPriceToString(props.deliveryPrice)}</span>
-        </CustomText>
+        </CartFormRightAlignText>
       )}
     </Fragment>
   );
