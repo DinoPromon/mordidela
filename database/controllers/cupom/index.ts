@@ -30,19 +30,13 @@ export async function canUsuarioUseCupom(id_usuario: Usuario["id_usuario"], codi
   const cupom = await getCupomByCodigo(codigo);
   if (cupom) {
     const query = "SELECT foi_usado FROM usuario_cupom WHERE id_usuario = ? AND id_cupom = ? ORDER BY foi_usado ASC";
-    const result = (await mysql.query(query, [id_usuario, cupom.id_cupom])) as Pick<
-      UsuarioCupom,
-      "foi_usado"
-    >[];
-
-    if (!result.length) {
+    const [result] = (await mysql.query(query, [id_usuario, cupom.id_cupom])) as Pick<UsuarioCupom, "foi_usado">[];
+    if (!result) {
       return !cupom.qtde_min_pedido ? cupom : undefined;
     }
 
-    console.log(cupom);
-    if (result[0].foi_usado || !isCupomAvailable(cupom.data_inicio, cupom.data_fim)) return;
+    if (result.foi_usado || !isCupomAvailable(cupom.data_inicio, cupom.data_fim)) return;
     return cupom;
   }
-
   return;
 }
