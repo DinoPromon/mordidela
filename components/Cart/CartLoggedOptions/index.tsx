@@ -39,7 +39,7 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
 
   useEffect(() => {
     async function getDeliveryPrice() {
-      const response = await fetch(`/api/users/address/${props.userId}`);
+      const response = await fetch(`/api/address/delivery_price/${props.userId}`);
       const result = (await response.json()) as Pick<Entrega, "preco_entrega">;
       changeDeliveryPrice(result.preco_entrega);
     }
