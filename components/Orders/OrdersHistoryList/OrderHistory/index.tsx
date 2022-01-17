@@ -23,14 +23,16 @@ const OrderHistory: React.FC<Props> = (props) => {
       <p>
         Pedido <ColoredText color={PINK}>Nº {order.id_pedido}</ColoredText> realizado em{" "}
         <ColoredText color={PINK}>{transformDateFromDBToClient(order.data_pedido)}</ColoredText> às{" "}
-        <ColoredText color={PINK}>{getHourFromDate(order.data_pedido)}</ColoredText> - Total:
-        <ColoredText color={PINK}> R$ {transformPriceToString(order.valor_total)}</ColoredText>
+        <ColoredText color={PINK}>{getHourFromDate(order.data_pedido)}</ColoredText>
       </p>
       <p>Tipo da entrega: {transformDeliveryType(order.tipo_entrega)}</p>
+      <p>Taxa de entrega: <ColoredText color={PINK}>R$ 3,50</ColoredText></p>
       <p>Endereço: {order.endereco}</p>
+      <p>Total: <ColoredText color={PINK}> R$ {transformPriceToString(order.valor_total)}</ColoredText></p>
+      <p>Pagamento: <ColoredText color={PINK}>Dinheiro (troco para R$ 100,00)</ColoredText></p>
       {order.status_pedido !== "pendente" ? (
         <span>
-          {toCamelCase(order.status_pedido)} às {getHourFromDate(order.data_confirmacao as string)}
+          Status: <ColoredText color={PINK}>{toCamelCase(order.status_pedido)}</ColoredText> às <ColoredText color={PINK}>{getHourFromDate(order.data_confirmacao as string)}</ColoredText>
         </span>
       ) : (
         <span>

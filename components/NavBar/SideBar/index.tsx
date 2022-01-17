@@ -1,10 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import SideBarList from "./SideBarList";
+import { FaTimes } from "react-icons/fa/index";
+import React, { useEffect, useState } from "react";
 import { MordidelaLogoWithLabel } from "@components/shared";
 import useComponentVisible from "@hooks/useComponenteVisible";
 import Aside, { renderAnimation, unmountAnimation, SIDEBAR_ANIMATION_TIME } from "./styled";
@@ -38,7 +35,7 @@ const SideBar: React.FC<Props> = (props) => {
   return (
     <Aside ref={sidebarRef} animation={sidebarAnimation}>
       <button onClick={closeHandler}>
-        <FontAwesomeIcon icon={faTimes} size="lg" color="white" />
+        <FaTimes size={24} color="white" />
       </button>
       <Link href="/" passHref>
         <a onClick={closeHandler}>

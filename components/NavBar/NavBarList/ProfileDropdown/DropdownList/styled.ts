@@ -38,6 +38,7 @@ export const DropdownListContainer = styled.ul<Props>`
   animation: ${(props) => props.animation} ${DROPDOWN_ANIMATION_TIME}ms ease-out forwards;
   left: 0;
   right: 0;
+  top: 100%;
   margin: 0.5rem auto;
 
   &::after {
@@ -49,9 +50,6 @@ export const DropdownListContainer = styled.ul<Props>`
     border-width: 7px;
     border-style: solid;
     border-color: transparent transparent white transparent;
-  }
-
-  & > li {
   }
 `;
 

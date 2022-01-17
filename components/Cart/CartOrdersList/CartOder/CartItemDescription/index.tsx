@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-
 import Wrapper from "./styled";
 import { PINK } from "@utils/colors";
 import { CartContext } from "@store/cart";
+import { FaTrash } from "react-icons/fa/index";
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
@@ -31,7 +29,7 @@ const CartItemDescription: React.FC<Props> = (props) => {
       </p>
       <div>
         <span>
-          <FontAwesomeIcon icon={faTrash} size="sm" color={PINK} onClick={removeProductHandler} />
+          <FaTrash size={16} color={PINK} onClick={removeProductHandler} style={{ verticalAlign: "middle" }} />
         </span>
         <p>R$ {transformPriceToString(standard_price)}</p>
       </div>

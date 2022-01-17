@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
-import { faCreditCard, faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { FaRegCreditCard, FaMoneyBill } from "react-icons/fa/index.js";
 import Wrapper from "./styled";
 import { CartContext } from "@store/cart";
 import { PURPLE } from "@utils/colors";
@@ -30,7 +28,7 @@ const CartPaymentSelect: React.FC = (props) => {
           onChange={changePaymentType}
         >
           <div>
-            <FontAwesomeIcon icon={faCreditCard} size="sm" color={PURPLE} />
+            <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
           </div>
           Débito
         </InputRadio>
@@ -42,7 +40,7 @@ const CartPaymentSelect: React.FC = (props) => {
           onChange={changePaymentType}
         >
           <div>
-            <FontAwesomeIcon icon={faCreditCard} size="sm" color={PURPLE} />
+            <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
           </div>
           Crédito
         </InputRadio>
@@ -54,7 +52,7 @@ const CartPaymentSelect: React.FC = (props) => {
           onChange={changePaymentType}
         >
           <div>
-            <FontAwesomeIcon icon={faMoneyBillWave} size="sm" color={PURPLE} />
+            <FaMoneyBill color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
           </div>
           Dinheiro
         </InputRadio>

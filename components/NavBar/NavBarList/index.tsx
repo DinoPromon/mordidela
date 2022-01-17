@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-
-import Wrapper from "./styled";
-import Modal from "@components/shared/Modal";
 import Cart from "@components/Cart";
 import ProfileDropdown from "./ProfileDropdown";
+import { FaBars, FaShoppingCart } from "react-icons/fa/index";
+import { NavBarListContainer, NavBarListItem } from "./styled";
 
 type Props = {
   setShowSideBar: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,18 +24,18 @@ const NavBarList: React.FC<Props> = (props) => {
   };
 
   return (
-    <Wrapper>
+    <NavBarListContainer>
       {showModal && <Cart onCloseModal={closeModalHandler} />}
-      <li onClick={openSideBar}>
-        <FontAwesomeIcon icon={faBars} size="lg" color="white" />
-      </li>
-      <li>
-        <FontAwesomeIcon icon={faShoppingCart} size="lg" color="white" onClick={openModalHandler} />
-      </li>
-      <li>
+      <NavBarListItem onClick={openSideBar}>
+        <FaBars size={24} color="white" />
+      </NavBarListItem>
+      <NavBarListItem className="float-right">
+        <FaShoppingCart size={24} color="white" onClick={openModalHandler} />
+      </NavBarListItem>
+      <NavBarListItem className="float-right">
         <ProfileDropdown />
-      </li>
-    </Wrapper>
+      </NavBarListItem>
+    </NavBarListContainer>
   );
 };
 

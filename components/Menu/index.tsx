@@ -2,6 +2,7 @@ import React, { useState, Fragment } from "react";
 
 import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
+import MenuFilter from "./MenuFilter";
 import { MenuProduct } from "@models/produto";
 import { PageContainer, PageTitle } from "@components/shared";
 
@@ -35,6 +36,7 @@ const Menu: React.FC<Props> = (props) => {
     <PageContainer>
       {showModal && <MenuModal onClose={closeModalHandler} item={modalItem} image={modalItemImage} />}
       <PageTitle>Cardápio</PageTitle>
+      <MenuFilter />
       <MenuList products={props.products} onItemClick={changeModalItem} changeModalImage={changeModalImage} />
     </PageContainer>
   );

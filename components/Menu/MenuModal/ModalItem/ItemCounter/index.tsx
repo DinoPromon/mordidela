@@ -1,6 +1,5 @@
 import Wrapper from "./styled";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai/index";
 import { PURPLE } from "@utils/colors";
 import React from "react";
 
@@ -23,11 +22,11 @@ const ItemCounter: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       <button type="button" onClick={decrementHandler}>
-        <FontAwesomeIcon icon={faMinusCircle} size="lg" color={PURPLE} />
+        <AiOutlineMinusCircle color={PURPLE} size={24} style={{ verticalAlign: "middle" }} />
       </button>
       <span>{props.quantity}</span>
       <button type="button" onClick={incrementHandler}>
-        <FontAwesomeIcon icon={faPlusCircle} size="lg" color={PURPLE} />
+        <AiOutlinePlusCircle color={PURPLE} size={24} style={{ verticalAlign: "middle" }} />
       </button>
     </Wrapper>
   );
