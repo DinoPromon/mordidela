@@ -11,7 +11,7 @@ const mysql = Mysql({
 
 export function serialize<T>(data: T[]) {
   const array: T[] = [];
-  for (let key in data) {
+  for (const key in data) {
     array.push({ ...data[key] } as T);
   }
   return array;
