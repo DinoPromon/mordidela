@@ -8,10 +8,10 @@ import { getAllPedidosFromUsuario } from "@controllers/pedido";
 import { insertAllProdutosFromPedido } from "@controllers/produto";
 
 const handler: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
-  if (!session) return res.status(401).json({ message: "É necessário autenticação para este endpoint." });
-
   try {
+    const session = await getSession({ req });
+    if (!session) return res.status(401).json({ message: "É necessário autenticação para este endpoint." });
+
     switch (req.method) {
       case "POST":
         const { produtos, pedido } = req.body as { produtos: CartProduto[]; pedido: CartPedido };
