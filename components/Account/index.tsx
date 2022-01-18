@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Wrapper from "./styled";
 import { PURPLE } from "@utils/colors";
@@ -30,9 +28,7 @@ const Account: React.FC<Props> = (props) => {
     <Wrapper>
       {modalContent && <AccountModal id_usuario={id_usuario} content={modalContent} onClose={closeModalHandler} />}
       <div>
-        <span>
-          <FontAwesomeIcon icon={faUser} size="5x" color={PURPLE} />
-        </span>
+        <span></span>
         <h3>{nome}</h3>
         <AccountInfoList onChangeModal={changeModalHandler} />
       </div>
