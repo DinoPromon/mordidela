@@ -18,17 +18,20 @@ const CartContextProvider: React.FC = (props) => {
     );
   }, []);
 
-  const addProductToCart = React.useCallback((product: CartProduct) => {
-    setProducts((prevState) => {
-      for (const i in prevState) {
-        if (prevState[i].key === product.key) {
-          incrementProductQuantity(product.key);
-          return prevState;
+  const addProductToCart = React.useCallback(
+    (product: CartProduct) => {
+      setProducts((prevState) => {
+        for (const i in prevState) {
+          if (prevState[i].key === product.key) {
+            incrementProductQuantity(product.key);
+            return prevState;
+          }
         }
-      }
-      return [...prevState, product];
-    });
-  }, []);
+        return [...prevState, product];
+      });
+    },
+    [incrementProductQuantity]
+  );
 
   function removeProductFromCart(key: string) {
     setProducts((prevState) => prevState.filter((item) => item.key !== key));
