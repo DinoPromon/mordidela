@@ -2,26 +2,30 @@ import React, { useContext, Fragment, useState, useEffect } from "react";
 import { getSession } from "next-auth/client";
 import type { Session } from "next-auth";
 import { BsCheck2Circle } from "react-icons/bs/index";
+import CircularProgress from "@mui/material/CircularProgress";
 import Endereco from "@models/endereco";
 import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";
-import CartEmptyMessage from "./CartEmptyMessage";
 import CartLoggedOptions from "./CartLoggedOptions";
 import { CartContext } from "@store/cart";
-import { FormButton, Loading, Modal } from "@components/shared";
+import { FormButton, Modal } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
 import CartAddress from "./CartAddress";
 import {
-  CartOrderConfirmation,
-  CartOrderConfirmationButtons,
   CartForm,
   CartFormTitle,
-  CartOrderConfirmedIcon,
-  CartFormSubtotalText,
   CartFormLoginText,
+  CartEmptyMessage,
+  CartLoadingContainer,
+  CartFormSubtotalText,
+  CartOrderConfirmation,
+  CartOrderConfirmedIcon,
   CartOrderConfirmedMessage,
+  CartEmptyMessageContainer,
+  CartOrderConfirmationButtons,
 } from "./styled";
+import { PURPLE } from "@utils/colors";
 
 type Props = {
   onCloseModal: () => void;
@@ -65,6 +69,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
+      setRequest({ error: "", isLoading: true, success: false });
       if (session) {
         const produtos = products.map((item) => ({
           id_produto: item.product_id,
@@ -84,7 +89,6 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
         };
 
         if (canSubmit) {
-          setRequest({ error: "", isLoading: true, success: false });
           const response = await fetch("/api/order", {
             method: "POST",
             body: JSON.stringify({ produtos, pedido }),
@@ -128,18 +132,25 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
   return (
     <Modal onClose={onCloseModal}>
-      {request.isLoading && <Loading />}
-      {isOrderConfirmed && !request.isLoading ? (
+      {request.isLoading && (
+        <CartLoadingContainer>
+          <CircularProgress />
+        </CartLoadingContainer>
+      )}
+      {isOrderConfirmed && !request.isLoading && (
         <Fragment>
           <CartOrderConfirmedIcon>
             <BsCheck2Circle size={50} color="green" />
           </CartOrderConfirmedIcon>
           <CartOrderConfirmedMessage>Pedido realizado com sucesso!</CartOrderConfirmedMessage>
         </Fragment>
-      ) : (
+      )}
+      {!isOrderConfirmed && !request.isLoading && (
         <CartForm onSubmit={submitHandler}>
           {isCartEmpty ? (
-            <CartEmptyMessage />
+            <CartEmptyMessageContainer>
+              <CartEmptyMessage>Carrinho vazio</CartEmptyMessage>
+            </CartEmptyMessageContainer>
           ) : (
             <Fragment>
               {shouldShowConfirmation ? (

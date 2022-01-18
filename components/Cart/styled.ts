@@ -77,3 +77,25 @@ export const CartOrderConfirmedMessage = styled.div`
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 `;
+
+export const CartEmptyMessageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 2rem 0;
+`;
+
+export const CartEmptyMessage = styled.h4`
+  font-size: 30px;
+  font-weight: normal;
+  color: ${PINK};
+`;
+
+export const CartLoadingContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

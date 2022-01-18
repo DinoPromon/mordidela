@@ -3,8 +3,7 @@ import { useContext } from "react";
 import { CartContext } from "@store/cart";
 import Endereco from "@models/endereco";
 import { InputRadio } from "@components/shared";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaPlusCircle } from "react-icons/fa";
 import { CartAddressContainer, CartAddAddress, CartAddressTitle, CartAddressComplement } from "./styled";
 import { PURPLE } from "@utils/colors";
 
@@ -42,7 +41,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
             </InputRadio>
             <CartAddressComplement>Complemento: {address.complemento}</CartAddressComplement>
             <CartAddAddress>
-              <FontAwesomeIcon icon={faPlusCircle} size="sm" color={PURPLE} />
+              <FaPlusCircle size={14} color={PURPLE} />
               <p>Adicionar endereço</p>
             </CartAddAddress>
           </Fragment>
