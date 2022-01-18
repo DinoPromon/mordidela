@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { CartContextState } from "@my-types/context";
 import CartContext from "../cart-context";
 import Cupom from "@models/cupom";
+import Endereco from "@models/endereco";
 
 const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
@@ -80,6 +81,13 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
+  const setAddressId = React.useCallback((addressId: Endereco["id_endereco"]) => {
+    setOrder((prevState) => ({
+      ...prevState,
+      address_id: addressId,
+    }));
+  }, []);
+
   const resetCart = React.useCallback(() => {
     setOrder({});
     setProducts([]);
@@ -94,6 +102,7 @@ const CartContextProvider: React.FC = (props) => {
     changeDeliveryPrice,
     setCupom,
     removeCupom,
+    setAddressId,
     setOrderType,
     setPaymentAmount,
     setPaymentType,
