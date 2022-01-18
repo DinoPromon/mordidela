@@ -10,7 +10,7 @@ export async function getDeliveryIdByUserId(id: Usuario["id_usuario"]) {
 }
 
 export async function getAllAddressByUserId(id: Usuario["id_usuario"]) {
-  const query = "SELECT * FROM enderedco WHERE id_usuario = ?";
+  const query = "SELECT * FROM endereco WHERE id_usuario = ?";
   const result = await mysql.query<Endereco[]>(query, [id]);
 
   return serialize(result);
