@@ -2,6 +2,7 @@ import React, { useContext, Fragment, useState, useEffect } from "react";
 import { getSession } from "next-auth/client";
 import type { Session } from "next-auth";
 import { BsCheck2Circle } from "react-icons/bs/index";
+import Endereco from "@models/endereco";
 import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";
 import CartEmptyMessage from "./CartEmptyMessage";
@@ -34,6 +35,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
   const [isPaymentOk, setIsPaymentOk] = useState(false);
+  const [addresses, setAddresses] = useState<Endereco[]>([]);
 
   const canSubmit = isPaymentOk && order.order_type !== undefined;
 
@@ -45,6 +47,19 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
   function changeShouldShowConfirmation(shouldShow: boolean) {
     setShouldShowConfirmation(shouldShow);
+  }
+
+  async function fetchAddresses(session: Session | null, isComponentMounted: boolean) {
+    try {
+      if (session) {
+        const response = await fetch(`/api/address/${session.user.id_usuario}`);
+        const data = await response.json();
+        if (isComponentMounted) setAddresses(data.address as Endereco[]);
+      }
+    } catch (e) {
+      const error = e as Error;
+      setRequest({ error: error.message, isLoading: false, success: false });
+    }
   }
 
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
@@ -64,6 +79,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           id_cupom: order.id_cupom,
           tipo_pagamento: order.payment_type,
           tipo_entrega: order.order_type,
+          id_endereco: order.address_id,
           id_usuario: session.user.id_usuario,
         };
 
@@ -95,12 +111,17 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const isCartEmpty = products.length === 0;
 
   useEffect(() => {
+    let isMounted = true;
     async function hasSession() {
       const result = await getSession();
       setSession(result);
       setIsLoadingSession(false);
     }
     if (!session) hasSession();
+    fetchAddresses(session, isMounted);
+    return () => {
+      isMounted = false;
+    };
   }, [session]);
 
   const subTotalPrice = getSubTotalPrice();
@@ -133,7 +154,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
                 <Fragment>
                   <CartFormTitle>Seu pedido</CartFormTitle>
                   {session && <CartDeliveryType />}
-                  <CartAddress />
+                  {order.order_type === "entrega" && <CartAddress addresses={addresses} />}
                   <CartOrdersList products={products} />
                   <CartFormSubtotalText>
                     Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
