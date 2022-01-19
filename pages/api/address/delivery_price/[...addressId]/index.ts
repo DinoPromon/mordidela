@@ -1,13 +1,13 @@
-import { getDeliveryPriceByUserId } from "@controllers/entrega";
-import Usuario from "@models/usuario";
+import Endereco from "@models/endereco";
 import { NextApiHandler } from "next";
+import { getDeliveryPriceByUserId } from "@controllers/entrega";
 
 const handler: NextApiHandler = async (req, res) => {
-  const { userId } = req.query;
+  const { addressId } = req.query;
 
   if (req.method === "GET") {
     try {
-      const deliveryPrice = await getDeliveryPriceByUserId(userId as Usuario["id_usuario"]);
+      const deliveryPrice = await getDeliveryPriceByUserId(addressId as Endereco["id_endereco"]);
       return res.status(200).json({ preco_entrega: deliveryPrice });
     } catch (e) {
       const error = e as Error;
