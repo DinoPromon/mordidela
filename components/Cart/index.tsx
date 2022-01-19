@@ -25,7 +25,6 @@ import {
   CartEmptyMessageContainer,
   CartOrderConfirmationButtons,
 } from "./styled";
-import { PURPLE } from "@utils/colors";
 
 type Props = {
   onCloseModal: () => void;
