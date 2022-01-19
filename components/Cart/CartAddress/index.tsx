@@ -1,8 +1,11 @@
 import React, { Fragment } from "react";
 import { useContext } from "react";
 import { CartContext } from "@store/cart";
+import FormControl from "@mui/material/FormControl";
+import RadioGroup from "@mui/material/RadioGroup";
+import Radio from "@mui/material/Radio";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Endereco from "@models/endereco";
-import { InputRadio } from "@components/shared";
 import { FaPlusCircle } from "react-icons/fa";
 import { CartAddressContainer, CartAddAddress, CartAddressTitle, CartAddressComplement } from "./styled";
 import { PURPLE } from "@utils/colors";
@@ -12,40 +15,41 @@ type CartAddressProps = {
 };
 
 const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
-  const { setAddressId } = useContext(CartContext);
+  const { setAddressId, order } = useContext(CartContext);
 
   function getFormatedAddress(address: Endereco) {
     return `${address.logradouro} n° ${address.numero}, ${address.bairro}`;
   }
 
-  function setAddressById(addressId: Endereco["id_endereco"], event: React.ChangeEvent<HTMLInputElement>) {
-    setAddressId(addressId);
+  function changeRadioHandler(event: React.ChangeEvent<HTMLInputElement>) {
+    setAddressId(event.target.value);
   }
 
   return (
     <CartAddressContainer>
       <CartAddressTitle>Endereços de entrega</CartAddressTitle>
-      {addresses.length > 0 &&
-        addresses.map((address) => (
-          <Fragment key={`address-${address.id_endereco}`}>
-            <InputRadio
-              id="teste-input-radio"
-              defaultCheked={false}
-              name="teste-input-name"
-              value={1}
-              onChange={setAddressById.bind(null, address.id_endereco)}
-            >
-              <Fragment>
-                <p>{getFormatedAddress(address)}</p>
-              </Fragment>
-            </InputRadio>
-            <CartAddressComplement>Complemento: {address.complemento}</CartAddressComplement>
-            <CartAddAddress>
-              <FaPlusCircle size={14} color={PURPLE} />
-              <p>Adicionar endereço</p>
-            </CartAddAddress>
-          </Fragment>
-        ))}
+      <FormControl>
+        <RadioGroup name="order-addresses-radio-inputs" onChange={changeRadioHandler} value={order.address_id}>
+          {addresses.length > 0 &&
+            addresses.map((address) => (
+              <FormControlLabel
+                key={`address-${address.id_endereco}`}
+                value={address.id_endereco}
+                control={<Radio />}
+                label={
+                  <Fragment>
+                    <p>{getFormatedAddress(address)}</p>
+                    <CartAddressComplement>Complemento: {address.complemento}</CartAddressComplement>
+                  </Fragment>
+                }
+              />
+            ))}
+          <CartAddAddress>
+            <FaPlusCircle size={14} color={PURPLE} />
+            <p>Adicionar endereço</p>
+          </CartAddAddress>
+        </RadioGroup>
+      </FormControl>
     </CartAddressContainer>
   );
 };

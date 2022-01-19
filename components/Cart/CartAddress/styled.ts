@@ -16,15 +16,13 @@ export const CartAddressTitle = styled.h2`
 
 export const CartAddressComplement = styled.p`
   font-size: 13px;
-  padding-left: 1.5rem;
-  margin-bottom: 0.5rem;
   cursor: pointer;
 `;
 
 export const CartAddAddress = styled.span`
   display: flex;
   flex-direction: row;
-  margin-bottom: 0.5rem;
+  margin: 1rem 0;
   gap: 0.25rem;
   align-items: center;
 
