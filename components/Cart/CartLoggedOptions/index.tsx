@@ -39,16 +39,23 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
 
   useEffect(() => {
     async function getDeliveryPrice() {
-      const response = await fetch(`/api/address/delivery_price/${props.userId}`);
+      const response = await fetch(`/api/address/delivery_price/${order.address_id}`);
       const result = (await response.json()) as Pick<Entrega, "preco_entrega">;
       changeDeliveryPrice(result.preco_entrega);
     }
-    getDeliveryPrice();
-  }, [changeDeliveryPrice, props.userId]);
+    if (order.address_id) {
+      getDeliveryPrice();
+    }
+  }, [changeDeliveryPrice, order.address_id]);
 
   return (
     <Fragment>
-      <DeliveryPrice deliveryPrice={order.delivery_price as number} shoulShowDeliveryPrice={shouldShowDeliveryPrice} />
+      {order.delivery_price && (
+        <DeliveryPrice
+          deliveryPrice={order.delivery_price as number}
+          shoulShowDeliveryPrice={shouldShowDeliveryPrice}
+        />
+      )}
       <CartCupom />
       {order.tipo_cupom === "entrega" && (
         <CartFormRightAlignText shouldShowComponent={order.tipo_cupom === "entrega"}>

@@ -12,7 +12,6 @@ const UserOrders: React.FC = (props) => {
       const response = await fetch(`/api/order`);
       const result = await response.json();
       setRequest({ error: "", success: true, isLoading: false });
-      console.log(result);
     } catch (e) {
       const error = e as Error;
       console.log(error);
