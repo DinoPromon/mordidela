@@ -1,13 +1,18 @@
 import React from "react";
 import { BsInstagram, BsFacebook, BsWhatsapp } from "react-icons/bs/index";
 
-import CustomList from "./styled";
+import { MediaListContainer } from "./styled";
 
 const MediaList: React.FC = () => {
   return (
-    <CustomList>
+    <MediaListContainer>
       <li>
-        <a target="_blank" href="https://www.instagram.com/mordidela.goioere/" rel="noreferrer" className="icon-link">
+        <a
+          target="_blank"
+          href="https://www.instagram.com/mordidela.goioere/"
+          rel="noreferrer"
+          className="icon-link"
+        >
           <BsInstagram size={30} color="white" />
         </a>
       </li>
@@ -31,7 +36,7 @@ const MediaList: React.FC = () => {
           <BsWhatsapp size={30} color="white" />
         </a>
       </li>
-    </CustomList>
+    </MediaListContainer>
   );
 };
 

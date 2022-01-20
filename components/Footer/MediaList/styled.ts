@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const CustomList = styled.ul`
+export const MediaListContainer = styled.ul`
   list-style: none;
   display: flex;
   align-items: center;
@@ -17,5 +17,3 @@ const CustomList = styled.ul`
     }
   }
 `;
-
-export default CustomList;
