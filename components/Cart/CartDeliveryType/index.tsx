@@ -1,40 +1,36 @@
 import React, { useContext } from "react";
-
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { radioStyles } from "@components/shared/CustomMui";
 import Wrapper from "./styled";
 import { CartContext } from "@store/cart";
 import { CartOrder } from "@my-types/context";
-import { InputRadio } from "@components/shared";
 
 const CartDeliveryType: React.FC = () => {
+  const radioClasses = radioStyles();
   const { setOrderType, order } = useContext(CartContext);
 
-  function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    const type = event.target.value as CartOrder["order_type"];
-    setOrderType(type);
+  function deliveryTypeChangeHandler(event: React.ChangeEvent<HTMLInputElement>, value: string) {
+    setOrderType(value as CartOrder["order_type"]);
   }
-
-  const inputName = "input-tipo-entrega";
 
   return (
     <Wrapper>
-      <InputRadio
-        id="entrega"
-        name={inputName}
-        onChange={changeHandler}
-        value="entrega"
-        defaultCheked={order.order_type === "entrega"}
-      >
-        Delivery
-      </InputRadio>
-      <InputRadio
-        id="balcao"
-        name={inputName}
-        onChange={changeHandler}
-        value="balcao"
-        defaultCheked={order.order_type === "balcao"}
-      >
-        Balcão
-      </InputRadio>
+      <RadioGroup row name="input-delivery-type" value={order.order_type} onChange={deliveryTypeChangeHandler}>
+        <FormControlLabel
+          label="Delivery"
+          key="delivery-type-delivery"
+          value="entrega"
+          control={<Radio classes={radioClasses} />}
+        />
+        <FormControlLabel
+          label="Balcão"
+          key="delivery-type-balcao"
+          value="balcao"
+          control={<Radio classes={radioClasses} />}
+        />
+      </RadioGroup>
     </Wrapper>
   );
 };

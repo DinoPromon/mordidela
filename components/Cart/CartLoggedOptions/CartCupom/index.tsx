@@ -20,7 +20,7 @@ const CartCupom: React.FC = () => {
     if (cupom) setCupom(cupom);
   }
 
-  function clickHandler() {
+  function addCupomClickHandler() {
     getCupom();
   }
 
@@ -33,7 +33,7 @@ const CartCupom: React.FC = () => {
         maxLength={20}
         value={inputCupom}
       />
-      <FormButton type="button" onClick={clickHandler}>
+      <FormButton type="button" onClick={addCupomClickHandler}>
         Adicionar
       </FormButton>
     </Wrapper>

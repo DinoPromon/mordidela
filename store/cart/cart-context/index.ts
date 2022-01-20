@@ -3,9 +3,14 @@ import { CartContextState, CartOrder, CartProduct } from "@my-types/context";
 import Cupom from "@models/cupom";
 import Endereco from "@models/endereco";
 
+export const orderInitialState: CartOrder = {
+  address_id: null,
+  order_type: null,
+};
+
 const CartContext = createContext({
   products: [],
-  order: {},
+  order: orderInitialState,
   addProductToCart(product: CartProduct) {},
   removeProductFromCart(key: string) {},
   getProductTotalPrice(id: string): number | void {},

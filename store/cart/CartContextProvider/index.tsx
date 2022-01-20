@@ -1,5 +1,6 @@
 import { CartOrder, CartProduct } from "@my-types/context";
 import React, { useState } from "react";
+import { orderInitialState } from "../cart-context";
 import { CartContextState } from "@my-types/context";
 import CartContext from "../cart-context";
 import Cupom from "@models/cupom";
@@ -7,7 +8,7 @@ import Endereco from "@models/endereco";
 
 const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
-  const [order, setOrder] = useState<CartOrder>({});
+  const [order, setOrder] = useState<CartOrder>(orderInitialState);
 
   const incrementProductQuantity = React.useCallback((key: string) => {
     setProducts((prevState) =>
@@ -92,7 +93,7 @@ const CartContextProvider: React.FC = (props) => {
   }, []);
 
   const resetCart = React.useCallback(() => {
-    setOrder({});
+    setOrder(orderInitialState);
     setProducts([]);
   }, []);
 

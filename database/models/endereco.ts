@@ -1,7 +1,7 @@
 import Usuario from "./usuario";
 
 type Endereco = {
-  id_endereco: string;
+  id_endereco: number;
   logradouro: string;
   numero: string;
   bairro: string;

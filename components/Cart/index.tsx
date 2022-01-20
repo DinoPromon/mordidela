@@ -2,7 +2,7 @@ import React, { useContext, Fragment, useState, useEffect } from "react";
 import { getSession } from "next-auth/client";
 import type { Session } from "next-auth";
 import { BsCheck2Circle } from "react-icons/bs/index";
-import CircularProgress from "@mui/material/CircularProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Endereco from "@models/endereco";
 import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";

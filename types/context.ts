@@ -21,10 +21,10 @@ export type CartProduct = {
 
 export type CartOrder = {
   tipo_cupom?: Cupom["tipo"];
-  address_id?: Endereco["id_endereco"];
+  address_id: Endereco["id_endereco"] | null;
   id_cupom?: Cupom["id_cupom"];
   codigo_cupom?: Cupom["codigo"];
-  order_type?: Pedido["tipo_entrega"];
+  order_type: Pedido["tipo_entrega"] | null;
   payment_amount?: Pedido["troco_para"];
   valor_desconto?: Cupom["valor_desconto"];
   delivery_price?: Pedido["preco_entrega"];

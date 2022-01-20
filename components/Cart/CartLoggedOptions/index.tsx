@@ -21,7 +21,14 @@ type Props = {
   onChangeShouldShowConfirmation: (shouldShow: boolean) => void;
 };
 
-const CartLoggedOptions: React.FC<Props> = (props) => {
+const CartLoggedOptions: React.FC<Props> = ({
+  canSubmit,
+  subTotalPrice,
+  request,
+  userId,
+  onSetIsPaymentOk,
+  onChangeShouldShowConfirmation,
+}) => {
   const { order, changeDeliveryPrice } = useContext(CartContext);
 
   const isDelivery = order.order_type === "entrega";
@@ -29,12 +36,14 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
   const shouldShowDeliveryPrice = isDelivery && order.tipo_cupom !== "entrega";
 
   function getTotalPrice() {
-    if (isDelivery && order.tipo_cupom !== "entrega") return props.subTotalPrice + (order.delivery_price as number);
-    return props.subTotalPrice;
+    if (isDelivery && order.tipo_cupom !== "entrega" && order.delivery_price) {
+      return subTotalPrice + order.delivery_price;
+    }
+    return subTotalPrice;
   }
 
   function finishOrderClickHandler() {
-    props.onChangeShouldShowConfirmation(true);
+    onChangeShouldShowConfirmation(true);
   }
 
   useEffect(() => {
@@ -57,26 +66,29 @@ const CartLoggedOptions: React.FC<Props> = (props) => {
         />
       )}
       <CartCupom />
+
       {order.tipo_cupom === "entrega" && (
         <CartFormRightAlignText shouldShowComponent={order.tipo_cupom === "entrega"}>
           Desconto de entrega aplicado.
         </CartFormRightAlignText>
       )}
+
       {order.tipo_cupom === "pedido" && order.valor_desconto && (
         <CartFormRightAlignText shouldShowComponent={Boolean(order.valor_desconto)}>
           Desconto aplicado: <span>{order.valor_desconto}%</span>
         </CartFormRightAlignText>
       )}
-      <CartPayment totalPrice={totalPrice} onSetIsPaymentOk={props.onSetIsPaymentOk} />
+
+      <CartPayment totalPrice={totalPrice} onSetIsPaymentOk={onSetIsPaymentOk} />
       <CartFormTotalText>
         Total: <span>R$ {transformPriceToString(totalPrice)}</span>
       </CartFormTotalText>
       <CartFormErrorContainer>
-        {props.request.isLoading && <Loading />}
-        {!props.request.isLoading && (
+        {request.isLoading && <Loading />}
+        {!request.isLoading && (
           <Fragment>
-            {props.request.error && <CartFormErrorMessage>{props.request.error}</CartFormErrorMessage>}
-            <FormButton disabled={!props.canSubmit} onClick={finishOrderClickHandler}>
+            {request.error && <CartFormErrorMessage>{request.error}</CartFormErrorMessage>}
+            <FormButton disabled={!canSubmit} onClick={finishOrderClickHandler}>
               Finalizar pedido
             </FormButton>
           </Fragment>

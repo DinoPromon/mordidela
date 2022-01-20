@@ -11,7 +11,7 @@ type Props = {
   onSetIsPaymentOk: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CartPayment: React.FC<Props> = (props) => {
+const CartPayment: React.FC<Props> = ({ totalPrice, onSetIsPaymentOk }) => {
   const {
     order: { payment_amount, payment_type },
   } = useContext(CartContext);
@@ -22,17 +22,17 @@ const CartPayment: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (needChange) {
-      if (showChangeSelect) return props.onSetIsPaymentOk((payment_amount as number) >= props.totalPrice);
-      return props.onSetIsPaymentOk(true);
+      if (showChangeSelect) return onSetIsPaymentOk((payment_amount as number) >= totalPrice);
+      return onSetIsPaymentOk(true);
     }
-    props.onSetIsPaymentOk(payment_type !== undefined);
-  }, [needChange, showChangeSelect, payment_amount, payment_type, props.totalPrice]);
+    onSetIsPaymentOk(payment_type !== undefined);
+  }, [needChange, showChangeSelect, payment_amount, payment_type, totalPrice, onSetIsPaymentOk]);
 
   return (
     <Wrapper>
       <CartPaymentSelect />
       <CartChangeSelect onSetNeedChange={setNeedChange} shoulShowChangeSelect={showChangeSelect} />
-      <CartPaymentValue totalPrice={props.totalPrice} shouldShowPaymentValue={showPaymentValue} />
+      <CartPaymentValue shouldShowPaymentValue={showPaymentValue} />
     </Wrapper>
   );
 };

@@ -2,13 +2,13 @@ import Pedido from "@models/pedido";
 import mysql, { serialize } from "database";
 import { CartPedido } from "@models/pedido";
 import { getCupomById } from "@controllers/cupom";
-import { getDeliveryPriceByUserId } from "@controllers/entrega";
+import { getDeliveryPriceByAddressId } from "@controllers/entrega";
 
 export async function insertPedido(pedido: CartPedido) {
   const { id_cupom, id_usuario, tipo_entrega, tipo_pagamento, troco_para, id_endereco } = pedido;
   const cupom = await getCupomById(id_cupom);
 
-  const preco_entrega = await getDeliveryPriceByUserId(id_usuario);
+  const preco_entrega = await getDeliveryPriceByAddressId(id_endereco);
   const shouldRemoveDeliveryPrice = tipo_entrega === "balcao" || (cupom && cupom.tipo === "entrega");
   const query = "SELECT f_insert_pedido(?, ?, ?, ?, ?, ?, ?)";
 
