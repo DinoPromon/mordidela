@@ -1,35 +1,40 @@
-import Document, { Html, Head, Main, NextScript, DocumentContext } from "next/document";
+import React from "react";
+import Document, { Head, Main, NextScript, DocumentContext, Html } from "next/document";
 import { ServerStyleSheet } from "styled-components";
+import { ServerStyleSheets } from "@material-ui/styles";
 
-export default class MyDocument extends Document {
+class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
-    const sheet = new ServerStyleSheet();
+    const styledComponentsSheet = new ServerStyleSheet();
+    const materialSheets = new ServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
 
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+          enhanceApp: (App) => (props) =>
+            styledComponentsSheet.collectStyles(materialSheets.collect(<App {...props} />)),
         });
-
       const initialProps = await Document.getInitialProps(ctx);
       return {
         ...initialProps,
         styles: (
-          <>
+          <React.Fragment>
             {initialProps.styles}
-            {sheet.getStyleElement()}
-          </>
+            {materialSheets.getStyleElement()}
+            {styledComponentsSheet.getStyleElement()}
+          </React.Fragment>
         ),
       };
     } finally {
-      sheet.seal();
+      styledComponentsSheet.seal();
     }
   }
   render() {
     return (
       <Html>
         <Head>
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
