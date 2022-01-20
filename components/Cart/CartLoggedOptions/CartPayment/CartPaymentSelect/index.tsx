@@ -24,7 +24,7 @@ const CartPaymentSelect: React.FC = (props) => {
     <Wrapper>
       <h3>Como vai ser o pagamento?</h3>
       <div>
-        <RadioGroup row name="input-delivery-type" value={order.payment_type} onChange={changePaymentTypeHandler}>
+        <RadioGroup row name="input-payment-type" value={order.payment_type} onChange={changePaymentTypeHandler}>
           <FormControlLabel
             label={
               <span>
