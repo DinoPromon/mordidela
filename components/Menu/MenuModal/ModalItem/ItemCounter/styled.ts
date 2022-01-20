@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const ItemCounterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,5 +19,3 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 `;
-
-export default Wrapper;

@@ -1,6 +1,6 @@
 import React from "react";
 
-import CustomList from "./styled";
+import {ItemAddsListContainer} from "./styled";
 import AddOption from "./AddOption";
 import Adicional from "@models/adicional";
 
@@ -35,7 +35,7 @@ const ItemAddsList: React.FC<Props> = (props) => {
   }
 
   return (
-    <CustomList>
+    <ItemAddsListContainer>
       <h3>Adicionais</h3>
       {items.map((add) => (
         <AddOption
@@ -47,7 +47,7 @@ const ItemAddsList: React.FC<Props> = (props) => {
           onChange={changePrice}
         />
       ))}
-    </CustomList>
+    </ItemAddsListContainer>
   );
 };
 

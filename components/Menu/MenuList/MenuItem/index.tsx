@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-import ListItem from "./styled";
+import { MenuItemContainer } from "./styled";
 import ItemImage from "./ItemImage";
 import ItemDescription from "./ItemDescription";
 import { MenuProduct } from "@models/produto";
 
 type Props = {
   onClick: (item: MenuProduct, img?: string) => void;
-  changeModalImage: (id_produto: MenuProduct["id_produto"], img?: string) => void;
+  changeModalImage: (
+    id_produto: MenuProduct["id_produto"],
+    img?: string
+  ) => void;
   item: MenuProduct;
 };
 
@@ -51,10 +54,13 @@ const MenuItem: React.FC<Props> = (props) => {
   }, [changeModalImage, item.id_produto, imageSrc]);
 
   return (
-    <ListItem onClick={clickHandler}>
+    <MenuItemContainer onClick={clickHandler}>
       <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${item.nome}`} />
-      <ItemDescription name={`${item.nome} - ${item.tamanho}`} price={item.preco_padrao} />
-    </ListItem>
+      <ItemDescription
+        name={`${item.nome} - ${item.tamanho}`}
+        price={item.preco_padrao}
+      />
+    </MenuItemContainer>
   );
 };
 

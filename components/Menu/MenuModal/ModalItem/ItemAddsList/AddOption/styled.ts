@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { PURPLE } from "@utils/colors";
 
-const ListItem = styled.li`
+export const AddOptionContainer = styled.li`
   & > label {
     & > p {
       position: absolute;
@@ -12,5 +12,3 @@ const ListItem = styled.li`
     }
   }
 `;
-
-export default ListItem;

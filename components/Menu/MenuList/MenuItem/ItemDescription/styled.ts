@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import { ORANGE, PINK } from "@utils/colors";
+import { PINK } from "@utils/colors";
 
-const Wrapper = styled.div`
+export const ItemDescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,5 +22,3 @@ const Wrapper = styled.div`
     padding: 0 0.25rem;
   }
 `;
-
-export default Wrapper;

@@ -1,21 +1,21 @@
 import React from "react";
 
-import Wrapper from "./styled";
+import { ItemDescriptionContainer } from "./styled";
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
-  name: string
-  price: number
-}
+  name: string;
+  price: number;
+};
 
 const ItemDescription: React.FC<Props> = (props) => {
   const { name, price } = props;
 
   return (
-    <Wrapper>
+    <ItemDescriptionContainer>
       <span>{name.toLocaleLowerCase()}</span>
       <span>R$ {transformPriceToString(price)}</span>
-    </Wrapper>
+    </ItemDescriptionContainer>
   );
 };
 

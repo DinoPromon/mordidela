@@ -1,18 +1,25 @@
 import React from "react";
 import Image from "next/image";
 
-import Wrapper from "./styled";
+import { ItemImageContainer } from "./styled";
 
 type Props = {
   src: string;
-  alt: string
+  alt: string;
 };
 
 const ItemImage: React.FC<Props> = (props) => {
   return (
-    <Wrapper>
-      <Image src={props.src} alt={props.alt} loading="lazy" layout="fill" objectFit="scale-down" placeholder="empty"/>
-    </Wrapper>
+    <ItemImageContainer>
+      <Image
+        src={props.src}
+        alt={props.alt}
+        loading="lazy"
+        layout="fill"
+        objectFit="scale-down"
+        placeholder="empty"
+      />
+    </ItemImageContainer>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
-import CustomForm from "./styled";
-import ItemImage from './ItemImage';
+import { ModalItemContainer } from "./styled";
+import ItemImage from "./ItemImage";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
@@ -37,7 +37,9 @@ const ModalItem: React.FC<Props> = (props) => {
   const [price, setPrice] = useState(item.preco_padrao);
   const { addProductToCart } = useContext(CartContext);
 
-  const canSubmit = item.flavors.length ? productOrder.flavors.length > 0 : true;
+  const canSubmit = item.flavors.length
+    ? productOrder.flavors.length > 0
+    : true;
 
   const getProductKey = formatProductId.bind(null, item.nome, item.id_produto);
 
@@ -62,7 +64,9 @@ const ModalItem: React.FC<Props> = (props) => {
 
   function removeFlavor(flavor: Sabor) {
     setProductOrder((prevState) => {
-      const flavors = prevState.flavors.filter((item) => item.id_sabor !== flavor.id_sabor);
+      const flavors = prevState.flavors.filter(
+        (item) => item.id_sabor !== flavor.id_sabor
+      );
       return {
         ...prevState,
         key: getProductKey(prevState.adds, flavors),
@@ -85,7 +89,9 @@ const ModalItem: React.FC<Props> = (props) => {
 
   function removeAditional(add: Adicional) {
     setProductOrder((prevState) => {
-      const adds = prevState.adds.filter((item) => item.id_adicional !== add.id_adicional);
+      const adds = prevState.adds.filter(
+        (item) => item.id_adicional !== add.id_adicional
+      );
       return {
         ...prevState,
         total_price: prevState.total_price - add.preco,
@@ -111,7 +117,7 @@ const ModalItem: React.FC<Props> = (props) => {
   }
 
   return (
-    <CustomForm onSubmit={submitHandler}>
+    <ModalItemContainer onSubmit={submitHandler}>
       <h2>
         {item.nome} - {item.tamanho}
       </h2>
@@ -134,14 +140,22 @@ const ModalItem: React.FC<Props> = (props) => {
           onRemoveAditional={removeAditional}
         />
       )}
-      <textarea name="observacao" placeholder="Alguma observação?" rows={2} onBlur={noteBlurHandler} />
+      <textarea
+        name="observacao"
+        placeholder="Alguma observação?"
+        rows={2}
+        onBlur={noteBlurHandler}
+      />
       <div>
-        <ItemCounter quantity={productOrder.quantity} setQuantity={changeQuantity} />
+        <ItemCounter
+          quantity={productOrder.quantity}
+          setQuantity={changeQuantity}
+        />
         <FormButton type="submit" disabled={!canSubmit}>
           Adicionar - R${transformPriceToString(price * productOrder.quantity)}
         </FormButton>
       </div>
-    </CustomForm>
+    </ModalItemContainer>
   );
 };
 

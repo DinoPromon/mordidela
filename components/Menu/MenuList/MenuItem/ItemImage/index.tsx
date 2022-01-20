@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import Wrapper from "./styled";
+import { ItemImageContainer } from "./styled";
 
 type Props = {
   src?: string;
@@ -11,7 +11,7 @@ type Props = {
 
 const ItemImage: React.FC<Props> = ({ src, alt, loading }) => {
   return (
-    <Wrapper>
+    <ItemImageContainer>
       {src && (
         <Image
           src={src}
@@ -23,7 +23,7 @@ const ItemImage: React.FC<Props> = ({ src, alt, loading }) => {
           placeholder="blur"
         />
       )}
-    </Wrapper>
+    </ItemImageContainer>
   );
 };
 

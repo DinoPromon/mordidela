@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const ItemImageContainer = styled.div`
   position: relative;
   height: 180px;
 `;
-
-export default Wrapper;

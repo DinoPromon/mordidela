@@ -1,11 +1,11 @@
 import React from "react";
 import { PageContainer } from "@components/shared";
-import { OrdersTitle } from "./styled";
+import { GeneralDataTitle } from "./styled";
 
 const GeneralData: React.FC = (props) => {
   return (
     <PageContainer>
-      <OrdersTitle>Dados gerais</OrdersTitle>
+      <GeneralDataTitle>Dados gerais</GeneralDataTitle>
     </PageContainer>
   );
 };

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getSession } from "next-auth/client";
 import { FaUserAlt, FaAngleDown, FaAngleUp } from "react-icons/fa/index";
 
-import Wrapper from "./styled";
+import {ProfileDropdownContainer} from "./styled";
 import DropdownList from "./DropdownList";
 
 const ProfileDropdown: React.FC = (props) => {
@@ -45,7 +45,7 @@ const ProfileDropdown: React.FC = (props) => {
   }, [setSessionStatus]);
 
   return (
-    <Wrapper onClick={showDropdownHandler}>
+    <ProfileDropdownContainer onClick={showDropdownHandler}>
       <FaUserAlt size={24} color="white" style={{ verticalAlign: "middle" }} />
       {sessionStatus === "loggedin" && (
         <Fragment>
@@ -61,7 +61,7 @@ const ProfileDropdown: React.FC = (props) => {
       {showDropdown && sessionStatus === "loggedin" && (
         <DropdownList isShowingDropdown={showDropdown} setShowDropdown={setShowDropdown} />
       )}
-    </Wrapper>
+    </ProfileDropdownContainer>
   );
 };
 

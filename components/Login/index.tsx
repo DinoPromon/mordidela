@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiArrowLeft } from "react-icons/fi/index";
 
-import Wrapper from "./styled";
+import { LoginContainer } from "./styled";
 import { LoginForm } from "@components/Forms";
 import { PINK } from "@utils/colors";
 
@@ -15,7 +15,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Wrapper>
+    <LoginContainer>
       <span onClick={backHandler}>
         <FiArrowLeft size={30} color={PINK} />
       </span>
@@ -24,7 +24,7 @@ const Login: React.FC = () => {
         Não possui conta? <Link href="/cadastro">Cadastre-se!</Link>
       </p>
       <LoginForm />
-    </Wrapper>
+    </LoginContainer>
   );
 };
 

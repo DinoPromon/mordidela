@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const List = styled.ul`
+export const MenuListContainer = styled.ul`
   display: grid;
   width: 100%;
   grid-template-columns: 1fr;
@@ -17,5 +17,3 @@ const List = styled.ul`
     column-gap: 2rem;
   }
 `;
-
-export default List;

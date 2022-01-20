@@ -1,12 +1,15 @@
 import React from "react";
 
-import List from "./styled";
+import { MenuListContainer } from "./styled";
 import MenuItem from "./MenuItem";
 import { MenuProduct } from "@models/produto";
 
 type Props = {
   onItemClick: (item: MenuProduct, img?: string) => void;
-  changeModalImage: (id_produto: MenuProduct["id_produto"], img?: string) => void;
+  changeModalImage: (
+    id_produto: MenuProduct["id_produto"],
+    img?: string
+  ) => void;
   products: MenuProduct[];
 };
 
@@ -14,7 +17,7 @@ const MenuList: React.FC<Props> = (props) => {
   const { products } = props;
 
   return (
-    <List>
+    <MenuListContainer>
       {products.map((product) => (
         <MenuItem
           onClick={props.onItemClick}
@@ -23,7 +26,7 @@ const MenuList: React.FC<Props> = (props) => {
           changeModalImage={props.changeModalImage}
         />
       ))}
-    </List>
+    </MenuListContainer>
   );
 };
 

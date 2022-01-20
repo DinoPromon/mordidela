@@ -1,7 +1,7 @@
 import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
 
-export const OrdersTitle = styled.h1`
+export const GeneralDataTitle = styled.h1`
   display: flex;
   font-size: 2.5rem;
   margin: 1rem 0;

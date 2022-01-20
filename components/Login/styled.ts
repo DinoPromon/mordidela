@@ -5,7 +5,7 @@ import { FORM_SCREEN_MAX_WIDTH } from '@utils/styles';
 
 // generalizar esse código
 
-const Wrapper = styled.div`
+export const LoginContainer = styled.div`
   display: flex;
   position: relative;
   padding: 2rem 0;
@@ -30,6 +30,7 @@ const Wrapper = styled.div`
     font-size: 18px;
     text-align: center;
     color: ${ORANGE};
+
     & > a {
       text-decoration: none;
       color: ${PINK};
@@ -38,5 +39,3 @@ const Wrapper = styled.div`
     }
   }
 `;
-
-export default Wrapper;

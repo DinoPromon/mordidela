@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ListItem = styled.li`
+export const MenuItemContainer = styled.li`
   display: grid;
   grid-template-rows: 2fr clamp(70px, 90px, 120px);
   padding-top: 0.5rem;
@@ -8,5 +8,3 @@ const ListItem = styled.li`
   background-color: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
-
-export default ListItem;

@@ -1,6 +1,4 @@
 import styled from "styled-components";
 
-const ListItem = styled.li`
+export const FlavorOptionContainer = styled.li`
 `;
-
-export default ListItem;
