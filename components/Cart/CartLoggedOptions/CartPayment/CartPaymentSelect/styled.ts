@@ -1,20 +1,17 @@
 import styled from "styled-components";
+import { PURPLE } from "@utils/colors";
 
-import { PINK, PURPLE } from "@utils/colors";
+export const CartPaymentSelectContainer = styled.div``;
 
-const Wrapper = styled.div`
-  & > h3 {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 0.5rem;
-    color: ${PURPLE};
-  }
-
-  & > div {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
+export const CartPaymentSelectTitle = styled.h3`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  color: ${PURPLE};
 `;
 
-export default Wrapper;
+export const CartPaymentSelectContainerRadioGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+`;

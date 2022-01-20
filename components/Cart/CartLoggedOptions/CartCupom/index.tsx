@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import Wrapper from "./styled";
+import { CartCupomContainer, CartCupomInput } from "./styled";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
 import { cupomFormat } from "@utils/formatters";
@@ -25,8 +25,8 @@ const CartCupom: React.FC = () => {
   }
 
   return (
-    <Wrapper>
-      <input
+    <CartCupomContainer>
+      <CartCupomInput
         type="text"
         placeholder="Digite aqui seu cupom"
         onChange={changeHandler}
@@ -36,7 +36,7 @@ const CartCupom: React.FC = () => {
       <FormButton type="button" onClick={addCupomClickHandler}>
         Adicionar
       </FormButton>
-    </Wrapper>
+    </CartCupomContainer>
   );
 };
 

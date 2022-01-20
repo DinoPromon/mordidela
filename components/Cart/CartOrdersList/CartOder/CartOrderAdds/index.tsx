@@ -1,7 +1,7 @@
 import React from "react";
 
-import Wrapper from "./styled";
-import Adicional from '@models/adicional';
+import { CartOrderAddsContainer } from "./styled";
+import Adicional from "@models/adicional";
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
@@ -12,13 +12,14 @@ const CartOrderAdds: React.FC<Props> = (props) => {
   const { adds } = props;
 
   return (
-    <Wrapper>
+    <CartOrderAddsContainer>
       {adds.map((add) => (
         <p key={`add-${add.id_adicional}`}>
-          Adicional: {add.nome} <span>R$ {transformPriceToString(add.preco)}</span>
+          Adicional: {add.nome}{" "}
+          <span>R$ {transformPriceToString(add.preco)}</span>
         </p>
       ))}
-    </Wrapper>
+    </CartOrderAddsContainer>
   );
 };
 

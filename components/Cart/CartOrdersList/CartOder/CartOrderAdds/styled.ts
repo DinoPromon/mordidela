@@ -1,7 +1,7 @@
-import { PINK, PURPLE } from "@utils/colors";
+import { PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const CartOrderAddsContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -15,12 +15,10 @@ const Wrapper = styled.div`
 
     & > span {
       font-weight: bold;
-      font-size:inherit;
+      font-size: inherit;
       color: ${PURPLE};
       position: absolute;
       right: 0;
     }
   }
 `;
-
-export default Wrapper;

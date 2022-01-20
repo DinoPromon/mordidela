@@ -1,6 +1,6 @@
 import React, { useContext, Fragment } from "react";
 
-import Wrapper from "./styled";
+import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
 import useFadeAnimation from "@hooks/useFadeAnimation";
 import { CartContext } from "@store/cart";
 import { formatPrice } from "@utils/formatters";
@@ -23,9 +23,9 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
   return (
     <Fragment>
       {showComponent && (
-        <Wrapper shouldShowComponent={shouldShowPaymentValue}>
+        <CartPaymentValueContainer shouldShowComponent={shouldShowPaymentValue}>
           <h3>Precisa de troco para quanto?</h3>
-          <div>
+          <CartPaymentInputChange>
             <span>R$</span>
             <input
               type="text"
@@ -33,8 +33,8 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
               onChange={changeHandler}
               value={transformPriceToString(Number(order.payment_amount))}
             ></input>
-          </div>
-        </Wrapper>
+          </CartPaymentInputChange>
+        </CartPaymentValueContainer>
       )}
     </Fragment>
   );

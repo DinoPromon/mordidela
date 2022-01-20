@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import Wrapper from "./styled";
+import { CartPaymentContainer } from "./styled";
 import CartPaymentSelect from "./CartPaymentSelect";
 import CartPaymentValue from "./CartPaymentValue";
 import CartChangeSelect from "./CartChangeSelect";
@@ -22,18 +22,29 @@ const CartPayment: React.FC<Props> = ({ totalPrice, onSetIsPaymentOk }) => {
 
   useEffect(() => {
     if (needChange) {
-      if (showChangeSelect) return onSetIsPaymentOk((payment_amount as number) >= totalPrice);
+      if (showChangeSelect)
+        return onSetIsPaymentOk((payment_amount as number) >= totalPrice);
       return onSetIsPaymentOk(true);
     }
     onSetIsPaymentOk(payment_type !== undefined);
-  }, [needChange, showChangeSelect, payment_amount, payment_type, totalPrice, onSetIsPaymentOk]);
+  }, [
+    needChange,
+    showChangeSelect,
+    payment_amount,
+    payment_type,
+    totalPrice,
+    onSetIsPaymentOk,
+  ]);
 
   return (
-    <Wrapper>
+    <CartPaymentContainer>
       <CartPaymentSelect />
-      <CartChangeSelect onSetNeedChange={setNeedChange} shoulShowChangeSelect={showChangeSelect} />
+      <CartChangeSelect
+        onSetNeedChange={setNeedChange}
+        shoulShowChangeSelect={showChangeSelect}
+      />
       <CartPaymentValue shouldShowPaymentValue={showPaymentValue} />
-    </Wrapper>
+    </CartPaymentContainer>
   );
 };
 

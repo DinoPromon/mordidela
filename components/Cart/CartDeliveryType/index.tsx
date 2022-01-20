@@ -3,7 +3,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { radioStyles } from "@components/shared/CustomMui";
-import Wrapper from "./styled";
+import { CartDeliveryTypeContainer } from "./styled";
 import { CartContext } from "@store/cart";
 import { CartOrder } from "@my-types/context";
 
@@ -16,7 +16,7 @@ const CartDeliveryType: React.FC = () => {
   }
 
   return (
-    <Wrapper>
+    <CartDeliveryTypeContainer>
       <RadioGroup row name="input-delivery-type" value={order.order_type} onChange={deliveryTypeChangeHandler}>
         <FormControlLabel
           label="Delivery"
@@ -31,7 +31,7 @@ const CartDeliveryType: React.FC = () => {
           control={<Radio classes={radioClasses} />}
         />
       </RadioGroup>
-    </Wrapper>
+    </CartDeliveryTypeContainer>
   );
 };
 

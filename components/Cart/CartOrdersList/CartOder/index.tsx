@@ -1,6 +1,6 @@
 import React from "react";
 
-import ListItem from "./styled";
+import { CartOrderContainer } from "./styled";
 import CartItemDescription from "./CartItemDescription";
 import CartOrderAdds from "./CartOrderAdds";
 import { CartProduct } from "@my-types/context";
@@ -22,7 +22,7 @@ const CartOrder: React.FC<Props> = (props) => {
   }
 
   return (
-    <ListItem>
+    <CartOrderContainer>
       <CartItemDescription
         productKey={product.key}
         standard_price={product.standard_price}
@@ -34,7 +34,7 @@ const CartOrder: React.FC<Props> = (props) => {
         <CartOrderAdds adds={product.adds} />
         {!!product.flavors.length && <p>Sabores: {getFlavorsAsString()}</p>}
       </div>
-    </ListItem>
+    </CartOrderContainer>
   );
 };
 

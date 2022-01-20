@@ -7,16 +7,15 @@ type Props = {
   shouldShowComponent: boolean;
 };
 
-const Wrapper = styled.div<Props>`
+export const CartChangeSelectContainer = styled.div<Props>`
   display: flex;
   flex-direction: row;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
 
   ${(props) => fadeAnimation(props.shouldShowComponent, fadeDuration)}
   & > h3 {
     color: ${PURPLE};
   }
 `;
-
-export default Wrapper;

@@ -1,5 +1,8 @@
 import React, { useContext } from "react";
-import Wrapper from "./styled";
+import {
+  CartItemDescriptionContainer,
+  CartItemDescriptionTrashPrice,
+} from "./styled";
 import { PINK } from "@utils/colors";
 import { CartContext } from "@store/cart";
 import { FaTrash } from "react-icons/fa/index";
@@ -14,7 +17,8 @@ type Props = {
 };
 
 const CartItemDescription: React.FC<Props> = (props) => {
-  const { quantity, productName, productSize, standard_price, productKey } = props;
+  const { quantity, productName, productSize, standard_price, productKey } =
+    props;
   const { removeProductFromCart } = useContext(CartContext);
 
   function removeProductHandler() {
@@ -22,18 +26,23 @@ const CartItemDescription: React.FC<Props> = (props) => {
   }
 
   return (
-    <Wrapper>
+    <CartItemDescriptionContainer>
       <span>{quantity}x</span>
       <p>
         {productName} - {productSize}
       </p>
-      <div>
+      <CartItemDescriptionTrashPrice>
         <span>
-          <FaTrash size={16} color={PINK} onClick={removeProductHandler} style={{ verticalAlign: "middle" }} />
+          <FaTrash
+            size={16}
+            color={PINK}
+            onClick={removeProductHandler}
+            style={{ verticalAlign: "middle" }}
+          />
         </span>
         <p>R$ {transformPriceToString(standard_price)}</p>
-      </div>
-    </Wrapper>
+      </CartItemDescriptionTrashPrice>
+    </CartItemDescriptionContainer>
   );
 };
 

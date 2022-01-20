@@ -3,7 +3,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { radioStyles } from "@components/shared/CustomMui";
-import Wrapper from "./styled";
+import { CartPaymentSelectContainer, CartPaymentSelectTitle, CartPaymentSelectContainerRadioGroup } from "./styled";
 import { CartContext } from "@store/cart";
 import { PURPLE } from "@utils/colors";
 import { CartOrder } from "@my-types/context";
@@ -21,9 +21,9 @@ const CartPaymentSelect: React.FC = (props) => {
   const inputName = "input-tipo-pagamento";
 
   return (
-    <Wrapper>
-      <h3>Como vai ser o pagamento?</h3>
-      <div>
+    <CartPaymentSelectContainer>
+      <CartPaymentSelectTitle>Como vai ser o pagamento?</CartPaymentSelectTitle>
+      <CartPaymentSelectContainerRadioGroup>
         <RadioGroup row name="input-payment-type" value={order.payment_type} onChange={changePaymentTypeHandler}>
           <FormControlLabel
             label={
@@ -56,8 +56,8 @@ const CartPaymentSelect: React.FC = (props) => {
             control={<Radio classes={radioClasses} />}
           />
         </RadioGroup>
-      </div>
-    </Wrapper>
+      </CartPaymentSelectContainerRadioGroup>
+    </CartPaymentSelectContainer>
   );
 };
 

@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useState } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Wrapper from "./styled";
+import { CartChangeSelectContainer } from "./styled";
 import { radioStyles } from "@components/shared/CustomMui";
 import useFadeAnimation from "@hooks/useFadeAnimation";
 import { CartContext } from "@store/cart";
@@ -38,7 +38,7 @@ const CartChangeSelect: React.FC<Props> = (props) => {
   return (
     <Fragment>
       {showComponent && (
-        <Wrapper shouldShowComponent={props.shoulShowChangeSelect}>
+        <CartChangeSelectContainer shouldShowComponent={props.shoulShowChangeSelect}>
           <h3>Precisa de troco? </h3>
           <RadioGroup row name="input-need-change" value={selectedNeedChange} onChange={changeHandler}>
             <FormControlLabel
@@ -54,7 +54,7 @@ const CartChangeSelect: React.FC<Props> = (props) => {
               control={<Radio classes={radioClasses} />}
             />
           </RadioGroup>
-        </Wrapper>
+        </CartChangeSelectContainer>
       )}
     </Fragment>
   );

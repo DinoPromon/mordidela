@@ -1,6 +1,6 @@
 import React from "react";
 
-import CustomList from "./styled";
+import { CartOrdersListContainer } from "./styled";
 import CartOrder from "./CartOder";
 import { CartProduct } from "@my-types/context";
 
@@ -12,11 +12,11 @@ const CartOrdersList: React.FC<Props> = (props) => {
   const { products } = props;
 
   return (
-    <CustomList>
+    <CartOrdersListContainer>
       {products.map((product) => (
         <CartOrder product={product} key={product.key} />
       ))}
-    </CustomList>
+    </CartOrdersListContainer>
   );
 };
 

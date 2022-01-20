@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const CartDeliveryTypeContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 3rem;
 `;
-
-export default Wrapper;
