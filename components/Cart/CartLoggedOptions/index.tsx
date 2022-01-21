@@ -49,7 +49,6 @@ const CartLoggedOptions: React.FC<Props> = ({
   }
 
   function finishOrderClickHandler() {
-    teste();
     onChangeShouldShowConfirmation(true);
   }
 
