@@ -40,8 +40,4 @@ export const CartPaymentInputChange = styled.div`
     font-weight: bold;
     padding-right: 5px;
   }
-
-  & > p {
-    padding: 0 0.5rem;
-  }
 `;

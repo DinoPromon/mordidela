@@ -10,8 +10,8 @@ export const CartAddressContainer = styled.div`
 
 export const CartAddressTitle = styled.h2`
   color: ${PURPLE};
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
 `;
 
 export const CartAddressComplement = styled.p`
@@ -22,7 +22,8 @@ export const CartAddressComplement = styled.p`
 export const CartAddAddress = styled.span`
   display: flex;
   flex-direction: row;
-  margin: 1rem 0;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
   gap: 0.25rem;
   align-items: center;
 
