@@ -24,11 +24,12 @@ export type CartOrder = {
   address_id: Endereco["id_endereco"] | null;
   id_cupom?: Cupom["id_cupom"];
   codigo_cupom?: Cupom["codigo"];
-  order_type: Pedido["tipo_entrega"] | null;
-  payment_amount?: Pedido["troco_para"];
+  delivery_type: string | null;
+  needChange: boolean | null;
+  payment_amount: Pedido["troco_para"];
   valor_desconto?: Cupom["valor_desconto"];
   delivery_price?: Pedido["preco_entrega"];
-  payment_type?: Pedido["tipo_pagamento"];
+  payment_type: string | null;
 };
 
 export type CartContextState = {
@@ -38,10 +39,11 @@ export type CartContextState = {
   removeProductFromCart: (key: string) => void;
   changeDeliveryPrice: (price: number) => void;
   removeCupom: () => void;
-  setAddressId: (addressId: Endereco["id_endereco"]) => void;
+  setAddressId: (addressId: Endereco["id_endereco"] | null) => void;
   setCupom: (cupom: Partial<Cupom>) => void;
-  setOrderType: (type: CartOrder["order_type"]) => void;
-  setPaymentType: (type: CartOrder["payment_type"]) => void;
+  setNeedChange: (needChange: boolean) => void;
+  setDeliveryType: (type: CartOrder["delivery_type"]) => void;
+  setPaymentType: (type: string | null) => void;
   setPaymentAmount: (amount: CartOrder["payment_amount"]) => void;
   resetCart: () => void;
 };

@@ -5,7 +5,10 @@ import Endereco from "@models/endereco";
 
 export const orderInitialState: CartOrder = {
   address_id: null,
-  order_type: null,
+  delivery_type: null,
+  payment_type: null,
+  needChange: null,
+  payment_amount: 0,
 };
 
 const CartContext = createContext({
@@ -18,9 +21,10 @@ const CartContext = createContext({
   removeCupom() {},
   setAddressId(id: Endereco["id_endereco"]) {},
   setPaymentAmount(amount: CartOrder["payment_amount"]) {},
+  setNeedChange(needChange: boolean) {},
   setCupom(cupom: Partial<Cupom>) {},
-  setOrderType(type: CartOrder["order_type"]) {},
-  setPaymentType(type: CartOrder["payment_type"]) {},
+  setDeliveryType(type: CartOrder["delivery_type"]) {},
+  setPaymentType(type: string | null) {},
   resetCart() {},
 } as CartContextState);
 

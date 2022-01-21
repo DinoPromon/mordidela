@@ -1,7 +1,8 @@
 import { PINK, PURPLE } from "@utils/colors";
+import { Form } from "formik";
 import styled from "styled-components";
 
-export const CartForm = styled.form`
+export const CartForm = styled(Form)`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;

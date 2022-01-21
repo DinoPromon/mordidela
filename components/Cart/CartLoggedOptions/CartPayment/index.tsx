@@ -1,49 +1,46 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 
 import { CartPaymentContainer } from "./styled";
 import CartPaymentSelect from "./CartPaymentSelect";
 import CartPaymentValue from "./CartPaymentValue";
 import CartChangeSelect from "./CartChangeSelect";
+import { CartPaymentSelectProps } from "./CartPaymentSelect";
 import { CartContext } from "@store/cart";
 
 type Props = {
   totalPrice: number;
   onSetIsPaymentOk: React.Dispatch<React.SetStateAction<boolean>>;
-};
+} & CartPaymentSelectProps;
 
-const CartPayment: React.FC<Props> = ({ totalPrice, onSetIsPaymentOk }) => {
+const CartPayment: React.FC<Props> = ({
+  totalPrice,
+  onSetIsPaymentOk,
+  onSetPaymentType,
+  selectedPaymentType,
+}) => {
   const {
-    order: { payment_amount, payment_type },
+    order: { payment_amount, payment_type, needChange },
   } = useContext(CartContext);
-  const [needChange, setNeedChange] = useState((payment_amount as number) > 0);
 
-  const showChangeSelect = payment_type === "dinheiro";
-  const showPaymentValue = needChange && showChangeSelect;
+  const shouldShowPaymentValue = needChange && payment_type === "dinheiro" ? true : false;
 
   useEffect(() => {
-    if (needChange) {
-      if (showChangeSelect)
-        return onSetIsPaymentOk((payment_amount as number) >= totalPrice);
+    if (payment_type === "dinheiro") {
+      if (needChange) return onSetIsPaymentOk(payment_amount >= totalPrice);
       return onSetIsPaymentOk(true);
     }
-    onSetIsPaymentOk(payment_type !== undefined);
-  }, [
-    needChange,
-    showChangeSelect,
-    payment_amount,
-    payment_type,
-    totalPrice,
-    onSetIsPaymentOk,
-  ]);
+    if (payment_type === null) return onSetIsPaymentOk(false);
+    onSetIsPaymentOk(true);
+  }, [needChange, payment_amount, payment_type, totalPrice, onSetIsPaymentOk]);
 
   return (
     <CartPaymentContainer>
-      <CartPaymentSelect />
-      <CartChangeSelect
-        onSetNeedChange={setNeedChange}
-        shoulShowChangeSelect={showChangeSelect}
+      <CartPaymentSelect
+        onSetPaymentType={onSetPaymentType}
+        selectedPaymentType={selectedPaymentType}
       />
-      <CartPaymentValue shouldShowPaymentValue={showPaymentValue} />
+      <CartChangeSelect shoulShowChangeSelect={payment_type === "dinheiro"} />
+      <CartPaymentValue shouldShowPaymentValue={shouldShowPaymentValue} />
     </CartPaymentContainer>
   );
 };

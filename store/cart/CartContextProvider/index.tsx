@@ -45,10 +45,10 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
-  const setOrderType = React.useCallback((type: CartOrder["order_type"]) => {
+  const setDeliveryType = React.useCallback((type: CartOrder["delivery_type"]) => {
     setOrder((prevState) => ({
       ...prevState,
-      order_type: type,
+      delivery_type: type,
     }));
   }, []);
 
@@ -78,19 +78,26 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
-  const setPaymentType = React.useCallback((type: CartOrder["payment_type"]) => {
+  const setPaymentType = React.useCallback((type: string | null) => {
     setOrder((prevState) => ({
       ...prevState,
       payment_type: type,
     }));
   }, []);
 
-  const setAddressId = React.useCallback((addressId: Endereco["id_endereco"]) => {
+  const setAddressId = React.useCallback((addressId: Endereco["id_endereco"] | null) => {
     setOrder((prevState) => ({
       ...prevState,
       address_id: addressId,
     }));
   }, []);
+
+  const setNeedChange = (needChange: boolean) => {
+    setOrder((prevState) => ({
+      ...prevState,
+      needChange,
+    }));
+  };
 
   const resetCart = React.useCallback(() => {
     setOrder(orderInitialState);
@@ -106,8 +113,9 @@ const CartContextProvider: React.FC = (props) => {
     changeDeliveryPrice,
     setCupom,
     removeCupom,
+    setNeedChange,
     setAddressId,
-    setOrderType,
+    setDeliveryType,
     setPaymentAmount,
     setPaymentType,
   };

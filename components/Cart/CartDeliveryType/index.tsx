@@ -1,34 +1,46 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { radioStyles } from "@components/shared/CustomMui";
 import { CartDeliveryTypeContainer } from "./styled";
 import { CartContext } from "@store/cart";
-import { CartOrder } from "@my-types/context";
 
-const CartDeliveryType: React.FC = () => {
-  const radioClasses = radioStyles();
-  const { setOrderType, order } = useContext(CartContext);
+type Props = {
+  selectedDeliveryType: string | null;
+  onSetDeliveryType: (deliveryType: string | null) => void;
+};
 
-  function deliveryTypeChangeHandler(event: React.ChangeEvent<HTMLInputElement>, value: string) {
-    setOrderType(value as CartOrder["order_type"]);
+const CartDeliveryType: React.FC<Props> = ({ onSetDeliveryType, selectedDeliveryType }) => {
+  const { setDeliveryType } = useContext(CartContext);
+
+  function deliveryTypeChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+    const deliveryType = event.target.value;
+    onSetDeliveryType(deliveryType);
   }
+
+  useEffect(() => {
+    setDeliveryType(selectedDeliveryType);
+  }, [selectedDeliveryType, setDeliveryType]);
 
   return (
     <CartDeliveryTypeContainer>
-      <RadioGroup row name="input-delivery-type" value={order.order_type} onChange={deliveryTypeChangeHandler}>
+      <RadioGroup
+        row
+        name="input-delivery-type"
+        value={selectedDeliveryType}
+        onChange={deliveryTypeChangeHandler}
+      >
         <FormControlLabel
           label="Delivery"
           key="delivery-type-delivery"
           value="entrega"
-          control={<Radio classes={radioClasses} />}
+          control={<Radio color="secondary" />}
         />
         <FormControlLabel
           label="Balcão"
           key="delivery-type-balcao"
           value="balcao"
-          control={<Radio classes={radioClasses} />}
+          control={<Radio color="secondary" />}
         />
       </RadioGroup>
     </CartDeliveryTypeContainer>

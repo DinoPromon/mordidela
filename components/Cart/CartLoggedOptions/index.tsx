@@ -9,29 +9,35 @@ import Loading from "@components/shared/Loading";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
-import { CartFormErrorContainer, CartFormErrorMessage, CartFormRightAlignText, CartFormTotalText } from "./styled";
+import { CartPaymentSelectProps } from "./CartPayment/CartPaymentSelect";
+import {
+  CartFormErrorContainer,
+  CartFormErrorMessage,
+  CartFormRightAlignText,
+  CartFormTotalText,
+} from "./styled";
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   canSubmit: boolean;
   subTotalPrice: number;
   request: RequestState;
-  userId: Usuario["id_usuario"];
   onSetIsPaymentOk: React.Dispatch<React.SetStateAction<boolean>>;
   onChangeShouldShowConfirmation: (shouldShow: boolean) => void;
-};
+} & CartPaymentSelectProps;
 
 const CartLoggedOptions: React.FC<Props> = ({
   canSubmit,
   subTotalPrice,
   request,
-  userId,
+  selectedPaymentType,
   onSetIsPaymentOk,
+  onSetPaymentType,
   onChangeShouldShowConfirmation,
 }) => {
   const { order, changeDeliveryPrice } = useContext(CartContext);
 
-  const isDelivery = order.order_type === "entrega";
+  const isDelivery = order.delivery_type === "entrega";
   const totalPrice = getTotalPrice();
   const shouldShowDeliveryPrice = isDelivery && order.tipo_cupom !== "entrega";
 
@@ -43,6 +49,7 @@ const CartLoggedOptions: React.FC<Props> = ({
   }
 
   function finishOrderClickHandler() {
+    teste();
     onChangeShouldShowConfirmation(true);
   }
 
@@ -79,7 +86,12 @@ const CartLoggedOptions: React.FC<Props> = ({
         </CartFormRightAlignText>
       )}
 
-      <CartPayment totalPrice={totalPrice} onSetIsPaymentOk={onSetIsPaymentOk} />
+      <CartPayment
+        totalPrice={totalPrice}
+        onSetIsPaymentOk={onSetIsPaymentOk}
+        onSetPaymentType={onSetPaymentType}
+        selectedPaymentType={selectedPaymentType}
+      />
       <CartFormTotalText>
         Total: <span>R$ {transformPriceToString(totalPrice)}</span>
       </CartFormTotalText>

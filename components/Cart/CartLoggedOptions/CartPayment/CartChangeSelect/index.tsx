@@ -3,36 +3,33 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { CartChangeSelectContainer } from "./styled";
-import { radioStyles } from "@components/shared/CustomMui";
 import useFadeAnimation from "@hooks/useFadeAnimation";
 import { CartContext } from "@store/cart";
 
 type Props = {
-  onSetNeedChange: React.Dispatch<React.SetStateAction<boolean>>;
   shoulShowChangeSelect: boolean;
 };
 
-enum NeedChange {
+enum NeedChangeInput {
   YES = "yes",
   NO = "no",
 }
 
 const CartChangeSelect: React.FC<Props> = (props) => {
-  const radioClasses = radioStyles();
-  const [selectedNeedChange, setSelectedNeedChange] = useState<NeedChange | null>(null);
-  const { setPaymentAmount, order } = useContext(CartContext);
+  const [selectedNeedChange, setSelectedNeedChange] = useState<NeedChangeInput | null>(null);
+  const { setPaymentAmount, setNeedChange } = useContext(CartContext);
   const showComponent = useFadeAnimation(props.shoulShowChangeSelect);
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value as NeedChange;
+    const value = event.target.value as NeedChangeInput;
     setSelectedNeedChange(value);
 
-    if (value === NeedChange.NO) {
-      props.onSetNeedChange(false);
+    if (value === NeedChangeInput.NO) {
+      setNeedChange(false);
       setPaymentAmount(0);
       return;
     }
-    props.onSetNeedChange(true);
+    setNeedChange(true);
   }
 
   return (
@@ -40,18 +37,23 @@ const CartChangeSelect: React.FC<Props> = (props) => {
       {showComponent && (
         <CartChangeSelectContainer shouldShowComponent={props.shoulShowChangeSelect}>
           <h3>Precisa de troco? </h3>
-          <RadioGroup row name="input-need-change" value={selectedNeedChange} onChange={changeHandler}>
+          <RadioGroup
+            row
+            name="input-need-change"
+            value={selectedNeedChange}
+            onChange={changeHandler}
+          >
             <FormControlLabel
               label="Sim"
               key="need-change-yes"
-              value={NeedChange.YES}
-              control={<Radio classes={radioClasses} />}
+              value={NeedChangeInput.YES}
+              control={<Radio color="secondary" />}
             />
             <FormControlLabel
               label="Não"
-              key="need-change-yes"
-              value={NeedChange.NO}
-              control={<Radio classes={radioClasses} />}
+              key="need-change-no"
+              value={NeedChangeInput.NO}
+              control={<Radio color="secondary" />}
             />
           </RadioGroup>
         </CartChangeSelectContainer>
