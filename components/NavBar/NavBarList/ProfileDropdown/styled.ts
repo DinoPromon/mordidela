@@ -5,6 +5,6 @@ export const ProfileDropdownContainer = styled.div`
   position: relative;
 
   & > span {
-    padding-left: 6px;
+    padding-left: 7px;
   }
 `;
