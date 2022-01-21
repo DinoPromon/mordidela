@@ -4,9 +4,7 @@ export const ProfileDropdownContainer = styled.div`
   display: flex;
   position: relative;
 
-  & > a {
-    text-decoration: none;
-    color: inherit;
-    padding: 0 0.5rem;
+  & > span {
+    padding-left: 6px;
   }
 `;
