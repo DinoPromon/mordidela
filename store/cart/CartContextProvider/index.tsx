@@ -92,13 +92,6 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
-  const setNeedChange = (needChange: boolean) => {
-    setOrder((prevState) => ({
-      ...prevState,
-      needChange,
-    }));
-  };
-
   const resetCart = React.useCallback(() => {
     setOrder(orderInitialState);
     setProducts([]);
@@ -113,7 +106,6 @@ const CartContextProvider: React.FC = (props) => {
     changeDeliveryPrice,
     setCupom,
     removeCupom,
-    setNeedChange,
     setAddressId,
     setDeliveryType,
     setPaymentAmount,

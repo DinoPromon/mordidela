@@ -1,4 +1,6 @@
 import React, { useContext, useEffect } from "react";
+import { useFormikContext } from "formik";
+import { CartFormValues } from "@components/Cart";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -11,25 +13,18 @@ import { CartContext } from "@store/cart";
 import { PURPLE } from "@utils/colors";
 import { FaRegCreditCard, FaMoneyBill } from "react-icons/fa/index.js";
 
-export type CartPaymentSelectProps = {
-  selectedPaymentType: string | null;
-  onSetPaymentType: (paymentType: string | null) => void;
-};
-
-const CartPaymentSelect: React.FC<CartPaymentSelectProps> = ({
-  onSetPaymentType,
-  selectedPaymentType,
-}) => {
+const CartPaymentSelect: React.FC = () => {
+  const { values, setFieldValue } = useFormikContext<CartFormValues>();
   const { setPaymentType } = useContext(CartContext);
 
   function changePaymentTypeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const paymentType = event.target.value;
-    onSetPaymentType(paymentType);
+    setFieldValue("payment_type", paymentType);
   }
 
   useEffect(() => {
-    setPaymentType(selectedPaymentType);
-  }, [selectedPaymentType, setPaymentType]);
+    setPaymentType(values.payment_type);
+  }, [values.payment_type, setPaymentType]);
 
   return (
     <CartPaymentSelectContainer>
@@ -38,7 +33,7 @@ const CartPaymentSelect: React.FC<CartPaymentSelectProps> = ({
         <RadioGroup
           row
           name="input-payment-type"
-          value={selectedPaymentType}
+          value={values.payment_type}
           onChange={changePaymentTypeHandler}
         >
           <FormControlLabel

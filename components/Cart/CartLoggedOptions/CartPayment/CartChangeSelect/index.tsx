@@ -1,41 +1,42 @@
 import React, { Fragment, useContext, useState } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
+import { useFormikContext } from "formik";
+import { CartFormValues } from "@components/Cart";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { CartChangeSelectContainer } from "./styled";
 import useFadeAnimation from "@hooks/useFadeAnimation";
 import { CartContext } from "@store/cart";
-
-type Props = {
-  shoulShowChangeSelect: boolean;
-};
 
 enum NeedChangeInput {
   YES = "yes",
   NO = "no",
 }
 
-const CartChangeSelect: React.FC<Props> = (props) => {
-  const [selectedNeedChange, setSelectedNeedChange] = useState<NeedChangeInput | null>(null);
-  const { setPaymentAmount, setNeedChange } = useContext(CartContext);
-  const showComponent = useFadeAnimation(props.shoulShowChangeSelect);
+const CartChangeSelect: React.FC = () => {
+  const { values, setFieldValue } = useFormikContext<CartFormValues>();
+  const [selectedNeedChange, setSelectedNeedChange] = useState<NeedChangeInput | null>(
+    values.needChange ? NeedChangeInput.YES : NeedChangeInput.NO
+  );
+  const { setPaymentAmount } = useContext(CartContext);
+  const shouldShowChangeSelect = useFadeAnimation(values.payment_type === "dinheiro");
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value as NeedChangeInput;
     setSelectedNeedChange(value);
 
     if (value === NeedChangeInput.NO) {
-      setNeedChange(false);
+      setFieldValue("needChange", false);
       setPaymentAmount(0);
       return;
     }
-    setNeedChange(true);
+    setFieldValue("needChange", true);
   }
 
   return (
     <Fragment>
-      {showComponent && (
-        <CartChangeSelectContainer shouldShowComponent={props.shoulShowChangeSelect}>
+      {shouldShowChangeSelect && (
+        <CartChangeSelectContainer shouldShowComponent={shouldShowChangeSelect}>
           <h3>Precisa de troco? </h3>
           <RadioGroup
             row

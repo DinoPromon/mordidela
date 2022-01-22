@@ -25,7 +25,6 @@ export type CartOrder = {
   id_cupom?: Cupom["id_cupom"];
   codigo_cupom?: Cupom["codigo"];
   delivery_type: string | null;
-  needChange: boolean | null;
   payment_amount: Pedido["troco_para"];
   valor_desconto?: Cupom["valor_desconto"];
   delivery_price?: Pedido["preco_entrega"];
@@ -41,7 +40,6 @@ export type CartContextState = {
   removeCupom: () => void;
   setAddressId: (addressId: Endereco["id_endereco"] | null) => void;
   setCupom: (cupom: Partial<Cupom>) => void;
-  setNeedChange: (needChange: boolean) => void;
   setDeliveryType: (type: CartOrder["delivery_type"]) => void;
   setPaymentType: (type: string | null) => void;
   setPaymentAmount: (amount: CartOrder["payment_amount"]) => void;

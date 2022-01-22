@@ -7,7 +7,6 @@ export const orderInitialState: CartOrder = {
   address_id: null,
   delivery_type: null,
   payment_type: null,
-  needChange: null,
   payment_amount: 0,
 };
 
@@ -21,7 +20,6 @@ const CartContext = createContext({
   removeCupom() {},
   setAddressId(id: Endereco["id_endereco"]) {},
   setPaymentAmount(amount: CartOrder["payment_amount"]) {},
-  setNeedChange(needChange: boolean) {},
   setCupom(cupom: Partial<Cupom>) {},
   setDeliveryType(type: CartOrder["delivery_type"]) {},
   setPaymentType(type: string | null) {},

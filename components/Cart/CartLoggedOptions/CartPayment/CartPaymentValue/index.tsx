@@ -1,5 +1,6 @@
 import React, { useContext, Fragment } from "react";
-
+import { useFormikContext } from "formik";
+import { CartFormValues } from "@components/Cart";
 import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
 import useFadeAnimation from "@hooks/useFadeAnimation";
 import { CartContext } from "@store/cart";
@@ -11,12 +12,14 @@ type Props = {
 };
 
 const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
+  const { setFieldValue } = useFormikContext<CartFormValues>();
   const { setPaymentAmount, order } = useContext(CartContext);
   const showComponent = useFadeAnimation(shouldShowPaymentValue);
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     event.target.value = formatPrice(value);
+    setFieldValue("payment_amount", event.target.value);
     setPaymentAmount(transformPriceStringToNumber(event.target.value));
   }
 

@@ -1,7 +1,6 @@
-import React, { Fragment, useContext, useEffect } from "react";
-
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import { useFormikContext } from "formik";
 import CartCupom from "./CartCupom";
-import Usuario from "@models/usuario";
 import Entrega from "@models/entrega";
 import CartPayment from "./CartPayment";
 import DeliveryPrice from "./DeliveryPrice";
@@ -9,7 +8,7 @@ import Loading from "@components/shared/Loading";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
-import { CartPaymentSelectProps } from "./CartPayment/CartPaymentSelect";
+import { CartFormValues } from "@components/Cart";
 import {
   CartFormErrorContainer,
   CartFormErrorMessage,
@@ -19,22 +18,18 @@ import {
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
-  canSubmit: boolean;
   subTotalPrice: number;
   request: RequestState;
-  onSetIsPaymentOk: React.Dispatch<React.SetStateAction<boolean>>;
   onChangeShouldShowConfirmation: (shouldShow: boolean) => void;
-} & CartPaymentSelectProps;
+};
 
 const CartLoggedOptions: React.FC<Props> = ({
-  canSubmit,
-  subTotalPrice,
   request,
-  selectedPaymentType,
-  onSetIsPaymentOk,
-  onSetPaymentType,
+  subTotalPrice,
   onChangeShouldShowConfirmation,
 }) => {
+  const { validateForm } = useFormikContext<CartFormValues>();
+  const [formError, setFormError] = useState("");
   const { order, changeDeliveryPrice } = useContext(CartContext);
 
   const isDelivery = order.delivery_type === "entrega";
@@ -48,7 +43,12 @@ const CartLoggedOptions: React.FC<Props> = ({
     return subTotalPrice;
   }
 
-  function finishOrderClickHandler() {
+  async function finishOrderClickHandler() {
+    const errors = await validateForm();
+    const firstError = Object.values(errors)[0];
+    if (firstError) {
+      return setFormError(firstError);
+    }
     onChangeShouldShowConfirmation(true);
   }
 
@@ -85,12 +85,7 @@ const CartLoggedOptions: React.FC<Props> = ({
         </CartFormRightAlignText>
       )}
 
-      <CartPayment
-        totalPrice={totalPrice}
-        onSetIsPaymentOk={onSetIsPaymentOk}
-        onSetPaymentType={onSetPaymentType}
-        selectedPaymentType={selectedPaymentType}
-      />
+      <CartPayment />
       <CartFormTotalText>
         Total: <span>R$ {transformPriceToString(totalPrice)}</span>
       </CartFormTotalText>
@@ -98,10 +93,9 @@ const CartLoggedOptions: React.FC<Props> = ({
         {request.isLoading && <Loading />}
         {!request.isLoading && (
           <Fragment>
+            {formError && <CartFormErrorMessage>{formError}</CartFormErrorMessage>}
+            <FormButton onClick={finishOrderClickHandler}>Finalizar pedido</FormButton>
             {request.error && <CartFormErrorMessage>{request.error}</CartFormErrorMessage>}
-            <FormButton disabled={!canSubmit} onClick={finishOrderClickHandler}>
-              Finalizar pedido
-            </FormButton>
           </Fragment>
         )}
       </CartFormErrorContainer>

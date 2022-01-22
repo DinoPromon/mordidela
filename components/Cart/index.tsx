@@ -9,6 +9,7 @@ import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";
 import CartLoggedOptions from "./CartLoggedOptions";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { transformPriceStringToNumber } from "@utils/transformation";
 import { CartContext } from "@store/cart";
 import { FormButton, Modal } from "@components/shared";
 import { RequestState } from "@my-types/request";
@@ -32,11 +33,12 @@ type Props = {
   onCloseModal: () => void;
 };
 
-type CartFormValues = {
+export type CartFormValues = {
   delivery_type: string | null;
+  needChange: boolean | null;
   address_id: Endereco["id_endereco"] | null;
   payment_type: string | null;
-  payment_amount: string | null;
+  payment_amount: string;
   cupom_id: string | null;
 };
 
@@ -51,10 +53,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const { products, order, resetCart } = useContext(CartContext);
   const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
-  const [isPaymentOk, setIsPaymentOk] = useState(false);
   const [addresses, setAddresses] = useState<Endereco[]>([]);
-
-  const canSubmit = isPaymentOk && Boolean(order.delivery_type);
 
   function getSubTotalPrice() {
     const subTotal = products.reduce((acc, cur) => (acc += cur.total_price * cur.quantity), 0);
@@ -71,7 +70,24 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     delivery_type: yup.string().nullable().required("Selecione um tipo de entrega"),
     address_id: yup.number().nullable().required("Selecione um endereço de entrega"),
     payment_type: yup.string().nullable().required("Selecione um tipo de pagamento"),
-    payment_amount: yup.string().nullable(),
+    needChange: yup
+      .boolean()
+      .nullable()
+      .when("payment_type", (value) => {
+        if (value === "dinheiro")
+          return yup.string().nullable().required("Informe a necessidade de troco");
+        return yup.string().nullable();
+      }),
+    payment_amount: yup.string().when(["needChange", "payment_type"], {
+      is: (needChange: boolean | null, paymentType: string) =>
+        paymentType === "dinheiro" && needChange,
+      then: yup.string().test("payment_amount", "Valor insuficiente", (value) => {
+        const payment_amount = value || "";
+        const paymentAmountAsNumber = transformPriceStringToNumber(payment_amount);
+        if (paymentAmountAsNumber < Number(order.delivery_price) + subTotalPrice) return false;
+        return true;
+      }),
+    }),
     cupom_id: yup.string().nullable(),
   });
 
@@ -79,8 +95,9 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     delivery_type: null,
     address_id: null,
     cupom_id: null,
-    payment_amount: null,
+    payment_amount: "",
     payment_type: null,
+    needChange: null,
   };
 
   async function fetchAddresses(session: Session | null, isComponentMounted: boolean) {
@@ -120,20 +137,18 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           id_usuario: session.user.id_usuario,
         };
 
-        if (canSubmit) {
-          const response = await fetch("/api/order", {
-            method: "POST",
-            body: JSON.stringify({ produtos, pedido }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          const result = await response.json();
-          if (!response.ok) throw new Error(result.message || "");
-          setRequest({ error: "", isLoading: false, success: true });
-          setIsOrderConfirmed(true);
-          resetCart();
-        }
+        const response = await fetch("/api/order", {
+          method: "POST",
+          body: JSON.stringify({ produtos, pedido }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || "");
+        setRequest({ error: "", isLoading: false, success: true });
+        setIsOrderConfirmed(true);
+        resetCart();
         return;
       }
       throw new Error("É necessário estar logado para finalizar pedidos.");
@@ -186,7 +201,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           validationSchema={cartFormValidationSchema}
           initialValues={cartFormInitialValues}
         >
-          {({ setFieldValue, values, errors, validateForm }) => (
+          {({ setFieldValue, values, validateForm }) => (
             <CartForm>
               {isCartEmpty ? (
                 <CartEmptyMessageContainer>
@@ -228,11 +243,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
                       </CartFormSubtotalText>
                       {session && !isLoadingSession && (
                         <CartLoggedOptions
-                          onSetPaymentType={setFieldValue.bind(null, "payment_type")}
-                          selectedPaymentType={values.payment_type}
-                          canSubmit={canSubmit}
                           onChangeShouldShowConfirmation={changeShouldShowConfirmation}
-                          onSetIsPaymentOk={setIsPaymentOk}
                           subTotalPrice={subTotalPrice}
                           request={request}
                         />
