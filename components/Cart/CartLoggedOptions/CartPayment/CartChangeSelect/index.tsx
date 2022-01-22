@@ -4,28 +4,29 @@ import Radio from "@material-ui/core/Radio";
 import { useFormikContext } from "formik";
 import { CartFormValues } from "@components/Cart";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { CartChangeSelectContainer } from "./styled";
-import useFadeAnimation from "@hooks/useFadeAnimation";
 import { CartContext } from "@store/cart";
+import { CustomFade } from "@components/shared";
+import { CartChangeSelectContainer } from "./styled";
 
-enum NeedChangeInput {
+enum NeedChange {
   YES = "yes",
   NO = "no",
 }
 
 const CartChangeSelect: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<CartFormValues>();
-  const [selectedNeedChange, setSelectedNeedChange] = useState<NeedChangeInput | null>(
-    values.needChange ? NeedChangeInput.YES : NeedChangeInput.NO
-  );
+  const [selectedNeedChange, setSelectedNeedChange] = useState<NeedChange | null>(() => {
+    if (values.needChange) return NeedChange.YES;
+    if (values.needChange === false) return NeedChange.NO;
+    return null;
+  });
   const { setPaymentAmount } = useContext(CartContext);
-  const shouldShowChangeSelect = useFadeAnimation(values.payment_type === "dinheiro");
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value as NeedChangeInput;
+    const value = event.target.value as NeedChange;
     setSelectedNeedChange(value);
 
-    if (value === NeedChangeInput.NO) {
+    if (value === NeedChange.NO) {
       setFieldValue("needChange", false);
       setPaymentAmount(0);
       return;
@@ -35,8 +36,8 @@ const CartChangeSelect: React.FC = () => {
 
   return (
     <Fragment>
-      {shouldShowChangeSelect && (
-        <CartChangeSelectContainer shouldShowComponent={shouldShowChangeSelect}>
+      <CustomFade triggerAnimation={values.payment_type === "dinheiro"}>
+        <CartChangeSelectContainer>
           <h3>Precisa de troco? </h3>
           <RadioGroup
             row
@@ -47,18 +48,18 @@ const CartChangeSelect: React.FC = () => {
             <FormControlLabel
               label="Sim"
               key="need-change-yes"
-              value={NeedChangeInput.YES}
+              value={NeedChange.YES}
               control={<Radio color="secondary" />}
             />
             <FormControlLabel
               label="Não"
               key="need-change-no"
-              value={NeedChangeInput.NO}
+              value={NeedChange.NO}
               control={<Radio color="secondary" />}
             />
           </RadioGroup>
         </CartChangeSelectContainer>
-      )}
+      </CustomFade>
     </Fragment>
   );
 };

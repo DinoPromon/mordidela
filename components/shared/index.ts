@@ -3,6 +3,7 @@ import FormButton from "./FormButton";
 import InputRadio from "./InputRadio";
 import InputCheckbox from "./InputCheckbox";
 import FormRequestStatus from "./FormRequestStatus";
+import CustomFade from "./CustomFade";
 import Loading from "./Loading";
 import Modal from "./Modal";
 import MordidelaLogoWithLabel from "./MordidelaLogoWithLabel";
@@ -19,4 +20,5 @@ export {
   MordidelaLogoWithLabel,
   PageContainer,
   PageTitle,
+  CustomFade,
 };

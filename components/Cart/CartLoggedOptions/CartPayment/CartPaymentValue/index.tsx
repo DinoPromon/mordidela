@@ -2,7 +2,7 @@ import React, { useContext, Fragment } from "react";
 import { useFormikContext } from "formik";
 import { CartFormValues } from "@components/Cart";
 import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
-import useFadeAnimation from "@hooks/useFadeAnimation";
+import { CustomFade } from "@components/shared";
 import { CartContext } from "@store/cart";
 import { formatPrice } from "@utils/formatters";
 import { transformPriceToString, transformPriceStringToNumber } from "@utils/transformation";
@@ -14,7 +14,6 @@ type Props = {
 const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
   const { setFieldValue } = useFormikContext<CartFormValues>();
   const { setPaymentAmount, order } = useContext(CartContext);
-  const showComponent = useFadeAnimation(shouldShowPaymentValue);
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
@@ -25,8 +24,8 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
 
   return (
     <Fragment>
-      {showComponent && (
-        <CartPaymentValueContainer shouldShowComponent={shouldShowPaymentValue}>
+      <CustomFade triggerAnimation={shouldShowPaymentValue}>
+        <CartPaymentValueContainer>
           <h3>Precisa de troco para quanto?</h3>
           <CartPaymentInputChange>
             <span>R$</span>
@@ -38,7 +37,7 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
             ></input>
           </CartPaymentInputChange>
         </CartPaymentValueContainer>
-      )}
+      </CustomFade>
     </Fragment>
   );
 };

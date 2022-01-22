@@ -27,7 +27,7 @@ export type CartOrder = {
   delivery_type: string | null;
   payment_amount: Pedido["troco_para"];
   valor_desconto?: Cupom["valor_desconto"];
-  delivery_price?: Pedido["preco_entrega"];
+  delivery_price: Pedido["preco_entrega"];
   payment_type: string | null;
 };
 
@@ -43,5 +43,6 @@ export type CartContextState = {
   setDeliveryType: (type: CartOrder["delivery_type"]) => void;
   setPaymentType: (type: string | null) => void;
   setPaymentAmount: (amount: CartOrder["payment_amount"]) => void;
+  setDeliveryPrice: (deliveryPrice: Pedido["preco_entrega"]) => void;
   resetCart: () => void;
 };

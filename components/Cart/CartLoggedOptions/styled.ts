@@ -1,10 +1,5 @@
 import styled from "styled-components";
 import { CartFormSubtotalText } from "../styled";
-import { fadeIn, fadeDuration, fadeOut } from "@utils/animations";
-
-type Props = {
-  shouldShowComponent: boolean;
-};
 
 export const CartFormErrorContainer = styled.div`
   display: flex;
@@ -24,11 +19,4 @@ export const CartFormTotalText = styled(CartFormSubtotalText)`
   & > span {
     font-size: 1.25rem;
   }
-`;
-
-export const CartFormRightAlignText = styled(CartFormSubtotalText)<Props>`
-  animation-name: ${(props) => (props.shouldShowComponent ? fadeIn : fadeOut)};
-  animation-duration: ${fadeDuration}ms;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-out;
 `;

@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useContext } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Endereco from "@models/endereco";
-import { useContext } from "react";
+import { useFormikContext } from "formik";
 import { CartContext } from "@store/cart";
 import { FaPlusCircle } from "react-icons/fa";
 import { PURPLE } from "@utils/colors";
@@ -13,19 +13,15 @@ import {
   CartAddressTitle,
   CartAddressComplement,
 } from "./styled";
+import { CartFormValues } from "../FormModel";
 
 type CartAddressProps = {
-  selectedAddressId: number | null;
   addresses: Endereco[];
-  onSetAddressId: (addressId: number) => void;
 };
 
-const CartAddress: React.FC<CartAddressProps> = ({
-  addresses,
-  onSetAddressId,
-  selectedAddressId,
-}) => {
-  const { setAddressId } = useContext(CartContext);
+const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
+  const { setFieldValue } = useFormikContext<CartFormValues>();
+  const { setAddressId, order } = useContext(CartContext);
 
   function getFormatedAddress(address: Endereco) {
     return `${address.logradouro} n° ${address.numero}, ${address.bairro}`;
@@ -33,21 +29,14 @@ const CartAddress: React.FC<CartAddressProps> = ({
 
   function changeRadioHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const addressId = Number(event.target.value);
-    onSetAddressId(addressId);
+    setAddressId(addressId);
+    setFieldValue("address_id", addressId);
   }
-
-  useEffect(() => {
-    setAddressId(selectedAddressId);
-  }, [selectedAddressId, setAddressId]);
 
   return (
     <CartAddressContainer>
       <CartAddressTitle>Endereços de entrega</CartAddressTitle>
-      <RadioGroup
-        name="address-input-radio"
-        value={selectedAddressId}
-        onChange={changeRadioHandler}
-      >
+      <RadioGroup name="address-input-radio" value={order.address_id} onChange={changeRadioHandler}>
         {addresses.length > 0 &&
           addresses.map((address) => (
             <FormControlLabel

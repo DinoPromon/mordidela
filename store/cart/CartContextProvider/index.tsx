@@ -5,6 +5,7 @@ import { CartContextState } from "@my-types/context";
 import CartContext from "../cart-context";
 import Cupom from "@models/cupom";
 import Endereco from "@models/endereco";
+import Pedido from "@models/pedido";
 
 const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
@@ -92,6 +93,13 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
+  const setDeliveryPrice = React.useCallback((deliveryPrice: Pedido["preco_entrega"]) => {
+    setOrder((prevState) => ({
+      ...prevState,
+      delivery_price: deliveryPrice,
+    }));
+  }, []);
+
   const resetCart = React.useCallback(() => {
     setOrder(orderInitialState);
     setProducts([]);
@@ -110,6 +118,7 @@ const CartContextProvider: React.FC = (props) => {
     setDeliveryType,
     setPaymentAmount,
     setPaymentType,
+    setDeliveryPrice,
   };
 
   return <CartContext.Provider value={context}>{props.children}</CartContext.Provider>;

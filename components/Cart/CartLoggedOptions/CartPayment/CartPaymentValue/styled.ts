@@ -1,20 +1,13 @@
 import styled from "styled-components";
-
 import { PINK, PURPLE } from "@utils/colors";
-import { fadeAnimation, fadeDuration } from "@utils/animations";
 
-type Props = {
-  shouldShowComponent: boolean;
-};
-
-export const CartPaymentValueContainer = styled.div<Props>`
+export const CartPaymentValueContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
 
-  ${(props) => fadeAnimation(props.shouldShowComponent, fadeDuration)}
   & > h3 {
     color: ${PURPLE};
   }

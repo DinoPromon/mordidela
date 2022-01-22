@@ -3,18 +3,14 @@ import { useFormikContext } from "formik";
 import CartCupom from "./CartCupom";
 import Entrega from "@models/entrega";
 import CartPayment from "./CartPayment";
-import DeliveryPrice from "./DeliveryPrice";
 import Loading from "@components/shared/Loading";
+import { CustomFade } from "@components/shared";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { CartFormValues } from "@components/Cart";
-import {
-  CartFormErrorContainer,
-  CartFormErrorMessage,
-  CartFormRightAlignText,
-  CartFormTotalText,
-} from "./styled";
+import { CartFormSubtotalText } from "../styled";
+import { CartFormErrorContainer, CartFormErrorMessage, CartFormTotalText } from "./styled";
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
@@ -53,6 +49,10 @@ const CartLoggedOptions: React.FC<Props> = ({
   }
 
   useEffect(() => {
+    setFormError("");
+  }, [order]);
+
+  useEffect(() => {
     async function getDeliveryPrice() {
       const response = await fetch(`/api/address/delivery_price/${order.address_id}`);
       const result = (await response.json()) as Pick<Entrega, "preco_entrega">;
@@ -65,25 +65,22 @@ const CartLoggedOptions: React.FC<Props> = ({
 
   return (
     <Fragment>
-      {order.delivery_price && (
-        <DeliveryPrice
-          deliveryPrice={order.delivery_price as number}
-          shoulShowDeliveryPrice={shouldShowDeliveryPrice}
-        />
-      )}
+      <CustomFade triggerAnimation={Boolean(order.delivery_price)}>
+        <CartFormSubtotalText>
+          Entrega: <span>R$ {transformPriceToString(Number(order.delivery_price))}</span>
+        </CartFormSubtotalText>
+      </CustomFade>
       <CartCupom />
 
-      {order.tipo_cupom === "entrega" && (
-        <CartFormRightAlignText shouldShowComponent={order.tipo_cupom === "entrega"}>
-          Desconto de entrega aplicado.
-        </CartFormRightAlignText>
-      )}
+      <CustomFade triggerAnimation={order.tipo_cupom === "entrega"}>
+        <CartFormSubtotalText>Desconto de entrega aplicado.</CartFormSubtotalText>
+      </CustomFade>
 
-      {order.tipo_cupom === "pedido" && order.valor_desconto && (
-        <CartFormRightAlignText shouldShowComponent={Boolean(order.valor_desconto)}>
+      <CustomFade triggerAnimation={order.tipo_cupom === "pedido" && Boolean(order.valor_desconto)}>
+        <CartFormSubtotalText>
           Desconto aplicado: <span>{order.valor_desconto}%</span>
-        </CartFormRightAlignText>
-      )}
+        </CartFormSubtotalText>
+      </CustomFade>
 
       <CartPayment />
       <CartFormTotalText>

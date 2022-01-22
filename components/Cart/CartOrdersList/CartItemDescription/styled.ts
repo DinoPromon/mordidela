@@ -1,5 +1,5 @@
 import { PINK, PURPLE } from "@utils/colors";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const CartItemDescriptionContainer = styled.div`
   display: grid;
@@ -7,8 +7,9 @@ export const CartItemDescriptionContainer = styled.div`
   column-gap: 0.5rem;
 
   & > span {
-    color: ${PINK};
+    font-size: inherit;
     font-weight: bold;
+    color: ${PINK};
     padding-right: 5px;
   }
 `;
@@ -16,13 +17,10 @@ export const CartItemDescriptionContainer = styled.div`
 export const CartItemDescriptionTrashPrice = styled.div`
   display: flex;
   gap: 0.5rem;
+  align-items: center;
   justify-content: flex-end;
-  & > span {
-    cursor: pointer;
-  }
-
   & > p {
-    color: ${PURPLE};
     font-weight: bold;
+    color: ${PURPLE};
   }
 `;

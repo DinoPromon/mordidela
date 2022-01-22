@@ -1,19 +1,18 @@
 import React, { useContext, Fragment, useState, useEffect } from "react";
+import { Formik } from "formik";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/client";
 import { BsCheck2Circle } from "react-icons/bs/index";
-import { Formik, FormikHelpers } from "formik";
-import * as yup from "yup";
 import Endereco from "@models/endereco";
 import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";
 import CartLoggedOptions from "./CartLoggedOptions";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { transformPriceStringToNumber } from "@utils/transformation";
 import { CartContext } from "@store/cart";
-import { FormButton, Modal } from "@components/shared";
+import { FormButton, Modal, CustomFade } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
+import { useCartFormValidationSchema, getCartFormInitialValues } from "./FormModel";
 import CartAddress from "./CartAddress";
 import {
   CartForm,
@@ -43,20 +42,27 @@ export type CartFormValues = {
 };
 
 const Cart: React.FC<Props> = ({ onCloseModal }) => {
+  const { products, order, resetCart } = useContext(CartContext);
+  const subTotalPrice = getSubTotalPrice();
   const [session, setSession] = useState<Session | null>(null);
   const [isLoadingSession, setIsLoadingSession] = useState(true);
+  const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
+  const [addresses, setAddresses] = useState<Endereco[]>([]);
   const [request, setRequest] = useState<RequestState>({
     error: "",
     isLoading: false,
     success: false,
   });
-  const { products, order, resetCart } = useContext(CartContext);
-  const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
-  const [addresses, setAddresses] = useState<Endereco[]>([]);
+  const cartFormValidationSchema = useCartFormValidationSchema(subTotalPrice);
+  const cartFormInitialValues = getCartFormInitialValues();
+  const isCartEmpty = products.length === 0;
 
   function getSubTotalPrice() {
-    const subTotal = products.reduce((acc, cur) => (acc += cur.total_price * cur.quantity), 0);
+    const subTotal = products.reduce(
+      (acc, product) => (acc += product.total_price * product.quantity),
+      0
+    );
     if (order.tipo_cupom === "pedido" && order.valor_desconto)
       return ((100 - order.valor_desconto) * subTotal) / 100;
     return subTotal;
@@ -65,40 +71,6 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   function changeShouldShowConfirmation(shouldShow: boolean) {
     setShouldShowConfirmation(shouldShow);
   }
-
-  const cartFormValidationSchema = yup.object().shape({
-    delivery_type: yup.string().nullable().required("Selecione um tipo de entrega"),
-    address_id: yup.number().nullable().required("Selecione um endereço de entrega"),
-    payment_type: yup.string().nullable().required("Selecione um tipo de pagamento"),
-    needChange: yup
-      .boolean()
-      .nullable()
-      .when("payment_type", (value) => {
-        if (value === "dinheiro")
-          return yup.string().nullable().required("Informe a necessidade de troco");
-        return yup.string().nullable();
-      }),
-    payment_amount: yup.string().when(["needChange", "payment_type"], {
-      is: (needChange: boolean | null, paymentType: string) =>
-        paymentType === "dinheiro" && needChange,
-      then: yup.string().test("payment_amount", "Valor insuficiente", (value) => {
-        const payment_amount = value || "";
-        const paymentAmountAsNumber = transformPriceStringToNumber(payment_amount);
-        if (paymentAmountAsNumber < Number(order.delivery_price) + subTotalPrice) return false;
-        return true;
-      }),
-    }),
-    cupom_id: yup.string().nullable(),
-  });
-
-  const cartFormInitialValues: CartFormValues = {
-    delivery_type: null,
-    address_id: null,
-    cupom_id: null,
-    payment_amount: "",
-    payment_type: null,
-    needChange: null,
-  };
 
   async function fetchAddresses(session: Session | null, isComponentMounted: boolean) {
     try {
@@ -113,10 +85,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     }
   }
 
-  async function cartSubmitHandler(
-    formValues: CartFormValues,
-    formikHelpers: FormikHelpers<CartFormValues>
-  ) {
+  async function cartSubmitHandler(formValues: CartFormValues) {
     try {
       setRequest({ error: "", isLoading: true, success: false });
       if (session) {
@@ -129,11 +98,11 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
         }));
 
         const pedido = {
-          troco_para: order.payment_amount,
-          id_cupom: order.id_cupom,
-          tipo_pagamento: order.payment_type,
-          tipo_entrega: order.delivery_type,
-          id_endereco: order.address_id,
+          troco_para: formValues.payment_amount,
+          id_cupom: formValues.cupom_id,
+          tipo_pagamento: formValues.payment_type,
+          tipo_entrega: formValues.delivery_type,
+          id_endereco: formValues.address_id,
           id_usuario: session.user.id_usuario,
         };
 
@@ -145,7 +114,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           },
         });
         const result = await response.json();
-        if (!response.ok) throw new Error(result.message || "");
+        if (!response.ok) throw new Error(result.message);
         setRequest({ error: "", isLoading: false, success: true });
         setIsOrderConfirmed(true);
         resetCart();
@@ -157,8 +126,6 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       setRequest({ error: error.message, isLoading: false, success: false });
     }
   }
-
-  const isCartEmpty = products.length === 0;
 
   useEffect(() => {
     let isMounted = true;
@@ -173,8 +140,6 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       isMounted = false;
     };
   }, [session]);
-
-  const subTotalPrice = getSubTotalPrice();
 
   return (
     <Modal onClose={onCloseModal}>
@@ -201,7 +166,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           validationSchema={cartFormValidationSchema}
           initialValues={cartFormInitialValues}
         >
-          {({ setFieldValue, values, validateForm }) => (
+          {({ setFieldValue, values }) => (
             <CartForm>
               {isCartEmpty ? (
                 <CartEmptyMessageContainer>
@@ -224,23 +189,18 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
                   ) : (
                     <Fragment>
                       <CartFormTitle>Seu pedido</CartFormTitle>
-                      {session && (
-                        <CartDeliveryType
-                          selectedDeliveryType={values.delivery_type}
-                          onSetDeliveryType={setFieldValue.bind(null, "delivery_type")}
-                        />
-                      )}
-                      {order.delivery_type === "entrega" && (
-                        <CartAddress
-                          selectedAddressId={values.address_id}
-                          addresses={addresses}
-                          onSetAddressId={setFieldValue.bind(null, "address_id")}
-                        />
-                      )}
+
+                      {session && <CartDeliveryType />}
+
+                      <CustomFade triggerAnimation={order.delivery_type === "entrega"}>
+                        <CartAddress addresses={addresses} />
+                      </CustomFade>
+
                       <CartOrdersList products={products} />
                       <CartFormSubtotalText>
                         Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
                       </CartFormSubtotalText>
+
                       {session && !isLoadingSession && (
                         <CartLoggedOptions
                           onChangeShouldShowConfirmation={changeShouldShowConfirmation}
