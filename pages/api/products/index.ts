@@ -1,12 +1,23 @@
 import type { NextApiHandler } from "next";
 import mysql from "database";
-
-import { getAllProduto } from "@controllers/produto";
+import { Prisma } from "database";
 
 export const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const products = await getAllProduto();
+      const products = await Prisma.produto.findMany({
+        select: {
+          id_produto: true,
+          preco_padrao: true,
+          nome: true,
+          disponivel: true,
+          descricao: true,
+          tamanho: true,
+          qtde_max_sabor: true,
+          id_categoria: true,
+          id_desconto: true,
+        },
+      });
       await mysql.end();
       return res.status(200).json(products);
     } catch (e) {

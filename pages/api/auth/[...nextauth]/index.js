@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { Prisma } from "database";
-import { MyUser } from "@my-types/next-auth";
 
 export default NextAuth({
   session: {
@@ -9,14 +8,6 @@ export default NextAuth({
   },
   providers: [
     Providers.Credentials({
-      credentials: {
-        email: {
-          type: "email",
-        },
-        senha: {
-          type: "password",
-        },
-      },
       async authorize(credentials, req) {
         const user = await Prisma.usuario.findFirst({
           where: {
@@ -31,8 +22,9 @@ export default NextAuth({
           },
         });
         if (!user) {
-          throw new Error("Dados incorretos! Verifique seu email ou senha.");
+          return null;
         }
+
         return {
           nome: user.nome,
           email: user.email,
@@ -42,12 +34,13 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    jwt(token, user, account, profile, isNewUser) {
-      return token;
+    async jwt(token, user, account, profile, isNewUser) {
+      user && (token.user = user);
+      return Promise.resolve(token);
     },
-    session(session, user) {
-      session.user = user.user as MyUser;
-      return session;
+    async session(session, user, sessionToken) {
+      session.user = user.user;
+      return Promise.resolve(session);
     },
   },
 });
