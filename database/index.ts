@@ -1,4 +1,5 @@
 import Mysql from "serverless-mysql";
+import { PrismaClient } from "@prisma/client";
 
 const mysql = Mysql({
   config: {
@@ -16,5 +17,7 @@ export function serialize<T>(data: T[]) {
   }
   return array;
 }
+
+export const Prisma = new PrismaClient();
 
 export default mysql;
