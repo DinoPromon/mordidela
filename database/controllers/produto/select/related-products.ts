@@ -1,5 +1,17 @@
 import { Prisma } from "database";
 import { RelatedProduct } from "@models/produto";
+import { ProductDiscount } from "@models/produto";
+
+function getProductDiscount(discount: ProductDiscount | null) {
+  if (discount) {
+    return {
+      id_desconto: discount.id_desconto,
+      porcentagem_desconto: discount.porcentagem_desconto,
+    } as ProductDiscount;
+  }
+
+  return null;
+}
 
 export async function findManyRelatedProducts() {
   const products = await Prisma.produto.findMany({
@@ -50,21 +62,11 @@ export async function findManyRelatedProducts() {
     qtde_max_sabor: product.qtde_max_sabor,
     preco_padrao: Number(product.preco_padrao),
     tamanho: product.tamanho,
+    desconto: getProductDiscount(product.desconto),
     categoria: {
       id_categoria: product.categoria.id_categoria,
-      desconto: product.categoria.desconto
-        ? {
-            id_desconto: product.categoria.desconto.id_desconto,
-            porcentagem_desconto: product.categoria.desconto.porcentagem_desconto,
-          }
-        : null,
+      desconto: getProductDiscount(product.categoria.desconto),
     },
-    desconto: product.desconto
-      ? {
-          id_desconto: product.desconto.id_desconto,
-          porcentagem_desconto: product.desconto.porcentagem_desconto,
-        }
-      : null,
     adicionais: product.produto_adicional.map((produto_adicional) => ({
       id_adicional: produto_adicional.id_adicional,
       nome: produto_adicional.adicional.nome,

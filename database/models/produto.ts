@@ -17,11 +17,11 @@ type Product = {
   id_desconto?: Desconto["id_desconto"] | null;
 };
 
-type ProductDiscount = Pick<Desconto, "id_desconto" | "porcentagem_desconto">;
-
 type ProductCategory = Pick<Categoria, "id_categoria"> & {
   desconto: ProductDiscount | null;
 };
+
+export type ProductDiscount = Pick<Desconto, "id_desconto" | "porcentagem_desconto">;
 
 export type ProdutoWithoutImage = Omit<Product, "imagem">;
 
