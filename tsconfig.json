@@ -9,6 +9,7 @@
       "@my-types/*": ["types/*"],
       "@store/*": ["store/*"],
       "@models/*": ["database/models/*"],
+      "@api": ["api"],
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

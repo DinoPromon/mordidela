@@ -1,5 +1,5 @@
 export { insertAllProdutosFromPedido } from "./insert";
-export { getRelatedProducts } from "./select/related-products";
+export { findManyRelatedProducts } from "./select/related-products";
 export {
   getAllProduto,
   getProdutoById,

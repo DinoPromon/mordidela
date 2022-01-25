@@ -1,21 +1,14 @@
 import { NextApiHandler } from "next";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Prisma } from "database";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const addresses = await prisma.endereco.findMany({
+      const addresses = await Prisma.endereco.findMany({
         include: {
-          usuario: {
-            select: {
-              nome: true,
-            },
-          },
+          usuario: true,
         },
       });
-      prisma.$disconnect();
       return res.status(200).json(addresses);
     } catch (e) {
       const error = e as Error;

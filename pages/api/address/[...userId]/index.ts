@@ -1,8 +1,6 @@
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
-import Usuario from "@models/usuario";
-import { getAllAddressByUserId } from "@controllers/endereco";
-import { getDeliveryPriceByUserId } from "@controllers/entrega";
+import { Prisma } from "database";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
@@ -14,10 +12,12 @@ const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === "GET") {
     try {
-      const addresses = await getAllAddressByUserId(userId as Usuario["id_usuario"]);
-      return res.status(200).json({
-        address: addresses,
+      const addresses = await Prisma.endereco.findMany({
+        where: {
+          id_usuario: Number(userId),
+        },
       });
+      return res.status(200).json(addresses);
     } catch (e) {
       const error = e as Error;
       return res.status(500).json({ message: error.message });

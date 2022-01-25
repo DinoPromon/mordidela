@@ -1,19 +1,20 @@
 import React, { useContext, Fragment, useState, useEffect } from "react";
-import { Formik } from "formik";
-import { Session } from "next-auth";
-import { getSession } from "next-auth/client";
-import { BsCheck2Circle } from "react-icons/bs/index";
+import Axios from "@api";
 import Endereco from "@models/endereco";
+import CartAddress from "./CartAddress";
 import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";
 import CartLoggedOptions from "./CartLoggedOptions";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Formik } from "formik";
+import { Session } from "next-auth";
 import { CartContext } from "@store/cart";
-import { FormButton, Modal, CustomFade } from "@components/shared";
+import { getSession } from "next-auth/client";
+import { BsCheck2Circle } from "react-icons/bs/index";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
+import { FormButton, Modal, CustomFade } from "@components/shared";
 import { useCartFormValidationSchema, getCartFormInitialValues } from "./FormModel";
-import CartAddress from "./CartAddress";
 import {
   CartForm,
   CartFormTitle,
@@ -75,9 +76,8 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   async function fetchAddresses(session: Session | null, isComponentMounted: boolean) {
     try {
       if (session) {
-        const response = await fetch(`/api/address/${session.user.id_usuario}`);
-        const data = await response.json();
-        if (isComponentMounted) setAddresses(data.address as Endereco[]);
+        const response = await Axios.get<Endereco[]>(`/address/${session.user.id_usuario}`);
+        if (isComponentMounted) setAddresses(response.data);
       }
     } catch (e) {
       const error = e as Error;
