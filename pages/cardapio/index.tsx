@@ -1,25 +1,19 @@
 import type { GetStaticProps } from "next";
 import type { ReactElement } from "react";
 
-import Sabor from "@models/sabor";
 import Menu from "@components/Menu";
-import Adicional from "@models/adicional";
-import Categoria from "@models/categoria";
-import Produto, { MenuProduct } from "@models/produto";
+import { RelatedProduct } from "@models/produto";
 import { NavBarFooter } from "@components/Layouts";
-import { getAllProduto } from "@controllers/produto";
 import { NextPageWithLayout } from "@my-types/next-page";
-import { getAllRelatedAdds } from "@controllers/adicional";
-import { getAllRelatedFlavors } from "@controllers/sabor";
-import { ViewCategoriaAdicional, ViewProdutoSabor } from "@models/views";
+import { getRelatedProducts } from "@controllers/produto";
 
 type Props = {
-  products: MenuProduct[];
+  products: RelatedProduct[];
   error: boolean;
 };
 
-const MenuPage: NextPageWithLayout<Props> = (props) => {
-  return <Menu products={props.products} />;
+const MenuPage: NextPageWithLayout<Props> = ({ products, error }) => {
+  return <Menu products={products} error={error} />;
 };
 
 MenuPage.getLayout = function getLayout(page: ReactElement) {
@@ -27,55 +21,27 @@ MenuPage.getLayout = function getLayout(page: ReactElement) {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  function getCategoryAdds(relatedAdds: ViewCategoriaAdicional[], id: Categoria["id_categoria"]) {
-    const adds: Adicional[] = [];
-    for (const i in relatedAdds) {
-      if (relatedAdds[i].id_categoria === id) {
-        adds.push({
-          id_adicional: relatedAdds[i].id_adicional,
-          nome: relatedAdds[i].nome,
-          preco: relatedAdds[i].preco,
-        });
-      }
-      if (Number(relatedAdds[i].id_categoria) > Number(id)) return adds;
-    }
-    return adds;
-  }
-
-  function getProductFlavors(relatedFlavors: ViewProdutoSabor[], id: Produto["id_produto"]) {
-    const flavors: Sabor[] = [];
-    for (const i in relatedFlavors) {
-      if (relatedFlavors[i].id_produto === id) {
-        flavors.push({ id_sabor: relatedFlavors[i].id_sabor, nome: relatedFlavors[i].nome });
-      }
-      if (Number(relatedFlavors[i].id_produto) > Number(id)) return flavors;
-    }
-    return flavors;
-  }
-  let menuProducts: MenuProduct[] = [];
-  let error = true;
   try {
-    const products = await getAllProduto();
-    const adds = await getAllRelatedAdds();
-    const flavors = await getAllRelatedFlavors();
+    const products = await getRelatedProducts();
 
-    for (const i in products) {
-      menuProducts.push({
-        ...products[i],
-        adds: getCategoryAdds(adds, products[i].id_categoria),
-        flavors: getProductFlavors(flavors, products[i].id_produto),
-      });
-    }
+    return {
+      props: {
+        products: products,
+        error: false,
+      },
+      revalidate: 600,
+    };
   } catch (e) {
-    error = true;
+    const error = e as Error;
+    console.log(error.message);
+
+    return {
+      props: {
+        products: [],
+        error: true,
+      },
+    };
   }
-  return {
-    props: {
-      products: menuProducts,
-      error,
-    },
-    revalidate: 600,
-  };
 };
 
 export default MenuPage;

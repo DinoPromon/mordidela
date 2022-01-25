@@ -1,12 +1,11 @@
 import React from "react";
-
+import { RelatedProduct } from "@models/produto";
 import ModalItem from "./ModalItem";
 import Modal from "@components/shared/Modal";
-import { MenuProduct } from "@models/produto";
 
 type Props = {
   onClose: () => void;
-  item?: MenuProduct;
+  item?: RelatedProduct;
   image: string;
 };
 

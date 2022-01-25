@@ -2,15 +2,12 @@ import React from "react";
 
 import { MenuListContainer } from "./styled";
 import MenuItem from "./MenuItem";
-import { MenuProduct } from "@models/produto";
+import { RelatedProduct } from "@models/produto";
 
 type Props = {
-  onItemClick: (item: MenuProduct, img?: string) => void;
-  changeModalImage: (
-    id_produto: MenuProduct["id_produto"],
-    img?: string
-  ) => void;
-  products: MenuProduct[];
+  onItemClick: (item: RelatedProduct, img?: string) => void;
+  changeModalImage: (id_produto: RelatedProduct["id_produto"], img?: string) => void;
+  products: RelatedProduct[];
 };
 
 const MenuList: React.FC<Props> = (props) => {

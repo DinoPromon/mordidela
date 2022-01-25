@@ -8,7 +8,7 @@ import ItemCounter from "./ItemCounter";
 import Adicional from "@models/adicional";
 import Sabor from "@models/sabor";
 import { CartContext } from "@store/cart";
-import { MenuProduct } from "@models/produto";
+import { RelatedProduct } from "@models/produto";
 import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
 import { formatProductId } from "@utils/formatters";
@@ -16,7 +16,7 @@ import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   image: string;
-  item: MenuProduct;
+  item: RelatedProduct;
   closeModal: () => void;
 };
 
@@ -37,9 +37,7 @@ const ModalItem: React.FC<Props> = (props) => {
   const [price, setPrice] = useState(item.preco_padrao);
   const { addProductToCart } = useContext(CartContext);
 
-  const canSubmit = item.flavors.length
-    ? productOrder.flavors.length > 0
-    : true;
+  const canSubmit = item.sabores.length ? productOrder.flavors.length > 0 : true;
 
   const getProductKey = formatProductId.bind(null, item.nome, item.id_produto);
 
@@ -64,9 +62,7 @@ const ModalItem: React.FC<Props> = (props) => {
 
   function removeFlavor(flavor: Sabor) {
     setProductOrder((prevState) => {
-      const flavors = prevState.flavors.filter(
-        (item) => item.id_sabor !== flavor.id_sabor
-      );
+      const flavors = prevState.flavors.filter((item) => item.id_sabor !== flavor.id_sabor);
       return {
         ...prevState,
         key: getProductKey(prevState.adds, flavors),
@@ -89,9 +85,7 @@ const ModalItem: React.FC<Props> = (props) => {
 
   function removeAditional(add: Adicional) {
     setProductOrder((prevState) => {
-      const adds = prevState.adds.filter(
-        (item) => item.id_adicional !== add.id_adicional
-      );
+      const adds = prevState.adds.filter((item) => item.id_adicional !== add.id_adicional);
       return {
         ...prevState,
         total_price: prevState.total_price - add.preco,
@@ -123,18 +117,18 @@ const ModalItem: React.FC<Props> = (props) => {
       </h2>
       <ItemImage src={image} alt={item.nome} />
       <p>{item.descricao}</p>
-      {item.flavors.length > 0 && (
+      {item.sabores.length > 0 && (
         <ItemFlavorsList
-          items={item.flavors}
+          items={item.sabores}
           maxFlavor={item.qtde_max_sabor}
           flavorsAmount={productOrder.flavors.length}
           onAddFlavor={addFlavor}
           onRemoveFlavor={removeFlavor}
         />
       )}
-      {item.adds.length > 0 && (
+      {item.adicionais.length > 0 && (
         <ItemAddsList
-          items={item.adds}
+          items={item.adicionais}
           setPrice={setPrice}
           onAddAditional={addAditional}
           onRemoveAditional={removeAditional}
@@ -147,10 +141,7 @@ const ModalItem: React.FC<Props> = (props) => {
         onBlur={noteBlurHandler}
       />
       <div>
-        <ItemCounter
-          quantity={productOrder.quantity}
-          setQuantity={changeQuantity}
-        />
+        <ItemCounter quantity={productOrder.quantity} setQuantity={changeQuantity} />
         <FormButton type="submit" disabled={!canSubmit}>
           Adicionar - R${transformPriceToString(price * productOrder.quantity)}
         </FormButton>
