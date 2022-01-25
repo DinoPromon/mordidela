@@ -5,7 +5,7 @@ import Menu from "@components/Menu";
 import { RelatedProduct } from "@models/produto";
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
-import { getRelatedProducts } from "@controllers/produto";
+import { findManyRelatedProducts } from "@controllers/produto";
 
 type Props = {
   products: RelatedProduct[];
@@ -22,7 +22,7 @@ MenuPage.getLayout = function getLayout(page: ReactElement) {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   try {
-    const products = await getRelatedProducts();
+    const products = await findManyRelatedProducts();
 
     return {
       props: {

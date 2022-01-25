@@ -1,7 +1,7 @@
 import { Prisma } from "database";
 import { RelatedProduct } from "@models/produto";
 
-export async function getRelatedProducts() {
+export async function findManyRelatedProducts() {
   const products = await Prisma.produto.findMany({
     select: {
       id_produto: true,
