@@ -23,7 +23,5 @@ export async function createAllProductOrderRelations(
       observacao: product.observacao,
       quantidade: product.quantidade,
     });
-
-    console.log('inserido');
   });
 }

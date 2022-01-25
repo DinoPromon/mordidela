@@ -92,7 +92,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
         const produtos = products.map((item) => ({
           id_produto: item.product_id,
           quantidade: item.quantity,
-          observacao: item.orderNote,
+          observacao: item.orderNote ? item.orderNote : null,
           adicionais: item.adds.map((add) => add.id_adicional),
           sabores: item.flavors.map((flavor) => flavor.id_sabor),
         }));
