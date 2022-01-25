@@ -15,3 +15,5 @@ export async function getAllAddressByUserId(id: Usuario["id_usuario"]) {
 
   return serialize(result);
 }
+
+export { findManyAddressByUserId } from "./address-useId";

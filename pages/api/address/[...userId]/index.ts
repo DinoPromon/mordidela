@@ -1,6 +1,7 @@
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 import { Prisma } from "database";
+import { findManyAddressByUserId } from "@controllers/endereco";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
@@ -12,11 +13,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === "GET") {
     try {
-      const addresses = await Prisma.endereco.findMany({
-        where: {
-          id_usuario: Number(userId),
-        },
-      });
+      const addresses = await findManyAddressByUserId(Number(userId));
       return res.status(200).json(addresses);
     } catch (e) {
       const error = e as Error;
