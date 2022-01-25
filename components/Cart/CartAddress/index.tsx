@@ -20,8 +20,8 @@ type CartAddressProps = {
 };
 
 const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
-  const { setFieldValue } = useFormikContext<CartFormValues>();
-  const { setAddressId, order } = useContext(CartContext);
+  const { setFieldValue, values } = useFormikContext<CartFormValues>();
+  const { setAddressId } = useContext(CartContext);
 
   function getFormatedAddress(address: Endereco) {
     return `${address.logradouro} n° ${address.numero}, ${address.bairro}`;
@@ -36,7 +36,11 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
   return (
     <CartAddressContainer>
       <CartAddressTitle>Endereços de entrega</CartAddressTitle>
-      <RadioGroup name="address-input-radio" value={order.address_id} onChange={changeRadioHandler}>
+      <RadioGroup
+        name="address-input-radio"
+        value={values.address_id}
+        onChange={changeRadioHandler}
+      >
         {addresses.length > 0 &&
           addresses.map((address) => (
             <FormControlLabel

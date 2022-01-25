@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { CartItemDescriptionContainer, CartItemDescriptionTrashPrice } from "./styled";
-import { PINK, PURPLE } from "@utils/colors";
+import { PINK } from "@utils/colors";
 import { CartContext } from "@store/cart";
 import { FaTrash } from "react-icons/fa/index";
 import { transformPriceToString } from "@utils/transformation";

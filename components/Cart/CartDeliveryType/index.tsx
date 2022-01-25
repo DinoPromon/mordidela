@@ -8,8 +8,8 @@ import { CartContext } from "@store/cart";
 import { CartDeliveryTypeContainer } from "./styled";
 
 const CartDeliveryType: React.FC = () => {
-  const { setFieldValue } = useFormikContext<CartFormValues>();
-  const { order, setDeliveryType, setDeliveryPrice, setAddressId } = useContext(CartContext);
+  const { setFieldValue, values } = useFormikContext<CartFormValues>();
+  const { setDeliveryType, setDeliveryPrice, setAddressId } = useContext(CartContext);
 
   function deliveryTypeChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const deliveryType = event.target.value;
@@ -26,7 +26,7 @@ const CartDeliveryType: React.FC = () => {
       <RadioGroup
         row
         name="input-delivery-type"
-        value={order.delivery_type}
+        value={values.delivery_type}
         onChange={deliveryTypeChangeHandler}
       >
         <FormControlLabel
