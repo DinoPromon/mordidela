@@ -1,3 +1,4 @@
+import Entrega from "./entrega";
 import Usuario from "./usuario";
 
 type Endereco = {
@@ -5,9 +6,9 @@ type Endereco = {
   logradouro: string;
   numero: string;
   bairro: string;
-  complemento: string;
+  complemento?: string | null;
   id_usuario: Usuario["id_usuario"];
-  id_entrega: number;
+  id_entrega: Entrega["id_entrega"];
 };
 
 export default Endereco;

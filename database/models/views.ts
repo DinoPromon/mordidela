@@ -4,15 +4,12 @@ import Usuario from "./usuario";
 import Telefone from "./telefone";
 import Adicional from "./adicional";
 import ProdutoSabor from "./produto_sabor";
-import CategoriaAdicional from "./categoria_adicional";
 import Produto from "./produto";
 import PedidoProdutoAdicional from "./pedido_produto_adicional";
 import PedidoProdutoSabor from "./pedido_produto_sabor";
 import PedidoProduto from "./pedido_produto";
 
 export type ViewUsuario = Usuario & Omit<Telefone, "id_telefone">;
-
-export type ViewCategoriaAdicional = CategoriaAdicional & Pick<Adicional, "nome" | "preco">;
 
 export type ViewPedido = Pedido & { endereco: string; valor_total: number; troco: number };
 

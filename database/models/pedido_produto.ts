@@ -6,7 +6,7 @@ type PedidoProduto = {
   id_produto: Produto['id_produto'];
   quantidade: number;
   preco_pedido: number;
-  observacao: string | null;
+  observacao?: string | null;
 };
 
 export default PedidoProduto;

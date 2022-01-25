@@ -1,5 +1,5 @@
 type Sabor = {
-  id_sabor: string;
+  id_sabor: number;
   nome: string;
 };
 

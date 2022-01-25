@@ -5,16 +5,16 @@ import Categoria from "./categoria";
 import PedidoProduto from "./pedido_produto";
 
 type Produto = {
-  id_produto: string;
+  id_produto: number;
   preco_padrao: number;
   nome: string;
-  imagem: Blob | null;
+  imagem?: Blob | null;
   disponivel: boolean;
-  descricao: string | null;
+  descricao?: string | null;
   tamanho: string;
-  qtde_max_sabor: number | null;
+  qtde_max_sabor?: number | null;
   id_categoria: Categoria["id_categoria"];
-  id_desconto: Desconto["id_desconto"] | null;
+  id_desconto?: Desconto["id_desconto"] | null;
 };
 
 export type ProdutoWithoutImage = Omit<Produto, "imagem">;

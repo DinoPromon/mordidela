@@ -1,9 +1,9 @@
 type Usuario = {
-  id_usuario: string;
+  id_usuario: number;
   nome: string;
-  data_nascimento: string;
+  data_nascimento: Date;
   email: string;
-  data_criacao: string;
+  data_criacao: Date;
   autorizacao: "cliente" | "administrador";
   senha: string;
 };
