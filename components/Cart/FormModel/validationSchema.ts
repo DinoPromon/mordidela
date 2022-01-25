@@ -8,8 +8,14 @@ export const useCartFormValidationSchema = (subTotalPrice: number) => {
 
   const cartFormValidationSchema = yup.object().shape({
     delivery_type: yup.string().nullable().required("Selecione um tipo de entrega"),
-    address_id: yup.number().nullable().required("Selecione um endereço de entrega"),
     payment_type: yup.string().nullable().required("Selecione um tipo de pagamento"),
+    address_id: yup
+      .number()
+      .nullable()
+      .when("delivery_type", (value) => {
+        if (value === "balcao") return yup.number().nullable();
+        return yup.number().nullable().required("Selecione um endereço de entrega");
+      }),
     needChange: yup
       .boolean()
       .nullable()
