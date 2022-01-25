@@ -6,22 +6,6 @@ type Props = {
   statusPedido: Pedido["status_pedido"];
 };
 
-/* const Item = styled.li<Props>`
-  & > ul {
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-
-    & > li {
-      color: ${PURPLE};
-      &:nth-child(even) {
-        color: ${PINK}
-      }
-    }
-  }
-`; */
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

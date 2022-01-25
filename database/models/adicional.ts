@@ -1,5 +1,5 @@
 type Adicional = {
-  id_adicional: string;
+  id_adicional: number;
   nome: string;
   preco: number;
 };
