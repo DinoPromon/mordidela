@@ -1,7 +1,6 @@
 import mysql, { serialize } from "database";
 
 import Produto from "@models/produto";
-import { ProdutoWithoutImage } from "@models/produto";
 
 async function getNomeProdutoById(productId: string) {
   const query = "SELECT nome FROM produto WHERE id_produto=?";
@@ -20,15 +19,6 @@ async function getProdutoTamanhoByNome(productName: string) {
   await mysql.end();
   const serializedResult = serialize(result);
   return result.length > 0 ? serializedResult : [];
-}
-
-export async function getAllProduto() {
-  const query = `SELECT
-      id_produto, preco_padrao, nome, disponivel, descricao, tamanho, qtde_max_sabor, id_categoria, id_desconto 
-      FROM produto ORDER BY id_categoria`;
-  const result = (await mysql.query(query)) as ProdutoWithoutImage[];
-  await mysql.end();
-  return serialize(result);
 }
 
 export async function getImagemProdutoById(productId: string) {
