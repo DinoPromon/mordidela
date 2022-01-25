@@ -1,6 +1,5 @@
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
-import { Prisma } from "database";
 import { findManyAddressByUserId } from "@controllers/endereco";
 
 const handler: NextApiHandler = async (req, res) => {

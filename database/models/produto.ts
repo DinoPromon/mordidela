@@ -26,8 +26,8 @@ export type ProductDiscount = Pick<Desconto, "id_desconto" | "porcentagem_descon
 export type ProdutoWithoutImage = Omit<Product, "imagem">;
 
 export type CartProduto = Pick<PedidoProduto, "id_produto" | "observacao" | "quantidade"> & {
-  adicionais: Adicional["id_adicional"][] | Adicional["id_adicional"];
-  sabores: Sabor["id_sabor"][] | Sabor["id_sabor"];
+  adicionais: Adicional["id_adicional"][];
+  sabores: Sabor["id_sabor"][];
 };
 
 export type RelatedProduct = Omit<

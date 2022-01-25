@@ -93,8 +93,8 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           id_produto: item.product_id,
           quantidade: item.quantity,
           observacao: item.orderNote,
-          adicionais: JSON.stringify(item.adds.map((add) => add.id_adicional)),
-          sabores: JSON.stringify(item.flavors.map((flavor) => flavor.id_sabor)),
+          adicionais: item.adds.map((add) => add.id_adicional),
+          sabores: item.flavors.map((flavor) => flavor.id_sabor),
         }));
 
         const pedido = {
@@ -106,15 +106,11 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           id_usuario: session.user.id_usuario,
         };
 
-        const response = await fetch("/api/order", {
-          method: "POST",
-          body: JSON.stringify({ produtos, pedido }),
-          headers: {
-            "Content-Type": "application/json",
-          },
+        const response = await Axios.post("/order", {
+          produtos: produtos,
+          pedido: pedido,
         });
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.message);
+
         setRequest({ error: "", isLoading: false, success: true });
         setIsOrderConfirmed(true);
         resetCart();

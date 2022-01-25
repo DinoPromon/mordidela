@@ -1,3 +1,1 @@
-import { insertPedidoProdutoSabor } from "./insert";
-
-export { insertPedidoProdutoSabor };
+export { createManyOrderProductFlavors } from "./insert";

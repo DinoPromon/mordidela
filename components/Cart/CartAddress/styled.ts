@@ -10,6 +10,7 @@ export const CartAddressContainer = styled.div`
 
 export const CartAddressTitle = styled.h2`
   color: ${PURPLE};
+  font-size: 1rem;
   padding-bottom: 0.25rem;
   padding-top: 0.25rem;
 `;

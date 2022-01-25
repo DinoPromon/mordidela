@@ -1,25 +1,16 @@
-import Pedido from "@models/pedido";
-import mysql, { serialize } from "database";
+import { Prisma } from "database";
 import { CartPedido } from "@models/pedido";
-import { getCupomById } from "@controllers/cupom";
-import { getDeliveryPriceByAddressId } from "@controllers/entrega";
+import { findCupomById } from "@controllers/cupom";
 
-export async function insertPedido(pedido: CartPedido) {
-  const { id_cupom, id_usuario, tipo_entrega, tipo_pagamento, troco_para, id_endereco } = pedido;
-  const cupom = await getCupomById(id_cupom);
+export async function createOrder(order: CartPedido) {
+  const { id_cupom, id_endereco, id_usuario, tipo_entrega, tipo_pagamento, troco_para } = order;
+  const cupom = id_cupom ? await findCupomById(id_cupom) : null;
+  const cupomCode = cupom ? cupom.codigo : null;
 
-  const preco_entrega = await getDeliveryPriceByAddressId(id_endereco);
-  const shouldRemoveDeliveryPrice = tipo_entrega === "balcao" || (cupom && cupom.tipo === "entrega");
-  const query = "SELECT f_insert_pedido(?, ?, ?, ?, ?, ?, ?)";
+  const [result] = (await Prisma.$queryRaw`
+    SELECT f_insert_pedido(${cupomCode}, ${id_usuario}, ${id_endereco}, ${tipo_entrega}, ${tipo_pagamento}, ${troco_para})
+  `) as unknown[];
 
-  const codigoCupom = cupom ? cupom.codigo : undefined;
-
-  const params = shouldRemoveDeliveryPrice
-    ? [codigoCupom, id_usuario, id_endereco, 0.0, tipo_entrega, tipo_pagamento, troco_para || 0]
-    : [codigoCupom, id_usuario, id_endereco, preco_entrega, tipo_entrega, tipo_pagamento, troco_para || 0];
-
-  const result = (await mysql.query(query, params)) as Pick<Pedido, "id_pedido">[];
-
-  const serializedResult = serialize(result);
-  return Object.values(serializedResult[0])[0];
+  const createdOrderId = Object.values(result as { [key: string]: unknown })[0] as number;
+  return createdOrderId;
 }

@@ -1,4 +1,2 @@
-import { insertPedidoProduto } from "./insert";
-import { getAllProdutoInPedido } from "./select";
-
-export { insertPedidoProduto, getAllProdutoInPedido };
+export { createOrderProduct, insertPedidoProduto } from "./insert";
+export { getAllProdutoInPedido } from "./select";
