@@ -1,15 +1,15 @@
-import { PURPLE } from "@utils/colors";
+import { PINK, PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
 export const CartCupomContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 1rem 0;
+  padding-top: 0.5rem;
   gap: 0.5rem;
 
   & > button {
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem 1rem;
   }
 `;
 
@@ -20,4 +20,5 @@ export const CartCupomInput = styled.input`
   border: 1px ${PURPLE} solid;
   outline: none;
   width: 350px;
+  font-size: 1rem;
 `;

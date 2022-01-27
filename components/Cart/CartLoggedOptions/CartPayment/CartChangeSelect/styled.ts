@@ -11,5 +11,6 @@ export const CartChangeSelectContainer = styled.div`
 
   & > h3 {
     color: ${PURPLE};
+    font-size: 1rem;
   }
 `;

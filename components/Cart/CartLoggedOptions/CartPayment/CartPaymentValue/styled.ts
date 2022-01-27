@@ -10,6 +10,7 @@ export const CartPaymentValueContainer = styled.div`
 
   & > h3 {
     color: ${PURPLE};
+    font-size: 1rem;
   }
 `;
 
@@ -26,6 +27,7 @@ export const CartPaymentInputChange = styled.div`
     width: 5rem;
     padding: 2px;
     color: inherit;
+    font-size: 1rem;
   }
 
   & > span {

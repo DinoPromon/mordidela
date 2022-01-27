@@ -11,8 +11,16 @@ import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { CartFormValues } from "../FormModel";
 import { CartFormSubtotalText } from "../styled";
-import { CartFormErrorContainer, CartFormErrorMessage, CartFormTotalText } from "./styled";
+import {
+  CartFormErrorContainer,
+  CartFormErrorMessage,
+  CartFormTotalText,
+  CartCoupomDataContainer,
+  CartCupomData,
+} from "./styled";
 import { transformPriceToString } from "@utils/transformation";
+import { FaTrash } from "react-icons/fa/index";
+import { PINK } from "@utils/colors";
 
 type Props = {
   subTotalPrice: number;
@@ -89,13 +97,21 @@ const CartLoggedOptions: React.FC<Props> = ({
       <CartCupom />
 
       <CustomFade triggerAnimation={values.cupom?.tipo_cupom === CupomType.DELIVERY}>
-        <CartFormSubtotalText>Desconto de entrega aplicado.</CartFormSubtotalText>
+        <CartFormSubtotalText>Desconto de entrega aplicado</CartFormSubtotalText>
       </CustomFade>
 
       <CustomFade triggerAnimation={shouldShowDiscount}>
-        <CartFormSubtotalText>
-          Desconto aplicado: <span>{values.cupom?.valor_desconto}%</span>
-        </CartFormSubtotalText>
+        <CartCoupomDataContainer>
+          <CartCupomData>
+            <FaTrash cursor="pointer" size={16} color={PINK} />
+          </CartCupomData>
+          <CartCupomData>
+            Cupom: <span>{values.cupom?.codigo_cupom}</span>
+          </CartCupomData>
+          <CartCupomData>
+            Desconto: <span>{values.cupom?.valor_desconto}%</span>
+          </CartCupomData>
+        </CartCoupomDataContainer>
       </CustomFade>
 
       <CartPayment />

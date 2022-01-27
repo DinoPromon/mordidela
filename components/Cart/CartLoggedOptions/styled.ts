@@ -1,3 +1,4 @@
+import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
 import { CartFormSubtotalText } from "../styled";
 
@@ -18,5 +19,27 @@ export const CartFormTotalText = styled(CartFormSubtotalText)`
 
   & > span {
     font-size: 1.25rem;
+  }
+`;
+
+export const CartCoupomDataContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+export const CartCupomData = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  color: ${PINK};
+  font-weight: bold;
+
+  & > span {
+    color: ${PURPLE};
+    font-weight: bold;
   }
 `;

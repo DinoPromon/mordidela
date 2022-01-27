@@ -42,6 +42,7 @@ export const FilterSelector = styled.button`
   outline: none;
   color: ${PURPLE};
   font-weight: bold;
+  font-size: 1rem;
 `;
 
 export const FilterArrowButton = styled.button`

@@ -1,6 +1,6 @@
 import React, { useContext, Fragment } from "react";
 import { useFormikContext } from "formik";
-import { CartFormValues } from "@components/Cart";
+import { CartFormValues } from "@components/Cart/FormModel";
 import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
 import { CustomFade } from "@components/shared";
 import { CartContext } from "@store/cart";

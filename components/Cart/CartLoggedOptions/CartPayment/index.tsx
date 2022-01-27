@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormikContext } from "formik";
-import { CartFormValues } from "@components/Cart";
+import { CartFormValues } from "@components/Cart/FormModel";
 import { CartPaymentContainer } from "./styled";
 import CartPaymentSelect from "./CartPaymentSelect";
 import CartPaymentValue from "./CartPaymentValue";
