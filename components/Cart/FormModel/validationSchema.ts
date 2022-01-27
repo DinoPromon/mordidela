@@ -36,7 +36,15 @@ export const useCartFormValidationSchema = (subTotalPrice: number) => {
         return true;
       }),
     }),
-    cupom_id: yup.string().nullable(),
+    cupom: yup
+      .object()
+      .shape({
+        id_cupom: yup.number(),
+        valor_desconto: yup.number(),
+        codigo_cupom: yup.string(),
+        tipo_cupom: yup.string(),
+      })
+      .nullable(),
   });
 
   return cartFormValidationSchema;

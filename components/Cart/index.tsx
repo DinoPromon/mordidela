@@ -14,7 +14,7 @@ import { BsCheck2Circle } from "react-icons/bs/index";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
 import { FormButton, Modal, CustomFade } from "@components/shared";
-import { useCartFormValidationSchema, getCartFormInitialValues } from "./FormModel";
+import { useCartFormValidationSchema, getCartFormInitialValues, CartFormValues } from "./FormModel";
 import {
   CartForm,
   CartFormTitle,
@@ -28,18 +28,10 @@ import {
   CartEmptyMessageContainer,
   CartOrderConfirmationButtons,
 } from "./styled";
+import { MdNoMealsOuline } from "react-icons/md";
 
 type Props = {
   onCloseModal: () => void;
-};
-
-export type CartFormValues = {
-  delivery_type: string | null;
-  needChange: boolean | null;
-  address_id: Endereco["id_endereco"] | null;
-  payment_type: string | null;
-  payment_amount: string;
-  cupom_id: string | null;
 };
 
 const Cart: React.FC<Props> = ({ onCloseModal }) => {
@@ -99,7 +91,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
         const pedido = {
           troco_para: formValues.payment_amount,
-          id_cupom: formValues.cupom_id,
+          id_cupom: formValues.cupom ? formValues.cupom.id_cupom : null,
           tipo_pagamento: formValues.payment_type,
           tipo_entrega: formValues.delivery_type,
           id_endereco: formValues.address_id,
@@ -188,7 +180,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                       {session && <CartDeliveryType />}
 
-                      <CustomFade triggerAnimation={order.delivery_type === "entrega"}>
+                      <CustomFade triggerAnimation={values.delivery_type === "entrega"}>
                         <CartAddress addresses={addresses} />
                       </CustomFade>
 

@@ -1,6 +1,14 @@
 import Endereco from "@models/endereco";
+import { CupomType } from "@constants/cupom-type";
 import { getCartFormInitialValues } from "./initialValues";
 import { useCartFormValidationSchema } from "./validationSchema";
+
+type CartCupom = {
+  id_cupom: number;
+  valor_desconto: number;
+  codigo_cupom: string;
+  tipo_cupom: CupomType;
+};
 
 export type CartFormValues = {
   delivery_type: string | null;
@@ -8,7 +16,8 @@ export type CartFormValues = {
   address_id: Endereco["id_endereco"] | null;
   payment_type: string | null;
   payment_amount: string;
-  cupom_id: string | null;
+  delivery_price: number | null;
+  cupom: CartCupom | null;
 };
 
 export { getCartFormInitialValues, useCartFormValidationSchema };

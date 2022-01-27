@@ -1,14 +1,15 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import CartCupom from "./CartCupom";
 import Entrega from "@models/entrega";
 import CartPayment from "./CartPayment";
 import Loading from "@components/shared/Loading";
+import Axios from "@api";
+import { CupomType } from "@constants/cupom-type";
 import { CustomFade } from "@components/shared";
-import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
-import { CartFormValues } from "@components/Cart";
+import { CartFormValues } from "../FormModel";
 import { CartFormSubtotalText } from "../styled";
 import { CartFormErrorContainer, CartFormErrorMessage, CartFormTotalText } from "./styled";
 import { transformPriceToString } from "@utils/transformation";
@@ -24,17 +25,19 @@ const CartLoggedOptions: React.FC<Props> = ({
   subTotalPrice,
   onChangeShouldShowConfirmation,
 }) => {
-  const { validateForm } = useFormikContext<CartFormValues>();
+  const { validateForm, values, setFieldValue } = useFormikContext<CartFormValues>();
   const [formError, setFormError] = useState("");
-  const { order, changeDeliveryPrice } = useContext(CartContext);
 
-  const isDelivery = order.delivery_type === "entrega";
-  const totalPrice = getTotalPrice();
-  const shouldShowDeliveryPrice = isDelivery && order.tipo_cupom !== "entrega";
+  const isDelivery = values.delivery_type === CupomType.DELIVERY;
+  const shouldShowDeliveryPrice = isDelivery && values.cupom?.tipo_cupom !== CupomType.DELIVERY;
+  const shouldShowDiscount = Boolean(values.cupom?.valor_desconto);
 
   function getTotalPrice() {
-    if (isDelivery && order.tipo_cupom !== "entrega" && order.delivery_price) {
-      return subTotalPrice + order.delivery_price;
+    if (isDelivery && values.delivery_price) {
+      if (values.cupom === null) {
+        return subTotalPrice + values.delivery_price;
+      }
+      return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100 + values.delivery_price;
     }
     return subTotalPrice;
   }
@@ -50,41 +53,54 @@ const CartLoggedOptions: React.FC<Props> = ({
 
   useEffect(() => {
     setFormError("");
-  }, [order]);
+  }, [values]);
 
   useEffect(() => {
+    let isMounted = true;
     async function getDeliveryPrice() {
-      const response = await fetch(`/api/address/delivery_price/${order.address_id}`);
-      const result = (await response.json()) as Pick<Entrega, "preco_entrega">;
-      changeDeliveryPrice(result.preco_entrega);
+      try {
+        const { data } = await Axios.get<{ preco_entrega: Entrega["preco_entrega"] }>(
+          `/address/delivery_price/${values.address_id}`
+        );
+        if (isMounted) {
+          setFieldValue("delivery_price", data.preco_entrega);
+        }
+      } catch (e) {
+        const error = e as Error;
+        console.log(error);
+      }
     }
-    if (order.address_id) {
+    if (values.address_id) {
       getDeliveryPrice();
     }
-  }, [changeDeliveryPrice, order.address_id]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [values.address_id, setFieldValue]);
 
   return (
     <Fragment>
-      <CustomFade triggerAnimation={Boolean(order.delivery_price)}>
+      <CustomFade triggerAnimation={shouldShowDeliveryPrice}>
         <CartFormSubtotalText>
-          Entrega: <span>R$ {transformPriceToString(Number(order.delivery_price))}</span>
+          Entrega: <span>R$ {transformPriceToString(Number(values.delivery_price))}</span>
         </CartFormSubtotalText>
       </CustomFade>
       <CartCupom />
 
-      <CustomFade triggerAnimation={order.tipo_cupom === "entrega"}>
+      <CustomFade triggerAnimation={values.cupom?.tipo_cupom === CupomType.DELIVERY}>
         <CartFormSubtotalText>Desconto de entrega aplicado.</CartFormSubtotalText>
       </CustomFade>
 
-      <CustomFade triggerAnimation={order.tipo_cupom === "pedido" && Boolean(order.valor_desconto)}>
+      <CustomFade triggerAnimation={shouldShowDiscount}>
         <CartFormSubtotalText>
-          Desconto aplicado: <span>{order.valor_desconto}%</span>
+          Desconto aplicado: <span>{values.cupom?.valor_desconto}%</span>
         </CartFormSubtotalText>
       </CustomFade>
 
       <CartPayment />
       <CartFormTotalText>
-        Total: <span>R$ {transformPriceToString(totalPrice)}</span>
+        Total: <span>R$ {transformPriceToString(getTotalPrice())}</span>
       </CartFormTotalText>
       <CartFormErrorContainer>
         {request.isLoading && <Loading />}

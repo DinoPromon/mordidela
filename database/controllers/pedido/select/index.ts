@@ -1,8 +1,17 @@
-import mysql, { serialize } from "database";
+import mysql, { Prisma, serialize } from "database";
 import Usuario from "@models/usuario";
 import { ProdutoInViewPedidoForClient, ViewPedidoForClient } from "@models/views";
 import { getAllProdutoInPedido } from "@controllers/pedido_produto";
-import { getAllddsInPedidoProduto } from "@controllers/pedido_produto_adicional";
+
+export async function findOrdersCountByUserId(userId: Usuario["id_usuario"]) {
+  const count = await Prisma.pedido.count({
+    where: {
+      id_usuario: userId,
+    },
+  });
+
+  return count;
+}
 
 export async function getAllPedidosFromUsuario(id_usuario: Usuario["id_usuario"]) {
   const query = `
@@ -15,7 +24,7 @@ export async function getAllPedidosFromUsuario(id_usuario: Usuario["id_usuario"]
   const produtos: ProdutoInViewPedidoForClient[] = [];
 
   result.forEach(async (item) => {
-    const pedido_produto = (await getAllProdutoInPedido(item.id_pedido))
+    const pedido_produto = await getAllProdutoInPedido(item.id_pedido);
   });
   await mysql.end();
   return serialize(result);

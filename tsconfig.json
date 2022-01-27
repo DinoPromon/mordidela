@@ -6,6 +6,7 @@
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
       "@controllers/*": ["database/controllers/*"],
+      "@constants/*": ["types/constants/*"],
       "@my-types/*": ["types/*"],
       "@store/*": ["store/*"],
       "@models/*": ["database/models/*"],
