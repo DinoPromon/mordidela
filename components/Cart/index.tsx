@@ -74,7 +74,6 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     try {
       if (session) {
         const response = await Axios.get<AddressOnCart[]>(`/address/${session.user.id_usuario}`);
-        console.log(response.data);
         if (isComponentMounted) setAddresses(response.data);
       }
     } catch (e) {

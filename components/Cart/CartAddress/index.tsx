@@ -32,7 +32,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
 
   function getDeliveryPriceFromSelectedAddress(addressId: AddressOnCart["id_endereco"]) {
     const selectedAddress = addresses.find((address) => address.id_endereco === addressId);
-    if (selectedAddress) return Number(selectedAddress.entrega.preco_entrega);
+    if (selectedAddress) return selectedAddress.entrega.preco_entrega;
     return null;
   }
 
