@@ -1,8 +1,8 @@
 import React, { useContext, Fragment, useState, useEffect } from "react";
 import Axios from "@api";
-import Endereco from "@models/endereco";
 import CartAddress from "./CartAddress";
 import CartOrdersList from "./CartOrdersList";
+import { AddressOnCart } from "@models/endereco";
 import CartDeliveryType from "./CartDeliveryType";
 import CartLoggedOptions from "./CartLoggedOptions";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -28,7 +28,6 @@ import {
   CartEmptyMessageContainer,
   CartOrderConfirmationButtons,
 } from "./styled";
-import { MdNoMealsOuline } from "react-icons/md";
 
 type Props = {
   onCloseModal: () => void;
@@ -41,11 +40,10 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const [isLoadingSession, setIsLoadingSession] = useState(true);
   const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
-  const [addresses, setAddresses] = useState<Endereco[]>([]);
+  const [addresses, setAddresses] = useState<AddressOnCart[]>([]);
   const [request, setRequest] = useState<RequestState>({
     error: "",
     isLoading: false,
-    success: false,
   });
   const cartFormValidationSchema = useCartFormValidationSchema(subTotalPrice);
   const cartFormInitialValues = getCartFormInitialValues();
@@ -61,6 +59,13 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     return subTotal;
   }
 
+  function changeRequestStatus(status: Partial<RequestState>) {
+    setRequest((prevState) => ({
+      ...prevState,
+      ...status,
+    }));
+  }
+
   function changeShouldShowConfirmation(shouldShow: boolean) {
     setShouldShowConfirmation(shouldShow);
   }
@@ -68,18 +73,19 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   async function fetchAddresses(session: Session | null, isComponentMounted: boolean) {
     try {
       if (session) {
-        const response = await Axios.get<Endereco[]>(`/address/${session.user.id_usuario}`);
+        const response = await Axios.get<AddressOnCart[]>(`/address/${session.user.id_usuario}`);
+        console.log(response.data);
         if (isComponentMounted) setAddresses(response.data);
       }
     } catch (e) {
       const error = e as Error;
-      setRequest({ error: error.message, isLoading: false, success: false });
+      setRequest({ error: error.message, isLoading: false });
     }
   }
 
   async function cartSubmitHandler(formValues: CartFormValues) {
     try {
-      setRequest({ error: "", isLoading: true, success: false });
+      setRequest({ error: "", isLoading: true });
       if (session) {
         const produtos = products.map((item) => ({
           id_produto: item.product_id,
@@ -98,12 +104,12 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           id_usuario: session.user.id_usuario,
         };
 
-        const response = await Axios.post("/order", {
+        await Axios.post("/order", {
           produtos: produtos,
           pedido: pedido,
         });
 
-        setRequest({ error: "", isLoading: false, success: true });
+        setRequest({ error: "", isLoading: false });
         setIsOrderConfirmed(true);
         resetCart();
         return;
@@ -111,7 +117,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       throw new Error("É necessário estar logado para finalizar pedidos");
     } catch (e) {
       const error = e as Error;
-      setRequest({ error: error.message, isLoading: false, success: false });
+      setRequest({ error: error.message, isLoading: false });
     }
   }
 
@@ -154,7 +160,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           validationSchema={cartFormValidationSchema}
           initialValues={cartFormInitialValues}
         >
-          {({ setFieldValue, values }) => (
+          {({ values }) => (
             <CartForm>
               {isCartEmpty ? (
                 <CartEmptyMessageContainer>
@@ -191,9 +197,10 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                       {session && !isLoadingSession && (
                         <CartLoggedOptions
-                          onChangeShouldShowConfirmation={changeShouldShowConfirmation}
-                          subTotalPrice={subTotalPrice}
                           request={request}
+                          subTotalPrice={subTotalPrice}
+                          onChangeRequestStatus={changeRequestStatus}
+                          onChangeShouldShowConfirmation={changeShouldShowConfirmation}
                         />
                       )}
 

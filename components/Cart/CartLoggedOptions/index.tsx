@@ -1,10 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useFormikContext } from "formik";
 import CartCupom from "./CartCupom";
-import Entrega from "@models/entrega";
 import CartPayment from "./CartPayment";
 import Loading from "@components/shared/Loading";
-import Axios from "@api";
 import { CupomType } from "@constants/cupom-type";
 import { CustomFade } from "@components/shared";
 import { FormButton } from "@components/shared";
@@ -12,11 +10,12 @@ import { RequestState } from "@my-types/request";
 import { CartFormValues } from "../FormModel";
 import { CartFormSubtotalText } from "../styled";
 import {
-  CartFormErrorContainer,
-  CartFormErrorMessage,
-  CartFormTotalText,
-  CartCoupomDataContainer,
   CartCupomData,
+  CartFormTotalText,
+  CartFormErrorMessage,
+  CartCupomColorfulText,
+  CartFormErrorContainer,
+  CartCoupomDataContainer,
 } from "./styled";
 import { transformPriceToString } from "@utils/transformation";
 import { FaTrash } from "react-icons/fa/index";
@@ -25,12 +24,14 @@ import { PINK } from "@utils/colors";
 type Props = {
   subTotalPrice: number;
   request: RequestState;
+  onChangeRequestStatus: (status: Partial<RequestState>) => void;
   onChangeShouldShowConfirmation: (shouldShow: boolean) => void;
 };
 
 const CartLoggedOptions: React.FC<Props> = ({
   request,
   subTotalPrice,
+  onChangeRequestStatus,
   onChangeShouldShowConfirmation,
 }) => {
   const { validateForm, values, setFieldValue } = useFormikContext<CartFormValues>();
@@ -59,33 +60,14 @@ const CartLoggedOptions: React.FC<Props> = ({
     onChangeShouldShowConfirmation(true);
   }
 
+  function removeSelectedCupom() {
+    setFieldValue("cupom", null);
+  }
+
   useEffect(() => {
     setFormError("");
+    onChangeRequestStatus({ error: "" });
   }, [values]);
-
-  useEffect(() => {
-    let isMounted = true;
-    async function getDeliveryPrice() {
-      try {
-        const { data } = await Axios.get<{ preco_entrega: Entrega["preco_entrega"] }>(
-          `/address/delivery_price/${values.address_id}`
-        );
-        if (isMounted) {
-          setFieldValue("delivery_price", data.preco_entrega);
-        }
-      } catch (e) {
-        const error = e as Error;
-        console.log(error);
-      }
-    }
-    if (values.address_id) {
-      getDeliveryPrice();
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [values.address_id, setFieldValue]);
 
   return (
     <Fragment>
@@ -94,7 +76,10 @@ const CartLoggedOptions: React.FC<Props> = ({
           Entrega: <span>R$ {transformPriceToString(Number(values.delivery_price))}</span>
         </CartFormSubtotalText>
       </CustomFade>
-      <CartCupom />
+
+      <CustomFade triggerAnimation={!Boolean(values.cupom)}>
+        <CartCupom onChangeRequestStatus={onChangeRequestStatus} />
+      </CustomFade>
 
       <CustomFade triggerAnimation={values.cupom?.tipo_cupom === CupomType.DELIVERY}>
         <CartFormSubtotalText>Desconto de entrega aplicado</CartFormSubtotalText>
@@ -102,21 +87,19 @@ const CartLoggedOptions: React.FC<Props> = ({
 
       <CustomFade triggerAnimation={shouldShowDiscount}>
         <CartCoupomDataContainer>
-          <CartCupomData>
-            <FaTrash cursor="pointer" size={16} color={PINK} />
-          </CartCupomData>
-          <CartCupomData>
+          <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
+          <CartCupomColorfulText>
             Cupom: <span>{values.cupom?.codigo_cupom}</span>
-          </CartCupomData>
-          <CartCupomData>
+          </CartCupomColorfulText>
+          <CartCupomColorfulText>
             Desconto: <span>{values.cupom?.valor_desconto}%</span>
-          </CartCupomData>
+          </CartCupomColorfulText>
         </CartCoupomDataContainer>
       </CustomFade>
 
       <CartPayment />
       <CartFormTotalText>
-        Total: <span>R$ {transformPriceToString(getTotalPrice())}</span>
+        Total: <span>R$ {transformPriceToString(getTotalPrice() || 0)}</span>
       </CartFormTotalText>
       <CartFormErrorContainer>
         {request.isLoading && <Loading />}

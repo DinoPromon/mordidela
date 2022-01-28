@@ -1,10 +1,9 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useEffect } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
+import { AddressOnCart } from "@models/endereco";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Endereco from "@models/endereco";
 import { useFormikContext } from "formik";
-import { CartContext } from "@store/cart";
 import { FaPlusCircle } from "react-icons/fa";
 import { PURPLE } from "@utils/colors";
 import {
@@ -16,22 +15,33 @@ import {
 import { CartFormValues } from "../FormModel";
 
 type CartAddressProps = {
-  addresses: Endereco[];
+  addresses: AddressOnCart[];
 };
 
 const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
   const { setFieldValue, values } = useFormikContext<CartFormValues>();
-  const { setAddressId } = useContext(CartContext);
 
-  function getFormatedAddress(address: Endereco) {
+  function getFormatedAddress(address: AddressOnCart) {
     return `${address.logradouro} n° ${address.numero}, ${address.bairro}`;
   }
 
   function changeRadioHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const addressId = Number(event.target.value);
-    setAddressId(addressId);
     setFieldValue("address_id", addressId);
   }
+
+  function getDeliveryPriceFromSelectedAddress(addressId: AddressOnCart["id_endereco"]) {
+    const selectedAddress = addresses.find((address) => address.id_endereco === addressId);
+    if (selectedAddress) return Number(selectedAddress.entrega.preco_entrega);
+    return null;
+  }
+
+  useEffect(() => {
+    if (values.address_id) {
+      const deliveryPrice = getDeliveryPriceFromSelectedAddress(values.address_id);
+      setFieldValue("delivery_price", deliveryPrice);
+    }
+  }, [values.address_id]);
 
   return (
     <CartAddressContainer>

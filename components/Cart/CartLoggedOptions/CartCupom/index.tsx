@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import Axios from "@api";
 import Cupom from "@models/cupom";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { AxiosError } from "axios";
 import { useFormikContext } from "formik";
 import { FormButton } from "@components/shared";
 import { cupomFormat } from "@utils/formatters";
 import { CartFormValues } from "@components/Cart/FormModel";
 import { CartCupomContainer, CartCupomInput } from "./styled";
+import { RequestState } from "@my-types/request";
 
-const CartCupom: React.FC = () => {
+type CartCupomProps = {
+  onChangeRequestStatus: (status: Partial<RequestState>) => void;
+};
+
+const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
+  const [isLoadingCupom, setIsLoadingCupom] = useState(false);
   const { values, setFieldValue } = useFormikContext<CartFormValues>();
   const [inputCupom, setInputCupom] = useState(cupomFormat(values.cupom?.codigo_cupom || ""));
 
@@ -16,6 +24,7 @@ const CartCupom: React.FC = () => {
   }
 
   async function fetchCupom() {
+    setIsLoadingCupom(true);
     try {
       const response = await Axios.get<Cupom>(`/cupom?codigo=${inputCupom}`);
       if (response.data) {
@@ -27,9 +36,10 @@ const CartCupom: React.FC = () => {
         });
       }
     } catch (e) {
-      const error = e as Error;
-      console.log(error);
+      const error = e as AxiosError;
+      onChangeRequestStatus({ error: error.response?.data.message, isLoading: false });
     }
+    setIsLoadingCupom(false);
   }
 
   function addCupomClickHandler() {
@@ -45,9 +55,13 @@ const CartCupom: React.FC = () => {
         maxLength={20}
         value={inputCupom}
       />
-      <FormButton type="button" onClick={addCupomClickHandler}>
-        Adicionar
-      </FormButton>
+      {isLoadingCupom ? (
+        <CircularProgress size={30} />
+      ) : (
+        <FormButton type="button" onClick={addCupomClickHandler}>
+          Adicionar
+        </FormButton>
+      )}
     </CartCupomContainer>
   );
 };

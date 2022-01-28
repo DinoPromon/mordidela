@@ -11,15 +11,15 @@ import { RequestState } from "@my-types/request";
 import { loginFormValidations } from "@utils/validations";
 import { getLoginErrorMessage } from "@utils/error-message";
 
-const initialLoginData: LoginFormData = Object.freeze({
+const initialLoginData: LoginFormData = {
   email: "",
   senha: "",
-});
+};
 
 const LoginForm: React.FC = (props) => {
   const router = useRouter();
   const [formState, setFormState] = useState<LoginFormData>(initialLoginData);
-  const [request, setRequest] = useState<RequestState>({ error: "", isLoading: false, success: false });
+  const [request, setRequest] = useState<RequestState>({ error: "", isLoading: false });
   const [canSubmit, setCanSubmit] = useState(false);
 
   const hasErrorInIputs = (formInputs: LoginFormData) => {
@@ -57,7 +57,7 @@ const LoginForm: React.FC = (props) => {
         router.replace("/");
       } catch (e) {
         const error = e as Error;
-        setRequest({ isLoading: false, success: false, error: error.message });
+        setRequest({ isLoading: false, error: error.message });
       }
     }
   };
@@ -66,7 +66,7 @@ const LoginForm: React.FC = (props) => {
     setCanSubmit(!hasErrorInIputs(formState));
   }, [formState]);
 
-  const shouldShowRequestStatus = request.isLoading || request.error || request.success;
+  const shouldShowRequestStatus = request.isLoading || request.error;
 
   return (
     <Wrapper onSubmit={submitHandler}>
@@ -89,7 +89,9 @@ const LoginForm: React.FC = (props) => {
         errorMessage={getLoginErrorMessage("senha")}
         placeholder="Senha"
       />
-      {shouldShowRequestStatus && <FormRequestStatus errorMessage={request.error} isLoading={request.isLoading} />}
+      {shouldShowRequestStatus && (
+        <FormRequestStatus errorMessage={request.error} isLoading={request.isLoading} />
+      )}
       <LoginFormActions disabled={!canSubmit} />
     </Wrapper>
   );

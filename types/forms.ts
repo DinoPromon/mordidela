@@ -3,7 +3,7 @@ import Usuario from "@models/usuario";
 
 export type UserFormData = {
   nome: Usuario["nome"];
-  data_nascimento: Usuario["data_nascimento"];
+  data_nascimento: string;
   telefone: string;
   email: Usuario["email"];
   senha: Usuario["senha"];

@@ -13,6 +13,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const addresses = await findManyAddressByUserId(Number(userId));
+      console.log(addresses);
       return res.status(200).json(addresses);
     } catch (e) {
       const error = e as Error;

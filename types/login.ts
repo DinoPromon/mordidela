@@ -1,6 +1,6 @@
 import Usuario from "@models/usuario";
 
 export type LoginFormData = {
-  email: Usuario['data_nascimento'];
+  email: Usuario['email'];
   senha: Usuario['senha'];
 };

@@ -11,4 +11,10 @@ type Endereco = {
   id_entrega: Entrega["id_entrega"];
 };
 
+export type AddressOnCart = Endereco & {
+  entrega: {
+    preco_entrega: Entrega["preco_entrega"];
+  };
+};
+
 export default Endereco;

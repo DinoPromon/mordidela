@@ -2,6 +2,7 @@ import mysql, { Prisma, serialize } from "database";
 import Usuario from "@models/usuario";
 import { ProdutoInViewPedidoForClient, ViewPedidoForClient } from "@models/views";
 import { getAllProdutoInPedido } from "@controllers/pedido_produto";
+import Cupom from "@models/cupom";
 
 export async function findOrdersCountByUserId(userId: Usuario["id_usuario"]) {
   const count = await Prisma.pedido.count({
@@ -11,6 +12,16 @@ export async function findOrdersCountByUserId(userId: Usuario["id_usuario"]) {
   });
 
   return count;
+}
+
+export async function findCountOrdersWithCupomId(cupomId: Cupom["id_cupom"]) {
+  const usedAmountCupom = await Prisma.pedido.count({
+    where: {
+      id_cupom: cupomId,
+    },
+  });
+
+  return usedAmountCupom;
 }
 
 export async function getAllPedidosFromUsuario(id_usuario: Usuario["id_usuario"]) {

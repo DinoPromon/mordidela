@@ -30,6 +30,16 @@ export const CartCoupomDataContainer = styled.div`
   justify-content: flex-end;
 `;
 
+export const CartCupomColorfulText = styled.p`
+  font-weight: bold;
+  color: ${PINK};
+
+  & > span {
+    color: ${PURPLE};
+    font-weight: bold;
+  }
+`;
+
 export const CartCupomData = styled.div`
   display: flex;
   justify-content: center;
