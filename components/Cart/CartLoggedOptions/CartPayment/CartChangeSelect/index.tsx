@@ -4,9 +4,9 @@ import Radio from "@material-ui/core/Radio";
 import { useFormikContext } from "formik";
 import { CartFormValues } from "@components/Cart/FormModel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { CartContext } from "@store/cart";
 import { CustomFade } from "@components/shared";
 import { CartChangeSelectContainer } from "./styled";
+import { transformPriceToString } from "@utils/transformation";
 
 enum NeedChange {
   YES = "yes",
@@ -20,15 +20,13 @@ const CartChangeSelect: React.FC = () => {
     if (values.needChange === false) return NeedChange.NO;
     return null;
   });
-  const { setPaymentAmount } = useContext(CartContext);
-
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value as NeedChange;
     setSelectedNeedChange(value);
 
     if (value === NeedChange.NO) {
       setFieldValue("needChange", false);
-      setPaymentAmount(0);
+      setFieldValue("payment_amount", transformPriceToString(0));
       return;
     }
     setFieldValue("needChange", true);

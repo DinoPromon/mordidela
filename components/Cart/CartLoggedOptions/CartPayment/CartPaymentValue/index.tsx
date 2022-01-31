@@ -1,25 +1,20 @@
-import React, { useContext, Fragment } from "react";
+import React, { Fragment } from "react";
 import { useFormikContext } from "formik";
 import { CartFormValues } from "@components/Cart/FormModel";
 import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
 import { CustomFade } from "@components/shared";
-import { CartContext } from "@store/cart";
 import { formatPrice } from "@utils/formatters";
-import { transformPriceToString, transformPriceStringToNumber } from "@utils/transformation";
 
 type Props = {
   shouldShowPaymentValue: boolean;
 };
 
 const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
-  const { setFieldValue } = useFormikContext<CartFormValues>();
-  const { setPaymentAmount, order } = useContext(CartContext);
+  const { setFieldValue, values } = useFormikContext<CartFormValues>();
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
-    event.target.value = formatPrice(value);
-    setFieldValue("payment_amount", event.target.value);
-    setPaymentAmount(transformPriceStringToNumber(event.target.value));
+    setFieldValue("payment_amount", formatPrice(value));
   }
 
   return (
@@ -33,7 +28,7 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
               type="text"
               maxLength={7}
               onChange={changeHandler}
-              value={transformPriceToString(Number(order.payment_amount))}
+              value={values.payment_amount}
             ></input>
           </CartPaymentInputChange>
         </CartPaymentValueContainer>
