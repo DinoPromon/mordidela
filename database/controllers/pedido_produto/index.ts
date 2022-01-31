@@ -1,2 +1,2 @@
-export { createOrderProduct, insertPedidoProduto } from "./insert";
+export { createOrderProduct } from "./insert";
 export { getAllProdutoInPedido } from "./select";

@@ -1,14 +1,11 @@
-import { NextApiHandler } from "next";
 import { Prisma } from "database";
+import { NextApiHandler } from "next";
+import { AddressRepo } from "@repository/address";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const addresses = await Prisma.endereco.findMany({
-        include: {
-          usuario: true,
-        },
-      });
+      const addresses = await AddressRepo.findAll();
       return res.status(200).json(addresses);
     } catch (e) {
       const error = e as Error;

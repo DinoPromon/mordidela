@@ -11,6 +11,7 @@
       "@store/*": ["store/*"],
       "@models/*": ["database/models/*"],
       "@api": ["api"],
+      "@repository/*": ["database/repository/*"],
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
