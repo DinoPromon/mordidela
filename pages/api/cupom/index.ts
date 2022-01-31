@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/client";
-import { findCupomByCode } from "@controllers/cupom";
+import { CupomRepo } from "@controllers/cupom";
 import { findOrdersCountByUserId, findCountOrdersWithCupomId } from "@controllers/pedido";
 import { findUserCupomByCupomId } from "@controllers/usuario_cupom";
 import { NextApiHandler } from "next";
@@ -13,7 +13,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     if (codigo) {
       try {
-        const cupom = await findCupomByCode(String(codigo));
+        const cupom = await CupomRepo.findByCupomCode(String(codigo));
         if (!cupom) return res.status(403).json({ message: "Cupom não encontrado" });
 
         const isUsedCupom = Boolean(await findUserCupomByCupomId(cupom.id_cupom));
