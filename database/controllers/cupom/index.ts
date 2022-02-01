@@ -23,9 +23,13 @@ export class CupomRepo {
   }
 
   public static async create(cupom: Omit<Cupom, "id_cupom">) {
+    const ISOstartDate = new Date(cupom.data_inicio ?? "").toISOString();
+    const ISOendDate = cupom.data_fim ? new Date(cupom.data_fim) : null;
     const createdCupom = await Prisma.cupom.create({
       data: {
         ...cupom,
+        data_fim: ISOendDate,
+        data_inicio: ISOstartDate,
       },
     });
 
