@@ -22,6 +22,16 @@ export class CupomRepo {
     return cupom;
   }
 
+  public static async create(cupom: Omit<Cupom, "id_cupom">) {
+    const createdCupom = await Prisma.cupom.create({
+      data: {
+        ...cupom,
+      },
+    });
+
+    return createdCupom;
+  }
+
   public static isCupomAvailable(startDate: Cupom["data_inicio"], endDate: Cupom["data_fim"]) {
     const currentTimestamp = new Date().getTime();
     const startTimestmap = new Date(startDate).getTime();

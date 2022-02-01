@@ -1,16 +1,24 @@
+import Cupom from "@models/cupom";
 import { getSession } from "next-auth/client";
 import { CupomRepo } from "@controllers/cupom";
 import { findOrdersCountByUserId, findCountOrdersWithCupomId } from "@controllers/pedido";
 import { findUserCupomByCupomId } from "@controllers/usuario_cupom";
 import { NextApiHandler } from "next";
+import { ReqMethod } from "@my-types/backend/req-method";
 
 const handler: NextApiHandler = async (req, res) => {
   const { codigo } = req.query;
   const session = await getSession({ req });
 
+  if (req.method === ReqMethod.POST) {
+    const cupomData = req.body as Omit<Cupom, "id_cupom">;
+    const createdCupom = await CupomRepo.create(cupomData);
+    return res.status(201).json(createdCupom);
+  }
+
   if (!session) return res.status(401).json({ message: "Não autenticado." });
 
-  if (req.method === "GET") {
+  if (req.method === ReqMethod.GET) {
     if (codigo) {
       try {
         const cupom = await CupomRepo.findByCupomCode(String(codigo));
@@ -53,7 +61,7 @@ const handler: NextApiHandler = async (req, res) => {
       }
     }
   }
-
+  res.setHeader("Allow", [ReqMethod.GET, ReqMethod.POST]);
   res.status(405).json({ message: "Requisição inválida." });
 };
 

@@ -1,4 +1,3 @@
-import { Prisma } from "database";
 import { NextApiHandler } from "next";
 import { AddressRepo } from "@repository/address";
 
