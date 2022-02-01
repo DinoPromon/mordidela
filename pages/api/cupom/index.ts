@@ -61,7 +61,7 @@ const handler: NextApiHandler = async (req, res) => {
     const createdCupom = await CupomRepo.create(cupomData);
     return res.status(201).json(createdCupom);
   }
-  
+
   res.setHeader("Allow", [ReqMethod.GET, ReqMethod.POST]);
   res.status(405).json({ message: "Requisição inválida." });
 };

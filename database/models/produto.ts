@@ -17,7 +17,7 @@ type Product = {
   id_desconto?: Desconto["id_desconto"] | null;
 };
 
-type ProductCategory = Pick<Categoria, "id_categoria"> & {
+export type ProductCategory = Pick<Categoria, "id_categoria" | "nome"> & {
   desconto: ProductDiscount | null;
 };
 

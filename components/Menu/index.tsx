@@ -29,13 +29,18 @@ const Menu: React.FC<Props> = ({ products, error }) => {
     if (modalItem?.id_produto === id_produto) setModalItemImg(image as string);
   }
 
+  function getAllCategoriesFromProducts() {
+    const repeatedCategories = products.map((product) => product.categoria);
+    return repeatedCategories;
+  }
+
   return (
     <PageContainer>
       {showModal && (
         <MenuModal onClose={closeModalHandler} item={modalItem} image={modalItemImage} />
       )}
       <PageTitle>Cardápio</PageTitle>
-      <MenuFilter />
+      <MenuFilter categories={getAllCategoriesFromProducts()} />
       {!error && (
         <MenuList
           products={products}

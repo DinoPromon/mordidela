@@ -65,6 +65,7 @@ export async function findManyRelatedProducts() {
     desconto: getProductDiscount(product.desconto),
     categoria: {
       id_categoria: product.categoria.id_categoria,
+      nome: product.categoria.nome,
       desconto: getProductDiscount(product.categoria.desconto),
     },
     adicionais: product.produto_adicional.map((produto_adicional) => ({
