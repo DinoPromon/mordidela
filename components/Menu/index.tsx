@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RelatedProduct } from "@models/produto";
+import { ProductCategory, RelatedProduct } from "@models/produto";
 import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
 import MenuFilter from "./MenuFilter";
@@ -30,8 +30,12 @@ const Menu: React.FC<Props> = ({ products, error }) => {
   }
 
   function getAllCategoriesFromProducts() {
-    const repeatedCategories = products.map((product) => product.categoria);
-    return repeatedCategories;
+    const mappedCategories = products.reduce((allCategories, cur) => {
+      allCategories[cur.categoria.nome] = cur.categoria;
+      return allCategories;
+    }, {} as { [key: string]: ProductCategory });
+    const categories = Object.values(mappedCategories);
+    return categories;
   }
 
   return (
