@@ -41,6 +41,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
   const [addresses, setAddresses] = useState<AddressOnCart[]>([]);
+  const [isLoadingAddress, setIsLoadingAddress] = useState(true);
   const [request, setRequest] = useState<RequestState>({
     error: "",
     isLoading: false,
@@ -48,6 +49,20 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const cartFormValidationSchema = useCartFormValidationSchema(subTotalPrice);
   const cartFormInitialValues = getCartFormInitialValues();
   const isCartEmpty = products.length === 0;
+
+  useEffect(() => {
+    let isMounted = true;
+    async function hasSession() {
+      const result = await getSession();
+      setSession(result);
+      setIsLoadingSession(false);
+    }
+    if (!session) hasSession();
+    fetchAddresses(session, isMounted);
+    return () => {
+      isMounted = false;
+    };
+  }, [session]);
 
   function getSubTotalPrice() {
     const subTotal = products.reduce(
@@ -80,6 +95,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       const error = e as Error;
       setRequest({ error: error.message, isLoading: false });
     }
+    setIsLoadingAddress(false);
   }
 
   async function cartSubmitHandler(formValues: CartFormValues) {
@@ -119,20 +135,6 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       setRequest({ error: error.message, isLoading: false });
     }
   }
-
-  useEffect(() => {
-    let isMounted = true;
-    async function hasSession() {
-      const result = await getSession();
-      setSession(result);
-      setIsLoadingSession(false);
-    }
-    if (!session) hasSession();
-    fetchAddresses(session, isMounted);
-    return () => {
-      isMounted = false;
-    };
-  }, [session]);
 
   return (
     <Modal onClose={onCloseModal}>
@@ -186,7 +188,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
                       {session && <CartDeliveryType />}
 
                       <CustomFade triggerAnimation={values.delivery_type === "entrega"}>
-                        <CartAddress addresses={addresses} />
+                        <CartAddress addresses={addresses} isLoadingAddress={isLoadingAddress} />
                       </CustomFade>
 
                       <CartOrdersList products={products} />

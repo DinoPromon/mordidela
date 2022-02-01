@@ -8,6 +8,13 @@ export const CartAddressContainer = styled.div`
   border-bottom: dashed 2px ${PINK};
 `;
 
+export const CartAddressLoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+`;
+
 export const CartAddressTitle = styled.h2`
   color: ${PURPLE};
   font-size: 1rem;

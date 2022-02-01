@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Radio from "@material-ui/core/Radio";
 import { AddressOnCart } from "@models/endereco";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -7,18 +8,21 @@ import { useFormikContext } from "formik";
 import { FaPlusCircle } from "react-icons/fa";
 import { PURPLE } from "@utils/colors";
 import {
-  CartAddressContainer,
   CartAddAddress,
   CartAddressTitle,
+  CartAddressContainer,
   CartAddressComplement,
+  CartAddressLoadingContainer,
 } from "./styled";
 import { CartFormValues } from "../FormModel";
+import { RequestState } from "@my-types/request";
 
 type CartAddressProps = {
+  isLoadingAddress: boolean;
   addresses: AddressOnCart[];
 };
 
-const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
+const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress }) => {
   const { setFieldValue, values } = useFormikContext<CartFormValues>();
 
   function getFormatedAddress(address: AddressOnCart) {
@@ -45,31 +49,41 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses }) => {
 
   return (
     <CartAddressContainer>
-      <CartAddressTitle>Endereços de entrega</CartAddressTitle>
-      <RadioGroup
-        name="address-input-radio"
-        value={values.address_id}
-        onChange={changeRadioHandler}
-      >
-        {addresses.length > 0 &&
-          addresses.map((address) => (
-            <FormControlLabel
-              label={
-                <Fragment>
-                  <p>{getFormatedAddress(address)}</p>
-                  <CartAddressComplement>Complemento: {address.complemento}</CartAddressComplement>
-                </Fragment>
-              }
-              key={`address-${address.id_endereco}`}
-              value={address.id_endereco}
-              control={<Radio color="secondary" />}
-            />
-          ))}
-      </RadioGroup>
-      <CartAddAddress>
-        <FaPlusCircle size={14} color={PURPLE} />
-        <p>Adicionar endereço</p>
-      </CartAddAddress>
+      {isLoadingAddress ? (
+        <CartAddressLoadingContainer>
+          <CircularProgress color="primary" />
+        </CartAddressLoadingContainer>
+      ) : (
+        <Fragment>
+          <CartAddressTitle>Endereços de entrega</CartAddressTitle>
+          <RadioGroup
+            name="address-input-radio"
+            value={values.address_id}
+            onChange={changeRadioHandler}
+          >
+            {addresses.length > 0 &&
+              addresses.map((address) => (
+                <FormControlLabel
+                  label={
+                    <Fragment>
+                      <p>{getFormatedAddress(address)}</p>
+                      <CartAddressComplement>
+                        Complemento: {address.complemento}
+                      </CartAddressComplement>
+                    </Fragment>
+                  }
+                  key={`address-${address.id_endereco}`}
+                  value={address.id_endereco}
+                  control={<Radio color="secondary" />}
+                />
+              ))}
+          </RadioGroup>
+          <CartAddAddress>
+            <FaPlusCircle size={14} color={PURPLE} />
+            <p>Adicionar endereço</p>
+          </CartAddAddress>
+        </Fragment>
+      )}
     </CartAddressContainer>
   );
 };
