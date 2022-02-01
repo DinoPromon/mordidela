@@ -10,12 +10,6 @@ const handler: NextApiHandler = async (req, res) => {
   const { codigo } = req.query;
   const session = await getSession({ req });
 
-  if (req.method === ReqMethod.POST) {
-    const cupomData = req.body as Omit<Cupom, "id_cupom">;
-    const createdCupom = await CupomRepo.create(cupomData);
-    return res.status(201).json(createdCupom);
-  }
-
   if (!session) return res.status(401).json({ message: "Não autenticado." });
 
   if (req.method === ReqMethod.GET) {
@@ -61,6 +55,13 @@ const handler: NextApiHandler = async (req, res) => {
       }
     }
   }
+
+  if (req.method === ReqMethod.POST) {
+    const cupomData = req.body as Omit<Cupom, "id_cupom">;
+    const createdCupom = await CupomRepo.create(cupomData);
+    return res.status(201).json(createdCupom);
+  }
+  
   res.setHeader("Allow", [ReqMethod.GET, ReqMethod.POST]);
   res.status(405).json({ message: "Requisição inválida." });
 };
