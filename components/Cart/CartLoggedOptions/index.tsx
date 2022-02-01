@@ -39,12 +39,15 @@ const CartLoggedOptions: React.FC<Props> = ({
 
   const isDelivery = values.delivery_type === CupomType.DELIVERY;
   const shouldShowDeliveryPrice = isDelivery && values.cupom?.tipo_cupom !== CupomType.DELIVERY;
-  const shouldShowDiscount = Boolean(values.cupom?.valor_desconto);
+  const shouldShowDiscount = Boolean(values.cupom?.id_cupom);
 
   function getTotalPrice() {
     if (isDelivery && values.delivery_price) {
       if (values.cupom === null) {
         return subTotalPrice + values.delivery_price;
+      }
+      if (values.cupom?.tipo_cupom === CupomType.DELIVERY) {
+        return subTotalPrice;
       }
       return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100 + values.delivery_price;
     }
@@ -81,10 +84,6 @@ const CartLoggedOptions: React.FC<Props> = ({
         <CartCupom onChangeRequestStatus={onChangeRequestStatus} />
       </CustomFade>
 
-      <CustomFade triggerAnimation={values.cupom?.tipo_cupom === CupomType.DELIVERY}>
-        <CartFormSubtotalText>Desconto de entrega aplicado</CartFormSubtotalText>
-      </CustomFade>
-
       <CustomFade triggerAnimation={shouldShowDiscount}>
         <CartCoupomDataContainer>
           <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
@@ -92,7 +91,12 @@ const CartLoggedOptions: React.FC<Props> = ({
             Cupom: <span>{values.cupom?.codigo_cupom}</span>
           </CartCupomColorfulText>
           <CartCupomColorfulText>
-            Desconto: <span>{values.cupom?.valor_desconto}%</span>
+            Desconto:{" "}
+            {values.cupom?.tipo_cupom === CupomType.DELIVERY ? (
+              <span> Frete grátis</span>
+            ) : (
+              <span>{values.cupom?.valor_desconto}%</span>
+            )}
           </CartCupomColorfulText>
         </CartCoupomDataContainer>
       </CustomFade>
