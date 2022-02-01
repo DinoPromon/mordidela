@@ -1,10 +1,11 @@
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 import { Prisma } from "database";
-import { createOrder } from "@controllers/pedido";
+import { OrderRepo } from "@repository/order";
+import { createManyProductOrderRelations } from "@controllers/create-order-with-relations";
 import { CartPedido } from "@models/pedido";
 import { CartProduto } from "@models/produto";
-import { createAllProductOrderRelations } from "@controllers/produto/insert";
+import { ReqMethod } from "@my-types/backend/req-method";
 
 const handler: NextApiHandler = async (req, res) => {
   try {
@@ -14,20 +15,21 @@ const handler: NextApiHandler = async (req, res) => {
     }
 
     switch (req.method) {
-      case "POST":
+      case ReqMethod.POST:
         const { produtos, pedido } = req.body as { produtos: CartProduto[]; pedido: CartPedido };
         if (pedido.id_usuario !== session.user.id_usuario)
           return res.status(403).json({ message: "Não pode inserir pedidos para outro usuário." });
 
-        const orderId = await createOrder(pedido);
-        await createAllProductOrderRelations(orderId, produtos);
+        const orderId = await OrderRepo.createOrder(pedido);
+        await createManyProductOrderRelations(orderId, produtos);
 
         return res.status(200).json({ success: true });
-      case "GET":
+      case ReqMethod.GET:
         const orders = await Prisma.pedido.findMany();
 
         return res.status(200).json(orders);
       default:
+        res.setHeader("Allow", [ReqMethod.GET, ReqMethod.POST]);
         return res.status(405).json({ message: "Requsição inválida." });
     }
   } catch (e) {

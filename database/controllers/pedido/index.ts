@@ -1,6 +1,1 @@
-export {
-  findOrdersCountByUserId,
-  getAllPedidosFromUsuario,
-  findCountOrdersWithCupomId,
-} from "./select";
-export { createOrder } from "./insert";
+export { findOrdersCountByUserId, findCountOrdersWithCupomId } from "./select";

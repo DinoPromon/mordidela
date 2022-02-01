@@ -11,7 +11,9 @@ const handler: NextApiHandler = async (req, res) => {
   const query = req.query;
 
   if (!session) {
-    return res.status(401).json({ message: "É necessário estar autenticado para acessar os dados." });
+    return res
+      .status(401)
+      .json({ message: "É necessário estar autenticado para acessar os dados." });
   }
 
   const id_usuario = query.id_usuario as string;
@@ -20,7 +22,10 @@ const handler: NextApiHandler = async (req, res) => {
     const formatedQuery = `SELECT nome, email, autorizacao, data_nascimento, ddd, numero FROM vw_usuario WHERE id_usuario = ?`;
 
     try {
-      const result = (await mysql.query(formatedQuery, [id_usuario])) as Omit<ViewUsuario, "id_usuario" | "senha">[];
+      const result = (await mysql.query(formatedQuery, [id_usuario])) as Omit<
+        ViewUsuario,
+        "id_usuario" | "senha"
+      >[];
       const user = result[0];
       await mysql.end();
 
@@ -28,7 +33,7 @@ const handler: NextApiHandler = async (req, res) => {
         nome: user.nome,
         email: user.email,
         autorizacao: user.autorizacao,
-        data_nascimento: transformDateFromDBToClient(user.data_nascimento as string),
+        data_nascimento: transformDateFromDBToClient(user.data_nascimento.toISOString()),
         telefone: formatPhoneNumber(`${user.ddd}${result[0].numero}`),
       };
 

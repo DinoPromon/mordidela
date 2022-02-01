@@ -1,7 +1,7 @@
 import { Prisma } from "database";
-import { PedidoProdutoCreate } from "@models/pedido_produto";
+import { CartOrderProduct } from "@models/pedido_produto";
 
-export async function createOrderProduct(createOrderProductData: PedidoProdutoCreate) {
+export async function createOrderProduct(createOrderProductData: CartOrderProduct) {
   const { id_pedido, id_produto, quantidade, observacao } = createOrderProductData;
   const createdOrderProduct = await Prisma.pedido_produto.create({
     data: {

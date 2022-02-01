@@ -9,6 +9,6 @@ type PedidoProduto = {
   observacao: string | null;
 };
 
-export type PedidoProdutoCreate = Omit<PedidoProduto, "preco_pedido">;
+export type CartOrderProduct = Omit<PedidoProduto, "preco_pedido">;
 
 export default PedidoProduto;

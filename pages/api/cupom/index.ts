@@ -12,7 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === ReqMethod.POST) {
     const cupomData = req.body as Omit<Cupom, "id_cupom">;
-    const createdCupom = await CupomRepo.create(cupomData);
+    const createdCupom = await CupomRepo.createCupom(cupomData);
     return res.status(201).json(createdCupom);
   }
 

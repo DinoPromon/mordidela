@@ -7,15 +7,11 @@ import { NextPageWithLayout } from "@my-types/next-page";
 
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
-
-type UserInSession = {
-  nome: string,
-  id_usuario: string
-};
+import { MyUser } from "@my-types/next-auth";
 
 type Props = {
-  user: UserInSession
-}
+  user: MyUser;
+};
 
 const OrdersPage: NextPageWithLayout<Props> = (props) => {
   const { nome, id_usuario } = props.user;
@@ -39,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      user: session.user as UserInSession,
+      user: session.user as MyUser,
     },
   };
 };
