@@ -1,16 +1,23 @@
 import React, { useState } from "react";
-import { ProductCategory, RelatedProduct } from "@models/produto";
 import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
 import MenuFilter from "./MenuFilter";
 import { PageContainer, PageTitle } from "@components/shared";
+import { ProductCategory, RelatedProduct } from "@models/produto";
 
 type Props = {
   products: RelatedProduct[];
   error: boolean;
 };
 
+export const categoryAll: ProductCategory = {
+  desconto: null,
+  id_categoria: -1,
+  nome: "Todas as categorias",
+};
+
 const Menu: React.FC<Props> = ({ products, error }) => {
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState(categoryAll);
   const [showModal, setShowModal] = useState(false);
   const [modalItem, setModalItem] = useState<RelatedProduct>();
   const [modalItemImage, setModalItemImg] = useState<string>("/images/logo.svg");
@@ -38,15 +45,24 @@ const Menu: React.FC<Props> = ({ products, error }) => {
     return categories;
   }
 
+  function filterClickHandler(category: ProductCategory) {
+    setSelectedCategoryFilter(category);
+  }
+
   return (
     <PageContainer>
       {showModal && (
         <MenuModal onClose={closeModalHandler} item={modalItem} image={modalItemImage} />
       )}
       <PageTitle>Cardápio</PageTitle>
-      <MenuFilter categories={getAllCategoriesFromProducts()} />
+      <MenuFilter
+        categories={[categoryAll, ...getAllCategoriesFromProducts()]}
+        selectedCategoryFilter={selectedCategoryFilter}
+        onFilterClick={filterClickHandler}
+      />
       {!error && (
         <MenuList
+          selectedCategoryFilter={selectedCategoryFilter}
           products={products}
           onItemClick={changeModalItem}
           changeModalImage={changeModalImage}

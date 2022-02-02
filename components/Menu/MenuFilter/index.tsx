@@ -1,5 +1,6 @@
-import { ProductCategory } from "@models/produto";
 import React, { useRef, useState } from "react";
+import Categoria from "@models/categoria";
+import { ProductCategory } from "@models/produto";
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import {
   FilterSelector,
@@ -11,9 +12,15 @@ import {
 
 type MenuFilterProps = {
   categories: ProductCategory[];
+  selectedCategoryFilter: ProductCategory;
+  onFilterClick: (categoryId: ProductCategory) => void;
 };
 
-const MenuFilter: React.FC<MenuFilterProps> = ({ categories }) => {
+const MenuFilter: React.FC<MenuFilterProps> = ({
+  categories,
+  selectedCategoryFilter,
+  onFilterClick,
+}) => {
   const filterListRef = useRef<HTMLUListElement>(null);
 
   function leftArrowClickHandler() {
@@ -34,12 +41,13 @@ const MenuFilter: React.FC<MenuFilterProps> = ({ categories }) => {
         <MdOutlineKeyboardArrowLeft size={24} />
       </FilterArrowButton>
       <FilterListContainer ref={filterListRef}>
-        <FilterItem>
-          <FilterSelector>Todas as categorias</FilterSelector>
-        </FilterItem>
         {categories.length > 0 &&
           categories.map((category) => (
-            <FilterItem key={`menu-filter-${category.id_categoria}`}>
+            <FilterItem
+              onClick={onFilterClick.bind(null, category)}
+              key={`menu-filter-${category.id_categoria}`}
+              isSelected={category.id_categoria === selectedCategoryFilter.id_categoria}
+            >
               <FilterSelector>{category.nome}</FilterSelector>
             </FilterItem>
           ))}
