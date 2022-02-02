@@ -41,6 +41,7 @@ export const CartOrderConfirmation = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   font-weight: bold;
   margin-top: 2rem;
 `;
