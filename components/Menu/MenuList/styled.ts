@@ -7,7 +7,7 @@ export const MenuListContainer = styled.ul`
   grid-row-gap: 2.5rem;
   list-style: none;
 
-  @media (min-width: 450px ) {
+  @media (min-width: 600px ) {
     grid-template-columns: 1fr 1fr;
     column-gap: 1rem;
   }

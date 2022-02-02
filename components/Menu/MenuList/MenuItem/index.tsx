@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { MenuItemContainer } from "./styled";
+import { ItemDescriptionContainer, MenuItemContainer } from "./styled";
 import ItemImage from "./ItemImage";
-import ItemDescription from "./ItemDescription";
 import { RelatedProduct } from "@models/produto";
+import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   onClick: (item: RelatedProduct, img?: string) => void;
@@ -53,7 +53,12 @@ const MenuItem: React.FC<Props> = (props) => {
   return (
     <MenuItemContainer onClick={menuItemClickHandler}>
       <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${item.nome}`} />
-      <ItemDescription name={`${item.nome} - ${item.tamanho}`} price={item.preco_padrao} />
+      <ItemDescriptionContainer>
+        <span>{item.nome.toLocaleLowerCase()}</span>
+        <span>R$ {transformPriceToString(item.preco_padrao)}</span>
+      </ItemDescriptionContainer>
+
+      {/* <ItemDescription name={`${item.nome} - ${item.tamanho}`} price={item.preco_padrao} /> */}
     </MenuItemContainer>
   );
 };
