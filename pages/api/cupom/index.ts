@@ -1,8 +1,8 @@
 import Cupom from "@models/cupom";
 import { getSession } from "next-auth/client";
 import { CupomRepo } from "@controllers/cupom";
+import { UserCupomRepo } from "@repository/user-cupom";
 import { findOrdersCountByUserId, findCountOrdersWithCupomId } from "@controllers/pedido";
-import { findUserCupomByCupomId } from "@controllers/usuario_cupom";
 import { NextApiHandler } from "next";
 import { ReqMethod } from "@my-types/backend/req-method";
 
@@ -24,8 +24,11 @@ const handler: NextApiHandler = async (req, res) => {
         const cupom = await CupomRepo.findByCupomCode(String(codigo));
         if (!cupom) return res.status(403).json({ message: "Cupom não encontrado" });
 
-        const isUsedCupom = Boolean(await findUserCupomByCupomId(cupom.id_cupom));
-        if (isUsedCupom) return res.status(403).json({ message: "Cupom já utilizado!" });
+        const canUseCupom = Boolean(
+          await UserCupomRepo.findByUserIdAndCupomId(session.user.id_usuario, cupom.id_cupom)
+        );
+        if (!canUseCupom)
+          return res.status(403).json({ message: "Você não pode utilziar este cupom!" });
 
         const countOrders = await findOrdersCountByUserId(session.user.id_usuario);
         if (cupom.qtde_min_pedido > countOrders) {
