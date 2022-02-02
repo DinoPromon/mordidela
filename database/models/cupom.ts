@@ -9,6 +9,7 @@ type Cupom = {
   qtde_min_pedido: number;
   data_inicio: Date;
   data_fim?: Date | null;
+  fidelidade: boolean;
 };
 
 export default Cupom;

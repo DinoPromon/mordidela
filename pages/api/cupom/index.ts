@@ -24,12 +24,14 @@ const handler: NextApiHandler = async (req, res) => {
         const cupom = await CupomRepo.findByCupomCode(String(codigo));
         if (!cupom) return res.status(403).json({ message: "Cupom não encontrado" });
 
-        const userCupom = await UserCupomRepo.findByUserIdAndCupomId(
-          session.user.id_usuario,
-          cupom.id_cupom
-        );
-        if (!userCupom)
-          return res.status(403).json({ message: "Você não pode utilizar este cupom!" });
+        if (cupom.fidelidade) {
+          const userCupom = await UserCupomRepo.findByUserIdAndCupomId(
+            session.user.id_usuario,
+            cupom.id_cupom
+          );
+          if (!userCupom)
+            return res.status(403).json({ message: "Você não pode utilizar este cupom!" });
+        }
 
         const countOrders = await findOrdersCountByUserId(session.user.id_usuario);
         if (cupom.qtde_min_pedido > countOrders) {
