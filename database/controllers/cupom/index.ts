@@ -23,8 +23,8 @@ export class CupomRepo {
   }
 
   public static async createCupom(cupom: Omit<Cupom, "id_cupom">) {
-    const ISOstartDate = new Date(cupom.data_inicio ?? "").toISOString();
-    const ISOendDate = cupom.data_fim ? new Date(cupom.data_fim) : null;
+    const ISOstartDate = cupom.data_inicio ? new Date(cupom.data_inicio).toISOString() : null;
+    const ISOendDate = cupom.data_fim ? new Date(cupom.data_fim).toISOString() : null;
     const createdCupom = await Prisma.cupom.create({
       data: {
         ...cupom,
@@ -38,8 +38,8 @@ export class CupomRepo {
 
   public static isCupomAvailable(startDate: Cupom["data_inicio"], endDate: Cupom["data_fim"]) {
     const currentTimestamp = new Date().getTime();
-    const startTimestmap = new Date(startDate).getTime();
-    const endTimestamp = new Date(endDate || "").getTime();
+    const startTimestmap = startDate ? new Date(startDate).getTime() : new Date().getTime();
+    const endTimestamp = endDate ? new Date(endDate).getTime() : new Date().getTime();
 
     if (currentTimestamp >= endTimestamp || currentTimestamp < startTimestmap) {
       return false;

@@ -7,7 +7,7 @@ type Cupom = {
   codigo: string;
   valor_desconto: number;
   qtde_min_pedido: number;
-  data_inicio: Date;
+  data_inicio: Date | null;
   data_fim?: Date | null;
   fidelidade: boolean;
 };
