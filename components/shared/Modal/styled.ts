@@ -49,7 +49,7 @@ const Wrapper = styled.div<Props>`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.35);
   overflow: hidden;
-  ${(props) => fadeAnimation(props.shouldShowComponent, fadeDuration - 70)}
+  ${(props) => fadeAnimation(props.shouldShowComponent)}
 
   #modal-content-container {
     position: relative;

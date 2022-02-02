@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { arePasswordsEquals } from "@utils/validations";
-import { getUsuarioByEmail } from "@controllers/users";
+import { Prisma } from "database";
 
 export default NextAuth({
   session: {
@@ -10,15 +9,22 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       async authorize(credentials, req) {
-        const user = await getUsuarioByEmail(credentials.email);
+        const user = await Prisma.usuario.findFirst({
+          where: {
+            AND: [
+              {
+                email: credentials.email,
+              },
+              {
+                senha: credentials.senha,
+              },
+            ],
+          },
+        });
         if (!user) {
-          throw new Error("Dados incorretos! Verifique seu email ou senha.");
+          return null;
         }
 
-        const areEquals = arePasswordsEquals(credentials.senha, user.senha);
-        if (!areEquals) {
-          throw new Error("Dados incorretos! Verifique seu email ou senha.");
-        }
         return {
           nome: user.nome,
           email: user.email,

@@ -6,5 +6,4 @@ export type Response = {
 export type RequestState = {
   error: string,
   isLoading: boolean,
-  success: boolean
 }

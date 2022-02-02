@@ -1,15 +1,16 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const ProfileDropdownContainer = styled.div`
   display: flex;
   position: relative;
-  
-  & > span,
+
+  & > span {
+    padding-left: 7px;
+  }
+
   & > a {
     text-decoration: none;
     color: inherit;
-    padding: 0 0.5rem;
+    padding-left: 7px;
   }
 `;
-
-export default Wrapper;

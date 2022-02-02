@@ -1,8 +1,26 @@
 import React, { useRef, useState } from "react";
+import Categoria from "@models/categoria";
+import { ProductCategory } from "@models/produto";
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { FilterSelector, FilterItem, FilterListContainer, FilterContainer, FilterArrowButton } from "./styled";
+import {
+  FilterSelector,
+  FilterItem,
+  FilterListContainer,
+  FilterContainer,
+  FilterArrowButton,
+} from "./styled";
 
-const MenuFilter: React.FC = () => {
+type MenuFilterProps = {
+  categories: ProductCategory[];
+  selectedCategoryFilter: ProductCategory;
+  onFilterClick: (categoryId: ProductCategory) => void;
+};
+
+const MenuFilter: React.FC<MenuFilterProps> = ({
+  categories,
+  selectedCategoryFilter,
+  onFilterClick,
+}) => {
   const filterListRef = useRef<HTMLUListElement>(null);
 
   function leftArrowClickHandler() {
@@ -23,33 +41,16 @@ const MenuFilter: React.FC = () => {
         <MdOutlineKeyboardArrowLeft size={24} />
       </FilterArrowButton>
       <FilterListContainer ref={filterListRef}>
-        <FilterItem>
-          <FilterSelector>Todas as categorias</FilterSelector>
-        </FilterItem>
-        <FilterItem>
-          <FilterSelector>Cones</FilterSelector>
-        </FilterItem>
-        <FilterItem>
-          <FilterSelector>Caixas</FilterSelector>
-        </FilterItem>
-        <FilterItem>
-          <FilterSelector>Salgados</FilterSelector>
-        </FilterItem>
-        <FilterItem>
-          <FilterSelector>Combos</FilterSelector>
-        </FilterItem>
-        <FilterItem>
-          <FilterSelector>Pratos executivos</FilterSelector>
-        </FilterItem>
-        <FilterItem>
-          <FilterSelector>Lanches</FilterSelector>
-        </FilterItem>
-        <FilterItem>
-          <FilterSelector>Cremes gelados</FilterSelector>
-        </FilterItem>
-        <FilterItem>
-          <FilterSelector>Bebidas</FilterSelector>
-        </FilterItem>
+        {categories.length > 0 &&
+          categories.map((category) => (
+            <FilterItem
+              onClick={onFilterClick.bind(null, category)}
+              key={`menu-filter-${category.id_categoria}`}
+              isSelected={category.id_categoria === selectedCategoryFilter.id_categoria}
+            >
+              <FilterSelector>{category.nome}</FilterSelector>
+            </FilterItem>
+          ))}
       </FilterListContainer>
       <FilterArrowButton className="right-arrow-button" onClick={rightArrowClickHandler}>
         <MdOutlineKeyboardArrowRight size={24} />

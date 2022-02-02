@@ -1,29 +1,43 @@
 import React from "react";
-
-import List from "./styled";
+import { categoryAll } from "..";
+import { MenuListContainer } from "./styled";
 import MenuItem from "./MenuItem";
-import { MenuProduct } from "@models/produto";
+import { RelatedProduct } from "@models/produto";
+import { ProductCategory } from "@models/produto";
 
 type Props = {
-  onItemClick: (item: MenuProduct, img?: string) => void;
-  changeModalImage: (id_produto: MenuProduct["id_produto"], img?: string) => void;
-  products: MenuProduct[];
+  selectedCategoryFilter: ProductCategory;
+  onItemClick: (item: RelatedProduct, img?: string) => void;
+  changeModalImage: (id_produto: RelatedProduct["id_produto"], img?: string) => void;
+  products: RelatedProduct[];
 };
 
-const MenuList: React.FC<Props> = (props) => {
-  const { products } = props;
+const MenuList: React.FC<Props> = ({
+  products,
+  selectedCategoryFilter,
+  onItemClick,
+  changeModalImage,
+}) => {
+  function getFilteredCategories() {
+    if (selectedCategoryFilter.id_categoria === categoryAll.id_categoria) {
+      return products;
+    }
+    return products.filter(
+      (product) => product.categoria.id_categoria === selectedCategoryFilter.id_categoria
+    );
+  }
 
   return (
-    <List>
-      {products.map((product) => (
+    <MenuListContainer>
+      {getFilteredCategories().map((product) => (
         <MenuItem
-          onClick={props.onItemClick}
+          onClick={onItemClick}
           item={product}
           key={`${product.nome}-${product.id_produto}`}
-          changeModalImage={props.changeModalImage}
+          changeModalImage={changeModalImage}
         />
       ))}
-    </List>
+    </MenuListContainer>
   );
 };
 

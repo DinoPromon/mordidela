@@ -59,6 +59,7 @@ export const DropdownListItem = styled.li`
 
   &:hover {
     cursor: pointer;
+    text-decoration: underline;
   }
 
   & > a {

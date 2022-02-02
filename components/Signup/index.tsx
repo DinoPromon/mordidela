@@ -7,21 +7,21 @@ import { Response } from "@my-types/request";
 import { UserFormData, AddressFormData } from "@my-types/forms";
 import { AddressForm, SignUpForm } from "@components/Forms";
 
-const signupInitialState: UserFormData = Object.freeze({
+const signupInitialState: UserFormData = {
   nome: "",
   data_nascimento: "",
   email: "",
   senha: "",
   senha_confirmada: "",
   telefone: "",
-});
+};
 
-const addressInitialState: AddressFormData = Object.freeze({
+const addressInitialState: AddressFormData = {
   logradouro: "",
   numero: "",
   bairro: "",
   complemento: "",
-});
+};
 
 const Signup: React.FC = () => {
   const router = useRouter();

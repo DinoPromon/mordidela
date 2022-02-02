@@ -1,7 +1,7 @@
 import { PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
-const CustomForm = styled.form`
+export const ModalItemContainer = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -54,5 +54,3 @@ const CustomForm = styled.form`
     align-items: center;
   }
 `;
-
-export default CustomForm;

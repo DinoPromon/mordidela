@@ -4,7 +4,12 @@ import { FaTimes } from "react-icons/fa/index";
 import React, { useEffect, useState } from "react";
 import { MordidelaLogoWithLabel } from "@components/shared";
 import useComponentVisible from "@hooks/useComponenteVisible";
-import Aside, { renderAnimation, unmountAnimation, SIDEBAR_ANIMATION_TIME } from "./styled";
+import {
+  Aside,
+  renderAnimation,
+  unmountAnimation,
+  SIDEBAR_ANIMATION_TIME,
+} from "./styled";
 
 type Props = {
   isShowingSidebar: boolean;
@@ -15,7 +20,11 @@ const SideBar: React.FC<Props> = (props) => {
   const [sidebarAnimation, setSidebarAnimation] = useState(renderAnimation);
   const { isShowingSidebar, setShowSideBar } = props;
 
-  const { ref: sidebarRef, isComponentVisible, setIsComponentVisible } = useComponentVisible(isShowingSidebar);
+  const {
+    ref: sidebarRef,
+    isComponentVisible,
+    setIsComponentVisible,
+  } = useComponentVisible(isShowingSidebar);
 
   const closeHandler = () => {
     if (isComponentVisible) {
@@ -24,7 +33,9 @@ const SideBar: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    setSidebarAnimation(isComponentVisible ? renderAnimation : unmountAnimation);
+    setSidebarAnimation(
+      isComponentVisible ? renderAnimation : unmountAnimation
+    );
     const timer = setTimeout(() => {
       setShowSideBar(isComponentVisible);
     }, SIDEBAR_ANIMATION_TIME);

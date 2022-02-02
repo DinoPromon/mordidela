@@ -1,8 +1,8 @@
 import React from "react";
-
-import CustomList from "./styled";
-import CartOrder from "./CartOder";
+import CartItemDescription from "./CartItemDescription";
 import { CartProduct } from "@my-types/context";
+import { transformPriceToString } from "@utils/transformation";
+import { CartOrdersListContainer, CartOrderAddsContainer, CartOrderAddsText } from "./styled";
 
 type Props = {
   products: CartProduct[];
@@ -11,12 +11,39 @@ type Props = {
 const CartOrdersList: React.FC<Props> = (props) => {
   const { products } = props;
 
+  function getFlavorsAsString(product: CartProduct) {
+    const flavorsString = product.flavors.reduce((string, cur, index) => {
+      if (index < product.flavors.length - 1) {
+        return (string += `${cur.nome}, `);
+      }
+      return (string += `${cur.nome}.`);
+    }, "");
+
+    return flavorsString;
+  }
+
   return (
-    <CustomList>
+    <CartOrdersListContainer>
       {products.map((product) => (
-        <CartOrder product={product} key={product.key} />
+        <li key={product.key}>
+          <CartItemDescription
+            productKey={product.key}
+            productName={product.name}
+            productSize={product.size}
+            quantity={product.quantity}
+            standard_price={product.standard_price}
+          />
+          <CartOrderAddsContainer>
+            {product.adds.map((add) => (
+              <CartOrderAddsText key={`add-${add.id_adicional}`}>
+                Adicional: {add.nome} <span>R$ {transformPriceToString(add.preco)}</span>
+              </CartOrderAddsText>
+            ))}
+            {!!product.flavors.length && <p>Sabores: {getFlavorsAsString(product)}</p>}
+          </CartOrderAddsContainer>
+        </li>
       ))}
-    </CustomList>
+    </CartOrdersListContainer>
   );
 };
 

@@ -1,12 +1,15 @@
 import { CartOrder, CartProduct } from "@my-types/context";
 import React, { useState } from "react";
+import { orderInitialState } from "../cart-context";
 import { CartContextState } from "@my-types/context";
 import CartContext from "../cart-context";
 import Cupom from "@models/cupom";
+import Endereco from "@models/endereco";
+import Pedido from "@models/pedido";
 
 const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
-  const [order, setOrder] = useState<CartOrder>({});
+  const [order, setOrder] = useState<CartOrder>(orderInitialState);
 
   const incrementProductQuantity = React.useCallback((key: string) => {
     setProducts((prevState) =>
@@ -17,17 +20,20 @@ const CartContextProvider: React.FC = (props) => {
     );
   }, []);
 
-  const addProductToCart = React.useCallback((product: CartProduct) => {
-    setProducts((prevState) => {
-      for (const i in prevState) {
-        if (prevState[i].key === product.key) {
-          incrementProductQuantity(product.key);
-          return prevState;
+  const addProductToCart = React.useCallback(
+    (product: CartProduct) => {
+      setProducts((prevState) => {
+        for (const i in prevState) {
+          if (prevState[i].key === product.key) {
+            incrementProductQuantity(product.key);
+            return prevState;
+          }
         }
-      }
-      return [...prevState, product];
-    });
-  }, []);
+        return [...prevState, product];
+      });
+    },
+    [incrementProductQuantity]
+  );
 
   function removeProductFromCart(key: string) {
     setProducts((prevState) => prevState.filter((item) => item.key !== key));
@@ -40,10 +46,10 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
-  const setOrderType = React.useCallback((type: CartOrder["order_type"]) => {
+  const setDeliveryType = React.useCallback((type: CartOrder["delivery_type"]) => {
     setOrder((prevState) => ({
       ...prevState,
-      order_type: type,
+      delivery_type: type,
     }));
   }, []);
 
@@ -73,15 +79,29 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
-  const setPaymentType = React.useCallback((type: CartOrder["payment_type"]) => {
+  const setPaymentType = React.useCallback((type: string | null) => {
     setOrder((prevState) => ({
       ...prevState,
       payment_type: type,
     }));
   }, []);
 
+  const setAddressId = React.useCallback((addressId: Endereco["id_endereco"] | null) => {
+    setOrder((prevState) => ({
+      ...prevState,
+      address_id: addressId,
+    }));
+  }, []);
+
+  const setDeliveryPrice = React.useCallback((deliveryPrice: Pedido["preco_entrega"]) => {
+    setOrder((prevState) => ({
+      ...prevState,
+      delivery_price: deliveryPrice,
+    }));
+  }, []);
+
   const resetCart = React.useCallback(() => {
-    setOrder({});
+    setOrder(orderInitialState);
     setProducts([]);
   }, []);
 
@@ -94,9 +114,11 @@ const CartContextProvider: React.FC = (props) => {
     changeDeliveryPrice,
     setCupom,
     removeCupom,
-    setOrderType,
+    setAddressId,
+    setDeliveryType,
     setPaymentAmount,
     setPaymentType,
+    setDeliveryPrice,
   };
 
   return <CartContext.Provider value={context}>{props.children}</CartContext.Provider>;

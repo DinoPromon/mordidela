@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
 
-import CustomForm from "./styled";
-import ItemImage from './ItemImage';
+import { ModalItemContainer } from "./styled";
+import ItemImage from "./ItemImage";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
 import Adicional from "@models/adicional";
 import Sabor from "@models/sabor";
 import { CartContext } from "@store/cart";
-import { MenuProduct } from "@models/produto";
+import { RelatedProduct } from "@models/produto";
 import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
 import { formatProductId } from "@utils/formatters";
@@ -16,7 +16,7 @@ import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
   image: string;
-  item: MenuProduct;
+  item: RelatedProduct;
   closeModal: () => void;
 };
 
@@ -37,7 +37,7 @@ const ModalItem: React.FC<Props> = (props) => {
   const [price, setPrice] = useState(item.preco_padrao);
   const { addProductToCart } = useContext(CartContext);
 
-  const canSubmit = item.flavors.length ? productOrder.flavors.length > 0 : true;
+  const canSubmit = item.sabores.length ? productOrder.flavors.length > 0 : true;
 
   const getProductKey = formatProductId.bind(null, item.nome, item.id_produto);
 
@@ -111,37 +111,42 @@ const ModalItem: React.FC<Props> = (props) => {
   }
 
   return (
-    <CustomForm onSubmit={submitHandler}>
+    <ModalItemContainer onSubmit={submitHandler}>
       <h2>
         {item.nome} - {item.tamanho}
       </h2>
       <ItemImage src={image} alt={item.nome} />
       <p>{item.descricao}</p>
-      {item.flavors.length > 0 && (
+      {item.sabores.length > 0 && (
         <ItemFlavorsList
-          items={item.flavors}
+          items={item.sabores}
           maxFlavor={item.qtde_max_sabor}
           flavorsAmount={productOrder.flavors.length}
           onAddFlavor={addFlavor}
           onRemoveFlavor={removeFlavor}
         />
       )}
-      {item.adds.length > 0 && (
+      {item.adicionais.length > 0 && (
         <ItemAddsList
-          items={item.adds}
+          items={item.adicionais}
           setPrice={setPrice}
           onAddAditional={addAditional}
           onRemoveAditional={removeAditional}
         />
       )}
-      <textarea name="observacao" placeholder="Alguma observação?" rows={2} onBlur={noteBlurHandler} />
+      <textarea
+        name="observacao"
+        placeholder="Alguma observação?"
+        rows={2}
+        onBlur={noteBlurHandler}
+      />
       <div>
         <ItemCounter quantity={productOrder.quantity} setQuantity={changeQuantity} />
         <FormButton type="submit" disabled={!canSubmit}>
           Adicionar - R${transformPriceToString(price * productOrder.quantity)}
         </FormButton>
       </div>
-    </CustomForm>
+    </ModalItemContainer>
   );
 };
 

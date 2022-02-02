@@ -1,8 +1,8 @@
 type Desconto = {
-  id_desconto: string;
+  id_desconto: number;
   porcentagem_desconto: number;
-  data_inicio: string;
-  data_fim: string;
+  data_inicio: Date;
+  data_fim?: Date | null;
 };
 
 export default Desconto;

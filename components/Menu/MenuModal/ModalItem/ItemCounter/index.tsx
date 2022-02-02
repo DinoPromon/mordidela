@@ -1,4 +1,4 @@
-import Wrapper from "./styled";
+import {ItemCounterContainer} from "./styled";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai/index";
 import { PURPLE } from "@utils/colors";
 import React from "react";
@@ -20,7 +20,7 @@ const ItemCounter: React.FC<Props> = (props) => {
   }
 
   return (
-    <Wrapper>
+    <ItemCounterContainer>
       <button type="button" onClick={decrementHandler}>
         <AiOutlineMinusCircle color={PURPLE} size={24} style={{ verticalAlign: "middle" }} />
       </button>
@@ -28,7 +28,7 @@ const ItemCounter: React.FC<Props> = (props) => {
       <button type="button" onClick={incrementHandler}>
         <AiOutlinePlusCircle color={PURPLE} size={24} style={{ verticalAlign: "middle" }} />
       </button>
-    </Wrapper>
+    </ItemCounterContainer>
   );
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { InputCheckbox } from "@components/shared";
-import ListItem from "./styled";
+import {FlavorOptionContainer} from "./styled";
 
 type Props = {
   id: string;
@@ -15,11 +15,11 @@ const FlavorOption: React.FC<Props> = (props) => {
 
   const inputId = `sabor-${id}`;
   return (
-    <ListItem>
+    <FlavorOptionContainer>
       <InputCheckbox id={inputId} name={name} onChange={props.onChange} value={props.id}>
         {label}
       </InputCheckbox>
-    </ListItem>
+    </FlavorOptionContainer>
   );
 };
 

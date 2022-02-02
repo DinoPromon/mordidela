@@ -25,7 +25,7 @@ const AddressForm: React.FC<Props> = (props) => {
   const hasErrorInInputs = (formInputs: typeof formState) => {
     for (let k in addressFormValidations) {
       const key = k as keyof AddressFormData;
-      const isValid = addressFormValidations[key](formInputs[key]);
+      const isValid = addressFormValidations[key](formInputs[key] as string);
       if (!isValid) return true;
     }
   };
@@ -93,16 +93,13 @@ const AddressForm: React.FC<Props> = (props) => {
         id="complemento"
         isInputValid={true}
         shoulRemoveAditionalSpaces={true}
-        value={formState.complemento}
+        value={formState.complemento as string}
         placeholder="Complemento"
         onChange={changeFormStateHandler}
       />
       <p>Preencha os campos obrigatórios marcados com *.</p>
       {shouldShowRequestStatus && (
-        <FormRequestStatus
-          isLoading={request.isLoading}
-          errorMessage={request.error}
-        />
+        <FormRequestStatus isLoading={request.isLoading} errorMessage={request.error} />
       )}
       <AddressFormActions onBack={onBack} disabled={!canSubmit} success={request.success} />
     </Wrapper>

@@ -1,42 +1,38 @@
-import React, { useContext, Fragment } from "react";
-
-import Wrapper from "./styled";
-import useFadeAnimation from "@hooks/useFadeAnimation";
-import { CartContext } from "@store/cart";
+import React, { Fragment } from "react";
+import { useFormikContext } from "formik";
+import { CartFormValues } from "@components/Cart/FormModel";
+import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
+import { CustomFade } from "@components/shared";
 import { formatPrice } from "@utils/formatters";
-import { transformPriceToString, transformPriceStringToNumber } from "@utils/transformation";
 
 type Props = {
-  totalPrice: number;
   shouldShowPaymentValue: boolean;
 };
 
-const CartPaymentValue: React.FC<Props> = (props) => {
-  const { setPaymentAmount, order } = useContext(CartContext);
-  const showComponent = useFadeAnimation(props.shouldShowPaymentValue);
+const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
+  const { setFieldValue, values } = useFormikContext<CartFormValues>();
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
-    event.target.value = formatPrice(value);
-    setPaymentAmount(transformPriceStringToNumber(event.target.value));
+    setFieldValue("payment_amount", formatPrice(value));
   }
 
   return (
     <Fragment>
-      {showComponent && (
-        <Wrapper shouldShowComponent={props.shouldShowPaymentValue}>
+      <CustomFade triggerAnimation={shouldShowPaymentValue}>
+        <CartPaymentValueContainer>
           <h3>Precisa de troco para quanto?</h3>
-          <div>
+          <CartPaymentInputChange>
             <span>R$</span>
             <input
               type="text"
               maxLength={7}
               onChange={changeHandler}
-              value={transformPriceToString((order.payment_amount as number) || 0)}
+              value={values.payment_amount}
             ></input>
-          </div>
-        </Wrapper>
-      )}
+          </CartPaymentInputChange>
+        </CartPaymentValueContainer>
+      </CustomFade>
     </Fragment>
   );
 };

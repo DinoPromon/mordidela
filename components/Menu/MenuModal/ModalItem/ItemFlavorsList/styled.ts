@@ -2,7 +2,7 @@ import { PINK } from "@utils/colors";
 import styled from "styled-components";
 import CustomLabel from "../CustomLabel";
 
-const CustomList = styled.ul`
+export const ItemFlavorListContainer = styled.ul`
   & > label {
     ${CustomLabel}
 
@@ -47,5 +47,3 @@ const CustomList = styled.ul`
     }
   }
 `;
-
-export default CustomList;

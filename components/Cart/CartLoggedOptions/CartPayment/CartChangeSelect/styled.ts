@@ -1,22 +1,16 @@
 import styled from "styled-components";
-
-import { fadeAnimation, fadeDuration } from "@utils/animations";
 import { PURPLE } from "@utils/colors";
 
-type Props = {
-  shouldShowComponent: boolean;
-};
-
-const Wrapper = styled.div<Props>`
+export const CartChangeSelectContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
+  margin-bottom: 0.35rem;
 
-  ${(props) => fadeAnimation(props.shouldShowComponent, fadeDuration)}
   & > h3 {
     color: ${PURPLE};
+    font-size: 1rem;
   }
 `;
-
-export default Wrapper;

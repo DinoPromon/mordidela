@@ -1,13 +1,9 @@
 import React from "react";
 
-import Wrapper from "./styled";
+import { HomeContainer } from "./styled";
 
 const Home: React.FC = () => {
-  return (
-    <Wrapper>
-
-    </Wrapper>
-  );
+  return <HomeContainer></HomeContainer>;
 };
 
 export default Home;

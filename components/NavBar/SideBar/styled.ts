@@ -26,7 +26,7 @@ type Props = {
   animation: ReturnType<typeof keyframes>;
 };
 
-const Aside = styled.aside<Props>`
+export const Aside = styled.aside<Props>`
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -58,5 +58,3 @@ const Aside = styled.aside<Props>`
     margin-top: 1.25rem;
   }
 `;
-
-export default Aside;

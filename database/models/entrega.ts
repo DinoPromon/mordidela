@@ -1,6 +1,6 @@
 type Entrega = {
-  id_entrega: string,
-  descricao: string,
+  id_entrega: number,
+  descricao?: string | null,
   preco_entrega: number
 };
 

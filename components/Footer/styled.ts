@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { PURPLE } from "@utils/colors";
 
-const CustomFooter = styled.footer`
+export const FooterContainer = styled.footer`
   background: ${PURPLE};
   margin-top: auto;
   color: white;
@@ -19,5 +19,3 @@ const CustomFooter = styled.footer`
     font-weight: 600;
   }
 `;
-
-export default CustomFooter;

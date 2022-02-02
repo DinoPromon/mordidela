@@ -35,3 +35,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# environment variables
+.env
+
+# ignore prisma schema
+/prisma

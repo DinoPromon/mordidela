@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 
-import ListItem from "./styled";
+import { ItemDescriptionContainer, MenuItemContainer } from "./styled";
 import ItemImage from "./ItemImage";
-import ItemDescription from "./ItemDescription";
-import { MenuProduct } from "@models/produto";
+import { RelatedProduct } from "@models/produto";
+import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
-  onClick: (item: MenuProduct, img?: string) => void;
-  changeModalImage: (id_produto: MenuProduct["id_produto"], img?: string) => void;
-  item: MenuProduct;
+  onClick: (item: RelatedProduct, img?: string) => void;
+  changeModalImage: (id_produto: RelatedProduct["id_produto"], img?: string) => void;
+  item: RelatedProduct;
 };
 
 const imgFallback = "/images/fallback.png";
 
 const MenuItem: React.FC<Props> = (props) => {
   const { item, onClick, changeModalImage } = props;
-  const [imageSrc, setImageSrc] = useState<string>("");
+  const [imageSrc, setImageSrc] = useState("");
 
-  const clickHandler = () => {
+  const menuItemClickHandler = () => {
     if (imageSrc) onClick(item, imageSrc);
   };
 
@@ -51,10 +51,15 @@ const MenuItem: React.FC<Props> = (props) => {
   }, [changeModalImage, item.id_produto, imageSrc]);
 
   return (
-    <ListItem onClick={clickHandler}>
+    <MenuItemContainer onClick={menuItemClickHandler}>
       <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${item.nome}`} />
-      <ItemDescription name={`${item.nome} - ${item.tamanho}`} price={item.preco_padrao} />
-    </ListItem>
+      <ItemDescriptionContainer>
+        <span>{item.nome.toLocaleLowerCase()}</span>
+        <span>R$ {transformPriceToString(item.preco_padrao)}</span>
+      </ItemDescriptionContainer>
+
+      {/* <ItemDescription name={`${item.nome} - ${item.tamanho}`} price={item.preco_padrao} /> */}
+    </MenuItemContainer>
   );
 };
 

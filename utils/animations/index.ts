@@ -3,13 +3,17 @@ import { css } from "styled-components";
 import fadeIn from "./fade-in";
 import fadeOut from "./fade-out";
 
-const fadeDuration = 200;
+const fadeDuration = 250;
 
-const fadeAnimation = (shouldShowComponent: boolean, duration: number) => css`
-  animation-name: ${shouldShowComponent ? fadeIn : fadeOut};
-  animation-duration: ${duration}ms;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-out;
-`;
+const fadeAnimation = (shouldShowComponent: boolean) => {
+  const name = shouldShowComponent ? fadeIn : fadeOut;
+
+  return css`
+    animation-name: ${name};
+    animation-duration: ${fadeDuration}ms;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+  `;
+};
 
 export { fadeIn, fadeOut, fadeDuration, fadeAnimation };

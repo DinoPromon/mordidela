@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Wrapper = styled.ul`
+export const SideBarListContainer = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -15,6 +15,7 @@ const Wrapper = styled.ul`
     font-weight: 500;
     letter-spacing: 1px;
     color: white;
+    
     & > a {
       color: inherit;
       font-size: inherit;
@@ -22,5 +23,3 @@ const Wrapper = styled.ul`
     }
   }
 `;
-
-export default Wrapper;

@@ -1,72 +1,120 @@
-import React, { Fragment, useContext, useEffect } from "react";
-
+import React, { Fragment, useEffect, useState } from "react";
+import { useFormikContext } from "formik";
 import CartCupom from "./CartCupom";
-import Usuario from "@models/usuario";
-import Entrega from "@models/entrega";
 import CartPayment from "./CartPayment";
-import DeliveryPrice from "./DeliveryPrice";
 import Loading from "@components/shared/Loading";
-import { CartContext } from "@store/cart";
+import { CupomType } from "@constants/cupom-type";
+import { CustomFade } from "@components/shared";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
+import { CartFormValues } from "../FormModel";
+import { CartFormSubtotalText } from "../styled";
+import {
+  CartCupomData,
+  CartFormTotalText,
+  CartFormErrorMessage,
+  CartCupomColorfulText,
+  CartFormErrorContainer,
+  CartCoupomDataContainer,
+} from "./styled";
 import { transformPriceToString } from "@utils/transformation";
+import { FaTrash } from "react-icons/fa/index";
+import { PINK } from "@utils/colors";
 
 type Props = {
-  canSubmit: boolean;
-  onSetIsPaymentOk: React.Dispatch<React.SetStateAction<boolean>>;
   subTotalPrice: number;
-  userId: Usuario["id_usuario"];
   request: RequestState;
+  onChangeRequestStatus: (status: Partial<RequestState>) => void;
+  onChangeShouldShowConfirmation: (shouldShow: boolean) => void;
 };
 
-const CartLoggedOptions: React.FC<Props> = (props) => {
-  const { order, changeDeliveryPrice } = useContext(CartContext);
+const CartLoggedOptions: React.FC<Props> = ({
+  request,
+  subTotalPrice,
+  onChangeRequestStatus,
+  onChangeShouldShowConfirmation,
+}) => {
+  const { validateForm, values, setFieldValue } = useFormikContext<CartFormValues>();
+  const [formError, setFormError] = useState("");
 
-  const isDelivery = order.order_type === "entrega";
+  const isDelivery = values.delivery_type === CupomType.DELIVERY;
+  const shouldShowDeliveryPrice = isDelivery && values.cupom?.tipo_cupom !== CupomType.DELIVERY;
+  const shouldShowDiscount = Boolean(values.cupom?.id_cupom);
 
   function getTotalPrice() {
-    if (isDelivery && order.tipo_cupom !== "entrega") return props.subTotalPrice + (order.delivery_price as number);
-    return props.subTotalPrice;
+    if (isDelivery && values.delivery_price) {
+      if (values.cupom === null) {
+        return subTotalPrice + values.delivery_price;
+      }
+      if (values.cupom?.tipo_cupom === CupomType.DELIVERY) {
+        return subTotalPrice;
+      }
+      return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100 + values.delivery_price;
+    }
+    return subTotalPrice;
   }
 
-  const totalPrice = getTotalPrice();
+  async function finishOrderClickHandler() {
+    const errors = await validateForm();
+    const firstError = Object.values(errors)[0];
+    if (firstError) {
+      return setFormError(firstError);
+    }
+    onChangeShouldShowConfirmation(true);
+  }
+
+  function removeSelectedCupom() {
+    setFieldValue("cupom", null);
+  }
 
   useEffect(() => {
-    async function getDeliveryPrice() {
-      const response = await fetch(`/api/users/address/${props.userId}`);
-      const result = (await response.json()) as Pick<Entrega, "preco_entrega">;
-      changeDeliveryPrice(result.preco_entrega);
-    }
-    getDeliveryPrice();
-  }, [changeDeliveryPrice]);
-
-  const shouldShowDeliveryPrice = isDelivery && order.tipo_cupom !== "entrega";
+    setFormError("");
+    onChangeRequestStatus({ error: "" });
+  }, [values]);
 
   return (
     <Fragment>
-      <DeliveryPrice deliveryPrice={order.delivery_price as number} shoulShowDeliveryPrice={shouldShowDeliveryPrice} />
-      <CartCupom />
-      {order.tipo_cupom === "entrega" && <p>Desconto de entrega aplicado.</p>}
-      {order.tipo_cupom === "pedido" && order.valor_desconto && (
-        <p>
-          Desconto aplicado: <span>{order.valor_desconto}%</span>
-        </p>
-      )}
-      <CartPayment totalPrice={totalPrice} onSetIsPaymentOk={props.onSetIsPaymentOk} />
-      <p>
-        Total: <span>R$ {transformPriceToString(totalPrice)}</span>
-      </p>
-      <div>
-        {props.request.isLoading && <Loading />}
-        {!props.request.isLoading && (
+      <CustomFade triggerAnimation={shouldShowDeliveryPrice}>
+        <CartFormSubtotalText>
+          Entrega: <span>R$ {transformPriceToString(Number(values.delivery_price))}</span>
+        </CartFormSubtotalText>
+      </CustomFade>
+
+      <CustomFade triggerAnimation={!Boolean(values.cupom)}>
+        <CartCupom onChangeRequestStatus={onChangeRequestStatus} />
+      </CustomFade>
+
+      <CustomFade triggerAnimation={shouldShowDiscount}>
+        <CartCoupomDataContainer>
+          <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
+          <CartCupomColorfulText>
+            Cupom: <span>{values.cupom?.codigo_cupom}</span>
+          </CartCupomColorfulText>
+          <CartCupomColorfulText>
+            Desconto:{" "}
+            {values.cupom?.tipo_cupom === CupomType.DELIVERY ? (
+              <span> Frete grátis</span>
+            ) : (
+              <span>{values.cupom?.valor_desconto}%</span>
+            )}
+          </CartCupomColorfulText>
+        </CartCoupomDataContainer>
+      </CustomFade>
+
+      <CartPayment />
+      <CartFormTotalText>
+        Total: <span>R$ {transformPriceToString(getTotalPrice() || 0)}</span>
+      </CartFormTotalText>
+      <CartFormErrorContainer>
+        {request.isLoading && <Loading />}
+        {!request.isLoading && (
           <Fragment>
-            {props.request.error && <p>{props.request.error}</p>}
-            <FormButton type="submit" disabled={!props.canSubmit}>
-              Finalizar pedido
-            </FormButton>
+            {formError && <CartFormErrorMessage>{formError}</CartFormErrorMessage>}
+            <FormButton onClick={finishOrderClickHandler}>Finalizar pedido</FormButton>
+            {request.error && <CartFormErrorMessage>{request.error}</CartFormErrorMessage>}
           </Fragment>
         )}
-      </div>
+      </CartFormErrorContainer>
     </Fragment>
   );
 };

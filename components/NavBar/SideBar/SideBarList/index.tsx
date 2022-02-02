@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import Wrapper from "./styled";
+import { SideBarListContainer } from "./styled";
 
 type Props = {
   onClose: () => void;
@@ -11,7 +11,7 @@ const SideBarList: React.FC<Props> = (props) => {
   const { onClose } = props;
 
   return (
-    <Wrapper>
+    <SideBarListContainer>
       <li>
         <Link href="/">
           <a onClick={onClose}>Início</a>
@@ -23,7 +23,7 @@ const SideBarList: React.FC<Props> = (props) => {
         </Link>
       </li>
       <li>Sobre</li>
-    </Wrapper>
+    </SideBarListContainer>
   );
 };
 

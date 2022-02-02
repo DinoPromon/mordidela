@@ -2,7 +2,7 @@ import Adicional from "@models/adicional";
 import Sabor from "@models/sabor";
 import { removeSpaces } from "@utils/transformation";
 
-export function formatProductId(name: string, id: string, adds: Adicional[], flavors: Sabor[]) {
+export function formatProductId(name: string, id: number, adds: Adicional[], flavors: Sabor[]) {
   const addsIds = adds
     .map((add) => +add.id_adicional)
     .sort((a, b) => a - b)

@@ -1,63 +1,77 @@
-import React, { useContext } from "react";
-import { FaRegCreditCard, FaMoneyBill } from "react-icons/fa/index.js";
-import Wrapper from "./styled";
+import React, { useContext, useEffect } from "react";
+import { useFormikContext } from "formik";
+import { CartFormValues } from "@components/Cart/FormModel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import {
+  CartPaymentSelectContainer,
+  CartPaymentSelectTitle,
+  CartPaymentSelectContainerRadioGroup,
+} from "./styled";
 import { CartContext } from "@store/cart";
 import { PURPLE } from "@utils/colors";
-import { CartOrder } from "@my-types/context";
-import { InputRadio } from "@components/shared";
+import { FaRegCreditCard, FaMoneyBill } from "react-icons/fa/index.js";
 
-const CartPaymentSelect: React.FC = (props) => {
-  const { setPaymentType, order } = useContext(CartContext);
+const CartPaymentSelect: React.FC = () => {
+  const { values, setFieldValue } = useFormikContext<CartFormValues>();
+  const { setPaymentType } = useContext(CartContext);
 
-  function changePaymentType(event: React.ChangeEvent<HTMLInputElement>) {
-    const { value: type } = event.target as { value: CartOrder["payment_type"] };
-    setPaymentType(type);
+  function changePaymentTypeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+    const paymentType = event.target.value;
+    setFieldValue("payment_type", paymentType);
   }
 
-  const inputName = "input-tipo-pagamento";
+  useEffect(() => {
+    setPaymentType(values.payment_type);
+  }, [values.payment_type, setPaymentType]);
 
   return (
-    <Wrapper>
-      <h3>Como vai ser o pagamento?</h3>
-      <div>
-        <InputRadio
-          id="debito"
-          name={inputName}
-          value="debito"
-          defaultCheked={order.payment_type === "debito"}
-          onChange={changePaymentType}
+    <CartPaymentSelectContainer>
+      <CartPaymentSelectTitle>Como vai ser o pagamento?</CartPaymentSelectTitle>
+      <CartPaymentSelectContainerRadioGroup>
+        <RadioGroup
+          row
+          name="input-payment-type"
+          value={values.payment_type}
+          onChange={changePaymentTypeHandler}
         >
-          <div>
-            <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
-          </div>
-          Débito
-        </InputRadio>
-        <InputRadio
-          id="credito"
-          name={inputName}
-          value="credito"
-          defaultCheked={order.payment_type === "credito"}
-          onChange={changePaymentType}
-        >
-          <div>
-            <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
-          </div>
-          Crédito
-        </InputRadio>
-        <InputRadio
-          id="dinheiro"
-          name={inputName}
-          value="dinheiro"
-          defaultCheked={order.payment_type === "dinheiro"}
-          onChange={changePaymentType}
-        >
-          <div>
-            <FaMoneyBill color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
-          </div>
-          Dinheiro
-        </InputRadio>
-      </div>
-    </Wrapper>
+          <FormControlLabel
+            label={
+              <span>
+                <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />{" "}
+                Débito
+              </span>
+            }
+            key="payment-type-debito"
+            value="debito"
+            control={<Radio color="secondary" />}
+          />
+          <FormControlLabel
+            label={
+              <span>
+                <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />{" "}
+                Crédito
+              </span>
+            }
+            key="payment-type-credito"
+            value="credito"
+            control={<Radio color="secondary" />}
+          />
+          <FormControlLabel
+            label={
+              <span>
+                <FaMoneyBill color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />{" "}
+                Dinheiro
+              </span>
+            }
+            key="payment-type-dinheiro"
+            value="dinheiro"
+            control={<Radio color="secondary" />}
+          />
+        </RadioGroup>
+      </CartPaymentSelectContainerRadioGroup>
+    </CartPaymentSelectContainer>
   );
 };
 

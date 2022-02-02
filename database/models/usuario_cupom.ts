@@ -1,12 +1,12 @@
 import Cupom from "./cupom";
-import Usuario from "./usuario";
+import Pedido from "./pedido";
 
 type UsuarioCupom = {
+  id_usuario_cupom: number;
+  data_obtencao: Date;
+  data_uso?: Date | null;
   id_cupom: Cupom["id_cupom"];
-  id_usuario: Usuario["id_usuario"];
-  data_uso: string | null;
-  data_obtencao: string;
-  foi_usado: boolean;
+  id_pedido?: Pedido["id_pedido"] | null;
 };
 
 export default UsuarioCupom;

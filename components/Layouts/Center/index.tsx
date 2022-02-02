@@ -1,12 +1,12 @@
 import React from "react";
 
-import Wrapper from './styled';
+import {CenterContainer} from './styled';
 
 const Center: React.FC = (props) => {
   return (
-    <Wrapper>
+    <CenterContainer>
       {props.children}
-    </Wrapper>
+    </CenterContainer>
   );
 };
 

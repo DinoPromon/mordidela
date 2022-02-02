@@ -1,6 +1,35 @@
 import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
 
+type FilterItemProps = {
+  isSelected: boolean;
+};
+
+export const FilterSelector = styled.button`
+  border: none;
+  width: 100%;
+  background: transparent;
+  outline: none;
+  font-weight: bold;
+  font-size: 1rem;
+`;
+
+export const FilterItem = styled.li<FilterItemProps>`
+  background-color: ${(props) => (props.isSelected ? PURPLE : "transparent")};
+  margin: 10px;
+  padding: 10px;
+  border-radius: 100px;
+  border: 1px solid ${PURPLE};
+  transition: background-color 250ms;
+  cursor: pointer;  
+
+  ${FilterSelector} {
+    transition: color 250ms;
+    color: ${(props) => (props.isSelected ? "white" : PURPLE)};
+    cursor: inherit;
+  }
+`;
+
 export const FilterContainer = styled.div`
   position: relative;
   display: flex;
@@ -25,23 +54,6 @@ export const FilterListContainer = styled.ul`
   display: flex;
   overflow-x: hidden;
   scroll-behavior: smooth;
-`;
-
-export const FilterItem = styled.li`
-  background-color: white;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 100px;
-  border: 1px solid ${PURPLE};
-`;
-
-export const FilterSelector = styled.button`
-  border: none;
-  width: 100%;
-  background: transparent;
-  outline: none;
-  color: ${PURPLE};
-  font-weight: bold;
 `;
 
 export const FilterArrowButton = styled.button`

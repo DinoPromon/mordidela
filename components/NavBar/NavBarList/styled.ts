@@ -20,4 +20,5 @@ export const NavBarListItem = styled.li`
   color: white;
   font-weight: bold;
   margin: 1rem 0.5rem;
+  cursor: pointer;
 `;

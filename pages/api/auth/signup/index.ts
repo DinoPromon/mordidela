@@ -31,7 +31,7 @@ const handler: NextApiHandler = async (req, res) => {
         removeAditionalSpaces(addressFormData.logradouro),
         removeAditionalSpaces(addressFormData.numero),
         removeAditionalSpaces(addressFormData.bairro),
-        removeAditionalSpaces(addressFormData.bairro),
+        removeAditionalSpaces(String(addressFormData.complemento)),
       ]);
       await mysql.end();
       return res.status(201).json({ message: "Cadastrado com sucesso!" });

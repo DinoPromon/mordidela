@@ -1,39 +1,22 @@
-import React, { useEffect, useState, useContext } from "react";
-
-import Wrapper from "./styled";
+import React from "react";
+import { useFormikContext } from "formik";
+import { CartFormValues } from "@components/Cart/FormModel";
+import { CartPaymentContainer } from "./styled";
 import CartPaymentSelect from "./CartPaymentSelect";
 import CartPaymentValue from "./CartPaymentValue";
 import CartChangeSelect from "./CartChangeSelect";
-import { CartContext } from "@store/cart";
 
-type Props = {
-  totalPrice: number;
-  onSetIsPaymentOk: React.Dispatch<React.SetStateAction<boolean>>;
-};
+const CartPayment: React.FC = () => {
+  const { values } = useFormikContext<CartFormValues>();
 
-const CartPayment: React.FC<Props> = (props) => {
-  const {
-    order: { payment_amount, payment_type },
-  } = useContext(CartContext);
-  const [needChange, setNeedChange] = useState((payment_amount as number) > 0);
-
-  const showChangeSelect = payment_type === "dinheiro";
-  const showPaymentValue = needChange && showChangeSelect;
-
-  useEffect(() => {
-    if (needChange) {
-      if (showChangeSelect) return props.onSetIsPaymentOk((payment_amount as number) >= props.totalPrice);
-      return props.onSetIsPaymentOk(true);
-    }
-    props.onSetIsPaymentOk(payment_type !== undefined);
-  }, [needChange, showChangeSelect, payment_amount, payment_type, props.totalPrice]);
+  const shouldShowPaymentValue = Boolean(values.needChange) && values.payment_type === "dinheiro";
 
   return (
-    <Wrapper>
+    <CartPaymentContainer>
       <CartPaymentSelect />
-      <CartChangeSelect onSetNeedChange={setNeedChange} shoulShowChangeSelect={showChangeSelect} />
-      <CartPaymentValue totalPrice={props.totalPrice} shouldShowPaymentValue={showPaymentValue} />
-    </Wrapper>
+      <CartChangeSelect />
+      <CartPaymentValue shouldShowPaymentValue={shouldShowPaymentValue} />
+    </CartPaymentContainer>
   );
 };
 
