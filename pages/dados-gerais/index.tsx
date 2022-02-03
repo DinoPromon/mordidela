@@ -1,4 +1,5 @@
 import React from "react";
+import { findUserGeneralData } from "@controllers/users";
 import type { ReactElement } from "react";
 
 import { NavBarFooter } from "@components/Layouts";
@@ -6,16 +7,17 @@ import { NextPageWithLayout } from "@my-types/next-page";
 
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
-import GeneralData from "@components/GeneralData";
+import GeneralData from "@components/UserProfile/GeneralData";
 import { MyUser } from "@my-types/next-auth";
+import { UserGeneralData } from "@models/usuario";
 
 type Props = {
   user: MyUser;
+  userGeneralData: UserGeneralData;
 };
 
-const GeneralDataPage: NextPageWithLayout<Props> = (props) => {
-  const { nome, id_usuario } = props.user;
-  return <GeneralData></GeneralData>;
+const GeneralDataPage: NextPageWithLayout<Props> = ({ user, userGeneralData }) => {
+  return <GeneralData user={user} userGeneralData={userGeneralData}></GeneralData>;
 };
 
 GeneralDataPage.getLayout = function getLayout(page: ReactElement) {
@@ -33,9 +35,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const userGeneralData = await findUserGeneralData(session.user.id_usuario);
+
   return {
     props: {
       user: session.user as MyUser,
+      userGeneralData: userGeneralData,
     },
   };
 };

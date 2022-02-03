@@ -9,43 +9,54 @@ import {
 } from "./styled";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { MyUser } from "@my-types/next-auth";
+import { UserGeneralData } from "@models/usuario";
+import { formatPhoneNumber } from "@utils/formatters";
 
-const GeneralData: React.FC = (props) => {
+type GeneralDataProps = {
+  user: MyUser;
+  userGeneralData: UserGeneralData;
+};
+
+const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
   const textFieldGreater = customTextFieldGreater();
 
+  function getFormatedPhone() {
+    const { ddd, numero } = userGeneralData.telefone;
+    return formatPhoneNumber(`${ddd}${numero}`);
+  }
 
   return (
     <PageContainer>
       <GeneralDataTitle>Dados gerais</GeneralDataTitle>
       <GeneralDataContainer>
         <NumberOrders>
-          <h3>15</h3>
+          <h3>{userGeneralData.count_pedido}</h3>
           <p>pedidos</p>
         </NumberOrders>
         <TextField
-/*           className={textFieldGreater.root} */
-          id="nome"
           label="Nome"
           variant="outlined"
           color="primary"
+          value={userGeneralData.nome}
           required
           fullWidth
           autoComplete="off"
         />
         <CustomTextFieldSmallerContainer>
           <TextField
-            id="data_nasc"
             label="Data de nascimento"
             variant="outlined"
             color="primary"
+            value={new Date(userGeneralData.data_nascimento).toLocaleDateString()}
             fullWidth
             required
             autoComplete="off"
           />
           <TextField
-            id="telefone"
             label="Telefone"
             variant="outlined"
+            value={getFormatedPhone()}
             color="primary"
             required
             fullWidth
@@ -53,15 +64,18 @@ const GeneralData: React.FC = (props) => {
           />
         </CustomTextFieldSmallerContainer>
         <TextField
-/*           className={textFieldGreater.root} */
           id="email"
           label="Email"
           variant="outlined"
+          value={userGeneralData.email}
           color="primary"
           fullWidth
           autoComplete="off"
+          disabled
         />
-        <Button variant="contained" color="secondary">Salvar alterações</Button>
+        <Button variant="contained" color="secondary">
+          Salvar alterações
+        </Button>
       </GeneralDataContainer>
     </PageContainer>
   );

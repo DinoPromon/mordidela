@@ -6,7 +6,7 @@ import { NextPageWithLayout } from "@my-types/next-page";
 
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
-import Coupons from "@components/Coupons";
+import Coupons from "@components/UserProfile/Cupom";
 import { MyUser } from "@my-types/next-auth";
 
 type Props = {

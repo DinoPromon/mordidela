@@ -3,7 +3,7 @@ import { formatPrice } from "./price";
 import { formatProductId } from "./product";
 import { cupomFormat } from "./cupom";
 import { removeAditionalSpaces } from "./string";
-import { phoneNumberChangeHandler } from "./phone";
+import { phoneNumberChangeHandler, formatPhoneNumber } from "./phone";
 
 export {
   formatDateInput,
@@ -13,4 +13,5 @@ export {
   cupomFormat,
   removeAditionalSpaces,
   phoneNumberChangeHandler,
+  formatPhoneNumber,
 };

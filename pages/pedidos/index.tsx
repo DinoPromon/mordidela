@@ -1,7 +1,7 @@
 import React from "react";
 import type { ReactElement } from "react";
 
-import Orders from "@components/Orders";
+import Orders from "@components/UserProfile/Orders";
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
 

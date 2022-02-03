@@ -6,7 +6,7 @@ import { NextPageWithLayout } from "@my-types/next-page";
 
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
-import Addresses from "@components/Addresses";
+import Addresses from "@components/UserProfile/Addresses";
 import { MyUser } from "@my-types/next-auth";
 
 type Props = {

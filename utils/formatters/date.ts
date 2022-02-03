@@ -3,7 +3,7 @@ import { transformDayOrMonth } from "@utils/transformation";
 export function formatDateInput(date: string) {
   let input = date;
   if (/\D\/$/.test(date)) {
-    input = date.substr(0, date.length - 3);
+    input = date.substring(0, date.length - 3);
   }
   const values = input.split("/").map((value) => {
     return value.replace(/\D/g, "");
