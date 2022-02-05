@@ -18,6 +18,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
       const userGeneralData = await findUserGeneralData(Number(userId));
+      if (!userGeneralData) return res.status(204).end();
       return res.status(200).json(userGeneralData);
     } catch (e) {
       const error = e as Error;

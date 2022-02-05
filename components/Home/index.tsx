@@ -1,26 +1,9 @@
 import React from "react";
 
-import { HomeContainer, useStyles } from "./styled";
-import TextField from "@material-ui/core/TextField";
-import InputTextFormik from "@components/shared/InputTextFormik";
-
-
+import { HomeContainer } from "./styled";
 
 const Home: React.FC = () => {
-  const classes = useStyles();
-  return (
-    <HomeContainer>
-      <TextField
-        className={classes.root}
-        label="Nome"
-        variant="outlined"
-        color="primary"
-        required
-        fullWidth
-        autoComplete="off"
-      />
-    </HomeContainer>
-  );
+  return <HomeContainer></HomeContainer>;
 };
 
 export default Home;

@@ -1,4 +1,9 @@
-import { transformDate, transformDateFromDBToClient, transformDayOrMonth } from "./date";
+import {
+  transformDate,
+  transformDateFromDBToClient,
+  transformDayOrMonth,
+  getFormatedDate,
+} from "./date";
 import { treatErrorMessage } from "./error";
 import { transformDeliveryType } from "./delivery";
 import { getHourFromDate } from "./date";
@@ -22,4 +27,5 @@ export {
   transformPriceToString,
   getHourFromDate,
   removeSpaces,
+  getFormatedDate,
 };

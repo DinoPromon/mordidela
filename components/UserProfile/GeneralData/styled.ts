@@ -1,6 +1,4 @@
-
-import { makeStyles } from "@material-ui/core/styles";
-import { PURPLE, PINK } from "@utils/colors";
+import { PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
 export const GeneralDataTitle = styled.h1`
@@ -39,13 +37,6 @@ export const NumberOrders = styled.div`
     color: ${PURPLE};
   }
 `;
-
-export const customTextFieldGreater = makeStyles({
-  root: {
-    maxWidth: "400px",
-  },
-});
-
 
 export const CustomTextFieldSmallerContainer = styled.div`
   display: flex;

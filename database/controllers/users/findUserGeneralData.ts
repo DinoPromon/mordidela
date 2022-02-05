@@ -13,9 +13,9 @@ function convertDateToTimestamp(date: Date | number) {
 }
 
 export async function findUserGeneralData(userId: Usuario["id_usuario"]) {
-  const userWithoutPassword = (await UserRepo.findWithoutPasswordByUserId(
-    userId
-  )) as UserWithoutPassword;
+  const userWithoutPassword = await UserRepo.findWithoutPasswordByUserId(userId);
+  if (!userWithoutPassword) return null;
+
   const phone = (await PhoneRepo.findByUserId(userId)) as Telefone;
   const ordersCount = await OrderRepo.countByUserId(userId);
 

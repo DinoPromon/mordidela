@@ -1,12 +1,36 @@
 import React from "react";
-import TextField, { TextFieldProps } from "@material-ui/core/TextField";
-import { useInputTextFormikStyles } from "./styled";
+import CustomTextField from "../CustomTextField";
+import { useField } from "formik";
+import { TextFieldProps } from "@material-ui/core/TextField";
 
-type InputTextFormikProps = TextFieldProps & {};
+interface InputTextFormikProps extends Partial<Omit<TextFieldProps, "classes">> {
+  name: string;
+  variant?: "standard" | "filled" | "outlined";
+  [key: string]: unknown;
+}
 
-const InputTextFormik: React.FC<InputTextFormikProps> = ({ children, ...textFieldProps }) => {
-  const textFieldClasses = useInputTextFormikStyles();
-  return <TextField classes={textFieldClasses} {...textFieldProps} />;
+const InputTextFormik: React.FC<InputTextFormikProps> = ({ name, onChange, onBlur, ...rest }) => {
+  const [field, meta] = useField(name);
+  const errorText = meta.error && meta.touched ? meta.error : "";
+
+  function defaultOnChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+    field.onChange(event);
+  }
+
+  function defaultOnBlurHandler(event: React.FocusEvent<HTMLInputElement>) {
+    field.onBlur(event);
+  }
+
+  return (
+    <CustomTextField
+      {...rest}
+      {...field}
+      onChange={onChange ? onChange : defaultOnChangeHandler}
+      helperText={errorText}
+      error={!!errorText}
+      onBlur={onBlur ? onBlur : defaultOnBlurHandler}
+    />
+  );
 };
 
 export default InputTextFormik;

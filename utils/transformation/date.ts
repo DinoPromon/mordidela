@@ -1,5 +1,37 @@
+// class CustomDate {
+//   private date: Date;
+
+//   constructor(date: Date) {
+//     this.date = date;
+//   }
+
+//   private padDayOrMonth(number: number) {
+//     const paddedNumber = `${number}`.padStart(2, "0").slice(-2);
+
+//     return paddedNumber;
+//   }
+
+//   public getFormatedHours() {
+//     const hours = this.date.getHours();
+//     const minutes = this.date.getMinutes();
+
+//     return `${hours}:${minutes}`;
+//   }
+
+//   public static;
+// }
+
+export function getFormatedDate(timestamp: number) {
+  const date = new Date(timestamp);
+  const day = padDayOrMonth(date.getDate(), 2);
+  const month = padDayOrMonth(date.getMonth() + 1, 2);
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 function padDayOrMonth(num: number, max: number) {
-  return num > parseInt(max.toString()[0]) && num.toString().length === 1 ? "0" + num : num.toString();
+  return `${num}`.padStart(max, "0").slice(-max);
 }
 
 function getDayOrMonthAsNumber(str: string, maxValue: number) {

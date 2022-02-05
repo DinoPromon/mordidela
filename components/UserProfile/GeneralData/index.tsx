@@ -1,17 +1,22 @@
 import React from "react";
-import { PageContainer } from "@components/shared";
-import {
-  GeneralDataTitle,
-  GeneralDataContainer,
-  NumberOrders,
-  customTextFieldGreater,
-  CustomTextFieldSmallerContainer,
-} from "./styled";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { Formik, Form } from "formik";
 import { MyUser } from "@my-types/next-auth";
 import { UserGeneralData } from "@models/usuario";
-import { formatPhoneNumber } from "@utils/formatters";
+import { PageContainer } from "@components/shared";
+import { CustomTextField, InputTextFormik } from "@components/shared";
+import {
+  getGeneralDataFormModel,
+  getGeneralDataInitialValues,
+  getGeneralDataValidationSchema,
+} from "./FormModel";
+import {
+  NumberOrders,
+  GeneralDataTitle,
+  GeneralDataContainer,
+  CustomTextFieldSmallerContainer,
+} from "./styled";
 
 type GeneralDataProps = {
   user: MyUser;
@@ -19,64 +24,72 @@ type GeneralDataProps = {
 };
 
 const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
-  const textFieldGreater = customTextFieldGreater();
+  const formModel = getGeneralDataFormModel();
 
-  function getFormatedPhone() {
-    const { ddd, numero } = userGeneralData.telefone;
-    return formatPhoneNumber(`${ddd}${numero}`);
-  }
+  const validationSchema = getGeneralDataValidationSchema(formModel);
+  const initialValues = getGeneralDataInitialValues(userGeneralData);
 
   return (
     <PageContainer>
       <GeneralDataTitle>Dados gerais</GeneralDataTitle>
-      <GeneralDataContainer>
-        <NumberOrders>
-          <h3>{userGeneralData.count_pedido}</h3>
-          <p>pedidos</p>
-        </NumberOrders>
-        <TextField
-          label="Nome"
-          variant="outlined"
-          color="primary"
-          value={userGeneralData.nome}
-          required
-          fullWidth
-          autoComplete="off"
-        />
-        <CustomTextFieldSmallerContainer>
-          <TextField
-            label="Data de nascimento"
-            variant="outlined"
-            color="primary"
-            value={new Date(userGeneralData.data_nascimento).toLocaleDateString()}
-            fullWidth
-            required
-            autoComplete="off"
-          />
-          <TextField
-            label="Telefone"
-            variant="outlined"
-            value={getFormatedPhone()}
-            color="primary"
-            required
-            fullWidth
-            autoComplete="off"
-          />
-        </CustomTextFieldSmallerContainer>
-        <TextField
-          id="email"
-          label="Email"
-          variant="outlined"
-          value={userGeneralData.email}
-          color="primary"
-          fullWidth
-          autoComplete="off"
-          disabled
-        />
-        <Button variant="contained" color="secondary">
-          Salvar alterações
-        </Button>
-      </GeneralDataContainer>
+      <Formik
+        validateOnBlur
+        validateOnChange={false}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values) => console.log(values)}
+      >
+        {({ values, setFieldValue }) => (
+          <Form>
+            <GeneralDataContainer>
+              <NumberOrders>
+                <h3>{userGeneralData.count_pedido}</h3>
+                <p>pedidos</p>
+              </NumberOrders>
+              <InputTextFormik
+                required
+                fullWidth
+                autoComplete="off"
+                variant="outlined"
+                value={values.nome}
+                name={formModel.nome.name}
+                label={formModel.nome.label}
+              />
+              <CustomTextFieldSmallerContainer>
+                <InputTextFormik
+                  required
+                  fullWidth
+                  autoComplete="off"
+                  variant="outlined"
+                  value={values.data_nascimento}
+                  name={formModel.data_nascimento.name}
+                  label={formModel.data_nascimento.label}
+                />
+                <InputTextFormik
+                  required
+                  fullWidth
+                  autoComplete="off"
+                  variant="outlined"
+                  value={values.telefone}
+                  name={formModel.telefone.name}
+                  label={formModel.telefone.label}
+                />
+              </CustomTextFieldSmallerContainer>
+              <CustomTextField
+                label="Email"
+                variant="outlined"
+                value={userGeneralData.email}
+                fullWidth
+                autoComplete="off"
+                disabled
+              />
+              <Button variant="contained" color="secondary" type="submit">
+                Salvar alterações
+              </Button>
+            </GeneralDataContainer>
+          </Form>
+        )}
+      </Formik>
     </PageContainer>
   );
 };
