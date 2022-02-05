@@ -1,4 +1,3 @@
-import Endereco from "@models/endereco";
 import Usuario from "@models/usuario";
 import { Prisma } from "database";
 

@@ -1,5 +1,5 @@
 import { Prisma } from "@database";
-import { CupomRepo } from "@controllers/cupom";
+import { CupomRepo } from "./cupom";
 import { CartPedido } from "@models/pedido";
 
 export class OrderRepo {

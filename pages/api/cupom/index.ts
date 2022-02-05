@@ -1,9 +1,9 @@
 import Cupom from "@models/cupom";
-import { getSession } from "next-auth/client";
-import { CupomRepo } from "@controllers/cupom";
-import { UserCupomRepo } from "@repository/user-cupom";
-import { findOrdersCountByUserId, findCountOrdersWithCupomId } from "@controllers/pedido";
 import { NextApiHandler } from "next";
+import { getSession } from "next-auth/client";
+import { OrderRepo } from "@repository/order";
+import { CupomRepo } from "@repository/cupom";
+import { UserCupomRepo } from "@repository/user-cupom";
 import { ReqMethod } from "@my-types/backend/req-method";
 
 const handler: NextApiHandler = async (req, res) => {
@@ -33,7 +33,7 @@ const handler: NextApiHandler = async (req, res) => {
             return res.status(403).json({ message: "Você não pode utilizar este cupom!" });
         }
 
-        const countOrders = await findOrdersCountByUserId(session.user.id_usuario);
+        const countOrders = await OrderRepo.countByUserId(session.user.id_usuario);
         if (cupom.qtde_min_pedido > countOrders) {
           return res.status(403).json({
             message: "Você não possui os requisitos mínimos do cupom para utilizá-lo.",
@@ -41,7 +41,7 @@ const handler: NextApiHandler = async (req, res) => {
         }
 
         if (cupom.quantidade_uso) {
-          const usedAmountCupom = await findCountOrdersWithCupomId(cupom.id_cupom);
+          const usedAmountCupom = await OrderRepo.countByCupomId(cupom.id_cupom);
           if (usedAmountCupom <= cupom.quantidade_uso) {
             return res.status(403).json({
               message: "Cupom esgotado!",

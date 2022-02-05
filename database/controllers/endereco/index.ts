@@ -1,1 +1,1 @@
-export { findManyAddressByUserId } from "./address-useId";
+export { findManyAddressByUserId } from "./findManyAddressByUserId";
