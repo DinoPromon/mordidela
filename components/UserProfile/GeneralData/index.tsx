@@ -47,7 +47,6 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                 <p>pedidos</p>
               </NumberOrders>
               <InputTextFormik
-                required
                 fullWidth
                 autoComplete="off"
                 variant="outlined"
@@ -57,7 +56,6 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
               />
               <CustomTextFieldSmallerContainer>
                 <InputTextFormik
-                  required
                   fullWidth
                   autoComplete="off"
                   variant="outlined"
@@ -66,13 +64,12 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                   label={formModel.data_nascimento.label}
                 />
                 <InputTextFormik
-                  required
                   fullWidth
                   autoComplete="off"
                   variant="outlined"
                   value={values.telefone}
                   name={formModel.telefone.name}
-                  label={formModel.telefone.label}
+                  label={`${formModel.telefone.label} *`}
                 />
               </CustomTextFieldSmallerContainer>
               <CustomTextField
