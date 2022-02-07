@@ -22,12 +22,12 @@ export function getGeneralDataFormModel() {
     data_nascimento: {
       name: "data_nascimento",
       label: "Data de nascimento",
-      requiredErrorMessage: "Insira a data de nascimento",
+      requiredErrorMessage: "Insira sua data de nascimento",
     },
     telefone: {
       name: "telefone",
       label: "Telefone",
-      requiredErrorMessage: "Insira o número do telefone",
+      requiredErrorMessage: "Insira o seu número do telefone",
     },
   };
 

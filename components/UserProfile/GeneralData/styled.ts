@@ -17,6 +17,7 @@ export const GeneralDataContainer = styled.div`
   gap: 1rem;
   max-width: 500px;
   margin: 0 auto;
+  padding-bottom: 50px;
 `;
 
 export const NumberOrders = styled.div`
@@ -25,16 +26,18 @@ export const NumberOrders = styled.div`
   align-items: center;
   justify-content: center;
   border: 2px solid ${PURPLE};
-  height: 100px;
-  width: 100px;
+  height: 120px;
+  width: 120px;
   border-radius: 50%;
 
   & > h3 {
     color: ${PURPLE};
+    font-size: 1.5rem;
   }
 
   & > p {
     color: ${PURPLE};
+    font-size: 1rem;
   }
 `;
 
@@ -42,4 +45,12 @@ export const CustomTextFieldSmallerContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  width: 100%;
+
+  @media (max-width: 490px) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
+

@@ -52,7 +52,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                 variant="outlined"
                 value={values.nome}
                 name={formModel.nome.name}
-                label={formModel.nome.label}
+                label={`${formModel.nome.label} *`}
               />
               <CustomTextFieldSmallerContainer>
                 <InputTextFormik
@@ -61,7 +61,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                   variant="outlined"
                   value={values.data_nascimento}
                   name={formModel.data_nascimento.name}
-                  label={formModel.data_nascimento.label}
+                  label={`${formModel.data_nascimento.label} *`}
                 />
                 <InputTextFormik
                   fullWidth
