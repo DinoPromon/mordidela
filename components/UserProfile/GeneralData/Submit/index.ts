@@ -1,4 +1,5 @@
 import { clearPhoneNumber } from "@utils/transformation";
+import { createDate } from "@utils/transformation/date";
 import { GeneralDataValues } from "../FormModel";
 
 type GeneralDataArg = {
@@ -13,7 +14,7 @@ export function getGeneralDataArg(values: GeneralDataValues) {
 
   const generalDataArg: GeneralDataArg = {
     nome: values.nome,
-    data_nascimento: values.data_nascimento,
+    data_nascimento: createDate(values.data_nascimento).toISOString(),
     ddd: fullPhoneNumber.substring(0, 2),
     numero: fullPhoneNumber.substring(2, values.telefone.length),
   };

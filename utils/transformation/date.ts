@@ -43,3 +43,13 @@ export const transformDate = (date: string) => {
 
   return formatedDate;
 };
+
+export function createDate(date: string | number) {
+  if (typeof date === "string") {
+    const dateParts = date.split(/\//gi);
+    const [day, month, year] = dateParts.map((datePart) => Number(datePart));
+    return new Date(year, month - 1, day, 0, 0, 0);
+  }
+
+  return new Date(date);
+}

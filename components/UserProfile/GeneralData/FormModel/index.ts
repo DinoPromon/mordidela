@@ -1,5 +1,6 @@
 import { FormField } from "@my-types/form";
 import * as Yup from "yup";
+import { validateDate } from "./utility";
 export { getGeneralDataInitialValues } from "./initialValues";
 
 export interface GeneralDataValues {
@@ -22,7 +23,7 @@ export function getGeneralDataFormModel() {
     data_nascimento: {
       name: "data_nascimento",
       label: "Data de nascimento",
-      requiredErrorMessage: "Insira sua data de nascimento",
+      requiredErrorMessage: "Insira uma data válida",
     },
     telefone: {
       name: "telefone",
@@ -39,7 +40,11 @@ export function getGeneralDataValidationSchema(formModel: GeneralDataFormModel) 
 
   return Yup.object().shape({
     [nome.name]: Yup.string().required(nome.requiredErrorMessage),
-    [data_nascimento.name]: Yup.string().required(data_nascimento.requiredErrorMessage),
+    [data_nascimento.name]: Yup.string()
+      .test("is-valid-date", `${data_nascimento.requiredErrorMessage}`, (value) =>
+        validateDate(value as string)
+      )
+      .required(data_nascimento.requiredErrorMessage),
     [telefone.name]: Yup.string().required(telefone.requiredErrorMessage),
   });
 }
