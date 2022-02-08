@@ -80,7 +80,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                 autoComplete="off"
                 disabled
               />
-              <Button variant="contained" color="secondary" type="submit">
+              <Button size="large" variant="contained" color="secondary" type="submit">
                 Salvar alterações
               </Button>
             </GeneralDataContainer>
