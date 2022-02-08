@@ -1,12 +1,17 @@
+import Axios from "@api";
 import React from "react";
 import Button from "@material-ui/core/Button";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import { Formik, Form } from "formik";
+import { getGeneralDataArg } from "./Submit";
+import { maskDate } from "@utils/formatters";
 import { MyUser } from "@my-types/next-auth";
+import { SetFieldValue } from "@my-types/formik";
 import { UserGeneralData } from "@models/usuario";
 import { PageContainer } from "@components/shared";
+import { phoneNumberChangeHandler } from "@utils/formatters";
 import { CustomTextField, InputTextFormik } from "@components/shared";
 import {
+  GeneralDataValues,
   getGeneralDataFormModel,
   getGeneralDataInitialValues,
   getGeneralDataValidationSchema,
@@ -25,9 +30,36 @@ type GeneralDataProps = {
 
 const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
   const formModel = getGeneralDataFormModel();
-
   const validationSchema = getGeneralDataValidationSchema(formModel);
   const initialValues = getGeneralDataInitialValues(userGeneralData);
+
+  function phoneInputChangeHandler(
+    values: GeneralDataValues,
+    setFieldValue: SetFieldValue<GeneralDataValues>,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const formatedPhoneInput = phoneNumberChangeHandler(event.target.value, values.telefone);
+    setFieldValue(formModel.telefone.name, formatedPhoneInput);
+  }
+
+  function dateInputChangeHandler(
+    setFieldValue: SetFieldValue<GeneralDataValues>,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const formatedDate = maskDate(event.target.value);
+    setFieldValue(formModel.data_nascimento.name, formatedDate);
+  }
+
+  async function generalDataSubmitHandler(values: GeneralDataValues) {
+    try {
+      const generalDataArg = getGeneralDataArg(values);
+      console.log(generalDataArg);
+      await Axios.put(`/users/general-data/${user.id_usuario}`, generalDataArg);
+    } catch (e) {
+      const error = e as Error;
+      console.log(error.message);
+    }
+  }
 
   return (
     <PageContainer>
@@ -37,7 +69,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
         validateOnChange={false}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={generalDataSubmitHandler}
       >
         {({ values, setFieldValue }) => (
           <Form>
@@ -62,6 +94,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                   value={values.data_nascimento}
                   name={formModel.data_nascimento.name}
                   label={`${formModel.data_nascimento.label} *`}
+                  onChange={dateInputChangeHandler.bind(null, setFieldValue)}
                 />
                 <InputTextFormik
                   fullWidth
@@ -70,6 +103,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                   value={values.telefone}
                   name={formModel.telefone.name}
                   label={`${formModel.telefone.label} *`}
+                  onChange={phoneInputChangeHandler.bind(null, values, setFieldValue)}
                 />
               </CustomTextFieldSmallerContainer>
               <CustomTextField

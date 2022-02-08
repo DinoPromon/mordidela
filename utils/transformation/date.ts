@@ -1,26 +1,3 @@
-// class CustomDate {
-//   private date: Date;
-
-//   constructor(date: Date) {
-//     this.date = date;
-//   }
-
-//   private padDayOrMonth(number: number) {
-//     const paddedNumber = `${number}`.padStart(2, "0").slice(-2);
-
-//     return paddedNumber;
-//   }
-
-//   public getFormatedHours() {
-//     const hours = this.date.getHours();
-//     const minutes = this.date.getMinutes();
-
-//     return `${hours}:${minutes}`;
-//   }
-
-//   public static;
-// }
-
 export function getFormatedDate(timestamp: number) {
   const date = new Date(timestamp);
   const day = padDayOrMonth(date.getDate(), 2);
@@ -32,12 +9,6 @@ export function getFormatedDate(timestamp: number) {
 
 function padDayOrMonth(num: number, max: number) {
   return `${num}`.padStart(max, "0").slice(-max);
-}
-
-function getDayOrMonthAsNumber(str: string, maxValue: number) {
-  let number = parseInt(str);
-  if (isNaN(number) || number <= 0 || number > maxValue) return 1;
-  return number;
 }
 
 export const transformDateFromDBToClient = (databaseDate: string) => {
@@ -59,10 +30,9 @@ export function getHourFromDate(dateAsString: string) {
 }
 
 export const transformDayOrMonth = (subStr: string, maxValue: number) => {
-  if (subStr[0] !== "0" || subStr === "00") {
-    const number = getDayOrMonthAsNumber(subStr, maxValue);
-    subStr = padDayOrMonth(number, maxValue);
-  }
+  const numberDayOrMonth = Number(subStr);
+  if (numberDayOrMonth > maxValue) String(maxValue);
+
   return subStr;
 };
 

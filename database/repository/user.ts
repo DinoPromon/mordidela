@@ -1,5 +1,6 @@
 import { Prisma } from "@database";
 import Usuario, { UserWithoutPassword } from "@models/usuario";
+import { usuario } from "@prisma/client";
 
 export class UserRepo {
   public static async findByUserId(userId: Usuario["id_usuario"]) {
@@ -28,5 +29,18 @@ export class UserRepo {
     });
 
     return userWithoutPassword as UserWithoutPassword | null;
+  }
+
+  public static async updateByUserId(userId: Usuario["id_usuario"], newUserData: Partial<usuario>) {
+    const updatedUserData = await Prisma.usuario.update({
+      data: {
+        ...newUserData,
+      },
+      where: {
+        id_usuario: userId,
+      },
+    });
+
+    return updatedUserData;
   }
 }
