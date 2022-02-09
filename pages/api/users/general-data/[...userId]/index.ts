@@ -14,7 +14,7 @@ export const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
 
   if (!session)
-    return res.status(401).json({ message: "É necessário autenticação para acessar os dados." });
+    return res.status(401).json({ message: "É necessário autenticação para acessar os dados" });
 
   if (req.method === ReqMethod.PUT) {
     try {
@@ -33,11 +33,11 @@ export const handler: NextApiHandler = async (req, res) => {
       return res.status(200).json(updatedData);
     } catch (e) {
       const error = e as Error;
-      return res.status(500).json({ message: "Aconteceu algo de errado com a requisição." });
+      return res.status(500).json({ message: "Aconteceu algo de errado" });
     }
   }
 
-  res.status(405).json({ message: "Requisição inválida." });
+  res.status(405).json({ message: "Requisição inválida" });
 };
 
 export default handler;

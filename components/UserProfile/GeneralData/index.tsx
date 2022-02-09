@@ -1,15 +1,19 @@
 import Axios from "@api";
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { Formik, Form } from "formik";
 import { getGeneralDataArg } from "./Submit";
+import { ERROR_RED } from "@utils/colors";
 import { maskDate } from "@utils/formatters";
 import { MyUser } from "@my-types/next-auth";
+import { RequestState } from "@my-types/request";
 import { SetFieldValue } from "@my-types/formik";
 import { UserGeneralData } from "@models/usuario";
 import { PageContainer } from "@components/shared";
 import { phoneNumberChangeHandler } from "@utils/formatters";
 import { CustomTextField, InputTextFormik } from "@components/shared";
+import { ErrorMessage, SuccessMessage } from "@components/shared/StyledComponents";
 import {
   GeneralDataValues,
   getGeneralDataFormModel,
@@ -22,6 +26,7 @@ import {
   GeneralDataContainer,
   CustomTextFieldSmallerContainer,
 } from "./styled";
+import { AxiosError } from "axios";
 
 type GeneralDataProps = {
   user: MyUser;
@@ -30,6 +35,11 @@ type GeneralDataProps = {
 
 const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
   const formModel = getGeneralDataFormModel();
+  const [submitRequestState, setSubmitRequestState] = useState<RequestState>({
+    error: "",
+    isLoading: false,
+  });
+  const [successMessage, setSuccessMessage] = useState("");
   const validationSchema = getGeneralDataValidationSchema(formModel);
   const initialValues = getGeneralDataInitialValues(userGeneralData);
 
@@ -51,13 +61,18 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
   }
 
   async function generalDataSubmitHandler(values: GeneralDataValues) {
+    setSubmitRequestState({ error: "", isLoading: true });
+    setSuccessMessage("");
     try {
       const generalDataArg = getGeneralDataArg(values);
-      console.log(generalDataArg);
       await Axios.put(`/users/general-data/${user.id_usuario}`, generalDataArg);
+      setSubmitRequestState({ error: "", isLoading: false });
+      setSuccessMessage("Dados atualizados com sucesso!");
     } catch (e) {
-      const error = e as Error;
-      console.log(error.message);
+      const error = e as AxiosError<{ message: string }>;
+      if (error.response)
+        return setSubmitRequestState({ error: error.response.data.message, isLoading: false });
+      setSubmitRequestState({ error: "Aconteceu algum problema!", isLoading: false });
     }
   }
 
@@ -114,9 +129,24 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                 autoComplete="off"
                 disabled
               />
-              <Button size="large" variant="contained" color="secondary" type="submit">
+              <Button
+                size="large"
+                variant="contained"
+                color="secondary"
+                type="submit"
+                disabled={submitRequestState.isLoading === true}
+                startIcon={
+                  <>
+                    {submitRequestState.isLoading && <CircularProgress size={20} color="primary" />}
+                  </>
+                }
+              >
                 Salvar alterações
               </Button>
+              {submitRequestState.error && (
+                <ErrorMessage style={{ color: ERROR_RED }}>{submitRequestState.error}</ErrorMessage>
+              )}
+              {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
             </GeneralDataContainer>
           </Form>
         )}

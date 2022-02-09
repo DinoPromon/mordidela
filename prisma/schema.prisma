@@ -10,7 +10,7 @@ datasource db {
 model adicional {
   id_adicional             Int                        @id @default(autoincrement()) @db.UnsignedInt
   nome                     String                     @db.VarChar(100)
-  preco                    Decimal                    @db.Decimal(4, 2)
+  preco                    Float                      @db.Float
   pedido_produto_adicional pedido_produto_adicional[]
   produto_adicional        produto_adicional[]
 }
@@ -34,8 +34,9 @@ model cupom {
   valor_desconto  Int             @db.UnsignedTinyInt
   tipo            cupom_tipo
   qtde_min_pedido Int             @default(0) @db.TinyInt
-  data_inicio     DateTime        @db.DateTime(0)
-  data_fim        DateTime?       @db.DateTime(0)
+  data_inicio     DateTime?       @db.Timestamp(0)
+  data_fim        DateTime?       @db.Timestamp(0)
+  fidelidade      Boolean
   pedido          pedido[]
   usuario_cupom   usuario_cupom[]
 }
@@ -68,27 +69,29 @@ model endereco {
 model entrega {
   id_entrega    Int        @id @default(autoincrement()) @db.UnsignedInt
   descricao     String?    @db.VarChar(128)
-  preco_entrega Decimal    @db.Decimal(4, 2)
+  preco_entrega Float      @db.Float
   endereco      endereco[]
 }
 
 model pedido {
-  id_pedido        Int                   @id @default(autoincrement()) @db.UnsignedInt
-  data_pedido      DateTime              @default(now()) @db.Timestamp(0)
-  data_confirmacao DateTime?             @db.DateTime(0)
-  status_pedido    pedido_status_pedido  @default(dbgenerated("(pendente)"))
-  preco_entrega    Decimal               @db.Decimal(4, 2)
-  tipo_entrega     pedido_tipo_entrega
-  tipo_pagamento   pedido_tipo_pagamento
-  troco_para       Decimal?              @db.Decimal(5, 2)
-  id_cupom         Int?                  @db.UnsignedInt
-  id_usuario       Int                   @db.UnsignedInt
-  id_endereco      Int?                  @db.UnsignedInt
-  cupom            cupom?                @relation(fields: [id_cupom], references: [id_cupom], onDelete: Cascade, map: "id_cupom")
-  endereco         endereco?             @relation(fields: [id_endereco], references: [id_endereco], onDelete: Cascade, map: "id_endereco")
-  usuario          usuario               @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "id_usuario3")
-  pedido_produto   pedido_produto[]
-  usuario_cupom    usuario_cupom[]
+  id_pedido                Int                        @id @default(autoincrement()) @db.UnsignedInt
+  data_pedido              DateTime                   @default(now()) @db.Timestamp(0)
+  data_confirmacao         DateTime?                  @db.DateTime(0)
+  status_pedido            pedido_status_pedido       @default(dbgenerated("(pendente)"))
+  preco_entrega            Float?                     @db.Float
+  tipo_entrega             pedido_tipo_entrega
+  tipo_pagamento           pedido_tipo_pagamento
+  troco_para               Float?                     @db.Float
+  id_cupom                 Int?                       @db.UnsignedInt
+  id_usuario               Int                        @db.UnsignedInt
+  id_endereco              Int?                       @db.UnsignedInt
+  cupom                    cupom?                     @relation(fields: [id_cupom], references: [id_cupom], onDelete: Cascade, map: "id_cupom")
+  endereco                 endereco?                  @relation(fields: [id_endereco], references: [id_endereco], onDelete: Cascade, map: "id_endereco")
+  usuario                  usuario                    @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "id_usuario3")
+  pedido_produto           pedido_produto[]
+  pedido_produto_adicional pedido_produto_adicional[]
+  pedido_produto_sabor     pedido_produto_sabor[]
+  usuario_cupom            usuario_cupom[]
 
   @@index([id_cupom], map: "id_cupom")
   @@index([id_endereco], map: "id_endereco")
@@ -96,17 +99,13 @@ model pedido {
 }
 
 model pedido_produto {
-  id_pedido                                                                    Int                        @db.UnsignedInt
-  id_produto                                                                   Int                        @db.UnsignedInt
-  quantidade                                                                   Int                        @default(1) @db.UnsignedTinyInt
-  preco_pedido                                                                 Decimal                    @db.Decimal(5, 2)
-  observacao                                                                   String?                    @db.VarChar(100)
-  pedido                                                                       pedido                     @relation(fields: [id_pedido], references: [id_pedido], onUpdate: Restrict, map: "fk_pedido_produto_id_pedido")
-  produto                                                                      produto                    @relation(fields: [id_produto], references: [id_produto], onUpdate: Restrict, map: "fk_pedido_produto_id_produto")
-  pedido_produto_adicional_pedido_produtoTopedido_produto_adicional_id_pedido  pedido_produto_adicional[] @relation("pedido_produtoTopedido_produto_adicional_id_pedido")
-  pedido_produto_adicional_pedido_produtoTopedido_produto_adicional_id_produto pedido_produto_adicional[] @relation("pedido_produtoTopedido_produto_adicional_id_produto")
-  pedido_produto_sabor_pedido_produtoTopedido_produto_sabor_id_pedido          pedido_produto_sabor[]     @relation("pedido_produtoTopedido_produto_sabor_id_pedido")
-  pedido_produto_sabor_pedido_produtoTopedido_produto_sabor_id_produto         pedido_produto_sabor[]     @relation("pedido_produtoTopedido_produto_sabor_id_produto")
+  id_pedido    Int     @db.UnsignedInt
+  id_produto   Int     @db.UnsignedInt
+  quantidade   Int     @default(1) @db.UnsignedTinyInt
+  preco_pedido Float   @db.Float
+  observacao   String? @db.VarChar(100)
+  pedido       pedido  @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_id_pedido")
+  produto      produto @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_id_produto")
 
   @@id([id_pedido, id_produto])
   @@index([id_pedido], map: "id_pedido")
@@ -114,47 +113,51 @@ model pedido_produto {
 }
 
 model pedido_produto_adicional {
-  id_pedido                                                          Int            @db.UnsignedInt
-  id_produto                                                         Int            @db.UnsignedInt
-  id_adicional                                                       Int            @db.UnsignedInt
-  adicional                                                          adicional      @relation(fields: [id_adicional], references: [id_adicional], onUpdate: Restrict, map: "fk_pedido_produto_adicional_id_adicional")
-  pedido_produto_pedido_produtoTopedido_produto_adicional_id_pedido  pedido_produto @relation("pedido_produtoTopedido_produto_adicional_id_pedido", fields: [id_pedido], references: [id_pedido], onUpdate: Restrict, map: "fk_pedido_produto_adicional_id_pedido")
-  pedido_produto_pedido_produtoTopedido_produto_adicional_id_produto pedido_produto @relation("pedido_produtoTopedido_produto_adicional_id_produto", fields: [id_produto], references: [id_produto], onUpdate: Restrict, map: "fk_pedido_produto_adicional_id_produto")
+  id_pedido    Int       @db.UnsignedInt
+  id_produto   Int       @db.UnsignedInt
+  id_adicional Int       @db.UnsignedInt
+  adicional    adicional @relation(fields: [id_adicional], references: [id_adicional], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_adicional")
+  pedido       pedido    @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_pedido")
+  produto      produto   @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_produto")
 
   @@id([id_pedido, id_produto, id_adicional])
-  @@index([id_adicional], map: "fk_pedido_produto_adicional_id_adicional")
-  @@index([id_produto], map: "fk_pedido_produto_adicional_id_produto")
+  @@index([id_adicional], map: "id_adicional")
+  @@index([id_pedido], map: "id_pedido")
+  @@index([id_produto], map: "id_produto")
 }
 
 model pedido_produto_sabor {
-  id_pedido                                                      Int            @db.UnsignedInt
-  id_produto                                                     Int            @db.UnsignedInt
-  id_sabor                                                       Int            @db.UnsignedInt
-  pedido_produto_pedido_produtoTopedido_produto_sabor_id_pedido  pedido_produto @relation("pedido_produtoTopedido_produto_sabor_id_pedido", fields: [id_pedido], references: [id_pedido], onUpdate: Restrict, map: "fk_pedido_produto_sabor_id_pedido")
-  pedido_produto_pedido_produtoTopedido_produto_sabor_id_produto pedido_produto @relation("pedido_produtoTopedido_produto_sabor_id_produto", fields: [id_produto], references: [id_produto], onUpdate: Restrict, map: "fk_pedido_produto_sabor_id_produto")
-  sabor                                                          sabor          @relation(fields: [id_sabor], references: [id_sabor], onUpdate: Restrict, map: "fk_pedido_produto_sabor_id_sabor")
+  id_pedido  Int     @db.UnsignedInt
+  id_produto Int     @db.UnsignedInt
+  id_sabor   Int     @db.UnsignedInt
+  pedido     pedido  @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_pedido")
+  produto    produto @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_produto")
+  sabor      sabor   @relation(fields: [id_sabor], references: [id_sabor], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_sabor")
 
   @@id([id_pedido, id_produto, id_sabor])
-  @@index([id_produto], map: "fk_pedido_produto_sabor_id_produto")
-  @@index([id_sabor], map: "fk_pedido_produto_sabor_id_sabor")
+  @@index([id_pedido], map: "id_pedido")
+  @@index([id_produto], map: "id_produto")
+  @@index([id_sabor], map: "id_sabor")
 }
 
 model produto {
-  id_produto        Int                 @id @default(autoincrement()) @db.UnsignedInt
-  preco_padrao      Decimal             @db.Decimal(5, 2)
-  nome              String              @db.VarChar(50)
-  imagem            Bytes?              @db.MediumBlob
-  disponivel        Boolean             @default(true)
-  descricao         String?             @db.VarChar(255)
-  tamanho           String              @db.VarChar(50)
-  qtde_max_sabor    Int?                @db.UnsignedTinyInt
-  id_categoria      Int                 @db.UnsignedInt
-  id_desconto       Int?                @db.UnsignedInt
-  categoria         categoria           @relation(fields: [id_categoria], references: [id_categoria], onDelete: Cascade, map: "id_categoria")
-  desconto          desconto?           @relation(fields: [id_desconto], references: [id_desconto], onDelete: Cascade, map: "id_desconto2")
-  pedido_produto    pedido_produto[]
-  produto_adicional produto_adicional[]
-  produto_sabor     produto_sabor[]
+  id_produto               Int                        @id @default(autoincrement()) @db.UnsignedInt
+  preco_padrao             Float                      @db.Float
+  nome                     String                     @db.VarChar(50)
+  imagem                   Bytes?                     @db.MediumBlob
+  disponivel               Boolean                    @default(true)
+  descricao                String?                    @db.VarChar(255)
+  tamanho                  String                     @db.VarChar(50)
+  qtde_max_sabor           Int?                       @db.UnsignedTinyInt
+  id_categoria             Int                        @db.UnsignedInt
+  id_desconto              Int?                       @db.UnsignedInt
+  categoria                categoria                  @relation(fields: [id_categoria], references: [id_categoria], onDelete: Cascade, map: "id_categoria")
+  desconto                 desconto?                  @relation(fields: [id_desconto], references: [id_desconto], onDelete: Cascade, map: "id_desconto2")
+  pedido_produto           pedido_produto[]
+  pedido_produto_adicional pedido_produto_adicional[]
+  pedido_produto_sabor     pedido_produto_sabor[]
+  produto_adicional        produto_adicional[]
+  produto_sabor            produto_sabor[]
 
   @@index([id_categoria], map: "id_categoria")
   @@index([id_desconto], map: "id_desconto")
@@ -206,12 +209,13 @@ model usuario_cupom {
   id_usuario_cupom Int       @id @default(autoincrement()) @db.UnsignedInt
   data_obtencao    DateTime  @default(now()) @db.Timestamp(0)
   data_uso         DateTime? @db.Timestamp(0)
+  foi_usado        Boolean   @default(false)
   id_usuario       Int       @db.UnsignedInt
   id_cupom         Int       @db.UnsignedInt
   id_pedido        Int?      @db.UnsignedInt
-  cupom            cupom     @relation(fields: [id_cupom], references: [id_cupom], onUpdate: Restrict, map: "fk_usuario_cupom_id_cupom")
-  pedido           pedido?   @relation(fields: [id_pedido], references: [id_pedido], onDelete: Restrict, onUpdate: Restrict, map: "fk_usuario_cupom_id_pedido")
-  usuario          usuario   @relation(fields: [id_usuario], references: [id_usuario], onUpdate: Restrict, map: "fk_usuario_cupom_id_usuario")
+  cupom            cupom     @relation(fields: [id_cupom], references: [id_cupom], onDelete: Cascade, map: "fk_usuario_cupom_id_cupom")
+  pedido           pedido?   @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_usuario_cupom_id_pedido")
+  usuario          usuario   @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_usuario_cupom_id_usuario")
 
   @@index([id_cupom], map: "id_cupom")
   @@index([id_pedido], map: "id_pedido")
@@ -221,11 +225,12 @@ model usuario_cupom {
 model produto_adicional {
   id_produto   Int       @db.UnsignedInt
   id_adicional Int       @db.UnsignedInt
-  adicional    adicional @relation(fields: [id_adicional], references: [id_adicional], onUpdate: Restrict, map: "fk_produto_adicional_id_adicional")
-  produto      produto   @relation(fields: [id_produto], references: [id_produto], onUpdate: Restrict, map: "fk_produto_adicional_id_produto")
+  adicional    adicional @relation(fields: [id_adicional], references: [id_adicional], onDelete: Cascade, map: "fk_produto_adicional_id_adicional")
+  produto      produto   @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_produto_adicional_id_produto")
 
   @@id([id_produto, id_adicional])
-  @@index([id_adicional], map: "fk_produto_adicional_id_adicional")
+  @@index([id_adicional], map: "id_adicional")
+  @@index([id_produto], map: "id_produto")
 }
 
 enum cupom_tipo {
