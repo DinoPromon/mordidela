@@ -3,7 +3,8 @@ import { useFormikContext } from "formik";
 import CartCupom from "./CartCupom";
 import CartPayment from "./CartPayment";
 import Loading from "@components/shared/Loading";
-import { CupomType } from "@constants/cupom-type";
+import { TipoCupom } from "@models/cupom";
+import { TipoEntrega } from "@models/pedido";
 import { CustomFade } from "@components/shared";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
@@ -37,8 +38,8 @@ const CartLoggedOptions: React.FC<Props> = ({
   const { validateForm, values, setFieldValue } = useFormikContext<CartFormValues>();
   const [formError, setFormError] = useState("");
 
-  const isDelivery = values.delivery_type === CupomType.DELIVERY;
-  const shouldShowDeliveryPrice = isDelivery && values.cupom?.tipo_cupom !== CupomType.DELIVERY;
+  const isDelivery = values.delivery_type === TipoEntrega.ENTREGA;
+  const shouldShowDeliveryPrice = isDelivery && values.cupom?.tipo_cupom !== TipoCupom.PEDIDO;
   const shouldShowDiscount = Boolean(values.cupom?.id_cupom);
 
   function getTotalPrice() {
@@ -46,7 +47,7 @@ const CartLoggedOptions: React.FC<Props> = ({
       if (values.cupom === null) {
         return subTotalPrice + values.delivery_price;
       }
-      if (values.cupom?.tipo_cupom === CupomType.DELIVERY) {
+      if (values.cupom?.tipo_cupom === TipoCupom.PEDIDO) {
         return subTotalPrice;
       }
       return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100 + values.delivery_price;
@@ -92,7 +93,7 @@ const CartLoggedOptions: React.FC<Props> = ({
           </CartCupomColorfulText>
           <CartCupomColorfulText>
             Desconto:{" "}
-            {values.cupom?.tipo_cupom === CupomType.DELIVERY ? (
+            {values.cupom?.tipo_cupom === TipoCupom.PEDIDO ? (
               <span> Frete grátis</span>
             ) : (
               <span>{values.cupom?.valor_desconto}%</span>

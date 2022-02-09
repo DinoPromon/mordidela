@@ -1,5 +1,5 @@
 import IEndereco from "@models/endereco";
-import { CupomType } from "@constants/cupom-type";
+import { TipoCupom } from "@models/cupom";
 import { getCartFormInitialValues } from "./initialValues";
 import { useCartFormValidationSchema } from "./validationSchema";
 
@@ -7,7 +7,7 @@ type CartCupom = {
   id_cupom: number;
   valor_desconto: number;
   codigo_cupom: string;
-  tipo_cupom: CupomType;
+  tipo_cupom: TipoCupom;
 };
 
 export type CartFormValues = {

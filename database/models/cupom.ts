@@ -1,12 +1,17 @@
 import IPedido from "@models/pedido";
 import IUsuarioCupom from "@models/usuario_cupom";
 
+export enum TipoCupom {
+  ENTREGA = "entrega",
+  PEDIDO = "pedido",
+}
+
 interface ICupom {
   id_cupom: number;
   descricao: string | null;
   data_criacao: Date | number | string;
   quantidade_uso: number | null;
-  tipo: "entrega" | "pedido";
+  tipo: TipoCupom;
   codigo: string;
   valor_desconto: number;
   qtde_min_pedido: number;
