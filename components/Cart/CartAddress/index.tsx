@@ -15,7 +15,6 @@ import {
   CartAddressLoadingContainer,
 } from "./styled";
 import { CartFormValues } from "../FormModel";
-import { RequestState } from "@my-types/request";
 
 type CartAddressProps = {
   isLoadingAddress: boolean;

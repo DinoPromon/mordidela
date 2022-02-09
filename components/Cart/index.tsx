@@ -28,6 +28,7 @@ import {
   CartEmptyMessageContainer,
   CartOrderConfirmationButtons,
 } from "./styled";
+import { TipoEntrega } from "@models/pedido";
 
 type Props = {
   onCloseModal: () => void;
@@ -189,7 +190,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                       {session && <CartDeliveryType />}
 
-                      <CustomFade triggerAnimation={values.delivery_type === "entrega"}>
+                      <CustomFade triggerAnimation={values.delivery_type === TipoEntrega.ENTREGA}>
                         <CartAddress addresses={addresses} isLoadingAddress={isLoadingAddress} />
                       </CustomFade>
 
