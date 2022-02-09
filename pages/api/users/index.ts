@@ -5,6 +5,7 @@ import { getSession } from "next-auth/client";
 import { transformDateFromDBToClient } from "@utils/transformation";
 import { ViewUsuario } from "@models/views";
 import { formatPhoneNumber } from "@utils/formatters/phone";
+import { createDate } from "@utils/transformation/date";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
@@ -33,7 +34,7 @@ const handler: NextApiHandler = async (req, res) => {
         nome: user.nome,
         email: user.email,
         autorizacao: user.autorizacao,
-        data_nascimento: transformDateFromDBToClient(user.data_nascimento.toISOString()),
+        data_nascimento: createDate(user.data_nascimento).toISOString(),
         telefone: formatPhoneNumber(`${user.ddd}${result[0].numero}`),
       };
 

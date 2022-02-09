@@ -2,7 +2,7 @@ import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 import { Prisma } from "database";
 import { OrderRepo } from "@repository/order";
-import { createManyProductOrderRelations } from "@controllers/pedido/create-order-with-relations";
+import { createManyProductOrderRelations } from "@controllers/pedido/createOrderWithRelations";
 import { CartPedido } from "@models/pedido";
 import { CartProduto } from "@models/produto";
 import { ReqMethod } from "@my-types/backend/req-method";

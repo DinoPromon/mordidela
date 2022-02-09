@@ -44,7 +44,8 @@ export const transformDate = (date: string) => {
   return formatedDate;
 };
 
-export function createDate(date: string | number) {
+export function createDate(date: string | number | Date) {
+  if (date instanceof Date) return date;
   if (typeof date === "string") {
     const dateParts = date.split(/\//gi);
     const [day, month, year] = dateParts.map((datePart) => Number(datePart));

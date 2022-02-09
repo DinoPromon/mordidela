@@ -1,21 +1,22 @@
 import React from "react";
 import type { ReactElement } from "react";
-
-import { NavBarFooter } from "@components/Layouts";
-import { NextPageWithLayout } from "@my-types/next-page";
-
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
-import Coupons from "@components/UserProfile/Cupom";
 import { MyUser } from "@my-types/next-auth";
+import { NavBarFooter } from "@components/Layouts";
+import Coupons from "@components/UserProfile/Cupom";
+import { RelatedUserCupomReq } from "@models/cupom";
+import { NextPageWithLayout } from "@my-types/next-page";
+import { findCupomRelationsById } from "@controllers/usuario-cupom";
 
 type Props = {
   user: MyUser;
+  relatedCoupons: RelatedUserCupomReq;
 };
 
 const GeneralDataPage: NextPageWithLayout<Props> = (props) => {
-  const { nome, id_usuario } = props.user;
-  return <Coupons></Coupons>;
+  const { relatedCoupons, user } = props;
+  return <Coupons relatedCoupons={relatedCoupons} user={user} />;
 };
 
 GeneralDataPage.getLayout = function getLayout(page: ReactElement) {
@@ -33,9 +34,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const relatedCoupons = await findCupomRelationsById(session.user.id_usuario);
+
   return {
     props: {
       user: session.user as MyUser,
+      relatedCoupons,
     },
   };
 };

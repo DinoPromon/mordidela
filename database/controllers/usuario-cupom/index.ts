@@ -1,0 +1,1 @@
+export { findCupomRelationsById } from "./findManyRelatedCouponsById";

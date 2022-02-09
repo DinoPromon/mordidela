@@ -1,3 +1,6 @@
+import Pedido from "@models/pedido";
+import UsuarioCupom from "@models/usuario_cupom";
+
 type Cupom = {
   id_cupom: number;
   descricao?: string | null;
@@ -11,5 +14,10 @@ type Cupom = {
   data_fim?: Date | null;
   fidelidade: boolean;
 };
+
+export interface RelatedUserCupomReq extends UsuarioCupom {
+  pedido: Pedido | null;
+  cupom: Cupom;
+}
 
 export default Cupom;
