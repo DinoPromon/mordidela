@@ -1,11 +1,11 @@
-import PedidoProdutoAdicional from "@models/pedido_produto_adicional";
+import IPedidoProdutoAdicional from "@models/pedido_produto_adicional";
 import { Prisma } from "@database";
 
 export class OrderProductAddRepo {
   public static async createMany(
-    id_pedido: PedidoProdutoAdicional["id_pedido"],
-    id_produto: PedidoProdutoAdicional["id_produto"],
-    adicionais: PedidoProdutoAdicional["id_adicional"][]
+    id_pedido: IPedidoProdutoAdicional["id_pedido"],
+    id_produto: IPedidoProdutoAdicional["id_produto"],
+    adicionais: IPedidoProdutoAdicional["id_adicional"][]
   ) {
     const createdOrderProductAdds = await Prisma.pedido_produto_adicional.createMany({
       data: adicionais.map((addId) => ({

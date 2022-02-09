@@ -1,12 +1,12 @@
 import mysql from "database";
-import Usuario from "@models/usuario";
+import IUsuario from "@models/usuario";
 
 export const getUsuarioByEmail = async (email: string) => {
   const query = `SELECT email, senha, autorizacao, nome, id_usuario FROM usuario WHERE email=?`;
   try {
     const result = (await mysql.query(query, [email])) as any;
     await mysql.end();
-    return result[0] as Usuario;
+    return result[0] as IUsuario;
   } catch (e) {
     const error = e as Error;
     return null;

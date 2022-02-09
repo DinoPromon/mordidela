@@ -1,24 +1,24 @@
-import Endereco from "@models/endereco";
-import Usuario from "@models/usuario";
+import IEndereco from "@models/endereco";
+import IUsuario from "@models/usuario";
 
 export type UserFormData = {
-  nome: Usuario["nome"];
+  nome: IUsuario["nome"];
   data_nascimento: string;
   telefone: string;
-  email: Usuario["email"];
-  senha: Usuario["senha"];
-  senha_confirmada: Usuario["senha"];
+  email: IUsuario["email"];
+  senha: IUsuario["senha"];
+  senha_confirmada: IUsuario["senha"];
 };
 
 export type AddressFormData = {
-  logradouro: Endereco["logradouro"];
-  numero: Endereco["numero"];
-  bairro: Endereco["bairro"];
-  complemento: Endereco["complemento"];
+  logradouro: IEndereco["logradouro"];
+  numero: IEndereco["numero"];
+  bairro: IEndereco["bairro"];
+  complemento: IEndereco["complemento"];
 };
 
 export type GeneralDataForm = {
-  nome: Usuario["nome"];
-  data_nascimento: Usuario["id_usuario"];
+  nome: IUsuario["nome"];
+  data_nascimento: IUsuario["id_usuario"];
   telefone: string;
 };

@@ -5,7 +5,7 @@ import { InputCheckbox } from "@components/shared";
 import { AddOptionContainer } from "./styled";
 
 type Props = {
-  id: string;
+  addId: number;
   name: string;
   label: string;
   price: number;
@@ -13,9 +13,9 @@ type Props = {
 };
 
 const AddOption: React.FC<Props> = (props) => {
-  const { id, name, label, price, onChange } = props;
+  const { addId, name, label, price, onChange } = props;
 
-  const inputId = `add-${id}`;
+  const inputId = `add-${addId}`;
   return (
     <AddOptionContainer>
       <InputCheckbox id={inputId} value={price} name={name} onChange={onChange}>

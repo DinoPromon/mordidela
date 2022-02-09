@@ -1,6 +1,6 @@
 import mysql from "database";
 
-import Adicional from "@models/adicional";
+import IAdicional from "@models/adicional";
 import { ViewPedidoProdutoAdicional } from "@models/views";
 
 export async function getAllddsInPedidoProduto(
@@ -9,7 +9,7 @@ export async function getAllddsInPedidoProduto(
 ) {
   const query =
     "SELECT id_adicional, nome, preco FROM vw_pedido_produto_adicional vppa WHERE vppa.id_pedido = ? AND vppa.id_produto = ? ";
-  const result = (await mysql.query(query, [id_pedido, id_adicional])) as Adicional[];
+  const result = (await mysql.query(query, [id_pedido, id_adicional])) as IAdicional[];
   await mysql.end();
 
   return result;

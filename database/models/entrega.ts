@@ -1,7 +1,7 @@
-type Entrega = {
+interface IEntrega {
   id_entrega: number,
-  descricao?: string | null,
+  descricao: string | null,
   preco_entrega: number
 };
 
-export default Entrega;
+export default IEntrega;

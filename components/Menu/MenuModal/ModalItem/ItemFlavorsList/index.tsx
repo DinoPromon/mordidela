@@ -2,20 +2,19 @@ import React from "react";
 
 import { ItemFlavorListContainer } from "./styled";
 import FlavorOption from "./FlavorOption";
-import Sabor from "@models/sabor";
+import ISabor from "@models/sabor";
 import Produto from "@models/produto";
 
 type Props = {
-  items: Sabor[];
+  items: ISabor[];
   flavorsAmount: number;
   maxFlavor: Produto["qtde_max_sabor"];
-  onAddFlavor: (flavor: Sabor) => void;
-  onRemoveFlavor: (flavor: Sabor) => void;
+  onAddFlavor: (flavor: ISabor) => void;
+  onRemoveFlavor: (flavor: ISabor) => void;
 };
 
 const ItemFlavorsList: React.FC<Props> = (props) => {
-  const { items, maxFlavor, flavorsAmount, onAddFlavor, onRemoveFlavor } =
-    props;
+  const { items, maxFlavor, flavorsAmount, onAddFlavor, onRemoveFlavor } = props;
 
   function getFlavorById(id: string) {
     return items.find((item) => {
@@ -41,7 +40,7 @@ const ItemFlavorsList: React.FC<Props> = (props) => {
           key={`sabor-${sabor.id_sabor}`}
           label={sabor.nome}
           name={`input-${sabor.nome}`}
-          id={sabor.id_sabor}
+          flavorId={sabor.id_sabor}
           onChange={changeHandler}
         />
       ))}

@@ -1,4 +1,4 @@
-import Pedido from "@models/pedido";
+import IPedido from "@models/pedido";
 import { CartProduto } from "@models/produto";
 import { OrderProductRepo } from "@repository/order-product";
 import { OrderProductAddRepo } from "@repository/order-product-add";
@@ -6,7 +6,7 @@ import { OrderProductFlavorRepo } from "@repository/order-product-flavor";
 import { CartOrderProduct } from "@models/pedido_produto";
 
 export async function createManyProductOrderRelations(
-  orderId: Pedido["id_pedido"],
+  orderId: IPedido["id_pedido"],
   products: CartProduto[]
 ) {
   products.forEach(async (product) => {

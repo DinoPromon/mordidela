@@ -5,8 +5,8 @@ import ItemImage from "./ItemImage";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
-import Adicional from "@models/adicional";
-import Sabor from "@models/sabor";
+import IAdicional from "@models/adicional";
+import ISabor from "@models/sabor";
 import { CartContext } from "@store/cart";
 import { RelatedProduct } from "@models/produto";
 import { CartProduct } from "@my-types/context";
@@ -49,7 +49,7 @@ const ModalItem: React.FC<Props> = (props) => {
     }
   }
 
-  function addFlavor(flavor: Sabor) {
+  function addFlavor(flavor: ISabor) {
     setProductOrder((prevState) => {
       const flavors = [...prevState.flavors, flavor];
       return {
@@ -60,7 +60,7 @@ const ModalItem: React.FC<Props> = (props) => {
     });
   }
 
-  function removeFlavor(flavor: Sabor) {
+  function removeFlavor(flavor: ISabor) {
     setProductOrder((prevState) => {
       const flavors = prevState.flavors.filter((item) => item.id_sabor !== flavor.id_sabor);
       return {
@@ -71,7 +71,7 @@ const ModalItem: React.FC<Props> = (props) => {
     });
   }
 
-  function addAditional(add: Adicional) {
+  function addAditional(add: IAdicional) {
     setProductOrder((prevState) => {
       const adds = [...prevState.adds, add];
       return {
@@ -83,7 +83,7 @@ const ModalItem: React.FC<Props> = (props) => {
     });
   }
 
-  function removeAditional(add: Adicional) {
+  function removeAditional(add: IAdicional) {
     setProductOrder((prevState) => {
       const adds = prevState.adds.filter((item) => item.id_adicional !== add.id_adicional);
       return {

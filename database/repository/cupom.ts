@@ -1,8 +1,8 @@
 import { Prisma } from "@database";
-import Cupom from "@models/cupom";
+import ICupom from "@models/cupom";
 
 export class CupomRepo {
-  public static async findByCupomId(cupomId: Cupom["id_cupom"]) {
+  public static async findByCupomId(cupomId: ICupom["id_cupom"]) {
     const cupom = await Prisma.cupom.findUnique({
       where: {
         id_cupom: cupomId,
@@ -12,7 +12,7 @@ export class CupomRepo {
     return cupom;
   }
 
-  public static async findByCupomCode(cupomCode: Cupom["codigo"]) {
+  public static async findByCupomCode(cupomCode: ICupom["codigo"]) {
     const cupom = await Prisma.cupom.findUnique({
       where: {
         codigo: cupomCode,
@@ -22,7 +22,7 @@ export class CupomRepo {
     return cupom;
   }
 
-  public static async createCupom(cupom: Omit<Cupom, "id_cupom">) {
+  public static async createCupom(cupom: Omit<ICupom, "id_cupom" | "data_criacao">) {
     const ISOstartDate = cupom.data_inicio ? new Date(cupom.data_inicio).toISOString() : null;
     const ISOendDate = cupom.data_fim ? new Date(cupom.data_fim).toISOString() : null;
     const createdCupom = await Prisma.cupom.create({
@@ -36,7 +36,7 @@ export class CupomRepo {
     return createdCupom;
   }
 
-  public static isCupomAvailable(startDate: Cupom["data_inicio"], endDate: Cupom["data_fim"]) {
+  public static isCupomAvailable(startDate: ICupom["data_inicio"], endDate: ICupom["data_fim"]) {
     const currentTimestamp = new Date().getTime();
     const startTimestmap = startDate ? new Date(startDate).getTime() : new Date().getTime();
     const endTimestamp = endDate ? new Date(endDate).getTime() : new Date().getTime();

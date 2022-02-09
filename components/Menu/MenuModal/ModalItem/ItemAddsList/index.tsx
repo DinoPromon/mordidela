@@ -1,14 +1,14 @@
 import React from "react";
 
-import {ItemAddsListContainer} from "./styled";
+import { ItemAddsListContainer } from "./styled";
 import AddOption from "./AddOption";
-import Adicional from "@models/adicional";
+import IAdicional from "@models/adicional";
 
 type Props = {
-  items: Adicional[];
+  items: IAdicional[];
   setPrice: React.Dispatch<React.SetStateAction<number>>;
-  onAddAditional: (add: Adicional) => void;
-  onRemoveAditional: (add: Adicional) => void;
+  onAddAditional: (add: IAdicional) => void;
+  onRemoveAditional: (add: IAdicional) => void;
 };
 
 const ItemAddsList: React.FC<Props> = (props) => {
@@ -40,7 +40,7 @@ const ItemAddsList: React.FC<Props> = (props) => {
       {items.map((add) => (
         <AddOption
           key={`add-${add.id_adicional}`}
-          id={add.id_adicional}
+          addId={add.id_adicional}
           label={add.nome}
           name={`input-${add.id_adicional}`}
           price={add.preco}

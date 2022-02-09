@@ -1,11 +1,11 @@
-import Pedido from "./pedido";
+import IPedido from "./pedido";
 import Produto from "./produto";
-import Sabor from "./sabor";
+import ISabor from "./sabor";
 
-type PedidoProdutoSabor = {
-  id_pedido: Pedido["id_pedido"];
+interface IPedidoProdutoSabor {
+  id_pedido: IPedido["id_pedido"];
   id_produto: Produto["id_produto"];
-  id_sabor: Sabor["id_sabor"];
-};
+  id_sabor: ISabor["id_sabor"];
+}
 
-export default PedidoProdutoSabor;
+export default IPedidoProdutoSabor;

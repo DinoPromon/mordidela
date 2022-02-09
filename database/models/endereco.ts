@@ -1,20 +1,20 @@
-import Entrega from "./entrega";
-import Usuario from "./usuario";
+import IEntrega from "./entrega";
+import IUsuario from "./usuario";
 
-type Endereco = {
+interface IEndereco {
   id_endereco: number;
   logradouro: string;
   numero: string;
   bairro: string;
-  complemento?: string | null;
-  id_usuario: Usuario["id_usuario"];
-  id_entrega: Entrega["id_entrega"];
+  complemento: string | null;
+  id_usuario: IUsuario["id_usuario"];
+  id_entrega: IEntrega["id_entrega"];
 };
 
-export type AddressOnCart = Endereco & {
+export type AddressOnCart = IEndereco & {
   entrega: {
-    preco_entrega: Entrega["preco_entrega"];
+    preco_entrega: IEntrega["preco_entrega"];
   };
 };
 
-export default Endereco;
+export default IEndereco;

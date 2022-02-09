@@ -1,19 +1,19 @@
 import { Prisma } from "@database";
-import Usuario, { UserWithoutPassword } from "@models/usuario";
+import IUsuario, { UserWithoutPassword } from "@models/usuario";
 import { usuario } from "@prisma/client";
 
 export class UserRepo {
-  public static async findByUserId(userId: Usuario["id_usuario"]) {
+  public static async findByUserId(userId: IUsuario["id_usuario"]) {
     const user = await Prisma.usuario.findUnique({
       where: {
         id_usuario: userId,
       },
     });
 
-    return user as Usuario | null;
+    return user as IUsuario | null;
   }
 
-  public static async findWithoutPasswordByUserId(userId: Usuario["id_usuario"]) {
+  public static async findWithoutPasswordByUserId(userId: IUsuario["id_usuario"]) {
     const userWithoutPassword = await Prisma.usuario.findUnique({
       where: {
         id_usuario: userId,
@@ -31,7 +31,7 @@ export class UserRepo {
     return userWithoutPassword as UserWithoutPassword | null;
   }
 
-  public static async updateByUserId(userId: Usuario["id_usuario"], newUserData: Partial<usuario>) {
+  public static async updateByUserId(userId: IUsuario["id_usuario"], newUserData: Partial<usuario>) {
     const updatedUserData = await Prisma.usuario.update({
       data: {
         ...newUserData,

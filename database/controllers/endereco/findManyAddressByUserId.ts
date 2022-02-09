@@ -1,7 +1,7 @@
-import Usuario from "@models/usuario";
+import IUsuario from "@models/usuario";
 import { Prisma } from "database";
 
-export async function findManyAddressByUserId(userId: Usuario["id_usuario"]) {
+export async function findManyAddressByUserId(userId: IUsuario["id_usuario"]) {
   const addresses = await Prisma.endereco.findMany({
     include: {
       entrega: {

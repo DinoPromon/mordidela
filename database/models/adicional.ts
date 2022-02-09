@@ -1,7 +1,7 @@
-type Adicional = {
+interface IAdicional {
   id_adicional: number;
   nome: string;
   preco: number;
-};
+}
 
-export default Adicional;
+export default IAdicional;

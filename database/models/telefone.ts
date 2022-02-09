@@ -1,10 +1,10 @@
-import Usuario from "./usuario";
+import IUsuario from "./usuario";
 
-interface Telefone {
+interface ITelefone {
   id_telefone: number;
   ddd: string;
   numero: string;
-  id_usuario: Usuario["id_usuario"];
+  id_usuario: IUsuario["id_usuario"];
 }
 
-export default Telefone;
+export default ITelefone;

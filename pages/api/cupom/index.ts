@@ -1,4 +1,4 @@
-import Cupom from "@models/cupom";
+import ICupom from "@models/cupom";
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 import { OrderRepo } from "@repository/order";
@@ -11,7 +11,7 @@ const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
 
   if (req.method === ReqMethod.POST) {
-    const cupomData = req.body as Omit<Cupom, "id_cupom">;
+    const cupomData = req.body as Omit<ICupom, "id_cupom">;
     const createdCupom = await CupomRepo.createCupom(cupomData);
     return res.status(201).json(createdCupom);
   }

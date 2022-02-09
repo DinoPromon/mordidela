@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import Categoria from "@models/categoria";
 import { ProductCategory } from "@models/produto";
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import {

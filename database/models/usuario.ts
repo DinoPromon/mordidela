@@ -1,11 +1,11 @@
-import Telefone from "./telefone";
+import ITelefone from "./telefone";
 
 enum UserAuthorization {
   CLIENT = "cliente",
   ADMIN = "administrador",
 }
 
-interface Usuario {
+interface IUsuario {
   id_usuario: number;
   nome: string;
   data_nascimento: Date | number;
@@ -15,11 +15,11 @@ interface Usuario {
   senha: string;
 }
 
-export interface UserWithoutPassword extends Omit<Usuario, "senha"> {}
+export interface UserWithoutPassword extends Omit<IUsuario, "senha"> {}
 
 export interface UserGeneralData extends UserWithoutPassword {
   count_pedido: number;
-  telefone: Telefone;
+  telefone: ITelefone;
 }
 
-export default Usuario;
+export default IUsuario;

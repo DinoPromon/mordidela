@@ -1,10 +1,10 @@
 import NextAuth from "next-auth";
 
-import Usuario from "@models/usuario";
+import IUsuario from "@models/usuario";
 
 interface MyUser {
-  nome: Usuario["nome"];
-  email: Usuario["email"];
+  nome: IUsuario["nome"];
+  email: IUsuario["email"];
   id_usuario: number;
 }
 

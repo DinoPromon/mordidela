@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { orderInitialState } from "../cart-context";
 import { CartContextState } from "@my-types/context";
 import CartContext from "../cart-context";
-import Cupom from "@models/cupom";
-import Endereco from "@models/endereco";
-import Pedido from "@models/pedido";
+import ICupom from "@models/cupom";
+import IEndereco from "@models/endereco";
+import IPedido from "@models/pedido";
 
 const CartContextProvider: React.FC = (props) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
@@ -60,7 +60,7 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
-  const setCupom = React.useCallback((cupom: Partial<Cupom>) => {
+  const setCupom = React.useCallback((cupom: Partial<ICupom>) => {
     setOrder((prevState) => ({
       ...prevState,
       id_cupom: cupom.id_cupom,
@@ -86,14 +86,14 @@ const CartContextProvider: React.FC = (props) => {
     }));
   }, []);
 
-  const setAddressId = React.useCallback((addressId: Endereco["id_endereco"] | null) => {
+  const setAddressId = React.useCallback((addressId: IEndereco["id_endereco"] | null) => {
     setOrder((prevState) => ({
       ...prevState,
       address_id: addressId,
     }));
   }, []);
 
-  const setDeliveryPrice = React.useCallback((deliveryPrice: Pedido["preco_entrega"]) => {
+  const setDeliveryPrice = React.useCallback((deliveryPrice: IPedido["preco_entrega"]) => {
     setOrder((prevState) => ({
       ...prevState,
       delivery_price: deliveryPrice,

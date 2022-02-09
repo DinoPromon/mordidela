@@ -1,6 +1,6 @@
-import Usuario from "@models/usuario";
+import IUsuario from "@models/usuario";
 
 export type LoginFormData = {
-  email: Usuario['email'];
-  senha: Usuario['senha'];
+  email: IUsuario['email'];
+  senha: IUsuario['senha'];
 };

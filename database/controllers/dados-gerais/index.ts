@@ -1,5 +1,5 @@
-import Telefone from "@models/telefone";
-import Usuario from "@models/usuario";
+import ITelefone from "@models/telefone";
+import IUsuario from "@models/usuario";
 import { PhoneRepo } from "@repository/phone";
 import { UserRepo } from "@repository/user";
 
@@ -19,7 +19,7 @@ type GeneralDataArg = {
 };
 
 export async function updateGeneralData(
-  userId: Usuario["id_usuario"],
+  userId: IUsuario["id_usuario"],
   newGeneralData: GeneralDataArg
 ) {
   const updatedPhone = await PhoneRepo.updateByUserId(userId, newGeneralData.telefone);

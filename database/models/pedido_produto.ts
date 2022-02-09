@@ -1,14 +1,14 @@
-import Pedido from "./pedido";
+import IPedido from "./pedido";
 import Produto from "./produto";
 
-type PedidoProduto = {
-  id_pedido: Pedido["id_pedido"];
+interface IPedidoProduto {
+  id_pedido: IPedido["id_pedido"];
   id_produto: Produto["id_produto"];
   quantidade: number;
   preco_pedido: number;
   observacao: string | null;
 };
 
-export type CartOrderProduct = Omit<PedidoProduto, "preco_pedido">;
+export type CartOrderProduct = Omit<IPedidoProduto, "preco_pedido">;
 
-export default PedidoProduto;
+export default IPedidoProduto;

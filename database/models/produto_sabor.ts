@@ -1,6 +1,9 @@
 import Produto from "./produto";
-import Sabor from "./sabor";
+import ISabor from "./sabor";
 
-type ProdutoSabor = Pick<Produto, "id_produto"> & Pick<Sabor, "id_sabor">;
+interface IProdutoSabor {
+  id_produto: Produto['id_produto'];
+  id_sabor: ISabor[]
+};
 
-export default ProdutoSabor;
+export default IProdutoSabor;

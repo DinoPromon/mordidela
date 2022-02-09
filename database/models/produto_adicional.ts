@@ -1,6 +1,9 @@
 import Produto from "./produto";
-import Adicional from "./adicional";
+import IAdicional from "./adicional";
 
-type ProdutoAdicional = Pick<Produto, "id_produto"> & Pick<Adicional, "id_adicional">
+interface IProdutoAdicional {
+  id_produto: Produto["id_produto"];
+  id_adicional: IAdicional["id_adicional"];
+}
 
-export default ProdutoAdicional;
+export default IProdutoAdicional;

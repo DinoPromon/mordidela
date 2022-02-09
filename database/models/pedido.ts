@@ -1,24 +1,41 @@
-import Cupom from "./cupom";
-import Endereco from "./endereco";
-import Usuario from "./usuario";
+import ICupom from "./cupom";
+import IEndereco from "./endereco";
+import IUsuario from "./usuario";
 
-type Pedido = {
+export enum StatusPedido {
+  REJEITADO = "rejeitado",
+  PENDENTE = "pendente",
+  CONFIRMADO = "confirmado",
+}
+
+export enum TipoEntrega {
+  ENTREGA = "entrega",
+  BALCAO = "balcao",
+}
+
+export enum TipoPagamento {
+  DINHEIRO = "dinheiro",
+  CREDITO = "credito",
+  DEBITO = "debito",
+}
+
+interface IPedido {
   id_pedido: number;
-  data_pedido: Date;
-  data_confirmacao: Date | null;
-  status_pedido: "rejeitado" | "pendente" | "confirmado";
+  data_pedido: Date | string | number;
+  data_confirmacao: Date | string | number | null;
+  status_pedido: StatusPedido;
   preco_entrega: number;
-  tipo_entrega: "entrega" | "balcao";
-  tipo_pagamento: "dinheiro" | "credito" | "debito";
+  tipo_entrega: TipoEntrega;
+  tipo_pagamento: TipoPagamento;
   troco_para: number | null;
-  id_cupom: Cupom["id_cupom"] | null;
-  id_usuario: Usuario["id_usuario"];
-  id_endereco: Endereco["id_endereco"] | null;
-};
+  id_cupom: ICupom["id_cupom"] | null;
+  id_usuario: IUsuario["id_usuario"];
+  id_endereco: IEndereco["id_endereco"] | null;
+}
 
 export type CartPedido = Pick<
-  Pedido,
+  IPedido,
   "troco_para" | "id_cupom" | "tipo_pagamento" | "tipo_entrega" | "id_usuario" | "id_endereco"
 >;
 
-export default Pedido;
+export default IPedido;

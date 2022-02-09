@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Axios from "@api";
-import Cupom from "@models/cupom";
+import ICupom from "@models/cupom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { AxiosError } from "axios";
 import { useFormikContext } from "formik";
@@ -26,7 +26,7 @@ const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
   async function fetchCupom() {
     setIsLoadingCupom(true);
     try {
-      const response = await Axios.get<Cupom>(`/cupom?codigo=${inputCupom}`);
+      const response = await Axios.get<ICupom>(`/cupom?codigo=${inputCupom}`);
       if (response.data) {
         setFieldValue("cupom", {
           id_cupom: response.data.id_cupom,

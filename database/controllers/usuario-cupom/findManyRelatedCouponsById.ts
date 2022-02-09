@@ -1,5 +1,6 @@
-import UsuarioCupom from "@models/usuario_cupom";
+import IUsuarioCupom from "@models/usuario_cupom";
 import { Prisma } from "@database";
+import { RelatedUserCupomReq } from "@models/cupom";
 import { usuario_cupom, pedido, cupom } from "@prisma/client";
 
 type UsuarioCupomRelacionado = usuario_cupom & {
@@ -7,8 +8,8 @@ type UsuarioCupomRelacionado = usuario_cupom & {
   pedido: pedido | null;
 };
 
-export async function findCupomRelationsById(userId: UsuarioCupom["id_cupom"]) {
-  const relatedCupom: UsuarioCupomRelacionado[] = await Prisma.usuario_cupom.findMany({
+export async function findCupomRelationsById(userId: IUsuarioCupom["id_cupom"]) {
+  const relatedCoupons: UsuarioCupomRelacionado[] = await Prisma.usuario_cupom.findMany({
     where: {
       id_usuario: userId,
     },
@@ -18,5 +19,17 @@ export async function findCupomRelationsById(userId: UsuarioCupom["id_cupom"]) {
     },
   });
 
-  return relatedCupom;
+  return relatedCoupons.map(
+    (relatedCupom) =>
+      ({
+        ...relatedCupom,
+        pedido: relatedCupom.pedido
+          ? {
+              ...relatedCupom.pedido,
+              data_confirmacao: relatedCupom.pedido.data_confirmacao?.getTime(),
+              data_pedido: relatedCupom.pedido.data_pedido.getTime(),
+            }
+          : null,
+      } as RelatedUserCupomReq)
+  );
 }

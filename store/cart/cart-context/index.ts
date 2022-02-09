@@ -1,8 +1,8 @@
 import { createContext } from "react";
 import { CartContextState, CartOrder, CartProduct } from "@my-types/context";
-import Cupom from "@models/cupom";
-import Pedido from "@models/pedido";
-import Endereco from "@models/endereco";
+import ICupom from "@models/cupom";
+import IPedido from "@models/pedido";
+import IEndereco from "@models/endereco";
 
 export const orderInitialState: CartOrder = {
   address_id: null,
@@ -20,12 +20,12 @@ const CartContext = createContext({
   getProductTotalPrice(id: string): number | void {},
   changeDeliveryPrice(price: number) {},
   removeCupom() {},
-  setAddressId(id: Endereco["id_endereco"]) {},
+  setAddressId(id: IEndereco["id_endereco"]) {},
   setPaymentAmount(amount: CartOrder["payment_amount"]) {},
-  setCupom(cupom: Partial<Cupom>) {},
+  setCupom(cupom: Partial<ICupom>) {},
   setDeliveryType(type: CartOrder["delivery_type"]) {},
   setPaymentType(type: string | null) {},
-  setDeliveryPrice(deliveryPrice: Pedido["preco_entrega"]) {},
+  setDeliveryPrice(deliveryPrice: IPedido["preco_entrega"]) {},
   resetCart() {},
 } as CartContextState);
 

@@ -1,43 +1,43 @@
-import Sabor from "./sabor";
-import Desconto from "./desconto";
-import Adicional from "./adicional";
-import Categoria from "./categoria";
-import PedidoProduto from "./pedido_produto";
+import ISabor from "./sabor";
+import IDesconto from "./desconto";
+import IAdicional from "./adicional";
+import ICategoria from "./categoria";
+import IPedidoProduto from "./pedido_produto";
 
-type Product = {
+interface IProduto {
   id_produto: number;
   preco_padrao: number;
   nome: string;
-  imagem?: Blob | null;
+  imagem: Blob | null;
   disponivel: boolean;
   descricao: string | null;
   tamanho: string;
   qtde_max_sabor: number | null;
-  id_categoria: Categoria["id_categoria"];
-  id_desconto?: Desconto["id_desconto"] | null;
-};
+  id_categoria: ICategoria["id_categoria"];
+  id_desconto: IDesconto["id_desconto"] | null;
+}
 
-export type ProductCategory = Pick<Categoria, "id_categoria" | "nome"> & {
+export type ProductCategory = Pick<ICategoria, "id_categoria" | "nome"> & {
   desconto: ProductDiscount | null;
 };
 
-export type ProductDiscount = Pick<Desconto, "id_desconto" | "porcentagem_desconto">;
+export type ProductDiscount = Pick<IDesconto, "id_desconto" | "porcentagem_desconto">;
 
-export type ProdutoWithoutImage = Omit<Product, "imagem">;
+export type ProdutoWithoutImage = Omit<IProduto, "imagem">;
 
-export type CartProduto = Pick<PedidoProduto, "id_produto" | "observacao" | "quantidade"> & {
-  adicionais: Adicional["id_adicional"][];
-  sabores: Sabor["id_sabor"][];
+export type CartProduto = Pick<IPedidoProduto, "id_produto" | "observacao" | "quantidade"> & {
+  adicionais: IAdicional["id_adicional"][];
+  sabores: ISabor["id_sabor"][];
 };
 
 export type RelatedProduct = Omit<
-  Product,
+  IProduto,
   "imagem" | "id_categoria" | "id_desconto" | "disponivel"
 > & {
   desconto: ProductDiscount | null;
   categoria: ProductCategory;
-  adicionais: Adicional[];
-  sabores: Sabor[];
+  adicionais: IAdicional[];
+  sabores: ISabor[];
 };
 
-export default Product;
+export default IProduto;

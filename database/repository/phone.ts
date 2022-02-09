@@ -1,9 +1,9 @@
 import { Prisma } from "@database";
-import Usuario from "@models/usuario";
+import IUsuario from "@models/usuario";
 import { telefone } from "@prisma/client";
 
 export class PhoneRepo {
-  public static async findByUserId(userId: Usuario["id_usuario"]) {
+  public static async findByUserId(userId: IUsuario["id_usuario"]) {
     const phone = await Prisma.telefone.findFirst({
       where: {
         id_usuario: userId,
@@ -14,7 +14,7 @@ export class PhoneRepo {
   }
 
   public static async updateByUserId(
-    userId: Usuario["id_usuario"],
+    userId: IUsuario["id_usuario"],
     newPhoneData: Partial<telefone>
   ) {
     const phone = await this.findByUserId(userId);

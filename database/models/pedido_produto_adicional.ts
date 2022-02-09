@@ -1,11 +1,11 @@
-import Adicional from "./adicional";
-import Pedido from "./pedido";
+import IAdicional from "./adicional";
+import IPedido from "./pedido";
 import Produto from "./produto";
 
-type PedidoProdutoAdicional = {
-  id_pedido: Pedido["id_pedido"];
+interface IPedidoProdutoAdicional{
+  id_pedido: IPedido["id_pedido"];
   id_produto: Produto["id_produto"];
-  id_adicional: Adicional["id_adicional"];
+  id_adicional: IAdicional["id_adicional"];
 };
 
-export default PedidoProdutoAdicional;
+export default IPedidoProdutoAdicional;

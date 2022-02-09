@@ -1,6 +1,6 @@
-type Sabor = {
+interface ISabor {
   id_sabor: number;
   nome: string;
-};
+}
 
-export default Sabor;
+export default ISabor;

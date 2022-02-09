@@ -54,8 +54,10 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     let isMounted = true;
     async function hasSession() {
       const result = await getSession();
-      setSession(result);
-      setIsLoadingSession(false);
+      if (isMounted) {
+        setSession(result);
+        setIsLoadingSession(false);
+      }
     }
     if (!session) hasSession();
     fetchAddresses(session, isMounted);

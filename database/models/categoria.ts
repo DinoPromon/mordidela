@@ -1,9 +1,9 @@
-import Desconto from './desconto';
+import IDesconto from "./desconto";
 
-type Categoria = {
+interface ICategoria {
   id_categoria: number;
   nome: string;
-  id_desconto?: Desconto['id_desconto'] | null;
-};
+  id_desconto: IDesconto["id_desconto"] | null;
+}
 
-export default Categoria;
+export default ICategoria;
