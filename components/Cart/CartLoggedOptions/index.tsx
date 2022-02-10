@@ -52,6 +52,9 @@ const CartLoggedOptions: React.FC<Props> = ({
       }
       return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100 + values.delivery_price;
     }
+    if (values.cupom && values.cupom.tipo_cupom === TipoCupom.PEDIDO) {
+      return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100;
+    }
     return subTotalPrice;
   }
 
@@ -93,7 +96,7 @@ const CartLoggedOptions: React.FC<Props> = ({
           </CartCupomColorfulText>
           <CartCupomColorfulText>
             Desconto:{" "}
-            {values.cupom?.tipo_cupom === TipoCupom.PEDIDO ? (
+            {values.cupom?.tipo_cupom === TipoCupom.ENTREGA ? (
               <span> Frete grátis</span>
             ) : (
               <span>{values.cupom?.valor_desconto}%</span>
