@@ -65,7 +65,7 @@ export const hasErrorInUserForm = (userFormData: UserFormData) => {
 export const hasErrorInAddressForm = (addressFormData: AddressFormData) => {
   for (const k in addressFormData) {
     const key = k as keyof AddressFormData;
-    const isValid = addressFormValidations[key](addressFormData[key]);
+    const isValid = addressFormValidations[key](addressFormData[key] as string);
     if (!isValid) return true;
   }
 

@@ -1,6 +1,6 @@
 import IEndereco from "@models/endereco";
 import { TipoCupom } from "@models/cupom";
-import { TipoEntrega } from "@models/pedido";
+import { TipoEntrega, TipoPagamento } from "@models/pedido";
 import { getCartFormInitialValues } from "./initialValues";
 import { useCartFormValidationSchema } from "./validationSchema";
 
@@ -15,7 +15,7 @@ export type CartFormValues = {
   delivery_type: TipoEntrega | null;
   needChange: boolean | null;
   address_id: IEndereco["id_endereco"] | null;
-  payment_type: TipoEntrega | null;
+  payment_type: TipoPagamento | null;
   payment_amount: string;
   delivery_price: number | null;
   cupom: CartCupom | null;

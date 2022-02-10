@@ -7,6 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { CustomFade } from "@components/shared";
 import { CartChangeSelectContainer } from "./styled";
 import { transformPriceToString } from "@utils/transformation";
+import { TipoPagamento } from "@models/pedido";
 
 enum NeedChange {
   YES = "yes",
@@ -34,7 +35,7 @@ const CartChangeSelect: React.FC = () => {
 
   return (
     <Fragment>
-      <CustomFade triggerAnimation={values.payment_type === "dinheiro"}>
+      <CustomFade triggerAnimation={values.payment_type === TipoPagamento.DINHEIRO}>
         <CartChangeSelectContainer>
           <h3>Precisa de troco? </h3>
           <RadioGroup
