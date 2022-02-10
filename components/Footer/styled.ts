@@ -15,6 +15,7 @@ export const FooterContainer = styled.footer`
 
   & > h3 {
     text-align: center;
+    padding: 0 0.5rem;
     letter-spacing: 3px;
     font-weight: 600;
   }

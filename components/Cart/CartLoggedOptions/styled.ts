@@ -5,11 +5,13 @@ import { CartFormSubtotalText } from "../styled";
 export const CartFormErrorContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
 `;
 
 export const CartFormErrorMessage = styled.p`
+  max-width: 90%;
   color: red;
 `;
 
