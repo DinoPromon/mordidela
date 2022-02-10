@@ -135,7 +135,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       throw new Error("É necessário estar logado para finalizar pedidos");
     } catch (e) {
       const error = e as Error;
-      setRequest({ error: error.message, isLoading: false });
+      setRequest({ error: session?.user.email || "" , isLoading: false });
     }
   }
 
