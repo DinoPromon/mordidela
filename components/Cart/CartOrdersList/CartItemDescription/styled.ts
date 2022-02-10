@@ -1,26 +1,33 @@
 import { PINK, PURPLE } from "@utils/colors";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+
+export const TrashPriceContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+export const TrashPriceText = styled.p`
+  font-weight: bold;
+  color: ${PURPLE};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 export const CartItemDescriptionContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1rem 5fr 2fr;
-  column-gap: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+
+  ${TrashPriceContainer} {
+    margin-left: auto;
+  }
 
   & > span {
     font-size: inherit;
     font-weight: bold;
     color: ${PINK};
     padding-right: 5px;
-  }
-`;
-
-export const CartItemDescriptionTrashPrice = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: flex-end;
-  & > p {
-    font-weight: bold;
-    color: ${PURPLE};
   }
 `;

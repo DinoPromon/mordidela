@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { CartItemDescriptionContainer, CartItemDescriptionTrashPrice } from "./styled";
+import { CartItemDescriptionContainer, TrashPriceContainer, TrashPriceText } from "./styled";
 import { PINK } from "@utils/colors";
 import { CartContext } from "@store/cart";
 import { FaTrash } from "react-icons/fa/index";
@@ -32,7 +32,7 @@ const CartItemDescription: React.FC<Props> = ({
       <p>
         {productName} - {productSize}
       </p>
-      <CartItemDescriptionTrashPrice>
+      <TrashPriceContainer>
         <FaTrash
           cursor="pointer"
           size={16}
@@ -40,8 +40,8 @@ const CartItemDescription: React.FC<Props> = ({
           onClick={removeProductHandler}
           style={{ verticalAlign: "middle" }}
         />
-        <p>R$ {transformPriceToString(standard_price)}</p>
-      </CartItemDescriptionTrashPrice>
+        <TrashPriceText>R$ {transformPriceToString(standard_price)}</TrashPriceText>
+      </TrashPriceContainer>
     </CartItemDescriptionContainer>
   );
 };

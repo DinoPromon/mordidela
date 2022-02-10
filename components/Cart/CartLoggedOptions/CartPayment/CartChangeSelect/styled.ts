@@ -9,6 +9,11 @@ export const CartChangeSelectContainer = styled.div`
   align-items: center;
   margin-bottom: 0.35rem;
 
+  @media (max-width: 400px) {
+    gap: 0;
+    flex-direction: column;
+  }
+
   & > h3 {
     color: ${PURPLE};
     font-size: 1rem;

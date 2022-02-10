@@ -6,6 +6,7 @@ import { AxiosError } from "axios";
 import { useFormikContext } from "formik";
 import { FormButton } from "@components/shared";
 import { cupomFormat } from "@utils/formatters";
+import { CustomTextField } from "@components/shared";
 import { CartFormValues } from "@components/Cart/FormModel";
 import { CartCupomContainer, CartCupomInput } from "./styled";
 import { RequestState } from "@my-types/request";
@@ -52,7 +53,6 @@ const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
         type="text"
         placeholder="Digite aqui seu cupom"
         onChange={changeHandler}
-        maxLength={20}
         value={inputCupom}
       />
       {isLoadingCupom ? (
