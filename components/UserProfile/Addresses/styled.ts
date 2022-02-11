@@ -1,13 +1,13 @@
 import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
 
-export const AddressesContainer = styled.div`
+export const AddressesInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   max-width: 600px;
   margin: 0 auto;
-  padding-bottom: 50px;
+  padding-bottom: 2rem;
   width: 100%;
 
   & > span {
@@ -29,16 +29,37 @@ export const CustomInputsDesign = styled.div`
   }
 `;
 
-export const AddAddress = styled.div`
+export const AddressContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+`;
+
+export const ShowAddress = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: start;
+  gap: 1rem;
 
-  &:hover {
-    cursor: pointer;
-    color: ${PINK};
-    text-decoration: underline;
+  & > span {
+    display: flex;
+    align-items: center;
   }
+`;
+
+export const AddresData = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const AddresIcons = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-left: auto;
+  align-items: center;
 `;

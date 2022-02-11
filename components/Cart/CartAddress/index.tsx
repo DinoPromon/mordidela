@@ -25,7 +25,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress }
   const { setFieldValue, values } = useFormikContext<CartFormValues>();
 
   function getFormatedAddress(address: AddressOnCart) {
-    return `${address.logradouro} n° ${address.numero}, ${address.bairro}`;
+    return `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
   }
 
   function changeRadioHandler(event: React.ChangeEvent<HTMLInputElement>) {
