@@ -2,8 +2,9 @@ import React from "react";
 import { categoryAll } from "..";
 import { MenuListContainer } from "./styled";
 import MenuItem from "./MenuItem";
-import { RelatedProduct } from "@models/produto";
-import { ProductCategory } from "@models/produto";
+
+import type { RelatedProduct } from "@models/produto";
+import type { ProductCategory } from "@models/produto";
 
 type Props = {
   selectedCategoryFilter: ProductCategory;

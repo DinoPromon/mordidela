@@ -1,4 +1,4 @@
-import IUsuario from "./usuario";
+import type IUsuario from "./usuario";
 
 interface ITelefone {
   id_telefone: number;

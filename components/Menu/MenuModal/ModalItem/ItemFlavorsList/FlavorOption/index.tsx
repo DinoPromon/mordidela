@@ -1,7 +1,8 @@
 import React from "react";
-import ISabor from "@models/sabor";
 import { InputCheckbox } from "@components/shared";
 import { FlavorOptionContainer } from "./styled";
+
+import type ISabor from "@models/sabor";
 
 type Props = {
   flavorId: ISabor["id_sabor"];

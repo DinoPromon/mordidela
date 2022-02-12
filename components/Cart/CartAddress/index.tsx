@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Radio from "@material-ui/core/Radio";
-import { AddressOnCart } from "@models/endereco";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useFormikContext } from "formik";
 import { FaPlusCircle } from "react-icons/fa";
@@ -14,7 +13,9 @@ import {
   CartAddressComplement,
   CartAddressLoadingContainer,
 } from "./styled";
-import { CartFormValues } from "../FormModel";
+
+import type { CartFormValues } from "../FormModel";
+import type { AddressOnCart } from "@models/endereco";
 
 type CartAddressProps = {
   isLoadingAddress: boolean;

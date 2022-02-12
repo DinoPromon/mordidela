@@ -1,5 +1,5 @@
-import ICupom from "./cupom";
-import IPedido from "./pedido";
+import type ICupom from "./cupom";
+import type IPedido from "./pedido";
 
 interface IUsuarioCupom {
   id_usuario_cupom: number;

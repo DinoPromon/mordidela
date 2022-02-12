@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import Wrapper from "../styled";
 import SignupFormActions from "./SignupFormActions";
 import { FormInput } from "@components/shared";
-import { dateChangeHandler, phoneNumberChangeHandler } from "@utils/formatters";
 import { userFormValidations } from "@utils/validations";
-import { UserFormData } from "@my-types/forms";
 import { getSignupErrorMessage } from "@utils/error-message";
+import { dateChangeHandler, phoneNumberChangeHandler } from "@utils/formatters";
+
+import type { UserFormData } from "@my-types/forms";
 
 type Props = {
   state: UserFormData;
@@ -30,8 +31,10 @@ const SignUpForm: React.FC<Props> = (props) => {
 
   const changeFormStateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
-    if (id === "data_nascimento") event.target.value = dateChangeHandler(event.target.value, formState[id]);
-    else if (id === "telefone") event.target.value = phoneNumberChangeHandler(event.target.value, formState[id]);
+    if (id === "data_nascimento")
+      event.target.value = dateChangeHandler(event.target.value, formState[id]);
+    else if (id === "telefone")
+      event.target.value = phoneNumberChangeHandler(event.target.value, formState[id]);
     setFormState((prevState) => ({
       ...prevState,
       [id]: event.target.value,
@@ -97,7 +100,10 @@ const SignUpForm: React.FC<Props> = (props) => {
       <FormInput
         type="password"
         id="senha_confirmada"
-        isInputValid={userFormValidations.senha_confirmada(formState.senha, formState.senha_confirmada)}
+        isInputValid={userFormValidations.senha_confirmada(
+          formState.senha,
+          formState.senha_confirmada
+        )}
         value={formState.senha_confirmada}
         errorMessage={getSignupErrorMessage("senha_confirmada")}
         placeholder="Confirme a senha*"

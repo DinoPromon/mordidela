@@ -1,4 +1,4 @@
-import { CartFormValues } from "./index";
+import type { CartFormValues } from "./index";
 
 export const getCartFormInitialValues = () => {
   const cartFormInitialValues: CartFormValues = {

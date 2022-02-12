@@ -1,5 +1,5 @@
-import IEndereco from "@models/endereco";
-import IUsuario from "@models/usuario";
+import type IUsuario from "@models/usuario";
+import type IEndereco from "@models/endereco";
 
 export type UserFormData = {
   nome: IUsuario["nome"];

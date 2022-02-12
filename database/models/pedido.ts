@@ -1,6 +1,6 @@
-import ICupom from "./cupom";
-import IEndereco from "./endereco";
-import IUsuario from "./usuario";
+import type ICupom from "./cupom";
+import type IEndereco from "./endereco";
+import type IUsuario from "./usuario";
 
 export enum StatusPedido {
   REJEITADO = "rejeitado",

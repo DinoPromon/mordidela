@@ -1,5 +1,5 @@
-import IEntrega from "./entrega";
-import IUsuario from "./usuario";
+import type IEntrega from "./entrega";
+import type IUsuario from "./usuario";
 
 interface IEndereco {
   id_endereco: number;
@@ -9,7 +9,7 @@ interface IEndereco {
   complemento: string | null;
   id_usuario: IUsuario["id_usuario"];
   id_entrega: IEntrega["id_entrega"];
-};
+}
 
 export type AddressOnCart = IEndereco & {
   entrega: {

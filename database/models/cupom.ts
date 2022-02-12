@@ -1,5 +1,5 @@
-import IPedido from "@models/pedido";
-import IUsuarioCupom from "@models/usuario_cupom";
+import type IPedido from "@models/pedido";
+import type IUsuarioCupom from "@models/usuario_cupom";
 
 export enum TipoCupom {
   ENTREGA = "entrega",

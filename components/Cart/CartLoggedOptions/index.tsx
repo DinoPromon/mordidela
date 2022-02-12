@@ -3,24 +3,24 @@ import { useFormikContext } from "formik";
 import CartCupom from "./CartCupom";
 import CartPayment from "./CartPayment";
 import Loading from "@components/shared/Loading";
+import { PINK } from "@utils/colors";
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega } from "@models/pedido";
+import { FaTrash } from "react-icons/fa/index";
 import { CustomFade } from "@components/shared";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
-import { CartFormValues } from "../FormModel";
 import { CartFormSubtotalText } from "../styled";
+import { transformPriceToString } from "@utils/transformation";
 import {
-  CartCupomData,
   CartFormTotalText,
   CartFormErrorMessage,
   CartCupomColorfulText,
   CartFormErrorContainer,
   CartCoupomDataContainer,
 } from "./styled";
-import { transformPriceToString } from "@utils/transformation";
-import { FaTrash } from "react-icons/fa/index";
-import { PINK } from "@utils/colors";
+
+import type { CartFormValues } from "../FormModel";
 
 type Props = {
   subTotalPrice: number;

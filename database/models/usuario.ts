@@ -1,4 +1,4 @@
-import ITelefone from "./telefone";
+import type ITelefone from "./telefone";
 
 enum UserAuthorization {
   CLIENT = "cliente",

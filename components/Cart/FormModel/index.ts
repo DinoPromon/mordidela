@@ -1,8 +1,9 @@
-import IEndereco from "@models/endereco";
-import { TipoCupom } from "@models/cupom";
-import { TipoEntrega, TipoPagamento } from "@models/pedido";
 import { getCartFormInitialValues } from "./initialValues";
 import { useCartFormValidationSchema } from "./validationSchema";
+
+import type IEndereco from "@models/endereco";
+import type { TipoCupom } from "@models/cupom";
+import type { TipoEntrega, TipoPagamento } from "@models/pedido";
 
 type CartCupom = {
   id_cupom: number;

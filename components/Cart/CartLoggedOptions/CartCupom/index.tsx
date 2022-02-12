@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import Axios from "@api";
-import ICupom from "@models/cupom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { AxiosError } from "axios";
 import { useFormikContext } from "formik";
 import { FormButton } from "@components/shared";
 import { cupomFormat } from "@utils/formatters";
-import { CustomTextField } from "@components/shared";
-import { CartFormValues } from "@components/Cart/FormModel";
 import { CartCupomContainer, CartCupomInput } from "./styled";
 import { RequestState } from "@my-types/request";
+
+import type ICupom from "@models/cupom";
+import type { CartFormValues } from "@components/Cart/FormModel";
 
 type CartCupomProps = {
   onChangeRequestStatus: (status: Partial<RequestState>) => void;

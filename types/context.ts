@@ -1,10 +1,10 @@
-import IAdicional from "@models/adicional";
-import ICupom from "@models/cupom";
-import IEndereco from "@models/endereco";
-import IPedido from "@models/pedido";
-import IPedidoProduto from "@models/pedido_produto";
-import Produto from "@models/produto";
-import ISabor from "@models/sabor";
+import type ICupom from "@models/cupom";
+import type ISabor from "@models/sabor";
+import type IPedido from "@models/pedido";
+import type Produto from "@models/produto";
+import type IEndereco from "@models/endereco";
+import type IAdicional from "@models/adicional";
+import type IPedidoProduto from "@models/pedido_produto";
 
 export type CartProduct = {
   key: string;

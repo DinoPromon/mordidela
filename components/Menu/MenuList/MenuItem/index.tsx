@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import { ItemDescriptionContainer, MenuItemContainer } from "./styled";
 import ItemImage from "./ItemImage";
-import { RelatedProduct } from "@models/produto";
 import { transformPriceToString } from "@utils/transformation";
+
+import type { RelatedProduct } from "@models/produto";
 
 type Props = {
   onClick: (item: RelatedProduct, img?: string) => void;

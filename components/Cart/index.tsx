@@ -6,7 +6,6 @@ import CartDeliveryType from "./CartDeliveryType";
 import CartLoggedOptions from "./CartLoggedOptions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Formik } from "formik";
-import { Session } from "next-auth";
 import { CartContext } from "@store/cart";
 import { TipoEntrega } from "@models/pedido";
 import { getSession } from "next-auth/client";
@@ -28,6 +27,7 @@ import {
   CartOrderConfirmationButtons,
 } from "./styled";
 
+import type { Session } from "next-auth";
 import type { RequestState } from "@my-types/request";
 import type { AddressOnCart } from "@models/endereco";
 

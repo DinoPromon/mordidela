@@ -1,17 +1,18 @@
 import React, { useContext, useEffect } from "react";
-import { useFormikContext } from "formik";
-import { CartFormValues } from "@components/Cart/FormModel";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { PURPLE } from "@utils/colors";
+import { useFormikContext } from "formik";
 import {
   CartPaymentSelectContainer,
   CartPaymentSelectTitle,
   CartPaymentSelectContainerRadioGroup,
 } from "./styled";
 import { CartContext } from "@store/cart";
-import { PURPLE } from "@utils/colors";
 import { FaRegCreditCard, FaMoneyBill } from "react-icons/fa/index.js";
+
+import type { CartFormValues } from "@components/Cart/FormModel";
 
 const CartPaymentSelect: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<CartFormValues>();

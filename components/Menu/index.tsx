@@ -3,7 +3,8 @@ import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
 import MenuFilter from "./MenuFilter";
 import { PageContainer, PageTitle } from "@components/shared";
-import { ProductCategory, RelatedProduct } from "@models/produto";
+
+import type { ProductCategory, RelatedProduct } from "@models/produto";
 
 type Props = {
   products: RelatedProduct[];

@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-import { ProductCategory } from "@models/produto";
+import React, { useRef } from "react";
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import {
   FilterSelector,
@@ -8,6 +7,8 @@ import {
   FilterContainer,
   FilterArrowButton,
 } from "./styled";
+
+import type { ProductCategory } from "@models/produto";
 
 type MenuFilterProps = {
   categories: ProductCategory[];

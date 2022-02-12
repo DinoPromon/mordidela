@@ -1,4 +1,4 @@
-import IDesconto from "./desconto";
+import type IDesconto from "./desconto";
 
 interface ICategoria {
   id_categoria: number;

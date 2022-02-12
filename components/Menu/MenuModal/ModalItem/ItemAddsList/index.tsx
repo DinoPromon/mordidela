@@ -2,7 +2,7 @@ import React from "react";
 
 import { ItemAddsListContainer } from "./styled";
 import AddOption from "./AddOption";
-import IAdicional from "@models/adicional";
+import type IAdicional from "@models/adicional";
 
 type Props = {
   items: IAdicional[];

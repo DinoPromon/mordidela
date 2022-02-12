@@ -1,4 +1,4 @@
-import IUsuario from "@models/usuario";
+import type IUsuario from "@models/usuario";
 
 export type LoginFormData = {
   email: IUsuario['email'];

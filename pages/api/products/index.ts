@@ -45,9 +45,7 @@ export const handler: NextApiHandler = async (req, res) => {
     try {
       const createdProduct: produto = await new Promise((resolve, reject) => {
         const form = new IncomingForm();
-        console.log(form);
         form.parse(req, (err, fields, files) => {
-          console.log("caiu aqui");
           if (err) reject(err);
           if (Array.isArray(files.imagem)) reject("Várias imagens não suportadas");
           const {

@@ -1,8 +1,8 @@
-import ISabor from "./sabor";
-import IDesconto from "./desconto";
-import IAdicional from "./adicional";
-import ICategoria from "./categoria";
-import IPedidoProduto from "./pedido_produto";
+import type ISabor from "./sabor";
+import type IDesconto from "./desconto";
+import type IAdicional from "./adicional";
+import type ICategoria from "./categoria";
+import type IPedidoProduto from "./pedido_produto";
 
 interface IProduto {
   id_produto: number;

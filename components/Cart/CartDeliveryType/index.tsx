@@ -1,11 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useFormikContext } from "formik";
-import { CartFormValues } from "../FormModel";
 import { CartContext } from "@store/cart";
 import { CartDeliveryTypeContainer } from "./styled";
+
+import type { CartFormValues } from "../FormModel";
 
 const CartDeliveryType: React.FC = () => {
   const { setFieldValue, values } = useFormikContext<CartFormValues>();

@@ -1,9 +1,10 @@
 import React, { Fragment } from "react";
 import { useFormikContext } from "formik";
-import { CartFormValues } from "@components/Cart/FormModel";
-import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
 import { CustomFade } from "@components/shared";
 import { formatPrice } from "@utils/formatters";
+import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
+
+import type { CartFormValues } from "@components/Cart/FormModel";
 
 type Props = {
   shouldShowPaymentValue: boolean;

@@ -1,8 +1,8 @@
-import Produto from "./produto";
-import IAdicional from "./adicional";
+import type IProduto from "./produto";
+import type IAdicional from "./adicional";
 
 interface IProdutoAdicional {
-  id_produto: Produto["id_produto"];
+  id_produto: IProduto["id_produto"];
   id_adicional: IAdicional["id_adicional"];
 }
 

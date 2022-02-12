@@ -2,13 +2,14 @@ import React from "react";
 
 import { ItemFlavorListContainer } from "./styled";
 import FlavorOption from "./FlavorOption";
-import ISabor from "@models/sabor";
-import Produto from "@models/produto";
+
+import type ISabor from "@models/sabor";
+import type IProduto from "@models/produto";
 
 type Props = {
   items: ISabor[];
   flavorsAmount: number;
-  maxFlavor: Produto["qtde_max_sabor"];
+  maxFlavor: IProduto["qtde_max_sabor"];
   onAddFlavor: (flavor: ISabor) => void;
   onRemoveFlavor: (flavor: ISabor) => void;
 };

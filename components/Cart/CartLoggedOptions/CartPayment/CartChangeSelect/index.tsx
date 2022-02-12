@@ -1,13 +1,14 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useState } from "react";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
-import { useFormikContext } from "formik";
-import { CartFormValues } from "@components/Cart/FormModel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { useFormikContext } from "formik";
+import { TipoPagamento } from "@models/pedido";
 import { CustomFade } from "@components/shared";
 import { CartChangeSelectContainer } from "./styled";
 import { transformPriceToString } from "@utils/transformation";
-import { TipoPagamento } from "@models/pedido";
+
+import type { CartFormValues } from "@components/Cart/FormModel";
 
 enum NeedChange {
   YES = "yes",

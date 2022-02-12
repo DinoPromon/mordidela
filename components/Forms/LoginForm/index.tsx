@@ -6,10 +6,11 @@ import Wrapper from "../styled";
 import LoginFormActions from "./LoginFormActions";
 import FormRequestStatus from "@components/shared/FormRequestStatus";
 import { FormInput } from "@components/shared";
-import { LoginFormData } from "@my-types/login";
-import { RequestState } from "@my-types/request";
 import { loginFormValidations } from "@utils/validations";
 import { getLoginErrorMessage } from "@utils/error-message";
+
+import type { LoginFormData } from "@my-types/login";
+import type { RequestState } from "@my-types/request";
 
 const initialLoginData: LoginFormData = {
   email: "",

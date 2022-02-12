@@ -5,14 +5,15 @@ import ItemImage from "./ItemImage";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
-import IAdicional from "@models/adicional";
-import ISabor from "@models/sabor";
 import { CartContext } from "@store/cart";
-import { RelatedProduct } from "@models/produto";
-import { CartProduct } from "@my-types/context";
 import { FormButton } from "@components/shared";
 import { formatProductId } from "@utils/formatters";
 import { transformPriceToString } from "@utils/transformation";
+
+import type ISabor from "@models/sabor";
+import type IAdicional from "@models/adicional";
+import type { CartProduct } from "@my-types/context";
+import type { RelatedProduct } from "@models/produto";
 
 type Props = {
   image: string;

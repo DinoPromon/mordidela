@@ -4,10 +4,11 @@ import { useRouter } from "next/router";
 import Wrapper from "../styled";
 import AddressFormActions from "./AddressFormActions";
 import FormRequestStatus from "@components/shared/FormRequestStatus";
-import { Response } from "@my-types/request";
 import { FormInput } from "@components/shared";
-import { AddressFormData } from "@my-types/forms";
 import { addressFormValidations } from "@utils/validations";
+
+import type { Response } from "@my-types/request";
+import type { AddressFormData } from "@my-types/forms";
 
 type Props = {
   state: AddressFormData;

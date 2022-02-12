@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 
-import IUsuario from "@models/usuario";
+import type IUsuario from "@models/usuario";
 
 interface MyUser {
   nome: IUsuario["nome"];

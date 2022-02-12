@@ -1,7 +1,6 @@
 import React from "react";
-
-import { FooterContainer } from "./styled";
 import MediaList from "./MediaList";
+import { FooterContainer } from "./styled";
 import { MordidelaLogoWithLabel } from "@components/shared";
 
 const Footer: React.FC = () => {
