@@ -1,6 +1,6 @@
-import { Prisma } from "database";
 import { IncomingForm } from "formidable";
 import { CreateProduct } from "@controllers/produto";
+import { ProductRepo } from "@repository/product";
 import { ReqMethod } from "@my-types/backend/req-method";
 
 import type IProduto from "@models/produto";
@@ -20,19 +20,7 @@ export const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === ReqMethod.GET) {
     try {
-      const products = await Prisma.produto.findMany({
-        select: {
-          id_produto: true,
-          preco_padrao: true,
-          nome: true,
-          disponivel: true,
-          descricao: true,
-          tamanho: true,
-          qtde_max_sabor: true,
-          id_categoria: true,
-          id_desconto: true,
-        },
-      });
+      const products = await ProductRepo.findMany();
       return res.status(200).json(products);
     } catch (e) {
       const error = e as Error;
@@ -44,9 +32,11 @@ export const handler: NextApiHandler = async (req, res) => {
     try {
       const createdProduct: IProduto = await new Promise((resolve, reject) => {
         const form = new IncomingForm();
+
         form.parse(req, (err, fields, files) => {
           if (err) reject(err);
-          if (Array.isArray(files.imagem)) reject("Várias imagens não são suportadas");
+          if (Array.isArray(files.imagem)) reject("Não há suporta para múltiplas imagens");
+
           const createProductArg: CreateProductArg = fields as CreateProductArg;
           const createProduct = new CreateProduct(createProductArg, files.imagem as FormidableFile);
 

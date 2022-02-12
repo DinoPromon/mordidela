@@ -1,6 +1,7 @@
 import { Prisma } from "@database";
 
 import type IProduto from "@models/produto";
+import { UUIDParse } from "database/helpers/uuid";
 
 interface IProductCreate extends Omit<IProduto, "id_produto" | "uuid"> {
   uuid: Buffer;
@@ -15,5 +16,15 @@ export class ProductRepo {
     });
 
     return createdProduct;
+  }
+
+  public static async findMany() {
+    const products = await Prisma.produto.findMany();
+    const stringUUIDProducts: IProduto[] = products.map((product) => ({
+      ...product,
+      uuid: UUIDParse.getStringUUID(product.uuid),
+    }));
+
+    return stringUUIDProducts;
   }
 }

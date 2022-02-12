@@ -1,7 +1,7 @@
-import ITelefone from "@models/telefone";
-import IUsuario from "@models/usuario";
 import { PhoneRepo } from "@repository/phone";
 import { UserRepo } from "@repository/user";
+
+import type IUsuario from "@models/usuario";
 
 type GeneralDataPhone = {
   ddd: string;
