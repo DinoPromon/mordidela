@@ -7,12 +7,12 @@ import { FindManyRelatedUserCouponByUserId } from "@controllers/usuario-cupom";
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
 import type { MyUser } from "@my-types/next-auth";
-import type { RelatedUserCupomReq } from "@models/cupom";
+import type { RelatedUserCupom } from "@models/cupom";
 import type { NextPageWithLayout } from "@my-types/next-page";
 
 type Props = {
   user: MyUser;
-  relatedCoupons: RelatedUserCupomReq;
+  relatedCoupons: RelatedUserCupom;
 };
 
 const GeneralDataPage: NextPageWithLayout<Props> = (props) => {
@@ -36,8 +36,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   const findManyRelatedCoupon = new FindManyRelatedUserCouponByUserId(session.user.id_usuario);
   const relatedCoupons = await findManyRelatedCoupon.exec();
-
-  console.log(relatedCoupons);
 
   return {
     props: {
