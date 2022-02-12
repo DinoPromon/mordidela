@@ -1,1 +1,1 @@
-export { findCupomRelationsById } from "./findManyRelatedCouponsById";
+export { FindManyRelatedUserCouponByUserId } from "./findManyRelatedUserCouponById";

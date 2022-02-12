@@ -1,13 +1,14 @@
 import React from "react";
+import Coupons from "@components/UserProfile/Cupom";
+import { getSession } from "next-auth/client";
+import { NavBarFooter } from "@components/Layouts";
+import { FindManyRelatedUserCouponByUserId } from "@controllers/usuario-cupom";
+
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
-import { MyUser } from "@my-types/next-auth";
-import { NavBarFooter } from "@components/Layouts";
-import Coupons from "@components/UserProfile/Cupom";
-import { RelatedUserCupomReq } from "@models/cupom";
-import { NextPageWithLayout } from "@my-types/next-page";
-import { findCupomRelationsById } from "@controllers/usuario-cupom";
+import type { MyUser } from "@my-types/next-auth";
+import type { RelatedUserCupomReq } from "@models/cupom";
+import type { NextPageWithLayout } from "@my-types/next-page";
 
 type Props = {
   user: MyUser;
@@ -33,8 +34,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
+  const findManyRelatedCoupon = new FindManyRelatedUserCouponByUserId(session.user.id_usuario);
+  const relatedCoupons = await findManyRelatedCoupon.exec();
 
-  const relatedCoupons = await findCupomRelationsById(session.user.id_usuario);
+  console.log(relatedCoupons);
 
   return {
     props: {
