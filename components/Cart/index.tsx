@@ -2,16 +2,15 @@ import React, { useContext, Fragment, useState, useEffect } from "react";
 import Axios from "@api";
 import CartAddress from "./CartAddress";
 import CartOrdersList from "./CartOrdersList";
-import { AddressOnCart } from "@models/endereco";
 import CartDeliveryType from "./CartDeliveryType";
 import CartLoggedOptions from "./CartLoggedOptions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Formik } from "formik";
 import { Session } from "next-auth";
 import { CartContext } from "@store/cart";
+import { TipoEntrega } from "@models/pedido";
 import { getSession } from "next-auth/client";
 import { BsCheck2Circle } from "react-icons/bs/index";
-import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
 import { FormButton, Modal, CustomFade } from "@components/shared";
 import { useCartFormValidationSchema, getCartFormInitialValues, CartFormValues } from "./FormModel";
@@ -28,7 +27,9 @@ import {
   CartEmptyMessageContainer,
   CartOrderConfirmationButtons,
 } from "./styled";
-import { TipoEntrega } from "@models/pedido";
+
+import type { RequestState } from "@my-types/request";
+import type { AddressOnCart } from "@models/endereco";
 
 type Props = {
   onCloseModal: () => void;

@@ -19,6 +19,7 @@ export async function findManyRelatedProducts() {
       id_produto: true,
       nome: true,
       descricao: true,
+      nome_imagem: true,
       qtde_max_sabor: true,
       preco_padrao: true,
       tamanho: true,
@@ -55,10 +56,11 @@ export async function findManyRelatedProducts() {
     },
   });
 
-  const produtos: RelatedProduct[] = products.map((product) => ({
+  const produtos: any[] = products.map((product) => ({
     id_produto: product.id_produto,
     nome: product.nome,
     descricao: product.descricao,
+    nome_imagem: product.nome_imagem,
     qtde_max_sabor: product.qtde_max_sabor,
     preco_padrao: Number(product.preco_padrao),
     tamanho: product.tamanho,

@@ -6,9 +6,10 @@ import IPedidoProduto from "./pedido_produto";
 
 interface IProduto {
   id_produto: number;
+  uuid: string;
+  nome_imagem: string | null;
   preco_padrao: number;
   nome: string;
-  imagem: Blob | null;
   disponivel: boolean;
   descricao: string | null;
   tamanho: string;
@@ -23,17 +24,12 @@ export type ProductCategory = Pick<ICategoria, "id_categoria" | "nome"> & {
 
 export type ProductDiscount = Pick<IDesconto, "id_desconto" | "porcentagem_desconto">;
 
-export type ProdutoWithoutImage = Omit<IProduto, "imagem">;
-
 export type CartProduto = Pick<IPedidoProduto, "id_produto" | "observacao" | "quantidade"> & {
   adicionais: IAdicional["id_adicional"][];
   sabores: ISabor["id_sabor"][];
 };
 
-export type RelatedProduct = Omit<
-  IProduto,
-  "imagem" | "id_categoria" | "id_desconto" | "disponivel"
-> & {
+export type RelatedProduct = Omit<IProduto, "id_categoria" | "id_desconto" | "disponivel"> & {
   desconto: ProductDiscount | null;
   categoria: ProductCategory;
   adicionais: IAdicional[];

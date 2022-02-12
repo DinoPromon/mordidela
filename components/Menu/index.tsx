@@ -22,6 +22,7 @@ const Menu: React.FC<Props> = ({ products, error }) => {
   const [modalItem, setModalItem] = useState<RelatedProduct>();
   const [modalItemImage, setModalItemImg] = useState<string>("/images/logo.svg");
 
+  console.log(products);
   function closeModalHandler() {
     setShowModal(false);
   }

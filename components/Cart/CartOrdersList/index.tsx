@@ -1,8 +1,9 @@
 import React from "react";
 import CartItemDescription from "./CartItemDescription";
-import { CartProduct } from "@my-types/context";
 import { transformPriceToString } from "@utils/transformation";
 import { CartOrdersListContainer, CartOrderAddsContainer, CartOrderAddsText } from "./styled";
+
+import type { CartProduct } from "@my-types/context";
 
 type Props = {
   products: CartProduct[];
