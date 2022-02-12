@@ -7,16 +7,11 @@ import type { RelatedProduct } from "@models/produto";
 type Props = {
   onClose: () => void;
   item?: RelatedProduct;
-  image: string;
 };
 
-const MenuModal: React.FC<Props> = (props) => {
-  const { item, onClose, image } = props;
-
+const MenuModal: React.FC<Props> = ({ item, onClose }) => {
   return (
-    <Modal onClose={props.onClose}>
-      {item && <ModalItem image={image} item={item} closeModal={onClose} />}
-    </Modal>
+    <Modal onClose={onClose}>{item && <ModalItem item={item} onCloseModal={onClose} />}</Modal>
   );
 };
 

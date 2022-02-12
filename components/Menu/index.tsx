@@ -21,21 +21,14 @@ const Menu: React.FC<Props> = ({ products, error }) => {
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState(categoryAll);
   const [showModal, setShowModal] = useState(false);
   const [modalItem, setModalItem] = useState<RelatedProduct>();
-  const [modalItemImage, setModalItemImg] = useState<string>("/images/logo.svg");
 
-  console.log(products);
   function closeModalHandler() {
     setShowModal(false);
   }
 
-  function changeModalItem(item: RelatedProduct, image?: string) {
-    setModalItemImg(image as string);
+  function changeModalItem(item: RelatedProduct) {
     setShowModal(true);
     setModalItem(item);
-  }
-
-  function changeModalImage(id_produto: RelatedProduct["id_produto"], image?: string) {
-    if (modalItem?.id_produto === id_produto) setModalItemImg(image as string);
   }
 
   function getAllCategoriesFromProducts() {
@@ -53,9 +46,7 @@ const Menu: React.FC<Props> = ({ products, error }) => {
 
   return (
     <PageContainer>
-      {showModal && (
-        <MenuModal onClose={closeModalHandler} item={modalItem} image={modalItemImage} />
-      )}
+      {showModal && <MenuModal onClose={closeModalHandler} item={modalItem} />}
       <PageTitle>Cardápio</PageTitle>
       <MenuFilter
         categories={[categoryAll, ...getAllCategoriesFromProducts()]}
@@ -67,7 +58,6 @@ const Menu: React.FC<Props> = ({ products, error }) => {
           selectedCategoryFilter={selectedCategoryFilter}
           products={products}
           onItemClick={changeModalItem}
-          changeModalImage={changeModalImage}
         />
       )}
     </PageContainer>

@@ -7,6 +7,7 @@ import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
 import { CartContext } from "@store/cart";
 import { FormButton } from "@components/shared";
+import { getProductImagePath } from "@utils/images";
 import { formatProductId } from "@utils/formatters";
 import { transformPriceToString } from "@utils/transformation";
 
@@ -16,13 +17,11 @@ import type { CartProduct } from "@my-types/context";
 import type { RelatedProduct } from "@models/produto";
 
 type Props = {
-  image: string;
   item: RelatedProduct;
-  closeModal: () => void;
+  onCloseModal: () => void;
 };
 
-const ModalItem: React.FC<Props> = (props) => {
-  const { item, closeModal, image } = props;
+const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
   const [productOrder, setProductOrder] = useState<CartProduct>({
     adds: [],
     flavors: [],
@@ -46,7 +45,7 @@ const ModalItem: React.FC<Props> = (props) => {
     event.preventDefault();
     if (canSubmit) {
       addProductToCart(productOrder);
-      closeModal();
+      onCloseModal();
     }
   }
 
@@ -116,7 +115,7 @@ const ModalItem: React.FC<Props> = (props) => {
       <h2>
         {item.nome} - {item.tamanho}
       </h2>
-      <ItemImage src={image} alt={item.nome} />
+      <ItemImage src={getProductImagePath(item.nome_imagem)} alt={item.nome} />
       <p>{item.descricao}</p>
       {item.sabores.length > 0 && (
         <ItemFlavorsList

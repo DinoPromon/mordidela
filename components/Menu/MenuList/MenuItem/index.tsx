@@ -7,16 +7,14 @@ import { transformPriceToString } from "@utils/transformation";
 import type { RelatedProduct } from "@models/produto";
 
 type Props = {
-  onClick: (item: RelatedProduct, img?: string) => void;
-  changeModalImage: (id_produto: RelatedProduct["id_produto"], img?: string) => void;
+  onClick: (item: RelatedProduct) => void;
   item: RelatedProduct;
 };
 
 const imgFallback = "/images/fallback.png";
 const prefixImg = "/images/products";
 
-const MenuItem: React.FC<Props> = (props) => {
-  const { item, onClick, changeModalImage } = props;
+const MenuItem: React.FC<Props> = ({ item, onClick }) => {
   const [imageSrc, setImageSrc] = useState(
     item.nome_imagem ? `${prefixImg}/${item.nome_imagem}` : imgFallback
   );
@@ -24,12 +22,8 @@ const MenuItem: React.FC<Props> = (props) => {
   console.log(item.nome_imagem);
 
   const menuItemClickHandler = () => {
-    if (imageSrc) onClick(item, imageSrc);
+    if (imageSrc) onClick(item);
   };
-
-  useEffect(() => {
-    changeModalImage(item.id_produto, imageSrc);
-  }, [changeModalImage, item.id_produto, imageSrc]);
 
   return (
     <MenuItemContainer onClick={menuItemClickHandler}>
