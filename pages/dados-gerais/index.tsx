@@ -1,15 +1,16 @@
 import React from "react";
 import { findUserGeneralData } from "@controllers/users";
-import type { ReactElement } from "react";
 
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
 
-import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import GeneralData from "@components/UserProfile/GeneralData";
-import { MyUser } from "@my-types/next-auth";
-import { UserGeneralData } from "@models/usuario";
+
+import type { ReactElement } from "react";
+import type { GetServerSideProps } from "next";
+import type { MyUser } from "@my-types/next-auth";
+import type { UserGeneralData } from "@models/usuario";
 
 type Props = {
   user: MyUser;

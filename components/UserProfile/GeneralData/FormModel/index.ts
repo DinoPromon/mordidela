@@ -1,7 +1,7 @@
-import { FormField } from "@my-types/form";
 import * as Yup from "yup";
 import { validateDate } from "./utility";
-export { getGeneralDataInitialValues } from "./initialValues";
+
+import type { FormField } from "@my-types/form";
 
 export interface GeneralDataValues {
   nome: string;
@@ -48,3 +48,5 @@ export function getGeneralDataValidationSchema(formModel: GeneralDataFormModel) 
     [telefone.name]: Yup.string().required(telefone.requiredErrorMessage),
   });
 }
+
+export { getGeneralDataInitialValues } from "./initialValues";

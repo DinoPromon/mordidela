@@ -1,6 +1,7 @@
 import { clearPhoneNumber } from "@utils/transformation";
 import { createDate } from "@utils/transformation/date";
-import { GeneralDataValues } from "../FormModel";
+
+import type { GeneralDataValues } from "../FormModel";
 
 type GeneralDataArg = {
   nome: string;

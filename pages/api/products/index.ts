@@ -1,13 +1,12 @@
 import { Prisma } from "database";
 import { IncomingForm } from "formidable";
-import { UUIDParse } from "database/helpers/uuid";
-import { ProductRepo } from "@repository/product";
-import { ImageHandler } from "database/helpers/image";
+import { CreateProduct } from "@controllers/produto";
 import { ReqMethod } from "@my-types/backend/req-method";
 
-import type { produto } from "@prisma/client";
+import type IProduto from "@models/produto";
 import type { NextApiHandler } from "next";
 import type { File as FormidableFile } from "formidable";
+import type { CreateProductArg } from "@controllers/produto";
 
 export const config = {
   api: {
@@ -43,44 +42,16 @@ export const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === ReqMethod.POST) {
     try {
-      const createdProduct: produto = await new Promise((resolve, reject) => {
+      const createdProduct: IProduto = await new Promise((resolve, reject) => {
         const form = new IncomingForm();
         form.parse(req, (err, fields, files) => {
           if (err) reject(err);
-          if (Array.isArray(files.imagem)) reject("Várias imagens não suportadas");
-          const {
-            preco_padrao,
-            nome,
-            disponivel,
-            descricao,
-            tamanho,
-            qtde_max_sabor,
-            id_categoria,
-            id_desconto,
-          } = fields;
+          if (Array.isArray(files.imagem)) reject("Várias imagens não são suportadas");
+          const createProductArg: CreateProductArg = fields as CreateProductArg;
+          const createProduct = new CreateProduct(createProductArg, files.imagem as FormidableFile);
 
-          const binUUID = UUIDParse.createBinUUID();
-          const stringUUID = UUIDParse.getStringUUID(binUUID);
-
-          let imageHelper: ImageHandler | undefined;
-          if (files.imagem) {
-            imageHelper = new ImageHandler(files.imagem as FormidableFile);
-            const moved = imageHelper.moveToPublic(stringUUID);
-            if (!moved) throw new Error("Erro na criação da imagem");
-          }
-
-          ProductRepo.create({
-            nome: String(nome),
-            tamanho: String(tamanho),
-            qtde_max_sabor: Number(qtde_max_sabor) || null,
-            id_categoria: Number(id_categoria),
-            id_desconto: Number(id_desconto) || null,
-            disponivel: Boolean(disponivel),
-            descricao: String(descricao) || null,
-            preco_padrao: Number(preco_padrao),
-            uuid: binUUID,
-            nome_imagem: imageHelper ? imageHelper.getFileName(stringUUID) : null,
-          })
+          createProduct
+            .exec()
             .then((data) => resolve(data))
             .catch((err) => reject(err));
         });

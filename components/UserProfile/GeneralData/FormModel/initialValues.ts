@@ -1,7 +1,8 @@
-import { GeneralDataValues } from "./index";
-import { UserGeneralData } from "@models/usuario";
 import { formatPhoneNumber } from "@utils/formatters";
 import { getFormatedDate } from "@utils/transformation";
+
+import type { GeneralDataValues } from "./index";
+import type { UserGeneralData } from "@models/usuario";
 
 function getFormatedPhoneNumber(values: UserGeneralData) {
   const stringPhoneNumber = `${values.telefone.ddd}${values.telefone.numero}`;

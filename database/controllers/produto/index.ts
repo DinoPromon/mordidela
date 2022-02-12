@@ -1,2 +1,4 @@
-export { findManyRelatedProducts } from "./select/related-products";
-export { getProdutoById, getImagemProdutoById, getTamanhoProdutoById } from "./select";
+export { CreateProduct } from "./createProduct";
+export { findManyRelatedProducts } from "./findManyRelatedProducts";
+
+export type { CreateProductArg } from "./createProduct";

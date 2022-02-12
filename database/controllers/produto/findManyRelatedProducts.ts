@@ -1,6 +1,5 @@
 import { Prisma } from "database";
-import { RelatedProduct } from "@models/produto";
-import { ProductDiscount } from "@models/produto";
+import type { ProductDiscount } from "@models/produto";
 
 function getProductDiscount(discount: ProductDiscount | null) {
   if (discount) {

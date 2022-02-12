@@ -6,7 +6,7 @@ export class UUIDParse {
   }
 
   public static createBinUUID() {
-    return UUIDParse.getBinUUID(UUIDParse.createStringUUID());
+    return UUIDParse.getBinUUID(this.createStringUUID());
   }
 
   public static getBinUUID(uuid: string) {

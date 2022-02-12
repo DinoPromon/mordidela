@@ -6,16 +6,11 @@ import { Formik, Form } from "formik";
 import { getGeneralDataArg } from "./Submit";
 import { ERROR_RED } from "@utils/colors";
 import { maskDate } from "@utils/formatters";
-import { MyUser } from "@my-types/next-auth";
-import { RequestState } from "@my-types/request";
-import { SetFieldValue } from "@my-types/formik";
-import { UserGeneralData } from "@models/usuario";
 import { PageContainer } from "@components/shared";
 import { phoneNumberChangeHandler } from "@utils/formatters";
 import { CustomTextField, InputTextFormik } from "@components/shared";
 import { ErrorMessage, SuccessMessage } from "@components/shared/StyledComponents";
 import {
-  GeneralDataValues,
   getGeneralDataFormModel,
   getGeneralDataInitialValues,
   getGeneralDataValidationSchema,
@@ -26,7 +21,13 @@ import {
   GeneralDataContainer,
   CustomTextFieldSmallerContainer,
 } from "./styled";
-import { AxiosError } from "axios";
+
+import type { AxiosError } from "axios";
+import type { MyUser } from "@my-types/next-auth";
+import type { GeneralDataValues } from "./FormModel";
+import type { SetFieldValue } from "@my-types/formik";
+import type { RequestState } from "@my-types/request";
+import type { UserGeneralData } from "@models/usuario";
 
 type GeneralDataProps = {
   user: MyUser;
