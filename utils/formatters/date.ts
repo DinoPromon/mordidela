@@ -9,8 +9,6 @@ export function formatDateInput(date: string) {
     return value.replace(/\D/g, "");
   });
 
-  console.log(values);
-
   if (values[0]) values[0] = transformDayOrMonth(values[0], 31);
   if (values[1]) values[1] = transformDayOrMonth(values[1], 12);
 

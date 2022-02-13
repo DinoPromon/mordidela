@@ -22,7 +22,6 @@ const Home: React.FC = () => {
 
   async function fetchTest(isComponentMounted: boolean) {
     const response = await Axios.get<string[]>("/teste");
-    console.log(response.data);
     if (isComponentMounted) setTestes(response.data.map((uuid) => ({ uuid } as Teste)));
   }
 

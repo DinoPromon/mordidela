@@ -14,7 +14,6 @@ export class ImageHandler {
     if (!this.file.originalFilename) return null;
 
     const splittedName = this.file.originalFilename.split(".");
-    console.log(splittedName);
     const extension = splittedName[splittedName.length - 1];
 
     return extension;

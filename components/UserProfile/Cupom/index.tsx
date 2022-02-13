@@ -2,17 +2,17 @@ import React from "react";
 import { PINK } from "@utils/colors";
 import { MyUser } from "@my-types/next-auth";
 import { RiCoupon3Line } from "react-icons/ri";
-import { RelatedUserCupomReq } from "@models/cupom";
 import { PageContainer, PageTitle } from "@components/shared";
 import { CupomContainer, CupomDataContainer, CupomTitle, CupomData } from "./styled";
 
+import type { RelatedUserCoupon } from "@models/cupom";
+
 type CouponsProps = {
   user: MyUser;
-  relatedCoupons: RelatedUserCupomReq;
+  relatedCoupons: RelatedUserCoupon;
 };
 
 const Coupons: React.FC<CouponsProps> = ({ user, relatedCoupons }) => {
-  console.log(relatedCoupons);
   return (
     <PageContainer>
       <PageTitle>Cupons</PageTitle>

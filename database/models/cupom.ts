@@ -20,7 +20,7 @@ interface ICupom {
   fidelidade: boolean;
 }
 
-export interface RelatedUserCupom extends IUsuarioCupom {
+export interface RelatedUserCoupon extends IUsuarioCupom {
   pedido: IPedido | null;
   cupom: ICupom;
 }
