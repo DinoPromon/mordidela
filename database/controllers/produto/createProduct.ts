@@ -78,7 +78,7 @@ export class CreateProduct {
       descricao: this.product.descricao ? String(this.product.descricao) : null,
       disponivel: this.getParsedDisponivel(),
       preco_padrao: Number(this.product.preco_padrao),
-      tamanho: String(this.product.tamanho),
+      tamanho: this.product.tamanho ? String(this.product.tamanho) : null,
       id_desconto: this.product.id_desconto ? Number(this.product.id_desconto) : null,
       id_categoria: Number(this.product.id_categoria),
     };

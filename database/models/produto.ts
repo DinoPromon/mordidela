@@ -12,7 +12,7 @@ interface IProduto {
   nome: string;
   disponivel: boolean;
   descricao: string | null;
-  tamanho: string;
+  tamanho: string | null;
   qtde_max_sabor: number | null;
   id_categoria: ICategoria["id_categoria"];
   id_desconto: IDesconto["id_desconto"] | null;
