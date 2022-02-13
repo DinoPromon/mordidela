@@ -1,10 +1,9 @@
-import IUsuarioCupom from "@models/usuario_cupom";
 import { Prisma } from "@database";
 import { DateOwner } from "database/helpers/date";
-import { createDate } from "@utils/transformation/date";
 
 import type ICupom from "@models/cupom";
 import type IPedido from "@models/pedido";
+import type IUsuarioCupom from "@models/usuario_cupom";
 
 type RelatedCoupon = IUsuarioCupom & {
   cupom: ICupom;
