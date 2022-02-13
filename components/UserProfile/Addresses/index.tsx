@@ -1,5 +1,5 @@
 import React from "react";
-import { CustomTextField, InputTextFormik, PageContainer, PageTitle } from "@components/shared";
+import { CustomTextField, PageContainer, PageTitle } from "@components/shared";
 import {
   AddressesInputContainer,
   CustomInputsDesign,
@@ -8,9 +8,10 @@ import {
   AddresData,
   AddresIcons,
 } from "./styled";
-import { FaPlusCircle, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { PINK, PURPLE } from "@utils/colors";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
 import { BsPencil } from "react-icons/bs/index";
 
@@ -42,8 +43,16 @@ const Addresses: React.FC = (props) => {
             <p>Complemento: </p>
           </AddresData>
           <AddresIcons>
-            <BsPencil size={20} color={PURPLE} />
-            <FaTrash size={20} color={PURPLE} />
+            <Tooltip title="Editar endereço" placement="bottom">
+              <span>
+                <BsPencil size={20} color={PURPLE} />
+              </span>
+            </Tooltip>
+            <Tooltip title="Excluir endereço" placement="bottom">
+              <span>
+                <FaTrash size={20} color={PURPLE} />
+              </span>
+            </Tooltip>
           </AddresIcons>
         </ShowAddress>
 
@@ -53,11 +62,19 @@ const Addresses: React.FC = (props) => {
           </span>
           <AddresData>
             <p>Rua dos Alfeneiros Nº 4, Little Whinging</p>
-            <p>Complemento: Em frente ao supermercado Muffato</p>
+            <p>Complemento: </p>
           </AddresData>
           <AddresIcons>
-            <BsPencil size={20} color={PURPLE} />
-            <FaTrash size={20} color={PURPLE} />
+            <Tooltip title="Editar endereço" placement="bottom">
+              <span>
+                <BsPencil size={20} color={PURPLE} />
+              </span>
+            </Tooltip>
+            <Tooltip title="Excluir endereço" placement="bottom">
+              <span>
+                <FaTrash size={20} color={PURPLE} />
+              </span>
+            </Tooltip>
           </AddresIcons>
         </ShowAddress>
       </AddressContainer>
