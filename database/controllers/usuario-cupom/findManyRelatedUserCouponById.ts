@@ -1,6 +1,6 @@
 import IUsuarioCupom from "@models/usuario_cupom";
 import { Prisma } from "@database";
-import { RelatedUserCupomReq } from "@models/cupom";
+import { DateOwner } from "database/helpers/date";
 import { createDate } from "@utils/transformation/date";
 
 import type ICupom from "@models/cupom";
@@ -11,10 +11,11 @@ type RelatedCoupon = IUsuarioCupom & {
   pedido: IPedido | null;
 };
 
-export class FindManyRelatedUserCouponByUserId {
+export class FindManyRelatedUserCouponByUserId extends DateOwner {
   private userId: IUsuarioCupom["id_usuario"];
 
   constructor(userId: IUsuarioCupom["id_usuario"]) {
+    super();
     this.userId = userId;
   }
 
@@ -29,14 +30,6 @@ export class FindManyRelatedUserCouponByUserId {
     }));
 
     return relatedCouponsDateSerialized;
-  }
-
-  private getSerializedDate(date: Date | number | string | null) {
-    if (date) {
-      const newDate = createDate(date);
-      return newDate.getTime();
-    }
-    return null;
   }
 
   private getSerializedOrder(order: IPedido) {
