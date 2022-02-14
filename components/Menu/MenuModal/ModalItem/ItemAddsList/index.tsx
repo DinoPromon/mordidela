@@ -38,7 +38,7 @@ const ItemAddsList: React.FC<Props> = (props) => {
     <ItemAddsListContainer>
       <h3>Adicionais</h3>
       {items.map((add) => (
-        <AddOptionContainer key={add.id_adicional}>
+        <AddOptionContainer key={`add-${add.id_adicional}`}>
           <InputCheckbox
             id={`add-option-${add.id_adicional}`}
             value={add.preco}
