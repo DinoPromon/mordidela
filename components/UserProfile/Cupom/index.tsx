@@ -13,6 +13,8 @@ type CouponsProps = {
 };
 
 const Coupons: React.FC<CouponsProps> = ({ user, relatedCoupons }) => {
+  console.log(relatedCoupons);
+
   return (
     <PageContainer>
       <PageTitle>Cupons</PageTitle>
