@@ -1,10 +1,11 @@
 import React from "react";
 
-import { ItemFlavorListContainer } from "./styled";
-import FlavorOption from "./FlavorOption";
+import { ItemFlavorListContainer, FlavorOptionContainer } from "./styled";
+import { InputCheckbox } from "@components/shared";
 
 import type ISabor from "@models/sabor";
 import type IProduto from "@models/produto";
+import { getSaborById } from "@controllers/sabor";
 
 type Props = {
   items: ISabor[];
@@ -37,13 +38,16 @@ const ItemFlavorsList: React.FC<Props> = (props) => {
     <ItemFlavorListContainer>
       <h3>Escolha até {maxFlavor} sabores</h3>
       {items.map((sabor) => (
-        <FlavorOption
-          key={`sabor-${sabor.id_sabor}`}
-          label={sabor.nome}
-          name={`input-${sabor.nome}`}
-          flavorId={sabor.id_sabor}
-          onChange={changeHandler}
-        />
+        <FlavorOptionContainer key={`flavor-${sabor.id_sabor}`}>
+          <InputCheckbox
+            id={`flavor-option-${sabor.id_sabor}`}
+            name={`input-${sabor.id_sabor}`}
+            onChange={changeHandler}
+            value={sabor.id_sabor}
+          >
+            {sabor.nome}
+          </InputCheckbox>
+        </FlavorOptionContainer>
       ))}
     </ItemFlavorListContainer>
   );
