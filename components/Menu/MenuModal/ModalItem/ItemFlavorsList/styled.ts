@@ -54,3 +54,8 @@ export const ItemFlavorListContainer = styled.ul`
     }
   }
 `;
+
+export const FlavorOptionContainer = styled.li`
+  display: flex;
+`;
+
