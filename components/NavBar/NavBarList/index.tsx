@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Cart from "@components/Cart";
 import ProfileDropdown from "./ProfileDropdown";
 import { FaBars, FaShoppingCart } from "react-icons/fa/index";
 import { NavBarListContainer, NavBarListItem } from "./styled";
+import Badge from "@material-ui/core/Badge";
+import { CartContext } from "@store/cart";
 
 type Props = {
   setShowSideBar: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const NavBarList: React.FC<Props> = (props) => {
+  const { products } = useContext(CartContext);
+
   const [showModal, setShowModal] = useState(false);
 
   const openSideBar = () => {
@@ -30,7 +34,9 @@ const NavBarList: React.FC<Props> = (props) => {
         <FaBars size={24} color="white" />
       </NavBarListItem>
       <NavBarListItem className="float-right">
-        <FaShoppingCart size={24} color="white" onClick={openModalHandler} />
+        <Badge badgeContent={products.length} color="primary">
+          <FaShoppingCart size={24} color="white" onClick={openModalHandler} />
+        </Badge>
       </NavBarListItem>
       <NavBarListItem className="float-right">
         <ProfileDropdown />
