@@ -9,7 +9,7 @@ type Props = {
   productKey: string;
   quantity: number;
   productName: string;
-  productSize: string;
+  productSize: string | null;
   standard_price: number;
 };
 
