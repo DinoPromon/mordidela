@@ -62,4 +62,8 @@ export const AddresIcons = styled.div`
   gap: 1rem;
   margin-left: auto;
   align-items: center;
+
+  & > span {
+    cursor: pointer;
+  }
 `;

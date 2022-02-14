@@ -1,5 +1,6 @@
 import React from "react";
 import type { ReactElement } from "react";
+import Orders from "@components/UserProfile/Orders";
 
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
@@ -14,7 +15,7 @@ type Props = {
 
 const OrdersPage: NextPageWithLayout<Props> = (props) => {
   const { nome, id_usuario } = props.user;
-  return <div>Pedidos</div>;
+  return <Orders></Orders>;
 };
 
 OrdersPage.getLayout = function getLayout(page: ReactElement) {
