@@ -17,6 +17,7 @@ import {
 import type { CartFormValues } from "../FormModel";
 import type { AddressOnCart } from "@models/endereco";
 
+
 type CartAddressProps = {
   isLoadingAddress: boolean;
   addresses: AddressOnCart[];
@@ -79,8 +80,8 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress }
               ))}
           </RadioGroup>
           <CartAddAddress>
-            <FaPlusCircle size={14} color={PURPLE} />
-            <p>Adicionar endereço</p>
+              <FaPlusCircle size={14} color={PURPLE} />
+              <p>Adicionar endereço</p>
           </CartAddAddress>
         </Fragment>
       )}

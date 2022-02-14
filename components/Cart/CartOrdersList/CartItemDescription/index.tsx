@@ -28,10 +28,14 @@ const CartItemDescription: React.FC<Props> = ({
 
   return (
     <CartItemDescriptionContainer>
-      <span>{quantity}x</span>
-      <p>
-        {productName} - {productSize}
-      </p>
+      <span>{quantity}x</span>{" "}
+      {productSize !== null ? (
+        <p>
+          {productName} - {productSize}
+        </p>
+      ) : (
+        <p>{productName}</p>
+      )}
       <TrashPriceContainer>
         <FaTrash
           cursor="pointer"

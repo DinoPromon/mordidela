@@ -5,7 +5,6 @@ export const CartCupomContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding-top: 0.5rem;
   gap: 0.5rem;
 `;
 
@@ -16,4 +15,5 @@ export const CartCupomInput = styled.input`
   border: 1px ${PURPLE} solid;
   width: clamp(200px, 350px, 100%);
   outline: none;
+  font-size: 1rem;
 `;

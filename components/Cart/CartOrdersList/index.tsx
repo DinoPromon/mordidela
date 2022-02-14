@@ -17,7 +17,7 @@ const CartOrdersList: React.FC<Props> = (props) => {
       if (index < product.flavors.length - 1) {
         return (string += `${cur.nome}, `);
       }
-      return (string += `${cur.nome}.`);
+      return (string += `${cur.nome}`);
     }, "");
 
     return flavorsString;

@@ -39,7 +39,7 @@ const CartLoggedOptions: React.FC<Props> = ({
   const [formError, setFormError] = useState("");
 
   const isDelivery = values.delivery_type === TipoEntrega.ENTREGA;
-  const shouldShowDeliveryPrice = isDelivery && values.cupom?.tipo_cupom !== TipoCupom.PEDIDO;
+  const shouldShowDeliveryPrice = isDelivery && values.cupom?.tipo_cupom !== TipoCupom.ENTREGA;
   const shouldShowDiscount = Boolean(values.cupom?.id_cupom);
 
   function getTotalPrice() {
@@ -47,7 +47,7 @@ const CartLoggedOptions: React.FC<Props> = ({
       if (values.cupom === null) {
         return subTotalPrice + values.delivery_price;
       }
-      if (values.cupom?.tipo_cupom === TipoCupom.PEDIDO) {
+      if (values.cupom?.tipo_cupom === TipoCupom.ENTREGA) {
         return subTotalPrice;
       }
       return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100 + values.delivery_price;
