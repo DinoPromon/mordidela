@@ -1,10 +1,17 @@
 import { PINK } from "@utils/colors";
 import styled from "styled-components";
-import CustomLabel from "../CustomLabel";
 
 export const ItemFlavorListContainer = styled.ul`
   & > label {
-    ${CustomLabel}
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    padding-left: 25px;
+    text-align: left;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
     & > input {
       position: absolute;

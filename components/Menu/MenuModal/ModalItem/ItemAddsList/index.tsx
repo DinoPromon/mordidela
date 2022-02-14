@@ -1,7 +1,7 @@
 import React from "react";
-
-import { ItemAddsListContainer } from "./styled";
-import AddOption from "./AddOption";
+import { InputCheckbox } from "@components/shared";
+import { transformPriceToString } from "@utils/transformation";
+import { ItemAddsListContainer, AddOptionContainer } from "./styled";
 import type IAdicional from "@models/adicional";
 
 type Props = {
@@ -38,14 +38,17 @@ const ItemAddsList: React.FC<Props> = (props) => {
     <ItemAddsListContainer>
       <h3>Adicionais</h3>
       {items.map((add) => (
-        <AddOption
-          key={`add-${add.id_adicional}`}
-          addId={add.id_adicional}
-          label={add.nome}
-          name={`input-${add.id_adicional}`}
-          price={add.preco}
-          onChange={changePrice}
-        />
+        <AddOptionContainer key={add.id_adicional}>
+          <InputCheckbox
+            id={`add-option-${add.id_adicional}`}
+            value={add.preco}
+            name={`input-${add.id_adicional}`}
+            onChange={changePrice}
+          >
+            {add.nome}
+            <p>R$ {transformPriceToString(add.preco)}</p>
+          </InputCheckbox>
+        </AddOptionContainer>
       ))}
     </ItemAddsListContainer>
   );
