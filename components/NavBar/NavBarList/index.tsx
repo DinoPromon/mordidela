@@ -15,17 +15,22 @@ const NavBarList: React.FC<Props> = (props) => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const openSideBar = () => {
+  function itemCountQuantity() {
+    const count = products.reduce((acc, product) => (acc += product.quantity), 0);
+    return count;
+  }
+
+  function openSideBar() {
     props.setShowSideBar(true);
-  };
+  }
 
-  const closeModalHandler = () => {
+  function closeModalHandler() {
     setShowModal(false);
-  };
+  }
 
-  const openModalHandler = () => {
+  function openModalHandler() {
     setShowModal(true);
-  };
+  }
 
   return (
     <NavBarListContainer>
@@ -34,7 +39,7 @@ const NavBarList: React.FC<Props> = (props) => {
         <FaBars size={24} color="white" />
       </NavBarListItem>
       <NavBarListItem className="float-right">
-        <Badge badgeContent={products.length} color="primary">
+        <Badge badgeContent={itemCountQuantity()} color="primary">
           <FaShoppingCart size={24} color="white" onClick={openModalHandler} />
         </Badge>
       </NavBarListItem>

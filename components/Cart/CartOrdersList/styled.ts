@@ -17,15 +17,16 @@ export const CartOrderAddsContainer = styled.div`
 `;
 
 export const CartOrderAddsText = styled.p`
-  position: relative;
+  display: flex;
   width: 100%;
   font-size: inherit;
+  gap: 0.25rem;
 
   & > span {
     font-weight: bold;
     font-size: inherit;
     color: ${PURPLE};
-    position: absolute;
-    right: 0;
+    margin-left: auto;
+    flex-shrink: 0;
   }
 `;

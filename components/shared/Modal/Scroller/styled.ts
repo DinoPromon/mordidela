@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   overflow-y: auto;
-  padding: 1.25rem;
+  padding: 1.25rem 1.5rem;
   max-height: 90vh;
   scroll-behavior: smooth;
   scrollbar-color: #c9bfd1 transparent;

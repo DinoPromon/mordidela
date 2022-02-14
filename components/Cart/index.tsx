@@ -191,9 +191,11 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                       {session && <CartDeliveryType />}
 
-                      <CustomFade triggerAnimation={values.delivery_type === TipoEntrega.ENTREGA}>
-                        <CartAddress addresses={addresses} isLoadingAddress={isLoadingAddress} />
-                      </CustomFade>
+                      {values.delivery_type === TipoEntrega.ENTREGA && (
+                        <CustomFade triggerAnimation={values.delivery_type === TipoEntrega.ENTREGA}>
+                          <CartAddress addresses={addresses} isLoadingAddress={isLoadingAddress} />
+                        </CustomFade>
+                      )}
 
                       <CartOrdersList products={products} />
                       <CartFormSubtotalText>
