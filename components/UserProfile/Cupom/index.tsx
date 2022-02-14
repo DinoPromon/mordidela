@@ -5,15 +5,25 @@ import { RiCoupon3Line } from "react-icons/ri";
 import { PageContainer, PageTitle } from "@components/shared";
 import { CupomContainer, CupomDataContainer, CupomTitle, CupomData } from "./styled";
 
-import type { RelatedUserCoupon } from "@models/cupom";
+import { RelatedUserCoupon, TipoCupom } from "@models/cupom";
 
 type CouponsProps = {
   user: MyUser;
-  relatedCoupons: RelatedUserCoupon;
+  relatedCoupons: RelatedUserCoupon[];
 };
 
 const Coupons: React.FC<CouponsProps> = ({ user, relatedCoupons }) => {
   console.log(relatedCoupons);
+
+  const usedCoupons = relatedCoupons.filter(
+    (relatedCoupon) => Boolean(relatedCoupon.pedido) && relatedCoupon.foi_usado
+  );
+
+  function getCouponDiscountText(coupon: RelatedUserCoupon["cupom"]) {
+    if (coupon.tipo === TipoCupom.ENTREGA) return "Frete grátis";
+
+    return `${coupon.valor_desconto}% de desconto`;
+  }
 
   return (
     <PageContainer>
@@ -35,20 +45,17 @@ const Coupons: React.FC<CouponsProps> = ({ user, relatedCoupons }) => {
           </CupomData>
         </CupomDataContainer>
         <CupomTitle>Cupons já utilizados</CupomTitle>
-        <CupomDataContainer>
-          <RiCoupon3Line size={40} color={PINK} />
-          <CupomData>
-            <p>ABCDEFGHIJKLMNOPQRST - 15% de desconto</p>
-            <span>Utilizado no pedido Nº 587</span>
-          </CupomData>
-        </CupomDataContainer>
-        <CupomDataContainer>
-          <RiCoupon3Line size={40} color={PINK} />
-          <CupomData>
-            <p>ABCDEFGHIJKLMNOPQRST - Frete grátis</p>
-            <span>Utilizado no pedido Nº 23494</span>
-          </CupomData>
-        </CupomDataContainer>
+        {usedCoupons.map((usedCoupon) => (
+          <CupomDataContainer key={`coupon-${usedCoupon.id_usuario_cupom}`}>
+            <RiCoupon3Line size={40} color={PINK} />
+            <CupomData>
+              <p>
+                {usedCoupon.cupom.codigo} - {getCouponDiscountText(usedCoupon.cupom)}
+              </p>
+              <span>Utilizado no pedido Nº {usedCoupon.pedido?.id_pedido}</span>
+            </CupomData>
+          </CupomDataContainer>
+        ))}
       </CupomContainer>
     </PageContainer>
   );
