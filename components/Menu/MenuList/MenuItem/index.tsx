@@ -19,8 +19,6 @@ const MenuItem: React.FC<Props> = ({ item, onClick }) => {
     item.nome_imagem ? `${prefixImg}/${item.nome_imagem}` : imgFallback
   );
 
-  console.log(item.nome_imagem);
-
   const menuItemClickHandler = () => {
     if (imageSrc) onClick(item);
   };
