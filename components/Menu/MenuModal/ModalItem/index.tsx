@@ -112,9 +112,14 @@ const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
 
   return (
     <ModalItemContainer onSubmit={submitHandler}>
-      <h2>
-        {item.nome} - {item.tamanho}
-      </h2>
+      {" "}
+      {item.tamanho !== null ? (
+        <h2>
+          {item.nome} - {item.tamanho}
+        </h2>
+      ) : (
+        <h2>{item.nome}</h2>
+      )}
       <ItemImage src={getProductImagePath(item.nome_imagem)} alt={item.nome} />
       <p>{item.descricao}</p>
       {item.sabores.length > 0 && (
