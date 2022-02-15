@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useComponentVisible from "@hooks/useComponenteVisible";
-import Wrapper from "./styled";
-import Scroller from "./Scroller";
+import { ScrollContainer, ModalContainer, CloseModalButton } from "./styled";
 
 type Props = {
   onClose: () => void;
 };
 
 const Modal: React.FC<Props> = ({ onClose, children }) => {
-  const [offsetY, setOffsetY] = useState(window.scrollY);
+  // const [offsetY, setOffsetY] = useState(window.scrollY);
   const { ref: modalRef, isComponentVisible, setIsComponentVisible } = useComponentVisible(true);
 
   const duration = 400;
@@ -25,19 +24,19 @@ const Modal: React.FC<Props> = ({ onClose, children }) => {
         return () => clearTimeout(timer);
       }, duration + 100);
     }
-  }, [isComponentVisible, offsetY, onClose]);
+  }, [isComponentVisible, onClose]);
 
   return (
-    <Wrapper
+    <ModalContainer
       isCloseAnimation={!isComponentVisible}
       duration={duration}
       shouldShowComponent={isComponentVisible}
     >
       <div ref={modalRef as React.Ref<HTMLDivElement>} id="modal-content-container">
-        <span onClick={buttonCloseHandler}>&times;</span>
-        <Scroller>{children}</Scroller>
+        <CloseModalButton onClick={buttonCloseHandler}>&times;</CloseModalButton>
+        <ScrollContainer>{children}</ScrollContainer>
       </div>
-    </Wrapper>
+    </ModalContainer>
   );
 };
 
