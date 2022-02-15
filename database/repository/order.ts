@@ -28,7 +28,7 @@ export class OrderRepo {
     return ordersCount;
   }
 
-  public static async createOrder(cartOrder: CartPedido) {
+  public static async create(cartOrder: CartPedido) {
     const { id_cupom, id_endereco, id_usuario, tipo_entrega, tipo_pagamento, troco_para } =
       cartOrder;
     const cupom = id_cupom ? await CupomRepo.findByCupomId(id_cupom) : null;

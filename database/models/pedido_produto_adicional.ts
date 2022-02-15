@@ -6,6 +6,7 @@ interface IPedidoProdutoAdicional {
   id_pedido: IPedido["id_pedido"];
   id_produto: Produto["id_produto"];
   id_adicional: IAdicional["id_adicional"];
+  preco_adicional: number;
 }
 
 export default IPedidoProdutoAdicional;
