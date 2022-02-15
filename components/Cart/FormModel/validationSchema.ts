@@ -24,16 +24,26 @@ export const useCartFormValidationSchema = (subTotalPrice: number) => {
           return yup.string().nullable().required("Informe a necessidade de troco");
         return yup.string().nullable();
       }),
-    payment_amount: yup.string().when(["needChange", "payment_type"], {
+    payment_amount: yup.string().when(["needChange", "payment_type", "delivery_price"], {
       is: (needChange: string, paymentType: string) => {
         if (paymentType === "dinheiro" && needChange === "true") return true;
         return false;
       },
-      then: yup.string().test("payment_amount", "Valor insuficiente", (value) => {
+      then: yup.string().test("payment_amount", "Valor insuficiente", (value, context) => {
         const payment_amount = value || "";
-        console.log(payment_amount);
+        const cupom = context.parent.cupom;
+        if (cupom) {
+          const paymentAmountAsNumber = transformPriceStringToNumber(payment_amount);
+          if (
+            paymentAmountAsNumber <
+            context.parent.delivery_price + ((100 - cupom.valor_desconto) * subTotalPrice) / 100
+          ) {
+            return false;
+          }
+          return true;
+        }
         const paymentAmountAsNumber = transformPriceStringToNumber(payment_amount);
-        if (paymentAmountAsNumber < Number(order.delivery_price) + subTotalPrice) return false;
+        if (paymentAmountAsNumber < context.parent.delivery_price + subTotalPrice) return false;
         return true;
       }),
     }),
