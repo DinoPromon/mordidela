@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 
-import { ModalItemContainer } from "./styled";
+import { ModalItemContainer, MenuItemActionsContainer, ItemPrice } from "./styled";
 import ItemImage from "./ItemImage";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
 import { CartContext } from "@store/cart";
-import { FormButton } from "@components/shared";
+import { CustomTextField, FormButton } from "@components/shared";
 import { getProductImagePath } from "@utils/images";
 import { formatProductId } from "@utils/formatters";
 import { transformPriceToString } from "@utils/transformation";
@@ -139,18 +139,20 @@ const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
           onRemoveAditional={removeAditional}
         />
       )}
-      <textarea
+      <CustomTextField
+        variant="outlined"
         name="observacao"
-        placeholder="Alguma observação?"
-        rows={2}
+        label="Observação"
+        multiline
         onBlur={noteBlurHandler}
       />
-      <div>
+      <MenuItemActionsContainer>
         <ItemCounter quantity={productOrder.quantity} setQuantity={changeQuantity} />
+        <ItemPrice>R$ {transformPriceToString(price * productOrder.quantity)}</ItemPrice>
         <FormButton type="submit" disabled={!canSubmit}>
-          Adicionar - R${transformPriceToString(price * productOrder.quantity)}
+          Adicionar
         </FormButton>
-      </div>
+      </MenuItemActionsContainer>
     </ModalItemContainer>
   );
 };

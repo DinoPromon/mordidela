@@ -9,6 +9,7 @@ type Props = {
 const CustomButton = styled.button<Props>`
 	border: none;
 	font-size: 1rem;
+	font-weight: 500;
 	border-radius: 5px;
 	background-color: ${props => props.isDisabled ? "transparent" : PINK};
 	color: ${props => props.isDisabled ? PINK : "white"};

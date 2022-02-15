@@ -28,5 +28,6 @@ export const ItemDescriptionContainer = styled.div`
     font-size: 1rem;
     font-weight: 500;
     padding: 0 0.25rem;
+    text-transform: capitalize;
   }
 `;

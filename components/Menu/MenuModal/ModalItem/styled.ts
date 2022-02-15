@@ -45,12 +45,18 @@ export const ModalItemContainer = styled.form`
     outline: none;
     resize: none;
   }
+`;
 
-  & > div:last-child {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: 1rem;
-    align-items: center;
-  }
+export const MenuItemActionsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 1rem;
+  align-items: center;
+`;
+
+export const ItemPrice = styled.p`
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${PURPLE};
 `;
