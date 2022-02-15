@@ -84,30 +84,26 @@ const CartLoggedOptions: React.FC<Props> = ({
         </CartFormSubtotalText>
       </CustomFade>
 
-      {!Boolean(values.cupom) && (
-        <CustomFade triggerAnimation={!Boolean(values.cupom)}>
-          <CartCupom onChangeRequestStatus={onChangeRequestStatus} />
-        </CustomFade>
-      )}
+      <CustomFade triggerAnimation={!Boolean(values.cupom)}>
+        <CartCupom onChangeRequestStatus={onChangeRequestStatus} />
+      </CustomFade>
 
-      {shouldShowDiscount && (
-        <CustomFade triggerAnimation={shouldShowDiscount}>
-          <CartCoupomDataContainer>
-            <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
-            <CartCupomColorfulText>
-              Cupom: <span>{values.cupom?.codigo_cupom}</span>
-            </CartCupomColorfulText>
-            <CartCupomColorfulText>
-              Desconto:{" "}
-              {values.cupom?.tipo_cupom === TipoCupom.ENTREGA ? (
-                <span> Frete grátis</span>
-              ) : (
-                <span>{values.cupom?.valor_desconto}%</span>
-              )}
-            </CartCupomColorfulText>
-          </CartCoupomDataContainer>
-        </CustomFade>
-      )}
+      <CustomFade triggerAnimation={shouldShowDiscount}>
+        <CartCoupomDataContainer>
+          <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
+          <CartCupomColorfulText>
+            Cupom: <span>{values.cupom?.codigo_cupom}</span>
+          </CartCupomColorfulText>
+          <CartCupomColorfulText>
+            Desconto:{" "}
+            {values.cupom?.tipo_cupom === TipoCupom.ENTREGA ? (
+              <span> Frete grátis</span>
+            ) : (
+              <span>{values.cupom?.valor_desconto}%</span>
+            )}
+          </CartCupomColorfulText>
+        </CartCoupomDataContainer>
+      </CustomFade>
 
       <CartPayment />
       <CartFormTotalText>

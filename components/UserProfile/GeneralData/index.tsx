@@ -6,7 +6,7 @@ import { Formik, Form } from "formik";
 import { getGeneralDataArg } from "./Submit";
 import { ERROR_RED } from "@utils/colors";
 import { maskDate } from "@utils/formatters";
-import { PageContainer } from "@components/shared";
+import { PageContainer, PageTitle } from "@components/shared";
 import { phoneNumberChangeHandler } from "@utils/formatters";
 import { CustomTextField, InputTextFormik } from "@components/shared";
 import { ErrorMessage, SuccessMessage } from "@components/shared/StyledComponents";
@@ -17,7 +17,6 @@ import {
 } from "./FormModel";
 import {
   NumberOrders,
-  GeneralDataTitle,
   GeneralDataContainer,
   CustomTextFieldSmallerContainer,
 } from "./styled";
@@ -79,7 +78,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
 
   return (
     <PageContainer>
-      <GeneralDataTitle>Dados gerais</GeneralDataTitle>
+      <PageTitle>Dados gerais</PageTitle>
       <Formik
         validateOnBlur
         validateOnChange={false}

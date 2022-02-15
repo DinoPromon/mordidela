@@ -1,14 +1,6 @@
 import { PURPLE } from "@utils/colors";
 import styled from "styled-components";
 
-export const GeneralDataTitle = styled.h1`
-  display: flex;
-  font-size: 2.5rem;
-  margin: 1rem 0;
-  font-weight: bold;
-  color: ${PURPLE};
-`;
-
 export const GeneralDataContainer = styled.div`
   display: flex;
   justify-content: center;

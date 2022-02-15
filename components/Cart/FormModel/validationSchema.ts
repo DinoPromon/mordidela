@@ -31,6 +31,7 @@ export const useCartFormValidationSchema = (subTotalPrice: number) => {
       },
       then: yup.string().test("payment_amount", "Valor insuficiente", (value) => {
         const payment_amount = value || "";
+        console.log(payment_amount);
         const paymentAmountAsNumber = transformPriceStringToNumber(payment_amount);
         if (paymentAmountAsNumber < Number(order.delivery_price) + subTotalPrice) return false;
         return true;
