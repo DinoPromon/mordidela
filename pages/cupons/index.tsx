@@ -12,7 +12,7 @@ import type { NextPageWithLayout } from "@my-types/next-page";
 
 type Props = {
   user: MyUser;
-  relatedCoupons: RelatedUserCoupon;
+  relatedCoupons: RelatedUserCoupon[];
 };
 
 const GeneralDataPage: NextPageWithLayout<Props> = (props) => {

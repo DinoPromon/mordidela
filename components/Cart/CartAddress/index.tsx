@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from "react";
+import Link from "next/link";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Radio from "@material-ui/core/Radio";
@@ -20,9 +21,10 @@ import type { AddressOnCart } from "@models/endereco";
 type CartAddressProps = {
   isLoadingAddress: boolean;
   addresses: AddressOnCart[];
+  onCloseModal: () => void;
 };
 
-const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress }) => {
+const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, onCloseModal }) => {
   const { setFieldValue, values } = useFormikContext<CartFormValues>();
 
   function getFormatedAddress(address: AddressOnCart) {
@@ -78,10 +80,12 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress }
                 />
               ))}
           </RadioGroup>
-          <CartAddAddress>
-            <FaPlusCircle size={14} color={PURPLE} />
-            <p>Adicionar endereço</p>
-          </CartAddAddress>
+          <Link href={"/enderecos"}>
+            <CartAddAddress onClick={onCloseModal}>
+              <FaPlusCircle size={14} color={PURPLE} />
+              <p>Adicionar endereço</p>
+            </CartAddAddress>
+          </Link>
         </Fragment>
       )}
     </CartAddressContainer>

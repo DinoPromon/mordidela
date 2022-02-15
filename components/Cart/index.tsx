@@ -193,7 +193,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                       {values.delivery_type === TipoEntrega.ENTREGA && (
                         <CustomFade triggerAnimation={values.delivery_type === TipoEntrega.ENTREGA}>
-                          <CartAddress addresses={addresses} isLoadingAddress={isLoadingAddress} />
+                          <CartAddress onCloseModal={onCloseModal} addresses={addresses} isLoadingAddress={isLoadingAddress} />
                         </CustomFade>
                       )}
 

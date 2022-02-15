@@ -27,13 +27,12 @@ const MenuItem: React.FC<Props> = ({ item, onClick }) => {
     <MenuItemContainer onClick={menuItemClickHandler}>
       <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${item.nome}`} />
       <ItemDescriptionContainer>
-        {" "}
         {item.tamanho !== null ? (
           <span>
-            {item.nome.toLocaleLowerCase()} - {item.tamanho.toLocaleLowerCase()}
+            {item.nome} - {item.tamanho}
           </span>
         ) : (
-          <span>{item.nome.toLocaleLowerCase()}</span>
+          <span>{item.nome}</span>
         )}
         <span>R$ {transformPriceToString(item.preco_padrao)}</span>
       </ItemDescriptionContainer>
