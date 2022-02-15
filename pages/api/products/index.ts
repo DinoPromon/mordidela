@@ -20,7 +20,7 @@ export const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === ReqMethod.GET) {
     try {
-      const products = await ProductRepo.findMany();
+      const products = await ProductRepo.findAll();
       return res.status(200).json(products);
     } catch (e) {
       const error = e as Error;

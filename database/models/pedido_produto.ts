@@ -7,8 +7,6 @@ interface IPedidoProduto {
   quantidade: number;
   preco_pedido: number;
   observacao: string | null;
-};
-
-export type CartOrderProduct = Omit<IPedidoProduto, "preco_pedido">;
+}
 
 export default IPedidoProduto;

@@ -13,7 +13,6 @@ type CouponsProps = {
 };
 
 const Coupons: React.FC<CouponsProps> = ({ user, relatedCoupons }) => {
-  console.log(relatedCoupons);
 
   const usedCoupons = relatedCoupons.filter(
     (relatedCoupon) => Boolean(relatedCoupon.pedido) && relatedCoupon.foi_usado

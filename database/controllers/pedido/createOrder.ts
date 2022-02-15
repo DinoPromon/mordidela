@@ -7,6 +7,9 @@ import type IAdicional from "@models/adicional";
 import type { CartPedido } from "@models/pedido";
 import type { CartProduto } from "@models/produto";
 import { OrderProductFlavorRepo } from "@repository/order-product-flavor";
+import { OrderProductRepo } from "@repository/order-product";
+import { ProductRepo } from "@repository/product";
+import type IProduto from "@models/produto";
 
 export class CreateOrder {
   private orderData: CartPedido;
@@ -29,6 +32,12 @@ export class CreateOrder {
       const selectedAdds = allAdds.filter((add) =>
         product.adicionais.find((orderAddId) => orderAddId === add.id_adicional)
       );
+      await OrderProductRepo.create({
+        id_pedido: orderId,
+        id_produto: product.id_produto,
+        quantidade: product.quantidade,
+        observacao: product.observacao,
+      });
       await OrderProductAddRepo.createMany(orderId, product.id_produto, selectedAdds);
       await OrderProductFlavorRepo.createMany(orderId, product.id_produto, product.sabores);
     });

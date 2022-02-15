@@ -18,7 +18,7 @@ export class ProductRepo {
     return createdProduct;
   }
 
-  public static async findMany() {
+  public static async findAll() {
     const products = await Prisma.produto.findMany();
     const stringUUIDProducts: IProduto[] = products.map((product) => ({
       ...product,
