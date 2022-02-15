@@ -33,7 +33,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   } catch (e) {
     const error = e as Error;
-    console.log(error.message);
 
     return {
       props: {
