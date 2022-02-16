@@ -1,6 +1,8 @@
 import { Prisma } from "@database";
-import ICupom from "@models/cupom";
-import IUsuario from "@models/usuario";
+import type ICupom from "@models/cupom";
+import type IUsuario from "@models/usuario";
+import type IUsuarioCupom from "@models/usuario_cupom";
+import { createDate } from "@utils/transformation/date";
 
 export class UserCupomRepo {
   public static async findManyByUserIdAndCouponId(
@@ -15,5 +17,18 @@ export class UserCupomRepo {
     });
 
     return userCupom;
+  }
+
+  public static async create(
+    userCouponData: Omit<IUsuarioCupom, "id_usuario_cupom" | "data_obtencao">
+  ) {
+    const createdUserCoupon = await Prisma.usuario_cupom.create({
+      data: {
+        ...userCouponData,
+        data_uso: userCouponData.data_uso ? createDate(userCouponData.data_uso) : null,
+      },
+    });
+
+    return createdUserCoupon;
   }
 }

@@ -1,4 +1,5 @@
 import type ICupom from "./cupom";
+import type IPedido from "./pedido";
 import type IUsuario from "./usuario";
 
 interface IUsuarioCupom {
@@ -8,6 +9,7 @@ interface IUsuarioCupom {
   foi_usado: boolean;
   id_cupom: ICupom["id_cupom"];
   id_usuario: IUsuario["id_usuario"];
+  id_pedido: IPedido["id_pedido"];
 }
 
 export default IUsuarioCupom;
