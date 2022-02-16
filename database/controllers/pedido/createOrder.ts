@@ -1,13 +1,13 @@
 import { AddRepo } from "@repository/add";
 import { OrderRepo } from "@repository/order";
+import { OrderProductRepo } from "@repository/order-product";
 import { OrderProductAddRepo } from "@repository/order-product-add";
+import { OrderProductFlavorRepo } from "@repository/order-product-flavor";
 
 import type IPedido from "@models/pedido";
 import type IAdicional from "@models/adicional";
 import type { CartPedido } from "@models/pedido";
 import type { CartProduto } from "@models/produto";
-import { OrderProductFlavorRepo } from "@repository/order-product-flavor";
-import { OrderProductRepo } from "@repository/order-product";
 
 import IPedidoProduto from "@models/pedido_produto";
 
@@ -32,12 +32,12 @@ export class CreateOrder {
       const selectedAdds = allAdds.filter((add) =>
         product.adicionais.find((orderAddId) => orderAddId === add.id_adicional)
       );
-      const createdOrderProduct = (await OrderProductRepo.create({
-        id_pedido: orderId,
-        id_produto: product.id_produto,
-        quantidade: product.quantidade,
-        observacao: product.observacao,
-      })) as IPedidoProduto;
+      const createdOrderProduct = (await OrderProductRepo.create(
+        orderId,
+        product.id_produto,
+        product.quantidade,
+        product.observacao
+      )) as IPedidoProduto;
       await OrderProductAddRepo.createMany(
         createdOrderProduct.id_pedido_produto,
         orderId,
