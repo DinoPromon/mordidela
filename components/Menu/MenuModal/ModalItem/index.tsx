@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import { ModalItemContainer, MenuItemActionsContainer, ItemPrice } from "./styled";
+import { ModalItemContainer, MenuItemActionsContainer, ItemPrice, useStyles } from "./styled";
 import ItemImage from "./ItemImage";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
@@ -15,6 +15,7 @@ import type ISabor from "@models/sabor";
 import type IAdicional from "@models/adicional";
 import type { CartProduct } from "@my-types/context";
 import type { RelatedProduct } from "@models/produto";
+import { TextField } from "@material-ui/core";
 
 type Props = {
   item: RelatedProduct;
@@ -40,6 +41,8 @@ const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
   const canSubmit = item.sabores.length ? productOrder.flavors.length > 0 : true;
 
   const getProductKey = formatProductId.bind(null, item.nome, item.id_produto);
+
+  const classes = useStyles();
 
   function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -139,13 +142,17 @@ const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
           onRemoveAditional={removeAditional}
         />
       )}
-      <CustomTextField
+      <TextField
+        className={classes.root}
         variant="outlined"
         name="observacao"
-        label="Observação"
+        placeholder="Alguma observação?"
         multiline
         onBlur={noteBlurHandler}
-      />
+        fullWidth
+        inputProps={{style: {textAlign: "center"}}}
+        label="Observação"
+      ></TextField>
       <MenuItemActionsContainer>
         <ItemCounter quantity={productOrder.quantity} setQuantity={changeQuantity} />
         <ItemPrice>R$ {transformPriceToString(price * productOrder.quantity)}</ItemPrice>

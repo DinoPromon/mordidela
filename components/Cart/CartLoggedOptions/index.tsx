@@ -105,11 +105,9 @@ const CartLoggedOptions: React.FC<Props> = ({
           {values.cupom?.tipo_cupom === TipoCupom.PEDIDO && (
             <CartCupomColorfulText>
               Valor:{" "}
-              {values.cupom?.tipo_cupom === TipoCupom.PEDIDO && (
-                <span>
-                  R$ {transformPriceToString((values.cupom.valor_desconto * subTotalPrice) / 100)}
-                </span>
-              )}
+              <span>
+                R$ {transformPriceToString((values.cupom.valor_desconto * subTotalPrice) / 100)}
+              </span>
             </CartCupomColorfulText>
           )}
         </CartCoupomDataContainer>

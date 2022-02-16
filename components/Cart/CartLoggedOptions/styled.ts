@@ -30,11 +30,13 @@ export const CartCoupomDataContainer = styled.div`
   gap: 1rem;
   align-items: center;
   justify-content: flex-end;
+  flex-wrap: wrap;
 `;
 
 export const CartCupomColorfulText = styled.p`
   font-weight: bold;
   color: ${PINK};
+  flex-shrink: 0;
 
   & > span {
     color: ${PURPLE};
