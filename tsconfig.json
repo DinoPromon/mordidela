@@ -11,6 +11,7 @@
       "@store/*": ["store/*"],
       "@models/*": ["database/models/*"],
       "@api": ["api"],
+      "@errors/*": ["database/errors/*"],
       "@repository/*": ["database/repository/*"],
       "@database": ["database"],
     },
