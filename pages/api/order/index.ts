@@ -22,7 +22,7 @@ const handler: NextApiHandler = async (req, res) => {
           return res.status(403).json({ message: "Não pode inserir pedidos para outro usuário." });
         }
 
-        const createOrder = new CreateOrder(pedido, produtos);
+        const createOrder = new CreateOrder(session.user.id_usuario, pedido, produtos);
         const createdOrder = await createOrder.exec();
 
         return res.status(200).json(createdOrder);
