@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { ItemDescriptionContainer, MenuItemContainer } from "./styled";
 import ItemImage from "./ItemImage";
@@ -11,29 +11,25 @@ type Props = {
   item: RelatedProduct;
 };
 
-const imgFallback = "/images/fallback.png";
-const prefixImg = "/images/products";
-
 const MenuItem: React.FC<Props> = ({ item, onClick }) => {
-  const [imageSrc, setImageSrc] = useState(
-    item.nome_imagem ? `${prefixImg}/${item.nome_imagem}` : imgFallback
-  );
+  const imgFallback = "/images/fallback.png";
+  const prefixImg = "/images/products";
+  const imageSrc = item.nome_imagem ? `${prefixImg}/${item.nome_imagem}` : imgFallback;
 
   const menuItemClickHandler = () => {
     if (imageSrc) onClick(item);
   };
 
+  function getItemDescription() {
+    if (item.tamanho) return `${item.nome} - ${item.tamanho}`;
+    return item.nome;
+  }
+
   return (
     <MenuItemContainer onClick={menuItemClickHandler}>
       <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${item.nome}`} />
       <ItemDescriptionContainer>
-        {item.tamanho !== null ? (
-          <span>
-            {item.nome} - {item.tamanho}
-          </span>
-        ) : (
-          <span>{item.nome}</span>
-        )}
+        <span>{getItemDescription()}</span>
         <span>R$ {transformPriceToString(item.preco_padrao)}</span>
       </ItemDescriptionContainer>
     </MenuItemContainer>
