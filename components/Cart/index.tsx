@@ -115,7 +115,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
         }));
 
         const pedido = {
-          troco_para: formValues.payment_amount,
+          troco_para: formValues.payment_amount ? formValues.payment_amount : null,
           id_cupom: formValues.cupom ? formValues.cupom.id_cupom : null,
           tipo_pagamento: formValues.payment_type,
           tipo_entrega: formValues.delivery_type,
@@ -124,8 +124,8 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
         };
 
         await Axios.post("/order", {
-          produtos: produtos,
-          pedido: pedido,
+          productsData: produtos,
+          orderData: pedido,
         });
 
         setRequest({ error: "", isLoading: false });
@@ -148,80 +148,90 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
         </CartLoadingContainer>
       )}
 
-      {isOrderConfirmed && !request.isLoading && (
-        <Fragment>
-          <CartOrderConfirmedIcon>
-            <BsCheck2Circle size={50} color="green" />
-          </CartOrderConfirmedIcon>
-          <CartOrderConfirmedMessage>Pedido realizado com sucesso!</CartOrderConfirmedMessage>
-        </Fragment>
-      )}
+      <Formik
+        enableReinitialize
+        validateOnChange={false}
+        onSubmit={cartSubmitHandler}
+        validationSchema={cartFormValidationSchema}
+        initialValues={cartFormInitialValues}
+      >
+        {({ values }) => (
+          <Fragment>
+            {isOrderConfirmed && !request.isLoading && (
+              <Fragment>
+                <CartOrderConfirmedIcon>
+                  <BsCheck2Circle size={50} color="green" />
+                </CartOrderConfirmedIcon>
+                <CartOrderConfirmedMessage>Pedido realizado com sucesso!</CartOrderConfirmedMessage>
+              </Fragment>
+            )}
 
-      {!isOrderConfirmed && !request.isLoading && (
-        <Formik
-          enableReinitialize
-          validateOnChange={false}
-          onSubmit={cartSubmitHandler}
-          validationSchema={cartFormValidationSchema}
-          initialValues={cartFormInitialValues}
-        >
-          {({ values }) => (
-            <CartForm>
-              {isCartEmpty ? (
-                <CartEmptyMessageContainer>
-                  <CartEmptyMessage>Carrinho vazio</CartEmptyMessage>
-                </CartEmptyMessageContainer>
-              ) : (
-                <Fragment>
-                  {shouldShowConfirmation ? (
-                    <Fragment>
-                      <CartOrderConfirmation>
-                        Tem certeza que deseja finalizar seu pedido?
-                      </CartOrderConfirmation>
-                      <CartOrderConfirmationButtons>
-                        <FormButton onClick={changeShouldShowConfirmation.bind(null, false)}>
-                          Não
-                        </FormButton>
-                        <FormButton type="submit">Sim</FormButton>
-                      </CartOrderConfirmationButtons>
-                    </Fragment>
-                  ) : (
-                    <Fragment>
-                      <CartFormTitle>Seu pedido</CartFormTitle>
+            {!isOrderConfirmed && !request.isLoading && (
+              <CartForm>
+                {isCartEmpty ? (
+                  <CartEmptyMessageContainer>
+                    <CartEmptyMessage>Carrinho vazio</CartEmptyMessage>
+                  </CartEmptyMessageContainer>
+                ) : (
+                  <Fragment>
+                    {shouldShowConfirmation ? (
+                      <Fragment>
+                        <CartOrderConfirmation>
+                          Tem certeza que deseja finalizar seu pedido?
+                        </CartOrderConfirmation>
+                        <CartOrderConfirmationButtons>
+                          <FormButton onClick={changeShouldShowConfirmation.bind(null, false)}>
+                            Não
+                          </FormButton>
+                          <FormButton type="submit">Sim</FormButton>
+                        </CartOrderConfirmationButtons>
+                      </Fragment>
+                    ) : (
+                      <Fragment>
+                        <CartFormTitle>Seu pedido</CartFormTitle>
 
-                      {session && <CartDeliveryType />}
+                        {session && <CartDeliveryType />}
 
-                      {values.delivery_type === TipoEntrega.ENTREGA && (
-                        <CustomFade triggerAnimation={values.delivery_type === TipoEntrega.ENTREGA}>
-                          <CartAddress onCloseModal={onCloseModal} addresses={addresses} isLoadingAddress={isLoadingAddress} />
-                        </CustomFade>
-                      )}
+                        {values.delivery_type === TipoEntrega.ENTREGA && (
+                          <CustomFade
+                            triggerAnimation={values.delivery_type === TipoEntrega.ENTREGA}
+                          >
+                            <CartAddress
+                              onCloseModal={onCloseModal}
+                              addresses={addresses}
+                              isLoadingAddress={isLoadingAddress}
+                            />
+                          </CustomFade>
+                        )}
 
-                      <CartOrdersList products={products} />
-                      <CartFormSubtotalText>
-                        Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
-                      </CartFormSubtotalText>
+                        <CartOrdersList products={products} />
+                        <CartFormSubtotalText>
+                          Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
+                        </CartFormSubtotalText>
 
-                      {session && !isLoadingSession && (
-                        <CartLoggedOptions
-                          request={request}
-                          subTotalPrice={subTotalPrice}
-                          onChangeRequestStatus={changeRequestStatus}
-                          onChangeShouldShowConfirmation={changeShouldShowConfirmation}
-                        />
-                      )}
+                        {session && !isLoadingSession && (
+                          <CartLoggedOptions
+                            request={request}
+                            subTotalPrice={subTotalPrice}
+                            onChangeRequestStatus={changeRequestStatus}
+                            onChangeShouldShowConfirmation={changeShouldShowConfirmation}
+                          />
+                        )}
 
-                      {!session && !isLoadingSession && (
-                        <CartFormLoginText>Faça login para continuar sua compra!</CartFormLoginText>
-                      )}
-                    </Fragment>
-                  )}
-                </Fragment>
-              )}
-            </CartForm>
-          )}
-        </Formik>
-      )}
+                        {!session && !isLoadingSession && (
+                          <CartFormLoginText>
+                            Faça login para continuar sua compra!
+                          </CartFormLoginText>
+                        )}
+                      </Fragment>
+                    )}
+                  </Fragment>
+                )}
+              </CartForm>
+            )}
+          </Fragment>
+        )}
+      </Formik>
     </Modal>
   );
 };
