@@ -1,6 +1,6 @@
 import type ITelefone from "./telefone";
 
-enum UserAuthorization {
+export enum Autorizacao {
   CLIENT = "cliente",
   ADMIN = "administrador",
 }
@@ -11,7 +11,7 @@ interface IUsuario {
   data_nascimento: Date | number;
   email: string;
   data_criacao: Date | number;
-  autorizacao: UserAuthorization;
+  autorizacao: Autorizacao;
   senha: string;
 }
 

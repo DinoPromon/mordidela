@@ -1,28 +1,31 @@
 import { AddRepo } from "@repository/add";
 import { OrderRepo } from "@repository/order";
+import { CreateOrderValidator } from "./validator";
 import { UserCupomRepo } from "@repository/user-cupom";
 import { OrderProductRepo } from "@repository/order-product";
 import { OrderProductAddRepo } from "@repository/order-product-add";
 import { OrderProductFlavorRepo } from "@repository/order-product-flavor";
 
+import type ICupom from "@models/cupom";
 import type IPedido from "@models/pedido";
+import type IUsuario from "@models/usuario";
 import type IAdicional from "@models/adicional";
+import type IPedidoProduto from "@models/pedido_produto";
 import type { CartPedido } from "@models/pedido";
 import type { CartProduto } from "@models/produto";
 
-import type IUsuario from "@models/usuario";
-import type IPedidoProduto from "@models/pedido_produto";
-import ICupom from "@models/cupom";
+export type CreateOrderData = {
+  orderData: CartPedido;
+  productsData: CartProduto[];
+};
 
-export class CreateOrder {
-  private orderData: CartPedido;
-  private products: CartProduto[];
-  private userId: IUsuario["id_usuario"];
+export class CreateOrder extends CreateOrderValidator {
+  protected userId: IUsuario["id_usuario"];
 
-  constructor(userId: IUsuario["id_usuario"], orderData: CartPedido, products: CartProduto[]) {
-    this.orderData = orderData;
-    this.products = products;
+  constructor(userId: IUsuario["id_usuario"], createOrderData: CreateOrderData) {
+    super(createOrderData);
     this.userId = userId;
+    this.validate();
   }
 
   public async exec() {
@@ -48,7 +51,7 @@ export class CreateOrder {
   private async createProductRelations(orderId: IPedido["id_pedido"]) {
     const allAdds = (await AddRepo.findAll()) as IAdicional[];
 
-    this.products.forEach(async (product) => {
+    this.productsData.forEach(async (product) => {
       const selectedAdds = allAdds.filter((add) =>
         product.adicionais.find((orderAddId) => orderAddId === add.id_adicional)
       );
