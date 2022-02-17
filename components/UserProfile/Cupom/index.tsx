@@ -51,7 +51,7 @@ const Coupons: React.FC<CouponsProps> = ({ user, relatedCoupons }) => {
               <p>
                 {usedCoupon.cupom.codigo} - {getCouponDiscountText(usedCoupon.cupom)}
               </p>
-              <span>Utilizado no pedido Nº {usedCoupon.pedido?.id_pedido}</span>
+              <span>Utilizado no pedido {usedCoupon.pedido?.id_pedido}</span>
             </CupomData>
           </CupomDataContainer>
         ))}

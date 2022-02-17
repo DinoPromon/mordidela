@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { CartItemDescriptionContainer, TrashPriceContainer, TrashPriceText } from "./styled";
 import { PINK } from "@utils/colors";
 import { CartContext } from "@store/cart";
 import { FaTrash } from "react-icons/fa/index";
+import { ItemDescriptionContainer, TrashPriceContainer, TrashPriceText } from "@components/shared/SharedStyledComponents";
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
@@ -27,7 +27,7 @@ const CartItemDescription: React.FC<Props> = ({
   }
 
   return (
-    <CartItemDescriptionContainer>
+    <ItemDescriptionContainer>
       <span>{quantity}x</span>{" "}
       {productSize !== null ? (
         <p>
@@ -46,7 +46,7 @@ const CartItemDescription: React.FC<Props> = ({
         />
         <TrashPriceText>R$ {transformPriceToString(standard_price)}</TrashPriceText>
       </TrashPriceContainer>
-    </CartItemDescriptionContainer>
+    </ItemDescriptionContainer>
   );
 };
 

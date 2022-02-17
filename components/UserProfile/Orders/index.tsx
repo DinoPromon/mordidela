@@ -1,11 +1,31 @@
 import React, { useState } from "react";
 import { PageContainer, PageTitle } from "@components/shared";
-import { MoreDetails, OrdersContainer } from "./styled";
+import {
+  MoreDetails,
+  OrdersAddresContainer,
+  OrdersContainer,
+  OrdersDataContainer,
+  OrdersModalTitle,
+  TotalContainer
+} from "./styled";
 import { FaPlusCircle } from "react-icons/fa";
 import { PINK } from "@utils/colors";
 import Modal from "@components/shared/Modal";
-import { CartFormTitle } from "@components/Cart/styled";
-import CartItemDescription from "@components/Cart/CartOrdersList/CartItemDescription";
+
+import {
+  ProductsListContainer,
+  ItemDescriptionContainer,
+  TrashPriceContainer,
+  TrashPriceText,
+  AddsListContainer,
+  AddsText,
+  SubtotalText,
+  TotalText,
+  CoupomDataContainer,
+  ColoredText,
+  AddresTitle,
+  AddresComplement,
+} from "@components/shared/SharedStyledComponents";
 
 const Orders: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -22,8 +42,70 @@ const Orders: React.FC = () => {
     <PageContainer>
       {showModal && (
         <Modal onClose={closeModal}>
-          <CartFormTitle>Pedido 1425</CartFormTitle>
-          
+          <OrdersModalTitle>Pedido 1425</OrdersModalTitle>
+          <ProductsListContainer>
+            <ItemDescriptionContainer>
+              <span>1x</span>
+              <p>Mini salgados - 100 unidades</p>
+              <TrashPriceContainer>
+                <TrashPriceText>R$ 23,90</TrashPriceText>
+              </TrashPriceContainer>
+            </ItemDescriptionContainer>
+            <AddsListContainer>
+              <AddsText>
+                Adicional: Barbecue <span>R$ 2,00</span>
+              </AddsText>
+              <AddsText>
+                Adicional: Mostarda e mel <span>R$ 2,00</span>
+              </AddsText>
+              <AddsText>
+                Adicional: Maionese verde <span>R$ 2,00</span>
+              </AddsText>
+              <AddsText>
+                Adicional: Pimenta <span>R$ 2,00</span>
+              </AddsText>
+              Sabores: Bolinha de queijo, Coxinha de carne, Coxinha de frango, Coxinha de presunto e
+              queijo
+            </AddsListContainer>
+          </ProductsListContainer>
+
+          <OrdersDataContainer>
+            <SubtotalText>
+              Subtotal: <span>R$ 31,90</span>
+            </SubtotalText>
+            <CoupomDataContainer>
+              <ColoredText>
+                Cupom: <span>TESTE</span>
+              </ColoredText>
+              <ColoredText>
+                Desconto: <span>10%</span>
+              </ColoredText>
+              <ColoredText>
+                Valor: <span>R$ 3,19</span>
+              </ColoredText>
+            </CoupomDataContainer>
+            <SubtotalText>
+              Tipo de entrega: <span>Delivery</span>
+            </SubtotalText>
+            <SubtotalText>
+              Taxa de entrega: <span>R$ 4,00</span>
+            </SubtotalText>
+            <SubtotalText>
+              Tipo de pagamento: <span>Dinheiro (troco para R$ 50,00)</span>
+            </SubtotalText>
+          </OrdersDataContainer>
+
+          <OrdersAddresContainer>
+            <AddresTitle>Endereço de entrega</AddresTitle>
+            <p>Rua dos Alfeneiros Nº 4, Little Whinging</p>
+            <AddresComplement>Complemento: Casa</AddresComplement>
+          </OrdersAddresContainer>
+
+          <TotalContainer>
+            <TotalText>
+              Total: <span>R$ 32,71</span>
+            </TotalText>
+          </TotalContainer>
         </Modal>
       )}
       <PageTitle>Pedidos</PageTitle>

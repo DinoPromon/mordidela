@@ -1,0 +1,31 @@
+import {
+  ProductsListContainer,
+  TrashPriceContainer,
+  TrashPriceText,
+  ItemDescriptionContainer,
+  AddsListContainer,
+  AddsText,
+  HighLightText,
+  SubtotalText,
+  TotalText,
+  CoupomDataContainer,
+  ColoredText,
+  AddresTitle,
+  AddresComplement,
+} from "./styled";
+
+export {
+  ProductsListContainer,
+  TrashPriceContainer,
+  TrashPriceText,
+  ItemDescriptionContainer,
+  AddsListContainer,
+  AddsText,
+  HighLightText,
+  SubtotalText,
+  TotalText,
+  CoupomDataContainer,
+  ColoredText,
+  AddresTitle,
+  AddresComplement,
+};

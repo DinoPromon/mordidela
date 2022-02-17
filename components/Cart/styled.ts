@@ -14,20 +14,6 @@ export const CartFormTitle = styled.h2`
   color: ${PURPLE};
 `;
 
-export const CartFormHighLightText = styled.p`
-  width: 100%;
-  color: ${PINK};
-  font-weight: bold;
-`;
-
-export const CartFormSubtotalText = styled(CartFormHighLightText)`
-  text-align: end;
-
-  & > span {
-    color: ${PURPLE};
-  }
-`;
-
 export const CartFormLoginText = styled.p`
   text-align: center;
   font-size: 1.25rem;

@@ -1,7 +1,7 @@
 import React from "react";
 import CartItemDescription from "./CartItemDescription";
 import { transformPriceToString } from "@utils/transformation";
-import { CartOrdersListContainer, CartOrderAddsContainer, CartOrderAddsText } from "./styled";
+import { ProductsListContainer, AddsListContainer,AddsText } from "@components/shared/SharedStyledComponents";
 
 import type { CartProduct } from "@my-types/context";
 
@@ -24,7 +24,7 @@ const CartOrdersList: React.FC<Props> = (props) => {
   }
 
   return (
-    <CartOrdersListContainer>
+    <ProductsListContainer>
       {products.map((product) => (
         <li key={product.key}>
           <CartItemDescription
@@ -34,17 +34,17 @@ const CartOrdersList: React.FC<Props> = (props) => {
             quantity={product.quantity}
             standard_price={product.standard_price}
           />
-          <CartOrderAddsContainer>
+          <AddsListContainer>
             {product.adds.map((add) => (
-              <CartOrderAddsText key={`add-${add.id_adicional}`}>
+              <AddsText key={`add-${add.id_adicional}`}>
                 Adicional: {add.nome} <span>R$ {transformPriceToString(add.preco)}</span>
-              </CartOrderAddsText>
+              </AddsText>
             ))}
             {!!product.flavors.length && <p>Sabores: {getFlavorsAsString(product)}</p>}
-          </CartOrderAddsContainer>
+          </AddsListContainer>
         </li>
       ))}
-    </CartOrdersListContainer>
+    </ProductsListContainer>
   );
 };
 

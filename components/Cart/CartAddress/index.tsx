@@ -9,12 +9,10 @@ import { FaPlusCircle } from "react-icons/fa";
 import { PURPLE } from "@utils/colors";
 import {
   CartAddAddress,
-  CartAddressTitle,
   CartAddressContainer,
-  CartAddressComplement,
   CartAddressLoadingContainer,
 } from "./styled";
-
+import { AddresComplement, AddresTitle } from "@components/shared/SharedStyledComponents";
 import type { CartFormValues } from "../FormModel";
 import type { AddressOnCart } from "@models/endereco";
 
@@ -57,7 +55,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
         </CartAddressLoadingContainer>
       ) : (
         <Fragment>
-          <CartAddressTitle>Endereços de entrega</CartAddressTitle>
+          <AddresTitle>Endereços de entrega</AddresTitle>
           <RadioGroup
             name="address-input-radio"
             value={values.address_id}
@@ -69,9 +67,9 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
                   label={
                     <Fragment>
                       <p>{getFormatedAddress(address)}</p>
-                      <CartAddressComplement>
+                      <AddresComplement>
                         Complemento: {address.complemento}
-                      </CartAddressComplement>
+                      </AddresComplement>
                     </Fragment>
                   }
                   key={`address-${address.id_endereco}`}

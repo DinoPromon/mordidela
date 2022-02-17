@@ -10,16 +10,13 @@ import { FaTrash } from "react-icons/fa/index";
 import { CustomFade } from "@components/shared";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
-import { CartFormSubtotalText } from "../styled";
 import { transformPriceToString } from "@utils/transformation";
 import {
-  CartFormTotalText,
   CartFormErrorMessage,
-  CartCupomColorfulText,
   CartFormErrorContainer,
-  CartCoupomDataContainer,
 } from "./styled";
 
+import { SubtotalText, TotalText, CoupomDataContainer, ColoredText } from "@components/shared/SharedStyledComponents";
 import type { CartFormValues } from "../FormModel";
 
 type Props = {
@@ -79,9 +76,9 @@ const CartLoggedOptions: React.FC<Props> = ({
   return (
     <Fragment>
       <CustomFade triggerAnimation={shouldShowDeliveryPrice}>
-        <CartFormSubtotalText>
+        <SubtotalText>
           Entrega: <span>R$ {transformPriceToString(Number(values.delivery_price))}</span>
-        </CartFormSubtotalText>
+        </SubtotalText>
       </CustomFade>
 
       <CustomFade triggerAnimation={!Boolean(values.cupom)}>
@@ -89,34 +86,34 @@ const CartLoggedOptions: React.FC<Props> = ({
       </CustomFade>
 
       <CustomFade triggerAnimation={shouldShowDiscount}>
-        <CartCoupomDataContainer>
+        <CoupomDataContainer>
           <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
-          <CartCupomColorfulText>
+          <ColoredText>
             Cupom: <span>{values.cupom?.codigo_cupom}</span>
-          </CartCupomColorfulText>
-          <CartCupomColorfulText>
+          </ColoredText>
+          <ColoredText>
             Desconto:{" "}
             {values.cupom?.tipo_cupom === TipoCupom.ENTREGA ? (
               <span> Frete grátis</span>
             ) : (
               <span>{values.cupom?.valor_desconto}%</span>
             )}
-          </CartCupomColorfulText>
+          </ColoredText>
           {values.cupom?.tipo_cupom === TipoCupom.PEDIDO && (
-            <CartCupomColorfulText>
+            <ColoredText>
               Valor:{" "}
               <span>
                 R$ {transformPriceToString((values.cupom.valor_desconto * subTotalPrice) / 100)}
               </span>
-            </CartCupomColorfulText>
+            </ColoredText>
           )}
-        </CartCoupomDataContainer>
+        </CoupomDataContainer>
       </CustomFade>
 
       <CartPayment />
-      <CartFormTotalText>
+      <TotalText>
         Total: <span>R$ {transformPriceToString(getTotalPrice() || 0)}</span>
-      </CartFormTotalText>
+      </TotalText>
       <CartFormErrorContainer>
         {request.isLoading && <Loading />}
         {!request.isLoading && (

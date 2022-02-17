@@ -19,13 +19,14 @@ import {
   CartFormLoginText,
   CartEmptyMessage,
   CartLoadingContainer,
-  CartFormSubtotalText,
   CartOrderConfirmation,
   CartOrderConfirmedIcon,
   CartOrderConfirmedMessage,
   CartEmptyMessageContainer,
   CartOrderConfirmationButtons,
 } from "./styled";
+
+import { SubtotalText } from "@components/shared/SharedStyledComponents";
 
 import type { Session } from "next-auth";
 import type { RequestState } from "@my-types/request";
@@ -205,9 +206,9 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
                         )}
 
                         <CartOrdersList products={products} />
-                        <CartFormSubtotalText>
+                        <SubtotalText>
                           Subtotal: <span>R$ {transformPriceToString(subTotalPrice)}</span>
-                        </CartFormSubtotalText>
+                        </SubtotalText>
 
                         {session && !isLoadingSession && (
                           <CartLoggedOptions

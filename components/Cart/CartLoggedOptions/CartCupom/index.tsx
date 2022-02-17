@@ -56,7 +56,7 @@ const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
         value={inputCupom}
       />
       {isLoadingCupom ? (
-        <CircularProgress size={24} />
+        <CircularProgress size={40} />
       ) : (
         <FormButton type="button" onClick={addCupomClickHandler}>
           Adicionar

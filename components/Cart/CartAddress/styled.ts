@@ -15,18 +15,6 @@ export const CartAddressLoadingContainer = styled.div`
   padding: 1rem 0;
 `;
 
-export const CartAddressTitle = styled.h2`
-  color: ${PURPLE};
-  font-size: 1rem;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-`;
-
-export const CartAddressComplement = styled.p`
-  font-size: 13px;
-  cursor: pointer;
-`;
-
 export const CartAddAddress = styled.span`
   display: flex;
   flex-direction: row;
