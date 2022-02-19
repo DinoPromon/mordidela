@@ -6,18 +6,16 @@ import { FindManyRelatedUserCouponByUserId } from "@controllers/usuario-cupom";
 
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
-import type { MyUser } from "@my-types/next-auth";
 import type { RelatedUserCoupon } from "@models/cupom";
 import type { NextPageWithLayout } from "@my-types/next-page";
 
 type Props = {
-  user: MyUser;
   relatedCoupons: RelatedUserCoupon[];
 };
 
 const GeneralDataPage: NextPageWithLayout<Props> = (props) => {
-  const { relatedCoupons, user } = props;
-  return <Coupons relatedCoupons={relatedCoupons} user={user} />;
+  const { relatedCoupons } = props;
+  return <Coupons relatedCoupons={relatedCoupons} />;
 };
 
 GeneralDataPage.getLayout = function getLayout(page: ReactElement) {
@@ -25,7 +23,7 @@ GeneralDataPage.getLayout = function getLayout(page: ReactElement) {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
+  const session = await getSession(context);
   if (!session) {
     return {
       redirect: {
@@ -39,7 +37,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      user: session.user as MyUser,
       relatedCoupons,
     },
   };
