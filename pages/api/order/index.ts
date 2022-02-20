@@ -1,5 +1,4 @@
 import { Prisma } from "database";
-import { throwError } from "@errors/index";
 import { getSession } from "next-auth/client";
 import { CreateOrder } from "@controllers/pedido";
 import { ServerError } from "@errors/index";
@@ -15,7 +14,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     switch (req.method) {
       case ReqMethod.POST: {
-        sessionValidator.validate({ userId: session?.user.id_usuario });
+        sessionValidator.validate();
         const userId = session?.user.id_usuario as number;
 
         const createOrder = new CreateOrder(userId, req.body);
