@@ -1,21 +1,25 @@
 import React from "react";
-import type { ReactElement } from "react";
+import Axios from "@api";
 import Orders from "@components/UserProfile/Orders";
+import { FindAllOrderRelationsByUserId } from "@controllers/pedido/findAllOrderRelationsByUserId";
 
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
 
-import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import { MyUser } from "@my-types/next-auth";
 
+import type { ReactElement } from "react";
+import type { GetServerSideProps } from "next";
+import { IOrderRelations } from "@models/pedido";
+
 type Props = {
   user: MyUser;
+  ordersRelations: IOrderRelations[];
 };
 
-const OrdersPage: NextPageWithLayout<Props> = (props) => {
-  const { nome, id_usuario } = props.user;
-  return <Orders></Orders>;
+const OrdersPage: NextPageWithLayout<Props> = ({ user, ordersRelations }) => {
+  return <Orders ordersRelations={ordersRelations}></Orders>;
 };
 
 OrdersPage.getLayout = function getLayout(page: ReactElement) {
@@ -24,6 +28,7 @@ OrdersPage.getLayout = function getLayout(page: ReactElement) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+
   if (!session) {
     return {
       redirect: {
@@ -33,11 +38,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  return {
-    props: {
-      user: session.user as MyUser,
-    },
-  };
+  try {
+    const findAllOrderRelations = new FindAllOrderRelationsByUserId(session.user.id_usuario);
+    const ordersRelations = await findAllOrderRelations.exec();
+
+    return {
+      props: {
+        session,
+        ordersRelations,
+      },
+    };
+  } catch (err) {
+    return {
+      props: {
+        session,
+        redirect: {
+          detinations: "/",
+          permanent: false,
+        },
+      },
+    };
+  }
 };
 
 export default OrdersPage;

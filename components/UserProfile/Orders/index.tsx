@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Modal from "@components/shared/Modal";
+import { PINK } from "@utils/colors";
+import { FaPlusCircle } from "react-icons/fa";
 import { PageContainer, PageTitle } from "@components/shared";
 import {
   MoreDetails,
@@ -6,12 +9,8 @@ import {
   OrdersContainer,
   OrdersDataContainer,
   OrdersModalTitle,
-  TotalContainer
+  TotalContainer,
 } from "./styled";
-import { FaPlusCircle } from "react-icons/fa";
-import { PINK } from "@utils/colors";
-import Modal from "@components/shared/Modal";
-
 import {
   ProductsListContainer,
   ItemDescriptionContainer,
@@ -26,9 +25,16 @@ import {
   AddresTitle,
   AddresComplement,
 } from "@components/shared/SharedStyledComponents";
+import { IOrderRelations } from "@models/pedido";
 
-const Orders: React.FC = () => {
+type OrdersProps = {
+  ordersRelations: IOrderRelations[];
+};
+
+const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
   const [showModal, setShowModal] = useState(false);
+
+  console.log(ordersRelations);
 
   function openModal() {
     setShowModal(true);
