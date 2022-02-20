@@ -2,6 +2,8 @@ import { Prisma } from "@database";
 import { throwError } from "@errors/index";
 
 import type { CartPedido } from "@models/pedido";
+import IPedido from "@models/pedido";
+import IUsuario from "@models/usuario";
 
 export class OrderRepo {
   public static async findAll() {
@@ -54,6 +56,43 @@ export class OrderRepo {
       return createdOrderId;
     } catch (error) {
       return throwError("O-C");
+    }
+  }
+
+  public static async findAllRelationsByUserId(
+    userId: IUsuario["id_usuario"],
+    itemsAmount: number,
+    lastOrderId?: IPedido["id_pedido"]
+  ) {
+    try {
+      const ordersWithRelations = await Prisma.pedido.findMany({
+        include: {
+          cupom: true,
+          endereco: true,
+          pedido_produto: true,
+          pedido_produto_adicional: true,
+          pedido_produto_sabor: true,
+          usuario_cupom: true,
+        },
+        where: {
+          id_usuario: userId,
+        },
+        cursor: lastOrderId
+          ? {
+              id_pedido: lastOrderId,
+            }
+          : undefined,
+        skip: 1,
+        orderBy: {
+          id_pedido: "asc",
+        },
+        take: itemsAmount,
+      });
+
+      return ordersWithRelations;
+    } catch (error) {
+      console.log(error);
+      return throwError("O-FA");
     }
   }
 }
