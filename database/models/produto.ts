@@ -36,4 +36,6 @@ export type RelatedProduct = Omit<IProduto, "id_categoria" | "id_desconto" | "di
   sabores: ISabor[];
 };
 
+export type ProductCreate = Omit<IProduto, "id_produto" | "uuid" | "nome_imagem">;
+
 export default IProduto;
