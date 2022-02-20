@@ -17,14 +17,14 @@ export class SessionValidator {
   }
 
   private validateSession() {
-    if (this.session === null) {
+    if (!this.session || !this.session.user) {
       return throwError("S-NL");
     }
   }
 
   private validateUser(userId: IUsuario["id_usuario"]) {
     if (this.session?.user.id_usuario !== userId) {
-      throwError("S-UNA");
+      return throwError("S-UNA");
     }
   }
 
