@@ -6,6 +6,7 @@ export type OrderErrors = {
   "O-CT-UID": ServerError;
   "O-CT-CID": ServerError;
   "O-C-DI": ServerError;
+  "O-FA-DI": ServerError;
 };
 
 const orderErrors: OrderErrors = {
@@ -25,10 +26,14 @@ const orderErrors: OrderErrors = {
     httpStatus: 500,
     errorMessage: "Erro na contagem de pedidos",
   },
+  "O-FA-DI": {
+    httpStatus: 422,
+    errorMessage: "Dados de requisição inválidos",
+  },
   "O-C-DI": {
     httpStatus: 422,
-    errorMessage: "Dados de requisição inválidos"
-  }
+    errorMessage: "Dados de requisição inválidos",
+  },
 };
 
 export default orderErrors;

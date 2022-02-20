@@ -13,11 +13,11 @@ const sessionsErrors: SessionErrors = {
   },
   "S-NP": {
     httpStatus: 403,
-    errorMessage: "O usuário não possuir permissão para essa rota",
+    errorMessage: "O usuário não possui permissão para essa rota",
   },
   "S-UNA": {
     httpStatus: 403,
-    errorMessage: "Usário não autorizado",
+    errorMessage: "Usuário não autorizado",
   },
 };
 
