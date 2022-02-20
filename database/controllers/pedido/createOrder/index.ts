@@ -1,4 +1,5 @@
 import { AddRepo } from "@repository/add";
+import { throwError } from "@errors/index";
 import { OrderRepo } from "@repository/order";
 import { CreateOrderValidator } from "./validator";
 import { UserCupomRepo } from "@repository/user-cupom";
@@ -19,21 +20,31 @@ export type CreateOrderData = {
   productsData: CartProduto[];
 };
 
-export class CreateOrder extends CreateOrderValidator {
+export class CreateOrder {
   protected userId: IUsuario["id_usuario"];
+  private validator: CreateOrderValidator;
+  private orderData: CartPedido;
+  private productsData: CartProduto[];
 
   constructor(userId: IUsuario["id_usuario"], createOrderData: CreateOrderData) {
-    super(createOrderData);
     this.userId = userId;
-    this.validate();
+    this.orderData = createOrderData.orderData;
+    this.productsData = createOrderData.productsData;
+    this.validator = new CreateOrderValidator(createOrderData);
   }
 
   public async exec() {
+    this.validator.validate();
+
     const createdOrderId = await this.createOrder();
     if (this.orderData.id_cupom) {
-      await this.createCouponRelation(createdOrderId, this.orderData.id_cupom);
+      await this.createCouponRelation(createdOrderId, this.orderData.id_cupom).catch((err) =>
+        throwError("O-C", { customMessage: "Erro na criação da relação pedido e cupom" })
+      );
     }
-    await this.createProductRelations(createdOrderId);
+    await this.createProductRelations(createdOrderId).catch((err) =>
+      throwError("O-C", { customMessage: "Erro na criação da relação pedido e produto" })
+    );
   }
 
   private async createCouponRelation(orderId: IPedido["id_pedido"], couponId: ICupom["id_cupom"]) {

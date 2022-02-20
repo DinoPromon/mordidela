@@ -7,15 +7,15 @@ import type { CartPedido } from "@models/pedido";
 import type { CartProduto } from "@models/produto";
 
 export class CreateOrderValidator {
-  protected orderData: CartPedido;
-  protected productsData: CartProduto[];
+  private orderData: CartPedido;
+  private productsData: CartProduto[];
 
   constructor(createOrderData: CreateOrderData) {
     this.orderData = createOrderData.orderData;
     this.productsData = createOrderData.productsData;
   }
 
-  protected validate() {
+  public validate() {
     try {
       const productsValidationSchema = this.getProductsValiationSchema();
       const orderDataValidationSchema = this.getOrderDataValdiationSchema();
@@ -25,11 +25,11 @@ export class CreateOrderValidator {
     } catch (error) {
       const { errors } = error as Yup.ValidationError;
       console.log(errors);
-      throwError("O-C-DI");
+      throwError("O-C-DI", { customMessage: errors.join(", ") });
     }
   }
 
-  protected getOrderDataValdiationSchema() {
+  private getOrderDataValdiationSchema() {
     const orderDataValidationSchema = Yup.object().shape({
       tipo_entrega: Yup.string().required(),
       id_cupom: Yup.number().nullable(),
@@ -52,7 +52,7 @@ export class CreateOrderValidator {
     return orderDataValidationSchema;
   }
 
-  protected getProductsValiationSchema() {
+  private getProductsValiationSchema() {
     const productsValidationSchema = Yup.array()
       .min(1)
       .of(
