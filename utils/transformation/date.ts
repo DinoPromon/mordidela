@@ -1,5 +1,16 @@
-export function getFormatedDate(timestamp: number) {
-  const date = new Date(timestamp);
+export function createDate(date: string | number | Date) {
+  if (date instanceof Date) return date;
+  if (typeof date === "string") {
+    const dateParts = date.split(/\//gi);
+    const [day, month, year] = dateParts.map((datePart) => Number(datePart));
+    return new Date(year, month - 1, day, 0, 0, 0);
+  }
+
+  return new Date(date);
+}
+
+export function getFormatedDate(unformattedDate: string | number | Date) {
+  const date = createDate(unformattedDate);
   const day = padDayOrMonth(date.getDate(), 2);
   const month = padDayOrMonth(date.getMonth() + 1, 2);
   const year = date.getFullYear();
@@ -43,14 +54,3 @@ export const transformDate = (date: string) => {
 
   return formatedDate;
 };
-
-export function createDate(date: string | number | Date) {
-  if (date instanceof Date) return date;
-  if (typeof date === "string") {
-    const dateParts = date.split(/\//gi);
-    const [day, month, year] = dateParts.map((datePart) => Number(datePart));
-    return new Date(year, month - 1, day, 0, 0, 0);
-  }
-
-  return new Date(date);
-}
