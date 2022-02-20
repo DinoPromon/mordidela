@@ -17,6 +17,13 @@ const Modal: React.FC<Props> = ({ onClose, children }) => {
   }
 
   useEffect(() => {
+    document.body.style.overflowY = "hidden";
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isComponentVisible) {
       const timer = setTimeout(() => {
         onClose();
