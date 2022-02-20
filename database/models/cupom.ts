@@ -16,7 +16,7 @@ interface ICupom {
   valor_desconto: number;
   qtde_min_pedido: number;
   data_inicio: Date | number | string | null;
-  data_fim: Date | null;
+  data_fim: Date | number | string | null;
   fidelidade: boolean;
 }
 

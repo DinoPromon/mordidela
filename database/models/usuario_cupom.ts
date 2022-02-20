@@ -4,7 +4,7 @@ import type IUsuario from "./usuario";
 
 interface IUsuarioCupom {
   id_usuario_cupom: number;
-  data_obtencao: Date;
+  data_obtencao: Date | number | string | null;
   data_uso: Date | number | string | null;
   foi_usado: boolean;
   id_cupom: ICupom["id_cupom"];
