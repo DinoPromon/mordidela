@@ -2,7 +2,6 @@ import type { NextApiHandler } from "next";
 
 import mysql from "database";
 import { getSession } from "next-auth/client";
-import { transformDateFromDBToClient } from "@utils/transformation";
 import { ViewUsuario } from "@models/views";
 import { formatPhoneNumber } from "@utils/formatters/phone";
 import { createDate } from "@utils/transformation/date";
