@@ -28,6 +28,7 @@ export const DropdownListContainer = styled.ul<Props>`
   text-align: center;
   z-index: 2;
   background-color: white;
+  overflow: hidden;
   width: 100%;
   min-width: 120px;
   max-width: 130px;
@@ -40,35 +41,26 @@ export const DropdownListContainer = styled.ul<Props>`
   right: 0;
   top: 100%;
   margin: 0.5rem auto;
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -7px;
-    border-width: 7px;
-    border-style: solid;
-    border-color: transparent transparent white transparent;
-  }
 `;
 
 export const DropdownListItem = styled.li`
   color: ${PURPLE};
   padding: 0.5rem 0;
+  background-color: transparent;
+  transition: background-color 250ms;
 
   &:hover {
     cursor: pointer;
     text-decoration: underline;
+    color: white;
+    background-color: ${PURPLE};
   }
 
   & > a {
-    color: ${PURPLE};
-    padding: 0.5rem 0;
+    display: inline-block;
+    width: 100%;
+    color: inherit;
     text-decoration: none;
-
-    &:hover {
-      cursor: pointer;
-    }
+    transition: color 250ms;
   }
 `;
