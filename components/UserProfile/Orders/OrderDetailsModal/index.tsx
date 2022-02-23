@@ -156,7 +156,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
       <OrdersModalTitle>Pedido {orderRelations.id_pedido}</OrdersModalTitle>
       <ProductsListContainer>
         {orderRelations.pedido_produto.map((orderProduct) => (
-          <Fragment key={`order-product${orderProduct.id_pedido_produto}`}>
+          <li key={orderProduct.id_pedido_produto}>
             <ItemDescriptionContainer>
               <span>{`${orderProduct.quantidade} x`}</span>
               <p>{`${orderProduct.produto?.nome} - ${orderProduct.produto?.tamanho}`}</p>
@@ -189,7 +189,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
                 )}
               </AddsListContainer>
             )}
-          </Fragment>
+          </li>
         ))}
       </ProductsListContainer>
 
