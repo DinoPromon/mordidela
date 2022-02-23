@@ -12,8 +12,6 @@ type CouponsProps = {
 };
 
 const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
-  console.log(relatedCoupons);
-
   const usedCoupons = relatedCoupons.filter(
     (relatedCoupon) => Boolean(relatedCoupon.pedido) && relatedCoupon.foi_usado
   );
@@ -38,7 +36,7 @@ const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
       <CupomContainer>
         <CupomTitle>Cupons disponíveis</CupomTitle>
         {availableCoupons.map((availabeCoupon) => (
-          <CupomDataContainer key={`coupon-${availabeCoupon.cupom.id_cupom}`}>
+          <CupomDataContainer key={`coupon-${availabeCoupon.data_obtencao}`}>
             <RiCoupon3Line size={40} color={PINK} />
             <CupomData>
               <p>
@@ -49,6 +47,7 @@ const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
           </CupomDataContainer>
         ))}
 
+        <CupomTitle>Cupons utilizados</CupomTitle>
         {usedCoupons.map((usedCoupon) => (
           <CupomDataContainer key={`coupon-${usedCoupon.id_usuario_cupom}`}>
             <RiCoupon3Line size={40} color={PINK} />
