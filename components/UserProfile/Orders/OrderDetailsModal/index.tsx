@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 import { Modal } from "@components/shared";
+import { TipoCupom } from "@models/cupom";
+import { TipoEntrega } from "@models/pedido";
 import {
   TotalContainer,
   OrderFlavorsText,
@@ -22,6 +24,7 @@ import {
   ItemDescriptionContainer,
 } from "@components/shared/SharedStyledComponents";
 
+import type ICupom from "@models/cupom";
 import type IPedido from "@models/pedido";
 import type IProduto from "@models/produto";
 import type IAdicional from "@models/adicional";
@@ -106,6 +109,48 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     return subtTotalPrice;
   }
 
+  function getCouponDiscount(coupon: ICupom) {
+    if (coupon.tipo === TipoCupom.ENTREGA) return "Entrega grátis";
+    return `${coupon.valor_desconto}%`;
+  }
+
+  function getCouponDiscountValue() {
+    const coupon = orderRelations.cupom as ICupom;
+
+    switch (coupon.tipo) {
+      case TipoCupom.ENTREGA:
+        return orderRelations.preco_entrega;
+      case TipoCupom.PEDIDO:
+        return calculateSubTotalPrice() * (coupon.valor_desconto / 100);
+      default:
+        const exhaustiveCheck = coupon.tipo;
+        return exhaustiveCheck;
+    }
+  }
+
+  function getDeliveryType(deliveryType: TipoEntrega) {
+    switch (deliveryType) {
+      case TipoEntrega.BALCAO:
+        return "Balcão";
+      case TipoEntrega.ENTREGA:
+        return "Delivery";
+      default:
+        const exhaustiveCheck = orderRelations.tipo_entrega;
+        return exhaustiveCheck;
+    }
+  }
+
+  function getHasDeliveryPrice() {
+    if (orderRelations.tipo_entrega === TipoEntrega.BALCAO) {
+      return false;
+    }
+    if (orderRelations.cupom && orderRelations.cupom.tipo === TipoCupom.ENTREGA) {
+      return false;
+    }
+
+    return true;
+  }
+
   return (
     <Modal onClose={onClose}>
       <OrdersModalTitle>Pedido {orderRelations.id_pedido}</OrdersModalTitle>
@@ -121,6 +166,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
                 </TrashPriceText>
               </TrashPriceContainer>
             </ItemDescriptionContainer>
+
             {orderRelations.pedido_produto_adicional.length > 0 && (
               <AddsListContainer>
                 {getAddsInOrderProduct(orderProduct.id_pedido, orderProduct.id_produto).map(
@@ -130,6 +176,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
                     </AddsText>
                   )
                 )}
+
                 {orderRelations.pedido_produto_sabor.length > 0 && (
                   <OrderFlavorsText>
                     {"Sabores: ".concat(
@@ -150,23 +197,31 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
         <SubtotalText>
           Subtotal: <span>{getNumberAsCurrency(calculateSubTotalPrice())}</span>
         </SubtotalText>
-        <CoupomDataContainer>
-          <ColoredText>
-            Cupom: <span>TESTE</span>
-          </ColoredText>
-          <ColoredText>
-            Desconto: <span>10%</span>
-          </ColoredText>
-          <ColoredText>
-            Valor: <span>R$ 3,19</span>
-          </ColoredText>
-        </CoupomDataContainer>
+
+        {orderRelations.cupom && (
+          <CoupomDataContainer>
+            <ColoredText>
+              Cupom: <span>{orderRelations.cupom.codigo}</span>
+            </ColoredText>
+            <ColoredText>
+              Desconto: <span>{getCouponDiscount(orderRelations.cupom)}</span>
+            </ColoredText>
+            <ColoredText>
+              Valor: <span>{getNumberAsCurrency(getCouponDiscountValue())}</span>
+            </ColoredText>
+          </CoupomDataContainer>
+        )}
+
         <SubtotalText>
-          Tipo de entrega: <span>Delivery</span>
+          Tipo de entrega: <span>{getDeliveryType(orderRelations.tipo_entrega)}</span>
         </SubtotalText>
-        <SubtotalText>
-          Taxa de entrega: <span>R$ 4,00</span>
-        </SubtotalText>
+
+        {getHasDeliveryPrice() && (
+          <SubtotalText>
+            Taxa de entrega: <span>{getNumberAsCurrency(orderRelations.preco_entrega)}</span>
+          </SubtotalText>
+        )}
+
         <SubtotalText>
           Tipo de pagamento: <span>Dinheiro (troco para R$ 50,00)</span>
         </SubtotalText>
