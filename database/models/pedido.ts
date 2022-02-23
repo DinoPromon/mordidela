@@ -1,10 +1,10 @@
 import type ICupom from "./cupom";
-import type IEndereco from "./endereco";
 import type IUsuario from "./usuario";
-import type IPedidoProduto from "./pedido_produto";
-import type IPedidoProdutoAdicional from "./pedido_produto_adicional";
-import type IPedidoProdutoSabor from "./pedido_produto_sabor";
+import type IEndereco from "./endereco";
 import type IUsuarioCupom from "./usuario_cupom";
+import type { IOrderProductRelations } from "./pedido_produto";
+import type { IOrderProductAddRelations } from "./pedido_produto_adicional";
+import type { IOrderProductFlavorRelations } from "./pedido_produto_sabor";
 
 export enum StatusPedido {
   REJEITADO = "rejeitado",
@@ -45,9 +45,9 @@ export type CartPedido = Pick<
 export interface IOrderRelations extends IPedido {
   cupom: ICupom | null;
   endereco: IEndereco | null;
-  pedido_produto: IPedidoProduto[];
-  pedido_produto_adicional: IPedidoProdutoAdicional[];
-  pedido_produto_sabor: IPedidoProdutoSabor[];
+  pedido_produto: IOrderProductRelations[];
+  pedido_produto_adicional: IOrderProductAddRelations[];
+  pedido_produto_sabor: IOrderProductFlavorRelations[];
   usuario_cupom: IUsuarioCupom[];
 }
 

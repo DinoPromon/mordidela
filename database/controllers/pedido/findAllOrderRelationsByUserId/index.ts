@@ -1,5 +1,6 @@
 import { throwError } from "@errors/index";
 import { OrderRepo } from "@repository/order";
+import { UUIDParse } from "database/helpers/uuid";
 import { DateSerializer } from "database/helpers/date/serializer";
 import { FindAllOrdersRelationsByUserIdValidator } from "./validator";
 
@@ -7,6 +8,7 @@ import type IPedido from "@models/pedido";
 import type IUsuario from "@models/usuario";
 import type IUsuarioCupom from "@models/usuario_cupom";
 import type { IOrderRelations } from "@models/pedido";
+import type { IOrderProductRelations } from "@models/pedido_produto";
 
 export class FindAllOrderRelationsByUserId {
   private userId: IUsuario["id_usuario"];
@@ -46,7 +48,7 @@ export class FindAllOrderRelationsByUserId {
       this.lastOrderId
     );
 
-    return ordersWithRelations;
+    return ordersWithRelations as unknown;
   }
 
   private getSerializedOrdersRelations(ordersRelations: IOrderRelations[]) {
@@ -58,10 +60,29 @@ export class FindAllOrderRelationsByUserId {
           data_pedido: DateSerializer.serialize(orderRelations.data_pedido),
           cupom: orderRelations.cupom ? DateSerializer.serializeCoupon(orderRelations.cupom) : null,
           usuario_cupom: this.getSerializedUserCoupons(orderRelations.usuario_cupom),
+          pedido_produto: this.getSerializedOrderProduct(
+            orderRelations.pedido_produto as unknown as IOrderProductRelations[]
+          ),
         } as IOrderRelations)
     );
 
     return serializedOrdersRelations;
+  }
+
+  private getSerializedOrderProduct(ordersProducts: IOrderProductRelations[]) {
+    const serializedOrdersProducts: IOrderProductRelations[] = ordersProducts.map(
+      (orderProduct) => ({
+        ...orderProduct,
+        produto: orderProduct.produto
+          ? {
+              ...orderProduct.produto,
+              uuid: UUIDParse.getStringUUID(orderProduct.produto.uuid as unknown as Buffer),
+            }
+          : undefined,
+      })
+    );
+
+    return serializedOrdersProducts;
   }
 
   private getSerializedUserCoupons(userCoupons: IUsuarioCupom[]) {

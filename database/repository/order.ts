@@ -69,9 +69,21 @@ export class OrderRepo {
         include: {
           cupom: true,
           endereco: true,
-          pedido_produto: true,
-          pedido_produto_adicional: true,
-          pedido_produto_sabor: true,
+          pedido_produto: {
+            include: {
+              produto: true,
+            },
+          },
+          pedido_produto_adicional: {
+            include: {
+              adicional: true,
+            },
+          },
+          pedido_produto_sabor: {
+            include: {
+              sabor: true,
+            },
+          },
           usuario_cupom: true,
         },
         where: {
