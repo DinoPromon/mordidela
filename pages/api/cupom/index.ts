@@ -51,7 +51,6 @@ const handler: NextApiHandler = async (req, res) => {
           return res.status(403).json({ message: "Cupom não disponível ainda." });
         }
 
-        console.log(canUserUseCoupom);
         return res.status(200).json(coupon);
       } catch (e) {
         const error = e as Error;
