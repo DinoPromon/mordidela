@@ -27,6 +27,7 @@ import {
 import type ICupom from "@models/cupom";
 import type IPedido from "@models/pedido";
 import type IProduto from "@models/produto";
+import type IEndereco from "@models/endereco";
 import type IAdicional from "@models/adicional";
 import type { IOrderRelations } from "@models/pedido";
 
@@ -81,7 +82,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     return flavorsNameInOrderProduct.join(", ");
   }
 
-  function calculateTotalAddsPrice(
+  function calculateAddsTotalPrice(
     orderId: IPedido["id_pedido"],
     productId: IProduto["id_produto"]
   ) {
@@ -93,20 +94,6 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     );
 
     return addsTotalPrice;
-  }
-
-  function calculateSubTotalPrice() {
-    const subtTotalPrice = orderRelations.pedido_produto.reduce((totalPrice, orderProduct) => {
-      const product = orderProduct.produto as IProduto;
-      const addsTotalPrice = calculateTotalAddsPrice(
-        orderProduct.id_pedido,
-        orderProduct.id_produto
-      );
-
-      return totalPrice + product.preco_padrao + addsTotalPrice;
-    }, 0);
-
-    return subtTotalPrice;
   }
 
   function getCouponDiscount(coupon: ICupom) {
@@ -149,6 +136,34 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     }
 
     return true;
+  }
+
+  function getFormattedOrderAddress(address: IEndereco) {
+    const formattedOrderAddres = `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
+
+    return formattedOrderAddres;
+  }
+
+  function calculateSubTotalPrice() {
+    const subtTotalPrice = orderRelations.pedido_produto.reduce((totalPrice, orderProduct) => {
+      const product = orderProduct.produto as IProduto;
+      const addsTotalPrice = calculateAddsTotalPrice(
+        orderProduct.id_pedido,
+        orderProduct.id_produto
+      );
+
+      return totalPrice + product.preco_padrao + addsTotalPrice;
+    }, 0);
+
+    return subtTotalPrice;
+  }
+
+  function calculateTotalPrice() {
+    const subTotalPrice = calculateSubTotalPrice();
+    const hasDeliveryPrice = getHasDeliveryPrice();
+    if (hasDeliveryPrice) return subTotalPrice + orderRelations.preco_entrega;
+
+    return subTotalPrice;
   }
 
   return (
@@ -227,15 +242,19 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
         </SubtotalText>
       </OrdersDataContainer>
 
-      <OrdersAddresContainer>
-        <AddresTitle>Endereço de entrega</AddresTitle>
-        <p>Rua dos Alfeneiros Nº 4, Little Whinging</p>
-        <AddresComplement>Complemento: Casa</AddresComplement>
-      </OrdersAddresContainer>
+      {orderRelations.endereco && (
+        <OrdersAddresContainer>
+          <AddresTitle>Endereço de entrega</AddresTitle>
+          <p>{getFormattedOrderAddress(orderRelations.endereco)}</p>
+          {orderRelations.endereco.complemento && (
+            <AddresComplement>Complemento: {orderRelations.endereco.complemento}</AddresComplement>
+          )}
+        </OrdersAddresContainer>
+      )}
 
       <TotalContainer>
         <TotalText>
-          Total: <span>R$ 32,71</span>
+          Total: <span>{getNumberAsCurrency(calculateTotalPrice())}</span>
         </TotalText>
       </TotalContainer>
     </Modal>
