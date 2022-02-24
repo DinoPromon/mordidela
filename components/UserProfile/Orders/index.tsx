@@ -8,7 +8,7 @@ import { getFormatedDate } from "@utils/transformation";
 import { MoreDetails, OrdersContainer } from "./styled";
 import { PageContainer, PageTitle } from "@components/shared";
 
-import { calculateTotalPrice, getOrderPaymentTypeText } from "./utility";
+import { calculateTotalPrice, getOrderPaymentTypeText, getNumberAsCurrency } from "./utility";
 
 import type { IOrderRelations } from "@models/pedido";
 
@@ -62,7 +62,7 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
                 )} às ${getFormattedHours(createDate(orderRelation.data_pedido))}`}
               </p>
               <p>{`Status: ${getOrderStatusText(orderRelation)}`}</p>
-              <p>{`Total: ${calculateTotalPrice(orderRelation)}`}</p>
+              <p>{`Total: ${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}</p>
               <p>{`Pagamento: ${getOrderPaymentTypeText(orderRelation)}`}</p>
               <MoreDetails onClick={() => openModal(orderRelation)}>
                 <FaPlusCircle size={12} color={PINK} />
