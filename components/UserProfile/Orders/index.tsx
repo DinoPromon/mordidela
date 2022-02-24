@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import OrderDetailsModal from "./OrderDetailsModal";
 import { PINK } from "@utils/colors";
+import { StatusPedido } from "@models/pedido";
 import { FaPlusCircle } from "react-icons/fa";
-import { PageContainer, PageTitle } from "@components/shared";
+import { createDate } from "@utils/transformation/date";
+import { getFormatedDate } from "@utils/transformation";
 import { MoreDetails, OrdersContainer } from "./styled";
+import { PageContainer, PageTitle } from "@components/shared";
+
+import { calculateTotalPrice, getOrderPaymentTypeText } from "./utility";
 
 import type { IOrderRelations } from "@models/pedido";
 
@@ -14,14 +19,33 @@ type OrdersProps = {
 const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
   const [modalItem, setModalItem] = useState<IOrderRelations | null>(null);
 
-  console.log(ordersRelations);
-
   function openModal(orderRelation: IOrderRelations) {
     setModalItem(orderRelation);
   }
 
   function closeModal() {
     setModalItem(null);
+  }
+
+  function getFormattedHours(date: Date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    return `${hours}:${minutes}`;
+  }
+
+  function getOrderStatusText(orderRelation: IOrderRelations) {
+    if (orderRelation.status_pedido === StatusPedido.CONFIRMADO && orderRelation.data_confirmacao) {
+      const confirmatedDate = createDate(orderRelation.data_confirmacao);
+      const formattedConfirmationDate = getFormatedDate(confirmatedDate);
+      const confirmatioDateHours = getFormatedDate(confirmatedDate);
+
+      return `confirmado em ${formattedConfirmationDate} às ${confirmatioDateHours}`;
+    }
+
+    if (orderRelation.status_pedido === StatusPedido.REJEITADO) return `rejeitado`;
+
+    if (orderRelation.status_pedido === StatusPedido.PENDENTE) return `pendente`;
   }
 
   return (
@@ -32,10 +56,14 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
         {ordersRelations.map((orderRelation) => (
           <li key={`order-history-${orderRelation.id_pedido}`}>
             <OrdersContainer>
-              <p>Pedido 1425 - 11/02/2021 às 22:05</p>
-              <p>Status: confirmado em 11/02/2021 às 22:30</p>
-              <p>Total: R$ 23,50</p>
-              <p>Pagamento: dinheiro (troco para R$ 30,00)</p>
+              <p>
+                {`Pedido ${orderRelation.id_pedido} - ${getFormatedDate(
+                  orderRelation.data_pedido
+                )} às ${getFormattedHours(createDate(orderRelation.data_pedido))}`}
+              </p>
+              <p>{`Status: ${getOrderStatusText(orderRelation)}`}</p>
+              <p>{`Total: ${calculateTotalPrice(orderRelation)}`}</p>
+              <p>{`Pagamento: ${getOrderPaymentTypeText(orderRelation)}`}</p>
               <MoreDetails onClick={() => openModal(orderRelation)}>
                 <FaPlusCircle size={12} color={PINK} />
                 <p>Detalhes</p>

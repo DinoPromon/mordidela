@@ -24,6 +24,14 @@ import {
   ItemDescriptionContainer,
 } from "@components/shared/SharedStyledComponents";
 
+import {
+  getNumberAsCurrency,
+  getHasDeliveryPrice,
+  calculateTotalPrice,
+  calculateSubTotalPrice,
+  getOrderPaymentTypeText,
+} from "../utility";
+
 import type ICupom from "@models/cupom";
 import type IPedido from "@models/pedido";
 import type IProduto from "@models/produto";
@@ -37,15 +45,6 @@ type OrderDetailsModalProps = {
 };
 
 const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, onClose }) => {
-  function getNumberAsCurrency(number: number) {
-    const formatedDefaultPrice = new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(number);
-
-    return formatedDefaultPrice;
-  }
-
   function filterOrderProductAdds(
     orderId: IPedido["id_pedido"],
     productId: IProduto["id_produto"]
@@ -82,20 +81,6 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     return flavorsNameInOrderProduct.join(", ");
   }
 
-  function calculateAddsTotalPrice(
-    orderId: IPedido["id_pedido"],
-    productId: IProduto["id_produto"]
-  ) {
-    const filteredOrderProductAdds = filterOrderProductAdds(orderId, productId);
-    const addsTotalPrice = filteredOrderProductAdds.reduce(
-      (totalPrice, orderProductAdd) =>
-        totalPrice + Number(orderProductAdd.adicional?.preco as number),
-      0
-    );
-
-    return addsTotalPrice;
-  }
-
   function getCouponDiscount(coupon: ICupom) {
     if (coupon.tipo === TipoCupom.ENTREGA) return "Entrega grátis";
     return `${coupon.valor_desconto}%`;
@@ -108,7 +93,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
       case TipoCupom.ENTREGA:
         return orderRelations.preco_entrega;
       case TipoCupom.PEDIDO:
-        return calculateSubTotalPrice() * (coupon.valor_desconto / 100);
+        return calculateSubTotalPrice(orderRelations) * (coupon.valor_desconto / 100);
       default:
         const exhaustiveCheck = coupon.tipo;
         return exhaustiveCheck;
@@ -127,43 +112,10 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     }
   }
 
-  function getHasDeliveryPrice() {
-    if (orderRelations.tipo_entrega === TipoEntrega.BALCAO) {
-      return false;
-    }
-    if (orderRelations.cupom && orderRelations.cupom.tipo === TipoCupom.ENTREGA) {
-      return false;
-    }
-
-    return true;
-  }
-
   function getFormattedOrderAddress(address: IEndereco) {
     const formattedOrderAddres = `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
 
     return formattedOrderAddres;
-  }
-
-  function calculateSubTotalPrice() {
-    const subtTotalPrice = orderRelations.pedido_produto.reduce((totalPrice, orderProduct) => {
-      const product = orderProduct.produto as IProduto;
-      const addsTotalPrice = calculateAddsTotalPrice(
-        orderProduct.id_pedido,
-        orderProduct.id_produto
-      );
-
-      return totalPrice + product.preco_padrao + addsTotalPrice;
-    }, 0);
-
-    return subtTotalPrice;
-  }
-
-  function calculateTotalPrice() {
-    const subTotalPrice = calculateSubTotalPrice();
-    const hasDeliveryPrice = getHasDeliveryPrice();
-    if (hasDeliveryPrice) return subTotalPrice + orderRelations.preco_entrega;
-
-    return subTotalPrice;
   }
 
   return (
@@ -210,7 +162,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
 
       <OrdersDataContainer>
         <SubtotalText>
-          Subtotal: <span>{getNumberAsCurrency(calculateSubTotalPrice())}</span>
+          Subtotal: <span>{getNumberAsCurrency(calculateSubTotalPrice(orderRelations))}</span>
         </SubtotalText>
 
         {orderRelations.cupom && (
@@ -231,14 +183,14 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
           Tipo de entrega: <span>{getDeliveryType(orderRelations.tipo_entrega)}</span>
         </SubtotalText>
 
-        {getHasDeliveryPrice() && (
+        {getHasDeliveryPrice(orderRelations) && (
           <SubtotalText>
             Taxa de entrega: <span>{getNumberAsCurrency(orderRelations.preco_entrega)}</span>
           </SubtotalText>
         )}
 
         <SubtotalText>
-          Tipo de pagamento: <span>Dinheiro (troco para R$ 50,00)</span>
+          Tipo de pagamento: <span>{getOrderPaymentTypeText(orderRelations)}</span>
         </SubtotalText>
       </OrdersDataContainer>
 
@@ -254,7 +206,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
 
       <TotalContainer>
         <TotalText>
-          Total: <span>{getNumberAsCurrency(calculateTotalPrice())}</span>
+          Total: <span>{getNumberAsCurrency(calculateTotalPrice(orderRelations))}</span>
         </TotalText>
       </TotalContainer>
     </Modal>
