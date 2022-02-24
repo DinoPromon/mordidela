@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import Cart from "@components/Cart";
-import ProfileDropdown from "./ProfileDropdown";
-import { FaBars, FaShoppingCart } from "react-icons/fa/index";
-import { NavBarListContainer, NavBarListItem } from "./styled";
 import Badge from "@material-ui/core/Badge";
+import ProfileDropdown from "./ProfileDropdown";
+import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { CartContext } from "@store/cart";
+import { NavBarListContainer, NavBarListItem } from "./styled";
+import { FaBars, FaShoppingCart } from "react-icons/fa/index";
 
 type Props = {
   setShowSideBar: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +35,9 @@ const NavBarList: React.FC<Props> = (props) => {
 
   return (
     <NavBarListContainer>
-      {showModal && <Cart onCloseModal={closeModalHandler} />}
+      <CustomAnimatePresence exitBeforeEnter>
+        {showModal && <Cart onCloseModal={closeModalHandler} />}
+      </CustomAnimatePresence>
       <NavBarListItem onClick={openSideBar}>
         <FaBars size={24} color="white" />
       </NavBarListItem>

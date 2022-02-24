@@ -15,10 +15,8 @@ const ItemImage: React.FC<Props> = ({ src, alt }) => {
         <Image
           src={src}
           alt={alt}
-          loading="lazy"
           layout="fill"
           objectFit="contain"
-          placeholder="empty"
         />
       )}
     </ItemImageContainer>
