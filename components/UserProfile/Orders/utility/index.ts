@@ -1,7 +1,6 @@
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega, TipoPagamento } from "@models/pedido";
 
-import type ICupom from "@models/cupom";
 import type IPedido from "@models/pedido";
 import type IProduto from "@models/produto";
 import type { IOrderRelations } from "@models/pedido";
