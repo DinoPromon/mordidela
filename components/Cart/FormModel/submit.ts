@@ -1,4 +1,6 @@
 import { TipoEntrega } from "@models/pedido";
+import { transformPriceStringToNumber } from "@utils/transformation";
+
 import type IUsuario from "@models/usuario";
 import type { CartProduct } from "@my-types/context";
 import type { CartFormValues } from "./index";
@@ -22,7 +24,9 @@ export function getCartSubmitData(
   }));
 
   const pedido = {
-    troco_para: formValues.payment_amount ? formValues.payment_amount : null,
+    troco_para: formValues.payment_amount
+      ? transformPriceStringToNumber(formValues.payment_amount)
+      : null,
     id_cupom: formValues.cupom ? formValues.cupom.id_cupom : null,
     tipo_pagamento: formValues.payment_type,
     tipo_entrega: formValues.delivery_type,
