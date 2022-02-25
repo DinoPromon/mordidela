@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { PINK } from "@utils/colors";
+import { motion } from "framer-motion";
+import { PINK, PURPLE } from "@utils/colors";
 
 export const OrdersContainer = styled.ul`
   display: grid;
@@ -17,11 +18,12 @@ export const OrdersContainer = styled.ul`
   }
 `;
 
-export const OrdersContainerList = styled.li`
+export const OrdersContainerList = styled(motion.li)`
   padding: 1rem;
   background-color: white;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  border-radius: 5px;
+  border: 2px ${PURPLE} solid;
+  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+  border-radius: 10px;
 `;
 
 export const MoreDetails = styled.div`

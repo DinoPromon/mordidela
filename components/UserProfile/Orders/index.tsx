@@ -48,7 +48,10 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
       <PageTitle>Pedidos</PageTitle>
       <OrdersContainer>
         {ordersRelations.map((orderRelation) => (
-          <OrdersContainerList key={`order-history-${orderRelation.id_pedido}`}>
+          <OrdersContainerList
+            whileHover={{ scale: 1.1, cursor: "pointer" }}
+            key={`order-history-${orderRelation.id_pedido}`}
+          >
             <p>
               {`Pedido ${orderRelation.id_pedido} - ${getFormattedDate(
                 orderRelation.data_pedido
