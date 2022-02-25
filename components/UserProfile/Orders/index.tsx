@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import dateFormatter from "date-and-time";
 import OrderDetailsModal from "./OrderDetailsModal";
 import { PINK } from "@utils/colors";
 import { StatusPedido } from "@models/pedido";
@@ -12,6 +11,7 @@ import { PageContainer, PageTitle } from "@components/shared";
 import { calculateTotalPrice, getOrderPaymentTypeText, getNumberAsCurrency } from "./utility";
 
 import type { IOrderRelations } from "@models/pedido";
+import { getFormattedHours } from "@utils/formatters";
 
 type OrdersProps = {
   ordersRelations: IOrderRelations[];
@@ -28,15 +28,11 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
     setModalItem(null);
   }
 
-  function getFormattedHours(date: Date) {
-    return dateFormatter.format(date, "HH:mm", true);
-  }
-
   function getOrderStatusText(orderRelation: IOrderRelations) {
     if (orderRelation.status_pedido === StatusPedido.CONFIRMADO && orderRelation.data_confirmacao) {
       const confirmatedDate = createDate(orderRelation.data_confirmacao);
       const formattedConfirmationDate = getFormattedDate(confirmatedDate);
-      const confirmatioDateHours = getFormattedDate(confirmatedDate);
+      const confirmatioDateHours = getFormattedHours(confirmatedDate);
 
       return `confirmado em ${formattedConfirmationDate} às ${confirmatioDateHours}`;
     }

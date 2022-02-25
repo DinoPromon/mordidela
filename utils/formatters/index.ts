@@ -1,4 +1,4 @@
-import { formatDateInput, dateChangeHandler, maskDate } from "./date";
+import { formatDateInput, dateChangeHandler, maskDate, getFormattedHours } from "./date";
 import { formatPrice } from "./price";
 import { formatProductId } from "./product";
 import { cupomFormat } from "./cupom";
@@ -15,4 +15,5 @@ export {
   removeAditionalSpaces,
   phoneNumberChangeHandler,
   formatPhoneNumber,
+  getFormattedHours,
 };

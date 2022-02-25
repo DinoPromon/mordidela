@@ -1,3 +1,4 @@
+import dateFormatter from 'date-and-time';
 import { transformDayOrMonth } from "@utils/transformation";
 
 export function formatDateInput(date: string) {
@@ -37,4 +38,8 @@ export function dateChangeHandler(curDate: string, prevDate: string) {
     changedDate = formatDateInput(curDate);
   }
   return changedDate;
+}
+
+export function getFormattedHours(date: Date) {
+  return dateFormatter.format(date, "HH:mm", true);
 }
