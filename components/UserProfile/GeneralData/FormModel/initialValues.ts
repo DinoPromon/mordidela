@@ -1,5 +1,5 @@
 import { formatPhoneNumber } from "@utils/formatters";
-import { getFormatedDate } from "@utils/transformation";
+import { getFormattedDate } from "@utils/transformation";
 
 import type { GeneralDataValues } from "./index";
 import type { UserGeneralData } from "@models/usuario";
@@ -13,7 +13,7 @@ export function getGeneralDataInitialValues(initialValues: UserGeneralData) {
   const generalDataInitialValues: GeneralDataValues = {
     nome: initialValues.nome,
     telefone: getFormatedPhoneNumber(initialValues),
-    data_nascimento: getFormatedDate(initialValues.data_nascimento as number),
+    data_nascimento: getFormattedDate(initialValues.data_nascimento as number),
   };
 
   return generalDataInitialValues;

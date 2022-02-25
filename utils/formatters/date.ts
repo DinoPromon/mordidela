@@ -25,6 +25,7 @@ export function maskDate(dateInput: string) {
   } else if (dateInput.match(/^\d{2}\/\d{2}$/) !== null) {
     return `${dateInput}/`;
   }
+
   return dateInput;
 }
 

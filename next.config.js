@@ -4,5 +4,5 @@ module.exports = {
   experimental: {
     styledComponents: true,
   },
-  swcMinify: true,
+  // swcMinify: true,
 };

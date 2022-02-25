@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import dateFormatter from "date-and-time";
 import OrderDetailsModal from "./OrderDetailsModal";
 import { PINK } from "@utils/colors";
 import { StatusPedido } from "@models/pedido";
 import { FaPlusCircle } from "react-icons/fa";
 import { createDate } from "@utils/transformation/date";
-import { getFormatedDate } from "@utils/transformation";
+import { getFormattedDate } from "@utils/transformation";
 import { MoreDetails, OrdersContainer, OrdersContainerList } from "./styled";
 import { PageContainer, PageTitle } from "@components/shared";
 
@@ -28,17 +29,14 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
   }
 
   function getFormattedHours(date: Date) {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    return `${hours}:${minutes}`;
+    return dateFormatter.format(date, "HH:mm", true);
   }
 
   function getOrderStatusText(orderRelation: IOrderRelations) {
     if (orderRelation.status_pedido === StatusPedido.CONFIRMADO && orderRelation.data_confirmacao) {
       const confirmatedDate = createDate(orderRelation.data_confirmacao);
-      const formattedConfirmationDate = getFormatedDate(confirmatedDate);
-      const confirmatioDateHours = getFormatedDate(confirmatedDate);
+      const formattedConfirmationDate = getFormattedDate(confirmatedDate);
+      const confirmatioDateHours = getFormattedDate(confirmatedDate);
 
       return `confirmado em ${formattedConfirmationDate} às ${confirmatioDateHours}`;
     }
@@ -56,7 +54,7 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
         {ordersRelations.map((orderRelation) => (
           <OrdersContainerList key={`order-history-${orderRelation.id_pedido}`}>
             <p>
-              {`Pedido ${orderRelation.id_pedido} - ${getFormatedDate(
+              {`Pedido ${orderRelation.id_pedido} - ${getFormattedDate(
                 orderRelation.data_pedido
               )} às ${getFormattedHours(createDate(orderRelation.data_pedido))}`}
             </p>

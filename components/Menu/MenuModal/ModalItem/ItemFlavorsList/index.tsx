@@ -5,7 +5,6 @@ import { InputCheckbox } from "@components/shared";
 
 import type ISabor from "@models/sabor";
 import type IProduto from "@models/produto";
-import { getSaborById } from "@controllers/sabor";
 
 type Props = {
   items: ISabor[];

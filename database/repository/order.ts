@@ -98,7 +98,7 @@ export class OrderRepo {
         orderBy: {
           id_pedido: "asc",
         },
-        take: itemsAmount,
+        // take: itemsAmount,
       });
 
       return ordersWithRelations;

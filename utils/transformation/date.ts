@@ -1,3 +1,5 @@
+import dateFormatter from "date-and-time";
+
 export function createDate(date: string | number | Date) {
   if (date instanceof Date) return date;
   if (typeof date === "string") {
@@ -9,29 +11,12 @@ export function createDate(date: string | number | Date) {
   return new Date(date);
 }
 
-export function getFormatedDate(unformattedDate: string | number | Date) {
-  const date = createDate(unformattedDate);
-  const day = padDayOrMonth(date.getDate(), 2);
-  const month = padDayOrMonth(date.getMonth() + 1, 2);
-  const year = date.getFullYear();
+export function getFormattedDate(unformattedDate: string | number | Date) {
+  const newDate = createDate(unformattedDate);
+  const formattedDate = dateFormatter.format(newDate, "DD/MM/YYYY");
 
-  return `${day}/${month}/${year}`;
+  return formattedDate;
 }
-
-function padDayOrMonth(num: number, max: number) {
-  return `${num}`.padStart(max, "0").slice(-max);
-}
-
-export const transformDateFromDBToClient = (databaseDate: string) => {
-  const date = new Date(databaseDate);
-  const day = padDayOrMonth(date.getDate(), 31);
-  const month = padDayOrMonth(date.getMonth() + 1, 12);
-  const year = date.getFullYear();
-
-  const clientDate = `${day}/${month}/${year}`;
-
-  return clientDate;
-};
 
 export function getHourFromDate(dateAsString: string) {
   const date = new Date(dateAsString);

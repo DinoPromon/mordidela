@@ -1,7 +1,7 @@
 import React from "react";
 import { PINK } from "@utils/colors";
 import { RiCoupon3Line } from "react-icons/ri";
-import { getFormatedDate } from "@utils/transformation";
+import { getFormattedDate } from "@utils/transformation";
 import { PageContainer, PageTitle } from "@components/shared";
 import { CupomContainer, CupomDataContainer, CupomTitle, CupomData } from "./styled";
 
@@ -27,7 +27,7 @@ const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
   function getCouponValidDate(coupon: RelatedUserCoupon["cupom"]) {
     if (coupon.data_fim === null) return `Válido até o uso`;
 
-    return `Válido até ${getFormatedDate(coupon.data_fim)}`;
+    return `Válido até ${getFormattedDate(coupon.data_fim)}`;
   }
 
   return (

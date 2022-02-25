@@ -1,6 +1,3 @@
-import { getCartFormInitialValues } from "./initialValues";
-import { useCartFormValidationSchema } from "./validationSchema";
-
 import type IEndereco from "@models/endereco";
 import type { TipoCupom } from "@models/cupom";
 import type { TipoEntrega, TipoPagamento } from "@models/pedido";
@@ -22,4 +19,6 @@ export type CartFormValues = {
   cupom: CartCupom | null;
 };
 
-export { getCartFormInitialValues, useCartFormValidationSchema };
+export { getCartSubmitData } from "./submit";
+export { getCartFormInitialValues } from "./initialValues";
+export { useCartFormValidationSchema } from "./validationSchema";

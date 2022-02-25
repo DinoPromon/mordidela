@@ -12,7 +12,12 @@ import { getSession } from "next-auth/client";
 import { BsCheck2Circle } from "react-icons/bs/index";
 import { transformPriceToString } from "@utils/transformation";
 import { FormButton, Modal, CustomFade } from "@components/shared";
-import { useCartFormValidationSchema, getCartFormInitialValues, CartFormValues } from "./FormModel";
+import {
+  useCartFormValidationSchema,
+  getCartFormInitialValues,
+  CartFormValues,
+  getCartSubmitData,
+} from "./FormModel";
 import {
   CartForm,
   CartFormTitle,
@@ -25,7 +30,6 @@ import {
   CartEmptyMessageContainer,
   CartOrderConfirmationButtons,
 } from "./styled";
-
 import { SubtotalText } from "@components/shared/SharedStyledComponents";
 
 import type { Session } from "next-auth";
@@ -107,27 +111,9 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     try {
       setRequest({ error: "", isLoading: true });
       if (session) {
-        const produtos = products.map((item) => ({
-          id_produto: item.product_id,
-          quantidade: item.quantity,
-          observacao: item.orderNote ? item.orderNote : null,
-          adicionais: item.adds.map((add) => add.id_adicional),
-          sabores: item.flavors.map((flavor) => flavor.id_sabor),
-        }));
+        const cartSubmitData = getCartSubmitData(formValues, products, session.user.id_usuario);
 
-        const pedido = {
-          troco_para: formValues.payment_amount ? formValues.payment_amount : null,
-          id_cupom: formValues.cupom ? formValues.cupom.id_cupom : null,
-          tipo_pagamento: formValues.payment_type,
-          tipo_entrega: formValues.delivery_type,
-          id_endereco: formValues.address_id,
-          id_usuario: session.user.id_usuario,
-        };
-
-        await Axios.post("/order", {
-          productsData: produtos,
-          orderData: pedido,
-        });
+        await Axios.post("/order", cartSubmitData);
 
         setRequest({ error: "", isLoading: false });
         setIsOrderConfirmed(true);

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Modal } from "@components/shared";
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega } from "@models/pedido";
@@ -24,7 +24,6 @@ import {
   ItemDescriptionContainer,
   TotalTextOrdersUserProfile,
 } from "@components/shared/SharedStyledComponents";
-
 import {
   getNumberAsCurrency,
   getHasDeliveryPrice,
@@ -46,6 +45,7 @@ type OrderDetailsModalProps = {
 };
 
 const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, onClose }) => {
+
   function filterOrderProductAdds(
     orderId: IPedido["id_pedido"],
     productId: IProduto["id_produto"]
@@ -101,6 +101,14 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     }
   }
 
+  function getProductLabel(product: IProduto) {
+    if (product.tamanho) {
+      return `${product.nome} - ${product.tamanho}`;
+    }
+
+    return product.nome;
+  }
+
   function getDeliveryType(deliveryType: TipoEntrega) {
     switch (deliveryType) {
       case TipoEntrega.BALCAO:
@@ -127,7 +135,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
           <li key={orderProduct.id_pedido_produto}>
             <ItemDescriptionContainer>
               <span>{`${orderProduct.quantidade}x`}</span>
-              <p>{`${orderProduct.produto?.nome} - ${orderProduct.produto?.tamanho}`}</p>
+              <p>{getProductLabel(orderProduct.produto as IProduto)}</p>
               <TrashPriceContainer>
                 <TrashPriceText>
                   {getNumberAsCurrency(orderProduct.produto?.preco_padrao as number)}

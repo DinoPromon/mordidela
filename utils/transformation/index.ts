@@ -1,9 +1,4 @@
-import {
-  transformDate,
-  transformDateFromDBToClient,
-  transformDayOrMonth,
-  getFormatedDate,
-} from "./date";
+import { transformDate, transformDayOrMonth, getFormattedDate } from "./date";
 import { treatErrorMessage } from "./error";
 import { transformDeliveryType } from "./delivery";
 import { getHourFromDate } from "./date";
@@ -14,18 +9,17 @@ import { transformPriceStringToNumber, transformPriceToString } from "./price";
 import { removeSpaces } from "./string";
 
 export {
-  transformDate,
-  transformDateFromDBToClient,
-  transformDayOrMonth,
-  treatErrorMessage,
-  clearPhoneNumber,
-  getDDDFromTelefone,
-  getNumberFromTelefone,
-  transformPriceStringToNumber,
-  transformDeliveryType,
   toCamelCase,
-  transformPriceToString,
-  getHourFromDate,
   removeSpaces,
-  getFormatedDate,
+  transformDate,
+  getHourFromDate,
+  clearPhoneNumber,
+  getFormattedDate,
+  treatErrorMessage,
+  getDDDFromTelefone,
+  transformDayOrMonth,
+  getNumberFromTelefone,
+  transformDeliveryType,
+  transformPriceToString,
+  transformPriceStringToNumber,
 };

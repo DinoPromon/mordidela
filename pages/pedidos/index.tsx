@@ -1,6 +1,5 @@
 import React from "react";
 import dynamic from "next/dynamic";
-// import Orders from "@components/UserProfile/Orders";
 import { FindAllOrderRelationsByUserId } from "@controllers/pedido/findAllOrderRelationsByUserId";
 
 const NavBarFooter = dynamic(() => import("../../components/Layouts/NavBarFooter"));
