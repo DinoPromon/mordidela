@@ -1,6 +1,7 @@
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega, TipoPagamento } from "@models/pedido";
 
+import type ICupom from "@models/cupom";
 import type IPedido from "@models/pedido";
 import type IProduto from "@models/produto";
 import type { IOrderRelations } from "@models/pedido";
@@ -68,6 +69,22 @@ export function getHasDeliveryPrice(orderRelations: IOrderRelations) {
   return true;
 }
 
+export function calculateCouponDiscount(orderRelations: IOrderRelations) {
+  const coupon = orderRelations.cupom;
+
+  if (!coupon) return 0;
+
+  switch (coupon.tipo) {
+    case TipoCupom.ENTREGA:
+      return orderRelations.preco_entrega;
+    case TipoCupom.PEDIDO:
+      return calculateSubTotalPrice(orderRelations) * (coupon.valor_desconto / 100);
+    default:
+      const exhaustiveCheck = coupon.tipo;
+      return exhaustiveCheck;
+  }
+}
+
 export function calculateSubTotalPrice(orderRelations: IOrderRelations) {
   const subtTotalPrice = orderRelations.pedido_produto.reduce((totalPrice, orderProduct) => {
     const product = orderProduct.produto as IProduto;
@@ -86,7 +103,11 @@ export function calculateSubTotalPrice(orderRelations: IOrderRelations) {
 export function calculateTotalPrice(orderRelations: IOrderRelations) {
   const subTotalPrice = calculateSubTotalPrice(orderRelations);
   const hasDeliveryPrice = getHasDeliveryPrice(orderRelations);
-  if (hasDeliveryPrice) return subTotalPrice + orderRelations.preco_entrega;
+  if (orderRelations.cupom !== null) {
+  }
 
-  return subTotalPrice;
+  if (hasDeliveryPrice)
+    return subTotalPrice + orderRelations.preco_entrega - calculateCouponDiscount(orderRelations);
+
+  return subTotalPrice - calculateCouponDiscount(orderRelations);
 }

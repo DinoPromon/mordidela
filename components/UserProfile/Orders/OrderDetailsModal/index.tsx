@@ -30,6 +30,7 @@ import {
   calculateTotalPrice,
   calculateSubTotalPrice,
   getOrderPaymentTypeText,
+  calculateCouponDiscount,
 } from "../utility";
 
 import type ICupom from "@models/cupom";
@@ -45,7 +46,6 @@ type OrderDetailsModalProps = {
 };
 
 const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, onClose }) => {
-
   function filterOrderProductAdds(
     orderId: IPedido["id_pedido"],
     productId: IProduto["id_produto"]
@@ -85,20 +85,6 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
   function getCouponDiscount(coupon: ICupom) {
     if (coupon.tipo === TipoCupom.ENTREGA) return "Entrega grátis";
     return `${coupon.valor_desconto}%`;
-  }
-
-  function getCouponDiscountValue() {
-    const coupon = orderRelations.cupom as ICupom;
-
-    switch (coupon.tipo) {
-      case TipoCupom.ENTREGA:
-        return orderRelations.preco_entrega;
-      case TipoCupom.PEDIDO:
-        return calculateSubTotalPrice(orderRelations) * (coupon.valor_desconto / 100);
-      default:
-        const exhaustiveCheck = coupon.tipo;
-        return exhaustiveCheck;
-    }
   }
 
   function getProductLabel(product: IProduto) {
@@ -183,7 +169,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
               Desconto: <span>{getCouponDiscount(orderRelations.cupom)}</span>
             </ColoredText>
             <ColoredText>
-              Valor: <span>{getNumberAsCurrency(getCouponDiscountValue())}</span>
+              Valor: <span>{getNumberAsCurrency(calculateCouponDiscount(orderRelations))}</span>
             </ColoredText>
           </CoupomDataContainer>
         )}
