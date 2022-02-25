@@ -1,7 +1,7 @@
 import React from "react";
 import CartItemDescription from "./CartItemDescription";
 import { transformPriceToString } from "@utils/transformation";
-import { ProductsListContainer, AddsListContainer,AddsText } from "@components/shared/SharedStyledComponents";
+import { ProductsContainer, AddsListContainer,AddsText } from "@components/shared/SharedStyledComponents";
 
 import type { CartProduct } from "@my-types/context";
 
@@ -24,7 +24,7 @@ const CartOrdersList: React.FC<Props> = (props) => {
   }
 
   return (
-    <ProductsListContainer>
+    <ProductsContainer>
       {products.map((product) => (
         <li key={product.key}>
           <CartItemDescription
@@ -44,7 +44,7 @@ const CartOrdersList: React.FC<Props> = (props) => {
           </AddsListContainer>
         </li>
       ))}
-    </ProductsListContainer>
+    </ProductsContainer>
   );
 };
 

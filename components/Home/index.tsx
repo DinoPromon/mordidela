@@ -28,8 +28,8 @@ const Home: React.FC = () => {
         e faça seu pedido!
       </HomeMenuTitle>
       <DoubleBannerContainer>
-        <Image src={banner_01} width={443} height={620.25} className="teste" />
-        <Image src={banner_02} width={443} height={620.25} className="teste" />
+        <Image src={banner_01} width={443} height={620.25}/>
+        <Image src={banner_02} width={443} height={620.25}/>
       </DoubleBannerContainer>
       <HomeMenuTitle>
         Quanto mais pedidos fizer em nosso site, mais cupons serão disponibilizados para você!

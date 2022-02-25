@@ -1,5 +1,5 @@
 import {
-  ProductsListContainer,
+  ProductsContainer,
   TrashPriceContainer,
   TrashPriceText,
   ItemDescriptionContainer,
@@ -12,10 +12,11 @@ import {
   ColoredText,
   AddresTitle,
   AddresComplement,
+  TotalTextOrdersUserProfile
 } from "./styled";
 
 export {
-  ProductsListContainer,
+  ProductsContainer,
   TrashPriceContainer,
   TrashPriceText,
   ItemDescriptionContainer,
@@ -28,4 +29,5 @@ export {
   ColoredText,
   AddresTitle,
   AddresComplement,
+  TotalTextOrdersUserProfile
 };

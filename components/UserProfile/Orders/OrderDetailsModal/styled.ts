@@ -19,6 +19,7 @@ export const OrdersDataContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding-top: 1rem;
 `;
 
 export const TotalContainer = styled.div`
@@ -28,3 +29,4 @@ export const TotalContainer = styled.div`
 export const OrderFlavorsText = styled.p`
   font-size: 0.75rem;
 `;
+

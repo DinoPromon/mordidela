@@ -5,7 +5,7 @@ import { StatusPedido } from "@models/pedido";
 import { FaPlusCircle } from "react-icons/fa";
 import { createDate } from "@utils/transformation/date";
 import { getFormatedDate } from "@utils/transformation";
-import { MoreDetails, OrdersContainer } from "./styled";
+import { MoreDetails, OrdersContainer, OrdersContainerList } from "./styled";
 import { PageContainer, PageTitle } from "@components/shared";
 
 import { calculateTotalPrice, getOrderPaymentTypeText, getNumberAsCurrency } from "./utility";
@@ -52,26 +52,24 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
     <PageContainer>
       {modalItem && <OrderDetailsModal orderRelations={modalItem} onClose={closeModal} />}
       <PageTitle>Pedidos</PageTitle>
-      <ul>
+      <OrdersContainer>
         {ordersRelations.map((orderRelation) => (
-          <li key={`order-history-${orderRelation.id_pedido}`}>
-            <OrdersContainer>
-              <p>
-                {`Pedido ${orderRelation.id_pedido} - ${getFormatedDate(
-                  orderRelation.data_pedido
-                )} às ${getFormattedHours(createDate(orderRelation.data_pedido))}`}
-              </p>
-              <p>{`Status: ${getOrderStatusText(orderRelation)}`}</p>
-              <p>{`Total: ${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}</p>
-              <p>{`Pagamento: ${getOrderPaymentTypeText(orderRelation)}`}</p>
-              <MoreDetails onClick={() => openModal(orderRelation)}>
-                <FaPlusCircle size={12} color={PINK} />
-                <p>Detalhes</p>
-              </MoreDetails>
-            </OrdersContainer>
-          </li>
+          <OrdersContainerList key={`order-history-${orderRelation.id_pedido}`}>
+            <p>
+              {`Pedido ${orderRelation.id_pedido} - ${getFormatedDate(
+                orderRelation.data_pedido
+              )} às ${getFormattedHours(createDate(orderRelation.data_pedido))}`}
+            </p>
+            <p>{`Status: ${getOrderStatusText(orderRelation)}`}</p>
+            <p>{`Total: ${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}</p>
+            <p>{`Pagamento: ${getOrderPaymentTypeText(orderRelation)}`}</p>
+            <MoreDetails onClick={() => openModal(orderRelation)}>
+              <FaPlusCircle size={12} color={PINK} />
+              <p>Detalhes</p>
+            </MoreDetails>
+          </OrdersContainerList>
         ))}
-      </ul>
+      </OrdersContainer>
     </PageContainer>
   );
 };

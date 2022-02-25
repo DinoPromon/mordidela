@@ -20,8 +20,9 @@ import {
   AddsListContainer,
   TrashPriceContainer,
   CoupomDataContainer,
-  ProductsListContainer,
+  ProductsContainer,
   ItemDescriptionContainer,
+  TotalTextOrdersUserProfile,
 } from "@components/shared/SharedStyledComponents";
 
 import {
@@ -121,11 +122,11 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
   return (
     <Modal onClose={onClose}>
       <OrdersModalTitle>Pedido {orderRelations.id_pedido}</OrdersModalTitle>
-      <ProductsListContainer>
+      <ProductsContainer>
         {orderRelations.pedido_produto.map((orderProduct) => (
           <li key={orderProduct.id_pedido_produto}>
             <ItemDescriptionContainer>
-              <span>{`${orderProduct.quantidade} x`}</span>
+              <span>{`${orderProduct.quantidade}x`}</span>
               <p>{`${orderProduct.produto?.nome} - ${orderProduct.produto?.tamanho}`}</p>
               <TrashPriceContainer>
                 <TrashPriceText>
@@ -158,7 +159,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
             )}
           </li>
         ))}
-      </ProductsListContainer>
+      </ProductsContainer>
 
       <OrdersDataContainer>
         <SubtotalText>
@@ -205,9 +206,9 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
       )}
 
       <TotalContainer>
-        <TotalText>
+        <TotalTextOrdersUserProfile>
           Total: <span>{getNumberAsCurrency(calculateTotalPrice(orderRelations))}</span>
-        </TotalText>
+        </TotalTextOrdersUserProfile>
       </TotalContainer>
     </Modal>
   );

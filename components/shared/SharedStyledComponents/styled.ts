@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { PURPLE, PINK } from "@utils/colors";
 
-export const ProductsListContainer = styled.ul`
+export const ProductsContainer = styled.ul`
   display: flex;
   flex-direction: column;
   list-style: none;
+  gap: 1rem;
 `;
 
 export const TrashPriceContainer = styled.div`
@@ -44,7 +45,7 @@ export const AddsListContainer = styled.div`
   font-size: 13px;
   flex-direction: column;
   position: relative;
-  padding: 2px 0 1.5rem 0;
+  padding: 2px 0 0;
   gap: 4px;
 `;
 
@@ -83,6 +84,15 @@ export const TotalText = styled(SubtotalText)`
 
   & > span {
     font-size: 1.25rem;
+  }
+`;
+
+export const TotalTextOrdersUserProfile = styled(SubtotalText)`
+  font-size: 1.5rem;
+  text-align: center;
+
+  & > span {
+    font-size: 1.5rem;
   }
 `;
 
