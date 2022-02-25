@@ -36,14 +36,27 @@ export class CupomRepo {
     return createdCupom;
   }
 
-  public static isCupomAvailable(startDate: ICupom["data_inicio"], endDate: ICupom["data_fim"]) {
-    const currentTimestamp = new Date().getTime();
-    const startTimestmap = startDate ? new Date(startDate).getTime() : new Date().getTime();
-    const endTimestamp = endDate ? new Date(endDate).getTime() : new Date().getTime();
+  public static async findAllFidelityCoupons() {
+    const fidelityCoupons = await Prisma.cupom.findMany({
+      where: {
+        fidelidade: true,
+      },
+      orderBy: {
+        qtde_min_pedido: "desc",
+      },
+    });
 
-    if (currentTimestamp >= endTimestamp || currentTimestamp < startTimestmap) {
-      return false;
-    }
-    return true;
+    return fidelityCoupons;
   }
+
+  // public static isCupomAvailable(startDate: ICupom["data_inicio"], endDate: ICupom["data_fim"]) {
+  //   const currentTimestamp = new Date().getTime();
+  //   const startTimestmap = startDate ? new Date(startDate).getTime() : new Date().getTime();
+  //   const endTimestamp = endDate ? new Date(endDate).getTime() : new Date().getTime();
+
+  //   if (currentTimestamp >= endTimestamp || currentTimestamp < startTimestmap) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 }

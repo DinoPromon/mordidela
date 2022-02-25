@@ -1,10 +1,11 @@
 import { Prisma } from "@database";
+import { createDate } from "@utils/transformation/date";
+
 import type ICupom from "@models/cupom";
 import type IUsuario from "@models/usuario";
 import type IUsuarioCupom from "@models/usuario_cupom";
-import { createDate } from "@utils/transformation/date";
 
-export class UserCupomRepo {
+export class UserCouponRepo {
   public static async findManyByUserIdAndCouponId(
     userId: IUsuario["id_usuario"],
     cupomId: ICupom["id_cupom"]

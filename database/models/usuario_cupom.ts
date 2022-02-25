@@ -9,7 +9,7 @@ interface IUsuarioCupom {
   foi_usado: boolean;
   id_cupom: ICupom["id_cupom"];
   id_usuario: IUsuario["id_usuario"];
-  id_pedido: IPedido["id_pedido"];
+  id_pedido: IPedido["id_pedido"] | null;
 }
 
 export default IUsuarioCupom;

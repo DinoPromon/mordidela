@@ -1,8 +1,9 @@
 import { AddRepo } from "@repository/add";
 import { throwError } from "@errors/index";
+import { CupomRepo } from "@repository/cupom";
 import { OrderRepo } from "@repository/order";
 import { CreateOrderValidator } from "./validator";
-import { UserCupomRepo } from "@repository/user-cupom";
+import { UserCouponRepo } from "@repository/user-cupom";
 import { OrderProductRepo } from "@repository/order-product";
 import { OrderProductAddRepo } from "@repository/order-product-add";
 import { OrderProductFlavorRepo } from "@repository/order-product-flavor";
@@ -45,10 +46,12 @@ export class CreateOrder {
     await this.createProductRelations(createdOrderId).catch((err) =>
       throwError("O-C", { customMessage: "Erro na criação da relação pedido e produto" })
     );
+
+    await this.giveFidelityCoupon();
   }
 
   private async createCouponRelation(orderId: IPedido["id_pedido"], couponId: ICupom["id_cupom"]) {
-    const createdUserCoupon = await UserCupomRepo.create({
+    const createdUserCoupon = await UserCouponRepo.create({
       id_usuario: this.userId,
       id_cupom: couponId,
       id_pedido: orderId,
@@ -57,6 +60,23 @@ export class CreateOrder {
     });
 
     return createdUserCoupon;
+  }
+
+  private async giveFidelityCoupon() {
+    const fidelityCoupons = await CupomRepo.findAllFidelityCoupons();
+    const userOrdersAmount = await OrderRepo.countByUserId(this.userId);
+
+    for (const coupon of fidelityCoupons) {
+      if (userOrdersAmount % coupon.qtde_min_pedido === 0) {
+        return await UserCouponRepo.create({
+          id_cupom: coupon.id_cupom,
+          id_usuario: this.userId,
+          data_uso: null,
+          foi_usado: false,
+          id_pedido: null,
+        });
+      }
+    }
   }
 
   private async createProductRelations(orderId: IPedido["id_pedido"]) {

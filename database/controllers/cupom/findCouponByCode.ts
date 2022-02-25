@@ -1,6 +1,6 @@
 import { OrderRepo } from "@repository/order";
 import { CupomRepo } from "@repository/cupom";
-import { UserCupomRepo } from "@repository/user-cupom";
+import { UserCouponRepo } from "@repository/user-cupom";
 
 import type ICupom from "@models/cupom";
 import type IUsuario from "@models/usuario";
@@ -14,7 +14,7 @@ export class FindCouponByCode {
   }
 
   public async verifyCouponUsability(coupon: ICupom, userID: IUsuario["id_usuario"]) {
-    const userCouponsList = (await UserCupomRepo.findManyByUserIdAndCouponId(
+    const userCouponsList = (await UserCouponRepo.findManyByUserIdAndCouponId(
       userID,
       coupon.id_cupom
     )) as IUsuarioCupom[];
