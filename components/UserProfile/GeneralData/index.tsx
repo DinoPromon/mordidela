@@ -15,11 +15,7 @@ import {
   getGeneralDataInitialValues,
   getGeneralDataValidationSchema,
 } from "./FormModel";
-import {
-  NumberOrders,
-  GeneralDataContainer,
-  CustomTextFieldSmallerContainer,
-} from "./styled";
+import { NumberOrders, GeneralDataContainer, CustomTextFieldSmallerContainer } from "./styled";
 
 import type { AxiosError } from "axios";
 import type { MyUser } from "@my-types/next-auth";
@@ -86,7 +82,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
         validationSchema={validationSchema}
         onSubmit={generalDataSubmitHandler}
       >
-        {({ values, setFieldValue }) => (
+        {({ values, setFieldValue, isValid, dirty }) => (
           <Form>
             <GeneralDataContainer>
               <NumberOrders>
@@ -134,7 +130,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
                 variant="contained"
                 color="secondary"
                 type="submit"
-                disabled={submitRequestState.isLoading === true}
+                disabled={submitRequestState.isLoading === true || !isValid || !dirty}
                 startIcon={
                   <>
                     {submitRequestState.isLoading && <CircularProgress size={20} color="primary" />}
@@ -143,6 +139,7 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
               >
                 Salvar alterações
               </Button>
+              {console.log(dirty)}
               {submitRequestState.error && (
                 <ErrorMessage style={{ color: ERROR_RED }}>{submitRequestState.error}</ErrorMessage>
               )}
