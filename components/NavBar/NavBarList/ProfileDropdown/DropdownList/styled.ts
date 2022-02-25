@@ -51,7 +51,6 @@ export const DropdownListItem = styled.li`
 
   &:hover {
     cursor: pointer;
-    text-decoration: underline;
     color: white;
     background-color: ${PURPLE};
   }

@@ -22,7 +22,11 @@ const SideBarList: React.FC<Props> = (props) => {
           <a onClick={onClose}>Cardápio</a>
         </Link>
       </li>
-      <li>Sobre</li>
+      <li>
+        <Link href={"/sobre"}>
+          <a onClick={onClose}>Sobre</a>
+        </Link>
+      </li>
     </SideBarListContainer>
   );
 };
