@@ -1,7 +1,7 @@
-import { PURPLE, PINK } from "@utils/colors";
+import { Form } from "formik";
 import styled from "styled-components";
 
-export const AddressesInputContainer = styled.div`
+export const AddressesInputContainer = styled(Form)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -9,12 +9,12 @@ export const AddressesInputContainer = styled.div`
   margin: 0 auto;
   padding-bottom: 2rem;
   width: 100%;
+`;
 
-  & > span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+export const AddressesFormButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;s
 `;
 
 export const CustomInputsDesign = styled.div`
