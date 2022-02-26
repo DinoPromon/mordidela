@@ -5,13 +5,13 @@ import { StatusPedido } from "@models/pedido";
 import { FaPlusCircle } from "react-icons/fa";
 import { createDate } from "@utils/transformation/date";
 import { getFormattedDate } from "@utils/transformation";
-import { MoreDetails, OrdersContainer, OrdersContainerList } from "./styled";
+import { getFormattedHours } from "@utils/formatters";
 import { PageContainer, PageTitle } from "@components/shared";
+import { MoreDetails, OrdersContainer, OrdersContainerList } from "./styled";
 
 import { calculateTotalPrice, getOrderPaymentTypeText, getNumberAsCurrency } from "./utility";
 
 import type { IOrderRelations } from "@models/pedido";
-import { getFormattedHours } from "@utils/formatters";
 
 type OrdersProps = {
   ordersRelations: IOrderRelations[];

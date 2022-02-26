@@ -1,11 +1,10 @@
-import * as Yup from "yup";
 import type { FormField } from "@my-types/form";
 
 export interface IAddressesFormValues {
-  logradouro: string;
-  numero: string;
-  bairro: string;
-  complemento: string;
+  publicPlace: string;
+  number: string;
+  neighborhood: string;
+  complement: string;
 }
 
 export type AddressesFormModel = {
@@ -14,24 +13,24 @@ export type AddressesFormModel = {
 
 export function getAddressesFormModel() {
   const addressesFormModel: AddressesFormModel = {
-    logradouro: {
+    publicPlace: {
       label: "Logradouro*",
-      name: "logradouro",
+      name: "publicPlace",
       requiredErrorMessage: "Insira o logradouro",
     },
-    bairro: {
+    neighborhood: {
       label: "Bairro*",
-      name: "bairro",
+      name: "neighborhood",
       requiredErrorMessage: "Insira o bairro",
     },
-    numero: {
+    number: {
       label: "Número*",
-      name: "numero",
+      name: "number",
       requiredErrorMessage: "Insira o número",
     },
-    complemento: {
+    complement: {
       label: "Complemento",
-      name: "complemento",
+      name: "complement",
     },
   };
 

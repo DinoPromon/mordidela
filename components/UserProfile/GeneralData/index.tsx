@@ -139,7 +139,6 @@ const GeneralData: React.FC<GeneralDataProps> = ({ user, userGeneralData }) => {
               >
                 Salvar alterações
               </Button>
-              {console.log(dirty)}
               {submitRequestState.error && (
                 <ErrorMessage style={{ color: ERROR_RED }}>{submitRequestState.error}</ErrorMessage>
               )}

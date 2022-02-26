@@ -1,11 +1,13 @@
 import orderErrors from "./pedido";
-import orderProductErrors from "./pedido-produto";
-import sessionsErrors from "./session";
 import productErrors from "./produto";
+import addressErrors from "./endereco";
+import sessionsErrors from "./session";
+import orderProductErrors from "./pedido-produto";
 
 import type { OrderErrors } from "./pedido";
 import type { ProductErrors } from "./produto";
 import type { SessionErrors } from "./session";
+import type { AddressErrors } from "./endereco";
 import type { OrderProductErrors } from "./pedido-produto";
 
 export type ServerError = {
@@ -13,17 +15,18 @@ export type ServerError = {
   errorMessage: string;
 };
 
-type AllErrors = OrderErrors & OrderProductErrors & SessionErrors & ProductErrors;
+type AllErrors = OrderErrors & OrderProductErrors & SessionErrors & ProductErrors & AddressErrors;
 
 type ThrowErrorOptions = {
   customMessage?: string;
 };
 
-const allErrors = {
+const allErrors: AllErrors = {
   ...orderErrors,
   ...orderProductErrors,
   ...sessionsErrors,
   ...productErrors,
+  ...addressErrors,
 };
 
 export function throwError(errorKey: keyof AllErrors, options?: ThrowErrorOptions): never {
