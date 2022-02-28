@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 
-import Wrapper from "../styled";
 import SignupFormActions from "./SignupFormActions";
-import { FormInput } from "@components/shared";
+import { FormInput, InputTextFormik } from "@components/shared";
 import { userFormValidations } from "@utils/validations";
 import { getSignupErrorMessage } from "@utils/error-message";
 import { dateChangeHandler, phoneNumberChangeHandler } from "@utils/formatters";
 
 import type { UserFormData } from "@my-types/forms";
+
+import { Formik } from "formik";
+import { FormikForm } from "../styled";
+import {
+  getSignUpFormModel,
+  getSignUpFormValidationSchema,
+  getSignUpInitialValues,
+} from "./FormModel";
 
 type Props = {
   state: UserFormData;
@@ -51,8 +58,68 @@ const SignUpForm: React.FC<Props> = (props) => {
     setCanSubmit(!hasErrorInInputs(formState));
   }, [formState]);
 
+  const formModel = getSignUpFormModel();
+
   return (
-    <Wrapper onSubmit={submitHandler}>
+    <Formik
+      validateOnChange={false}
+      enableReinitialize={true}
+      validationSchema={getSignUpFormValidationSchema(formModel)}
+      initialValues={getSignUpInitialValues()}
+      onSubmit={(values) => console.log(values)}
+    >
+      {({ values }) => (
+        <FormikForm>
+          <InputTextFormik
+            name={formModel.name.name}
+            label={formModel.name.label}
+            value={values.name}
+            variant="outlined"
+            helperText={formModel.name.requiredErrorMessage}
+          />
+          <InputTextFormik
+            name={formModel.birthDate.name}
+            label={formModel.birthDate.label}
+            value={values.birthDate}
+            variant="outlined"
+            helperText={formModel.birthDate.requiredErrorMessage}
+          />
+          <InputTextFormik
+            name={formModel.phoneNumber.name}
+            label={formModel.phoneNumber.label}
+            value={values.phoneNumber}
+            variant="outlined"
+            helperText={formModel.phoneNumber.requiredErrorMessage}
+          />
+          <InputTextFormik
+            name={formModel.email.name}
+            label={formModel.email.label}
+            value={values.email}
+            variant="outlined"
+            helperText={formModel.email.requiredErrorMessage}
+          />
+          <InputTextFormik
+            name={formModel.password.name}
+            label={formModel.password.label}
+            value={values.password}
+            variant="outlined"
+            helperText={formModel.password.requiredErrorMessage}
+          />
+          <InputTextFormik
+            name={formModel.confirmedPassword.name}
+            label={formModel.confirmedPassword.label}
+            value={values.confirmedPassword}
+            variant="outlined"
+            helperText={formModel.confirmedPassword.requiredErrorMessage}
+          />
+          <p>Preencha os campos obrigatórios marcados com *</p>
+          <SignupFormActions onBack={onBack} disabled={!canSubmit} />
+        </FormikForm>
+      )}
+    </Formik>
+  );
+  /*   return (
+    <FormikForm >
       <FormInput
         id="nome"
         isInputValid={userFormValidations.nome(formState.nome)}
@@ -109,10 +176,10 @@ const SignUpForm: React.FC<Props> = (props) => {
         placeholder="Confirme a senha*"
         onChange={changeFormStateHandler}
       />
-      <p>Preencha os campos obrigatórios marcados com *.</p>
+      <p>Preencha os campos obrigatórios marcados com *</p>
       <SignupFormActions onBack={onBack} disabled={!canSubmit} />
-    </Wrapper>
-  );
+    </FormikForm>
+  ); */
 };
 
 export default SignUpForm;

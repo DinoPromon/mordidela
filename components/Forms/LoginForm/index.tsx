@@ -1,44 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/client";
 
-import Wrapper from "../styled";
-import LoginFormActions from "./LoginFormActions";
-import FormRequestStatus from "@components/shared/FormRequestStatus";
-import { FormInput } from "@components/shared";
-import { loginFormValidations } from "@utils/validations";
-import { getLoginErrorMessage } from "@utils/error-message";
+import { Wrapper } from "../styled";
 
-import type { LoginFormData } from "@my-types/login";
 import type { RequestState } from "@my-types/request";
+import LoginFormActions from "./LoginFormActions";
 
-const initialLoginData: LoginFormData = {
-  email: "",
-  senha: "",
-};
+import { Formik } from "formik";
+import { InputTextFormik } from "@components/shared";
+import { FormikForm } from "../styled";
+import {
+  getLoginFormInitialValues,
+  getLoginFormModel,
+  getLoginFormValidationSchema,
+} from "./FormModel";
+import { IconButton, InputAdornment } from "@material-ui/core";
 
 const LoginForm: React.FC = (props) => {
   const router = useRouter();
-  const [formState, setFormState] = useState<LoginFormData>(initialLoginData);
   const [request, setRequest] = useState<RequestState>({ error: "", isLoading: false });
   const [canSubmit, setCanSubmit] = useState(false);
-
-  const hasErrorInIputs = (formInputs: LoginFormData) => {
-    for (let k in loginFormValidations) {
-      const key = k as keyof LoginFormData;
-      const isValid = loginFormValidations[key](formInputs[key]);
-      if (!isValid) return key;
-    }
-    return false;
-  };
-
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (request.error) setRequest({ ...request, error: "" });
-    setFormState({
-      ...formState,
-      [event.target.id]: event.target.value,
-    });
-  };
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,8 +29,8 @@ const LoginForm: React.FC = (props) => {
       try {
         const result = await signIn("credentials", {
           redirect: false,
-          email: formState.email,
-          senha: formState.senha,
+          /*           email: formState.email,
+          senha: formState.senha, */
         });
 
         if (!result || result.error) {
@@ -63,15 +45,50 @@ const LoginForm: React.FC = (props) => {
     }
   };
 
-  useEffect(() => {
-    setCanSubmit(!hasErrorInIputs(formState));
-  }, [formState]);
+  /*   const shouldShowRequestStatus = request.isLoading || request.error; */
 
-  const shouldShowRequestStatus = request.isLoading || request.error;
+  const formModel = getLoginFormModel();
 
   return (
-    <Wrapper onSubmit={submitHandler}>
-      <FormInput
+    <Formik
+      validateOnChange={false}
+      enableReinitialize={true}
+      validationSchema={getLoginFormValidationSchema(formModel)}
+      initialValues={getLoginFormInitialValues()}
+      onSubmit={(values) => console.log(values)}
+    >
+      {({ values }) => (
+        <FormikForm>
+          <InputTextFormik
+            name={formModel.email.name}
+            label={formModel.email.label}
+            value={values.email}
+            variant="outlined"
+            helperText={formModel.email.requiredErrorMessage}
+          />
+          <InputTextFormik
+            name={formModel.password.name}
+            label={formModel.password.label}
+            value={values.password}
+            variant="outlined"
+            helperText={formModel.password.requiredErrorMessage}
+            autoComplete="off"
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton edge="end">
+                  
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+          <LoginFormActions disabled={!canSubmit} />
+        </FormikForm>
+        
+      )}
+    </Formik>
+  );
+  {
+    /*       <FormInput
         type="text"
         id="email"
         isInputValid={loginFormValidations.email(formState.email)}
@@ -93,9 +110,8 @@ const LoginForm: React.FC = (props) => {
       {shouldShowRequestStatus && (
         <FormRequestStatus errorMessage={request.error} isLoading={request.isLoading} />
       )}
-      <LoginFormActions disabled={!canSubmit} />
-    </Wrapper>
-  );
+      <LoginFormActions disabled={!canSubmit} /> */
+  }
 };
 
 export default LoginForm;

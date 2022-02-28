@@ -102,6 +102,7 @@ const Addresses: React.FC = (props) => {
           </AddressesInputContainer>
         )}
       </Formik>
+      
       <AddressContainer>
         <h3>Endereços cadastrados</h3>
         <ShowAddress>

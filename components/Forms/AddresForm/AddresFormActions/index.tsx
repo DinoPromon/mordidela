@@ -10,7 +10,7 @@ type Props = {
   onBack: () => void,
 }
 
-const AddressFormActions: React.FC<Props> = (props) => {
+const AddresFormActions: React.FC<Props> = (props) => {
   const router = useRouter();
 
   const backHandler = () => {
@@ -26,4 +26,4 @@ const AddressFormActions: React.FC<Props> = (props) => {
   );
 };
 
-export default AddressFormActions;
+export default AddresFormActions;
