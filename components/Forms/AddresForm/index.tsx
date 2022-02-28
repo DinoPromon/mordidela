@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import AddressFormActions from "./AddresFormActions";
+import AddressFormActions from "./AddressFormActions";
 import FormRequestStatus from "@components/shared/FormRequestStatus";
 import { FormInput, InputTextFormik } from "@components/shared";
 import { addressFormValidations } from "@utils/validations";
 
 import type { Response } from "@my-types/request";
 import type { AddressFormData } from "@my-types/forms";
-import AddresFormActions from "./AddresFormActions";
+import AddresFormActions from "./AddressFormActions";
 
 import { Formik } from "formik";
 import { FormikForm } from "../styled";
@@ -21,7 +21,7 @@ type Props = {
   onSubmit: () => Promise<Response>;
 };
 
-const AddresForm: React.FC<Props> = (props) => {
+const AddressForm: React.FC<Props> = (props) => {
   const router = useRouter();
   const { state: formState, setState: setFormState, onBack, onSubmit } = props;
   const [canSubmit, setCanSubmit] = useState(false);
@@ -159,4 +159,4 @@ const AddresForm: React.FC<Props> = (props) => {
   
 };
 
-export default AddresForm;
+export default AddressForm;
