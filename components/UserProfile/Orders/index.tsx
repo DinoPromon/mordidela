@@ -49,7 +49,7 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
       <OrdersContainer>
         {ordersRelations.map((orderRelation) => (
           <OrdersContainerList
-            whileHover={{ scale: 1.1, cursor: "pointer" }}
+            whileHover={{ scale: 1.05 }}
             key={`order-history-${orderRelation.id_pedido}`}
           >
             <p>

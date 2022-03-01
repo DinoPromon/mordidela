@@ -1,5 +1,5 @@
-import AddresForm from "./AddresForm";
+import AddressForm from "./AddresForm";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignupForm";
 
-export { AddresForm, LoginForm, SignUpForm };
+export { AddressForm, LoginForm, SignUpForm };

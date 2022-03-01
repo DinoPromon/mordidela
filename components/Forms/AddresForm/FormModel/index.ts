@@ -19,12 +19,12 @@ export function getAddresFormModel() {
       requiredErrorMessage: "Insira seu logradouro",
     },
     number: {
-      label: "Número",
+      label: "Número *",
       name: "number",
       requiredErrorMessage: "Insira seu número",
     },
     neighborhood: {
-      label: "Bairro",
+      label: "Bairro *",
       name: "neighborhood",
       requiredErrorMessage: "Insira seu bairro"
     },

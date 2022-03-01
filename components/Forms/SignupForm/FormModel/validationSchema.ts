@@ -14,7 +14,7 @@ export function getSignUpFormValidationSchema(formModel: SignUpFormModel) {
       .required(password.requiredErrorMessage)
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        "Sua senha deve conter, ao menos, 8 caracteres, com uma letra maiúscula, uma minúscula, um número e um caractere especial"
+        "Sua senha deve conter, no mínimo, 8 caracteres, com uma letra maiúscula, uma minúscula, um número e um caractere especial"
       ),
     [confirmedPassword.name]: Yup.string()
       .required(confirmedPassword.requiredErrorMessage)
