@@ -16,32 +16,32 @@ export type SignUpFormModel = {
 export function getSignUpFormModel() {
   const SignUpFormModel: SignUpFormModel = {
     name: {
-      label: "Nome *",
+      label: "Nome*",
       name: "name",
       requiredErrorMessage: "Insira seu nome",
     },
     birthDate: {
-      label: "Data de nascimento *",
+      label: "Data de nascimento*",
       name: "birthDate",
       requiredErrorMessage: "Insira sua data de nascimento",
     },
     phoneNumber: {
-      label: "Telefone *",
+      label: "Telefone*",
       name: "phoneNumber",
       requiredErrorMessage: "Insira seu número de telefone",
     },
     email: {
-      label: "Email *",
+      label: "Email*",
       name: "email",
       requiredErrorMessage: "Insira seu email",
     },
     password: {
-      label: "Senha *",
+      label: "Senha*",
       name: "password",
       requiredErrorMessage: "Insira sua senha",
     },
     confirmedPassword: {
-      label: "Confirme sua senha *",
+      label: "Confirme sua senha*",
       name: "confirmedPassword",
       requiredErrorMessage: "Insira sua senha novamente"
     },
