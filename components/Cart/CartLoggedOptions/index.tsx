@@ -35,22 +35,22 @@ const CartLoggedOptions: React.FC<Props> = ({
   const { validateForm, values, setFieldValue } = useFormikContext<CartFormValues>();
   const [formError, setFormError] = useState("");
 
-  const isDelivery = values.delivery_type === TipoEntrega.ENTREGA;
-  const shouldShowDeliveryPrice = isDelivery && values.cupom?.tipo_cupom !== TipoCupom.ENTREGA;
-  const shouldShowDiscount = Boolean(values.cupom?.id_cupom);
+  const isDelivery = values.deliveryType === TipoEntrega.ENTREGA;
+  const shouldShowDeliveryPrice = isDelivery && values.coupon?.tipo_cupom !== TipoCupom.ENTREGA;
+  const shouldShowDiscount = Boolean(values.coupon?.id_cupom);
 
   function getTotalPrice() {
-    if (isDelivery && values.delivery_price) {
-      if (values.cupom === null) {
-        return subTotalPrice + values.delivery_price;
+    if (isDelivery && values.deliveryPrice) {
+      if (values.coupon === null) {
+        return subTotalPrice + values.deliveryPrice;
       }
-      if (values.cupom?.tipo_cupom === TipoCupom.ENTREGA) {
+      if (values.coupon?.tipo_cupom === TipoCupom.ENTREGA) {
         return subTotalPrice;
       }
-      return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100 + values.delivery_price;
+      return (subTotalPrice * (100 - values.coupon.valor_desconto)) / 100 + values.deliveryPrice;
     }
-    if (values.cupom && values.cupom.tipo_cupom === TipoCupom.PEDIDO) {
-      return (subTotalPrice * (100 - values.cupom.valor_desconto)) / 100;
+    if (values.coupon && values.coupon.tipo_cupom === TipoCupom.PEDIDO) {
+      return (subTotalPrice * (100 - values.coupon.valor_desconto)) / 100;
     }
     return subTotalPrice;
   }
@@ -77,11 +77,11 @@ const CartLoggedOptions: React.FC<Props> = ({
     <Fragment>
       <CustomFade triggerAnimation={shouldShowDeliveryPrice}>
         <SubtotalText>
-          Entrega: <span>R$ {transformPriceToString(Number(values.delivery_price))}</span>
+          Entrega: <span>R$ {transformPriceToString(Number(values.deliveryPrice))}</span>
         </SubtotalText>
       </CustomFade>
 
-      <CustomFade triggerAnimation={!Boolean(values.cupom)}>
+      <CustomFade triggerAnimation={!Boolean(values.coupon)}>
         <CartCupom onChangeRequestStatus={onChangeRequestStatus} />
       </CustomFade>
 
@@ -89,21 +89,21 @@ const CartLoggedOptions: React.FC<Props> = ({
         <CoupomDataContainer>
           <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
           <ColoredText>
-            Cupom: <span>{values.cupom?.codigo_cupom}</span>
+            Cupom: <span>{values.coupon?.codigo_cupom}</span>
           </ColoredText>
           <ColoredText>
             Desconto:{" "}
-            {values.cupom?.tipo_cupom === TipoCupom.ENTREGA ? (
+            {values.coupon?.tipo_cupom === TipoCupom.ENTREGA ? (
               <span> Frete grátis</span>
             ) : (
-              <span>{values.cupom?.valor_desconto}%</span>
+              <span>{values.coupon?.valor_desconto}%</span>
             )}
           </ColoredText>
-          {values.cupom?.tipo_cupom === TipoCupom.PEDIDO && (
+          {values.coupon?.tipo_cupom === TipoCupom.PEDIDO && (
             <ColoredText>
               Valor:{" "}
               <span>
-                R$ {transformPriceToString((values.cupom.valor_desconto * subTotalPrice) / 100)}
+                R$ {transformPriceToString((values.coupon.valor_desconto * subTotalPrice) / 100)}
               </span>
             </ColoredText>
           )}

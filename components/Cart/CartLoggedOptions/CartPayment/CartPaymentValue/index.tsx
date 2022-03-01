@@ -29,7 +29,7 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
               type="text"
               maxLength={7}
               onChange={changeHandler}
-              value={values.payment_amount}
+              value={values.paymentAmount}
             ></input>
           </CartPaymentInputChange>
         </CartPaymentValueContainer>

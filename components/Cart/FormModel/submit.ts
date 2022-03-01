@@ -24,14 +24,14 @@ export function getCartSubmitData(
   }));
 
   const pedido = {
-    troco_para: formValues.payment_amount
-      ? transformPriceStringToNumber(formValues.payment_amount)
+    troco_para: formValues.paymentAmount
+      ? transformPriceStringToNumber(formValues.paymentAmount)
       : null,
-    id_cupom: formValues.cupom ? formValues.cupom.id_cupom : null,
-    tipo_pagamento: formValues.payment_type,
-    tipo_entrega: formValues.delivery_type,
-    id_endereco: checkHasAddressId(formValues.delivery_type as TipoEntrega)
-      ? formValues.address_id
+    id_cupom: formValues.coupon ? formValues.coupon.id_cupom : null,
+    tipo_pagamento: formValues.paymentType,
+    tipo_entrega: formValues.deliveryType,
+    id_endereco: checkHasAddressId(formValues.deliveryType as TipoEntrega)
+      ? formValues.addressId
       : null,
     id_usuario: userId,
   };

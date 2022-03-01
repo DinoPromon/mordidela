@@ -2,13 +2,13 @@ import type { CartFormValues } from "./index";
 
 export const getCartFormInitialValues = () => {
   const cartFormInitialValues: CartFormValues = {
-    delivery_type: null,
-    address_id: null,
-    payment_amount: "",
-    payment_type: null,
-    delivery_price: null,
+    deliveryType: null,
+    addressId: null,
+    paymentAmount: "",
+    paymentType: null,
+    deliveryPrice: null,
     needChange: null,
-    cupom: null,
+    coupon: null,
   };
 
   return cartFormInitialValues;

@@ -24,8 +24,8 @@ const CartPaymentSelect: React.FC = () => {
   }
 
   useEffect(() => {
-    setPaymentType(values.payment_type);
-  }, [values.payment_type, setPaymentType]);
+    setPaymentType(values.paymentType);
+  }, [values.paymentType, setPaymentType]);
 
   return (
     <CartPaymentSelectContainer>
@@ -34,7 +34,7 @@ const CartPaymentSelect: React.FC = () => {
         <RadioGroup
           row
           name="input-payment-type"
-          value={values.payment_type}
+          value={values.paymentType}
           onChange={changePaymentTypeHandler}
         >
           <FormControlLabel

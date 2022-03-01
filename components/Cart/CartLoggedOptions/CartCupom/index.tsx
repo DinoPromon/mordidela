@@ -18,7 +18,7 @@ type CartCupomProps = {
 const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
   const [isLoadingCupom, setIsLoadingCupom] = useState(false);
   const { values, setFieldValue } = useFormikContext<CartFormValues>();
-  const [inputCupom, setInputCupom] = useState(cupomFormat(values.cupom?.codigo_cupom || ""));
+  const [inputCupom, setInputCupom] = useState(cupomFormat(values.coupon?.codigo_cupom || ""));
 
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     setInputCupom(cupomFormat(event.target.value));

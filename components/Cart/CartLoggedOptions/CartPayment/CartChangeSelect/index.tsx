@@ -36,7 +36,7 @@ const CartChangeSelect: React.FC = () => {
 
   return (
     <Fragment>
-      <CustomFade triggerAnimation={values.payment_type === TipoPagamento.DINHEIRO}>
+      <CustomFade triggerAnimation={values.paymentType === TipoPagamento.DINHEIRO}>
         <CartChangeSelectContainer>
           <h3>Precisa de troco? </h3>
           <RadioGroup

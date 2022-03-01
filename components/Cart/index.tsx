@@ -179,9 +179,9 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                         {session && <CartDeliveryType />}
 
-                        {values.delivery_type === TipoEntrega.ENTREGA && (
+                        {values.deliveryType === TipoEntrega.ENTREGA && (
                           <CustomFade
-                            triggerAnimation={values.delivery_type === TipoEntrega.ENTREGA}
+                            triggerAnimation={values.deliveryType === TipoEntrega.ENTREGA}
                           >
                             <CartAddress
                               onCloseModal={onCloseModal}

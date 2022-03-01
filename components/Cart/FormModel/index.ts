@@ -10,13 +10,13 @@ type CartCupom = {
 };
 
 export type CartFormValues = {
-  delivery_type: TipoEntrega | null;
+  deliveryType: TipoEntrega | null;
   needChange: boolean | null;
-  address_id: IEndereco["id_endereco"] | null;
-  payment_type: TipoPagamento | null;
-  payment_amount: string;
-  delivery_price: number | null;
-  cupom: CartCupom | null;
+  addressId: IEndereco["id_endereco"] | null;
+  paymentType: TipoPagamento | null;
+  paymentAmount: string;
+  deliveryPrice: number | null;
+  coupon: CartCupom | null;
 };
 
 export { getCartSubmitData } from "./submit";

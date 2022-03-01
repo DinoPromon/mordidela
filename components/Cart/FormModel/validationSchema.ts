@@ -1,10 +1,7 @@
 import * as yup from "yup";
-import { useContext } from "react";
 import { transformPriceStringToNumber } from "@utils/transformation";
-import { CartContext } from "@store/cart";
 
 export const useCartFormValidationSchema = (subTotalPrice: number) => {
-  const { order } = useContext(CartContext);
 
   const cartFormValidationSchema = yup.object().shape({
     delivery_type: yup.string().nullable().required("Selecione um tipo de entrega"),

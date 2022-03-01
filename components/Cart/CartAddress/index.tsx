@@ -41,11 +41,11 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
   }
 
   useEffect(() => {
-    if (values.address_id) {
-      const deliveryPrice = getDeliveryPriceFromSelectedAddress(values.address_id);
+    if (values.addressId) {
+      const deliveryPrice = getDeliveryPriceFromSelectedAddress(values.addressId);
       setFieldValue("delivery_price", deliveryPrice);
     }
-  }, [values.address_id]);
+  }, [values.addressId]);
 
   return (
     <CartAddressContainer>
@@ -58,7 +58,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
           <AddresTitle>Endereços de entrega</AddresTitle>
           <RadioGroup
             name="address-input-radio"
-            value={values.address_id}
+            value={values.addressId}
             onChange={changeRadioHandler}
           >
             {addresses.length > 0 &&

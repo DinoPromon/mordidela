@@ -12,7 +12,7 @@ const CartPayment: React.FC = () => {
   const { values } = useFormikContext<CartFormValues>();
 
   const shouldShowPaymentValue =
-    Boolean(values.needChange) && values.payment_type === TipoPagamento.DINHEIRO;
+    Boolean(values.needChange) && values.paymentType === TipoPagamento.DINHEIRO;
 
   return (
     <CartPaymentContainer>

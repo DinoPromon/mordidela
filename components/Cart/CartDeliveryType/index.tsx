@@ -24,7 +24,7 @@ const CartDeliveryType: React.FC = () => {
       <RadioGroup
         row
         name="input-delivery-type"
-        value={values.delivery_type}
+        value={values.deliveryType}
         onChange={deliveryTypeChangeHandler}
       >
         <FormControlLabel
