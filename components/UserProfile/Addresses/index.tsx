@@ -24,14 +24,12 @@ import {
   AddresIcons,
   AddressContainer,
   CustomInputsDesign,
-  AddressesInputContainer,
+  AddressesFormikForm,
   AddressesFormButtonContainer,
 } from "./styled";
 
-const Addresses: React.FC = (props) => {
+const Addresses: React.FC = () => {
   const formModel = getAddressesFormModel();
-  const validationSchema = getAddressesFormValidationSchema(formModel);
-  const initialValues = getAddressesFormInitialValues();
 
   async function addressFormSubmitHandler(values: IAddressesFormValues) {
     const addressesFormArg = getAddressFormArg(values);
@@ -45,48 +43,50 @@ const Addresses: React.FC = (props) => {
     <PageContainer>
       <PageTitle>Endereços</PageTitle>
       <Formik
+        validateOnMount
+        enableReinitialize
         validateOnChange={false}
-        validationSchema={validationSchema}
-        initialValues={initialValues}
+        validationSchema={getAddressesFormValidationSchema(formModel)}
+        initialValues={getAddressesFormInitialValues()}
         onSubmit={addressFormSubmitHandler}
       >
-        {({ values }) => (
-          <AddressesInputContainer>
+        {({ values, isValid, dirty }) => (
+          <AddressesFormikForm>
             <CustomInputsDesign>
               <InputTextFormik
-                fullWidth
-                name={formModel.publicPlace.name}
                 value={values.publicPlace}
+                name={formModel.publicPlace.name}
+                label={formModel.publicPlace.label}
+                helperText={formModel.publicPlace.requiredErrorMessage}
+                fullWidth
                 autoComplete="off"
                 variant="outlined"
-                helperText={formModel.publicPlace.requiredErrorMessage}
-                label={formModel.publicPlace.label}
               />
               <InputTextFormik
+                value={values.number}
+                name={formModel.number.name}
+                label={formModel.number.label}
+                helperText={formModel.number.requiredErrorMessage}
                 autoComplete="off"
                 variant="outlined"
-                value={values.number}
-                helperText={formModel.number.requiredErrorMessage}
-                label={formModel.number.label}
-                name={formModel.number.name}
               />
             </CustomInputsDesign>
             <InputTextFormik
+              value={values.neighborhood}
+              name={formModel.neighborhood.name}
+              label={formModel.neighborhood.label}
+              helperText={formModel.neighborhood.requiredErrorMessage}
               fullWidth
               autoComplete="off"
-              values={values.neighborhood}
               variant="outlined"
-              helperText={formModel.neighborhood.requiredErrorMessage}
-              label={formModel.neighborhood.label}
-              name={formModel.neighborhood.name}
             />
             <InputTextFormik
+              value={values.complement}
+              name={formModel.complement.name}
+              label={formModel.complement.label}
               fullWidth
               autoComplete="off"
-              values={values.complement}
               variant="outlined"
-              label={formModel.complement.label}
-              name={formModel.complement.name}
             />
             <AddressesFormButtonContainer>
               <Button
@@ -94,15 +94,15 @@ const Addresses: React.FC = (props) => {
                 variant="contained"
                 color="secondary"
                 type="submit"
-                // disabled={!(isValid && dirty)}
+                disabled={!(isValid && dirty)}
               >
                 Adicionar endereço
               </Button>
             </AddressesFormButtonContainer>
-          </AddressesInputContainer>
+          </AddressesFormikForm>
         )}
       </Formik>
-      
+
       <AddressContainer>
         <h3>Endereços cadastrados</h3>
         <ShowAddress>

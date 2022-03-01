@@ -50,14 +50,16 @@ const LoginForm: React.FC = () => {
 
   return (
     <Formik
+      validateOnMount
+      enableReinitialize
       validateOnChange={false}
-      enableReinitialize={true}
       validationSchema={getLoginFormValidationSchema(formModel)}
       initialValues={getLoginFormInitialValues()}
       onSubmit={loginSubmitHandler}
     >
       {({ values, dirty, isValid }) => (
         <FormikForm>
+          {console.log(isValid, dirty)}
           <InputTextFormik
             name={formModel.email.name}
             label={formModel.email.label}

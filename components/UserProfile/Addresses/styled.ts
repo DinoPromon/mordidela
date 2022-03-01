@@ -1,7 +1,7 @@
 import { Form } from "formik";
 import styled from "styled-components";
 
-export const AddressesInputContainer = styled(Form)`
+export const AddressesFormikForm = styled(Form)`
   display: flex;
   flex-direction: column;
   gap: 1rem;

@@ -4,7 +4,7 @@ export interface IAddressesFormValues {
   publicPlace: string;
   number: string;
   neighborhood: string;
-  complement: string;
+  complement: string | undefined;
 }
 
 export type AddressesFormModel = {
