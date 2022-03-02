@@ -5,6 +5,7 @@ import { SessionValidator } from "database/helpers/session";
 import { FindAllAddressesByUserId } from "@controllers/endereco";
 
 import type { ServerError } from "@errors/index";
+import { CreateAddress } from "@controllers/endereco/createAddress";
 
 const handler: NextApiHandler = async (req, res) => {
   try {
@@ -19,6 +20,12 @@ const handler: NextApiHandler = async (req, res) => {
         const findAllAddresses = new FindAllAddressesByUserId(Number(userId));
         const addresses = await findAllAddresses.exec();
         return res.status(200).json(addresses);
+      }
+
+      case ReqMethod.POST: {
+        const createAddress = new CreateAddress(req.body);
+        const createdAddress = await createAddress.exec();
+        return res.status(200).json(createdAddress);
       }
 
       default: {
