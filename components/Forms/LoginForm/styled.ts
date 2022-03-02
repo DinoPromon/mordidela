@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ErrorMessage } from "@components/shared/StyledComponents";
 
 export const ForgotPasswordText = styled.a`
   text-style: none;
@@ -7,11 +8,19 @@ export const ForgotPasswordText = styled.a`
 
 export const LoginActionsContainer = styled.div`
   display: flex;
-  margin: 1rem 2px;
   flex-direction: row;
   align-items: center;
 
   ${ForgotPasswordText} {
     margin-right: auto;
+  }
+`;
+
+export const ErrorMessageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+
+  ${ErrorMessage} {
+    text-align: center;
   }
 `;

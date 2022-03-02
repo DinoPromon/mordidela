@@ -11,7 +11,8 @@ import { AiFillUnlock, AiFillLock } from "react-icons/ai";
 import { FormikForm } from "../styled";
 import { getLoginFormArg } from "./Submit";
 import { InputTextFormik } from "@components/shared";
-import { ForgotPasswordText, LoginActionsContainer } from "./styled";
+import { ErrorMessage } from "@components/shared/StyledComponents";
+import { ForgotPasswordText, LoginActionsContainer, ErrorMessageContainer } from "./styled";
 import {
   getLoginFormInitialValues,
   getLoginFormModel,
@@ -43,13 +44,13 @@ const LoginForm: React.FC = () => {
       });
 
       if (!result || result.error) {
-        throw new Error(result ? result.error : "Não foi possível realizar o login");
+        throw new Error("Dado(s) de autenticação errado(s)");
       }
 
       router.replace("/");
     } catch (e) {
-      const error = e as AxiosError;
-      setRequestStatus({ error: error.response?.data.message, isLoading: false });
+      const error = e as Error;
+      setRequestStatus({ error: error.message, isLoading: false });
     }
     setRequestStatus((prevState) => ({ ...prevState, isLoading: false }));
   }
@@ -94,6 +95,9 @@ const LoginForm: React.FC = () => {
               ),
             }}
           />
+          <ErrorMessageContainer>
+            {requestStatus.error && <ErrorMessage>{requestStatus.error}</ErrorMessage>}
+          </ErrorMessageContainer>
           <LoginActionsContainer>
             <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
             <Button

@@ -16,7 +16,7 @@ export default NextAuth({
                 email: credentials.email,
               },
               {
-                senha: credentials.senha,
+                senha: credentials.password,
               },
             ],
           },

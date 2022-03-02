@@ -18,7 +18,7 @@ declare module "next-auth" {
   }
   interface Credentials {
     email: string;
-    senha: string;
+    password: string;
   }
   interface Provider extends MyUser {}
 }
