@@ -6,16 +6,13 @@ export const useTextFieldStyles = makeStyles({
     "& .MuiFormLabel-root": {
       color: "#3b3b3b",
     },
-    "& .MuiOutlinedInput-root input[type='text']:valid": {
+    '& .MuiOutlinedInput-root input:not([value=""])': {
       "& ~fieldset": {
         border: `2px ${PURPLE} solid`,
       },
     },
     "& .MuiOutlinedInput-root": {
       borderRadius: "5px",
-      "&:hover fieldset": {
-        borderColor: "#bdbdbd",
-      },
       "&.Mui-focused fieldset": {
         borderColor: PURPLE,
       },

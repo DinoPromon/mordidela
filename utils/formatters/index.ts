@@ -1,5 +1,4 @@
 import { formatDateInput, dateChangeHandler, maskDate, getFormattedHours } from "./date";
-import { formatPrice } from "./price";
 import { formatProductId } from "./product";
 import { cupomFormat } from "./cupom";
 import { removeAditionalSpaces } from "./string";
@@ -9,7 +8,6 @@ export {
   maskDate,
   formatDateInput,
   dateChangeHandler,
-  formatPrice,
   formatProductId,
   cupomFormat,
   removeAditionalSpaces,
@@ -17,3 +15,5 @@ export {
   formatPhoneNumber,
   getFormattedHours,
 };
+
+export { formatCurrency } from "./currency";

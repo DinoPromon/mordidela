@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Formik } from "formik";
-import { useRouter } from "next/router";
-import { signIn } from "next-auth/client";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { Formik } from "formik";
+import { useRouter } from "next/router";
+import { signIn } from "next-auth/client";
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
 
 import { FormikForm } from "../styled";
@@ -17,22 +18,22 @@ import {
   getLoginFormValidationSchema,
 } from "./FormModel";
 
+import type { AxiosError } from "axios";
 import type { ILoginFormValues } from "./FormModel";
 import type { RequestState } from "@my-types/request";
-import { PURPLE, PINK } from "@utils/colors";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
-  const [request, setRequest] = useState<RequestState>({ error: "", isLoading: false });
+  const formModel = getLoginFormModel();
+  const [showPassword, setShowPassword] = useState(false);
+  const [requestStatus, setRequestStatus] = useState<RequestState>({ error: "", isLoading: false });
 
-  const [password, setShowPassword] = useState(false);
+  function changeShowPassword() {
+    setShowPassword((prevState) => !prevState);
+  }
 
-  const showPassword = () => {
-   setShowPassword(!password);
-  };
-
-  const loginSubmitHandler = async (values: ILoginFormValues) => {
-    setRequest({ ...request, isLoading: true });
+  async function loginSubmitHandler(values: ILoginFormValues) {
+    setRequestStatus({ error: "", isLoading: true });
     try {
       const loginFormArgs = getLoginFormArg(values);
       const result = await signIn("credentials", {
@@ -47,27 +48,23 @@ const LoginForm: React.FC = () => {
 
       router.replace("/");
     } catch (e) {
-      const error = e as Error;
-      setRequest({ isLoading: false, error: error.message });
+      const error = e as AxiosError;
+      setRequestStatus({ error: error.response?.data.message, isLoading: false });
     }
-  };
-
-  /*   const shouldShowRequestStatus = request.isLoading || request.error; */
-
-  const formModel = getLoginFormModel();
+    setRequestStatus((prevState) => ({ ...prevState, isLoading: false }));
+  }
 
   return (
     <Formik
       validateOnMount
       enableReinitialize
-      validateOnChange={false}
+      validateOnChange
       validationSchema={getLoginFormValidationSchema(formModel)}
       initialValues={getLoginFormInitialValues()}
       onSubmit={loginSubmitHandler}
     >
       {({ values, dirty, isValid }) => (
         <FormikForm>
-          {console.log(isValid, dirty)}
           <InputTextFormik
             name={formModel.email.name}
             label={formModel.email.label}
@@ -82,16 +79,20 @@ const LoginForm: React.FC = () => {
             variant="outlined"
             helperText={formModel.password.requiredErrorMessage}
             autoComplete="off"
-            type={password ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             InputProps={{
               endAdornment: (
-               <InputAdornment position="end">
-                <IconButton onClick={showPassword}>
-                 {password ? <AiFillUnlock size={22} color="black" /> : <AiFillLock size={22} color="black" />}
-                </IconButton>
-               </InputAdornment>
-              )
-             }}
+                <InputAdornment position="end">
+                  <IconButton onClick={changeShowPassword}>
+                    {showPassword ? (
+                      <AiFillUnlock size={22} color="black" />
+                    ) : (
+                      <AiFillLock size={22} color="black" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <LoginActionsContainer>
             <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
@@ -99,9 +100,9 @@ const LoginForm: React.FC = () => {
               type="submit"
               variant="contained"
               color="secondary"
-              disabled={!(isValid && dirty)}
+              disabled={!(isValid && dirty) || requestStatus.isLoading}
             >
-              Login
+              {requestStatus.isLoading ? <CircularProgress color="primary" size={24} /> : "Login"}
             </Button>
           </LoginActionsContainer>
         </FormikForm>

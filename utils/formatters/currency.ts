@@ -1,6 +1,6 @@
 import { transformPriceToString, transformPriceStringToNumber } from "@utils/transformation";
 
-export function formatPrice(inputText: string) {
+export function formatCurrency(inputText: string) {
   const pattern = /\d$/;
 
   if (pattern.test(inputText)) {

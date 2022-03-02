@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import Axios from "@api";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { AxiosError } from "axios";
 import { useFormikContext } from "formik";
 import { FormButton } from "@components/shared";
 import { cupomFormat } from "@utils/formatters";
-import { CartCupomContainer, CartCupomInput } from "./styled";
 import { RequestState } from "@my-types/request";
+import { CartCupomContainer, CartCupomInput } from "./styled";
 
 import type ICupom from "@models/cupom";
+import type { AxiosError } from "axios";
 import type { CartFormValues } from "@components/Cart/FormModel";
 
 type CartCupomProps = {

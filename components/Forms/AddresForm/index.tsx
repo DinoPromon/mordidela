@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { Formik } from "formik";
 import { useRouter } from "next/router";
 
-import AddressFormActions from "./AddressFormActions";
-import FormRequestStatus from "@components/shared/FormRequestStatus";
-import { FormInput, InputTextFormik } from "@components/shared";
+import AddresFormActions from "./AddressFormActions";
+import { FormikForm } from "../styled";
+import { InputTextFormik } from "@components/shared";
 import { addressFormValidations } from "@utils/validations";
+import { getAddresFormModel, getAddresFormValidationSchema, getAddresInitialValues } from "./FormModel";
 
 import type { Response } from "@my-types/request";
 import type { AddressFormData } from "@my-types/forms";
-import AddresFormActions from "./AddressFormActions";
 
-import { Formik } from "formik";
-import { FormikForm } from "../styled";
-import { getAddresFormModel, getAddresFormValidationSchema, getAddresInitialValues } from "./FormModel";
 
 type Props = {
   state: AddressFormData;
