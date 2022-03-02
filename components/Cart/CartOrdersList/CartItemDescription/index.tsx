@@ -31,7 +31,7 @@ const CartItemDescription: React.FC<Props> = ({
   }
 
   function getProductName() {
-    if (productSize) return productName;
+    if (!productSize) return productName;
 
     return `${productName} - ${productSize}`;
   }
