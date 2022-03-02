@@ -7,11 +7,12 @@ import { createDate } from "@utils/transformation/date";
 import { getFormattedDate } from "@utils/transformation";
 import { getFormattedHours } from "@utils/formatters";
 import { PageContainer, PageTitle } from "@components/shared";
-import { MoreDetails, OrdersContainer, OrdersContainerList } from "./styled";
+import { MoreDetails, OrdersContainer, OrdersContainerList, OrdersContainerListHighlight } from "./styled";
 
 import { calculateTotalPrice, getOrderPaymentTypeText, getNumberAsCurrency } from "./utility";
 
 import type { IOrderRelations } from "@models/pedido";
+import { ColoredText } from "@components/shared/SharedStyledComponents";
 
 type OrdersProps = {
   ordersRelations: IOrderRelations[];
@@ -49,17 +50,24 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
       <OrdersContainer>
         {ordersRelations.map((orderRelation) => (
           <OrdersContainerList
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.07 }}
             key={`order-history-${orderRelation.id_pedido}`}
           >
             <p>
-              {`Pedido ${orderRelation.id_pedido} - ${getFormattedDate(
-                orderRelation.data_pedido
-              )} às ${getFormattedHours(createDate(orderRelation.data_pedido))}`}
+              <OrdersContainerListHighlight>Pedido {`${orderRelation.id_pedido}`}</OrdersContainerListHighlight>{" "}
+              {`- ${getFormattedDate(orderRelation.data_pedido)} às ${getFormattedHours(
+                createDate(orderRelation.data_pedido)
+              )}`}
             </p>
-            <p>{`Status: ${getOrderStatusText(orderRelation)}`}</p>
-            <p>{`Total: ${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}</p>
-            <p>{`Pagamento: ${getOrderPaymentTypeText(orderRelation)}`}</p>
+            <p>
+              <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight> {`${getOrderStatusText(orderRelation)}`}
+            </p>
+            <p>
+              <OrdersContainerListHighlight>Total:</OrdersContainerListHighlight> {`${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}
+            </p>
+            <p>
+              <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight> {`${getOrderPaymentTypeText(orderRelation)}`}
+            </p>
             <MoreDetails onClick={() => openModal(orderRelation)}>
               <FaPlusCircle size={12} color={PINK} />
               <p>Detalhes</p>

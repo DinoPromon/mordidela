@@ -26,6 +26,10 @@ export const OrdersContainerList = styled(motion.li)`
   border-radius: 10px;
 `;
 
+export const OrdersContainerListHighlight = styled.span`
+  font-weight: bold;
+`;
+
 export const MoreDetails = styled.div`
   display: flex;
   flex-direction: row;
