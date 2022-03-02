@@ -23,7 +23,7 @@ const handler: NextApiHandler = async (req, res) => {
       }
 
       case ReqMethod.POST: {
-        const createAddress = new CreateAddress(req.body);
+        const createAddress = new CreateAddress({ ...req.body, userId: Number(userId) });
         const createdAddress = await createAddress.exec();
         return res.status(200).json(createdAddress);
       }
