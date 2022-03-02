@@ -23,7 +23,7 @@ import {
   ProductsContainer,
   ItemDescriptionContainer,
   TotalTextOrdersUserProfile,
-} from "@components/shared/SharedStyledComponents";
+} from "@components/shared/StyledComponents";
 import {
   getNumberAsCurrency,
   getHasDeliveryPrice,

@@ -17,7 +17,7 @@ import {
   TotalText,
   CoupomDataContainer,
   ColoredText,
-} from "@components/shared/SharedStyledComponents";
+} from "@components/shared/StyledComponents";
 
 import type { CartFormValues } from "../FormModel";
 

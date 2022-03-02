@@ -6,7 +6,7 @@ import {
   ItemDescriptionContainer,
   TrashPriceContainer,
   TrashPriceText,
-} from "@components/shared/SharedStyledComponents";
+} from "@components/shared/StyledComponents";
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {

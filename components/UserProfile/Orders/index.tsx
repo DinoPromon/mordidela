@@ -12,7 +12,7 @@ import { MoreDetails, OrdersContainer, OrdersContainerList, OrdersContainerListH
 import { calculateTotalPrice, getOrderPaymentTypeText, getNumberAsCurrency } from "./utility";
 
 import type { IOrderRelations } from "@models/pedido";
-import { ColoredText } from "@components/shared/SharedStyledComponents";
+import { ColoredText } from "@components/shared/StyledComponents";
 
 type OrdersProps = {
   ordersRelations: IOrderRelations[];

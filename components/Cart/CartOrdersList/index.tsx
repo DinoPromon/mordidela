@@ -5,7 +5,7 @@ import {
   AddsText,
   ProductsContainer,
   AddsListContainer,
-} from "@components/shared/SharedStyledComponents";
+} from "@components/shared/StyledComponents";
 
 import type { CartProduct } from "@my-types/context";
 

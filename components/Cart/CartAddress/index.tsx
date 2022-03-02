@@ -8,7 +8,7 @@ import { useFormikContext } from "formik";
 import { FaPlusCircle } from "react-icons/fa";
 import { PURPLE } from "@utils/colors";
 import { CartAddAddress, CartAddressContainer, CartAddressLoadingContainer } from "./styled";
-import { AddresComplement, AddresTitle } from "@components/shared/SharedStyledComponents";
+import { AddresComplement, AddresTitle } from "@components/shared/StyledComponents";
 
 import type { CartFormValues } from "../FormModel";
 import type { AddressOnCart } from "@models/endereco";

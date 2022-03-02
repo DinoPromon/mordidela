@@ -31,7 +31,7 @@ import {
   CartEmptyMessageContainer,
   CartOrderConfirmationButtons,
 } from "./styled";
-import { SubtotalText } from "@components/shared/SharedStyledComponents";
+import { SubtotalText } from "@components/shared/StyledComponents";
 
 import type { Session } from "next-auth";
 import type { RequestState } from "@my-types/request";

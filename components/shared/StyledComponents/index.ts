@@ -8,3 +8,38 @@ export const ErrorMessage = styled.p`
 export const SuccessMessage = styled.p`
   color: ${SUCCESS_GREEN};
 `;
+
+import {
+  ProductsContainer,
+  TrashPriceContainer,
+  TrashPriceText,
+  ItemDescriptionContainer,
+  AddsListContainer,
+  AddsText,
+  HighLightText,
+  SubtotalText,
+  TotalText,
+  CoupomDataContainer,
+  ColoredText,
+  AddresTitle,
+  AddresComplement,
+  TotalTextOrdersUserProfile
+} from "./styled";
+
+export {
+  ProductsContainer,
+  TrashPriceContainer,
+  TrashPriceText,
+  ItemDescriptionContainer,
+  AddsListContainer,
+  AddsText,
+  HighLightText,
+  SubtotalText,
+  TotalText,
+  CoupomDataContainer,
+  ColoredText,
+  AddresTitle,
+  AddresComplement,
+  TotalTextOrdersUserProfile
+};
+
