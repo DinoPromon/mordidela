@@ -1,12 +1,12 @@
 import * as Yup from "yup";
 
-import type { AddresFormModel } from "./index";
+import type { AddressFormModel } from "./index";
 
-export function getAddresFormValidationSchema(formModel: AddresFormModel) {
-  const { addres, number, neighborhood, complement} = formModel;
+export function getAddressFormValidationSchema(formModel: AddressFormModel) {
+  const { address, number, neighborhood, complement} = formModel;
 
   const validationSchema = Yup.object().shape({
-    [addres.name]: Yup.string().required(addres.requiredErrorMessage),
+    [address.name]: Yup.string().required(address.requiredErrorMessage),
     [number.name]: Yup.string().required(number.requiredErrorMessage),
     [neighborhood.name]: Yup.string().required(neighborhood.requiredErrorMessage),
     [complement.name]: Yup.string(),

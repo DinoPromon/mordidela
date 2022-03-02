@@ -1,21 +1,21 @@
 import type { FormField } from "@my-types/form";
 
-export interface IAddresFormValues {
-  addres: string;
+export interface IAddressFormValues {
+  address: string;
   number: string;
   neighborhood: string;
   complement: string;
 };
 
-export type AddresFormModel = {
-  [key in keyof IAddresFormValues]: FormField<IAddresFormValues>;
+export type AddressFormModel = {
+  [key in keyof IAddressFormValues]: FormField<IAddressFormValues>;
 };
 
-export function getAddresFormModel() {
-  const AddresFormModel: AddresFormModel = {
-    addres: {
+export function getAddressFormModel() {
+  const AddressFormModel: AddressFormModel = {
+    address: {
       label: "Logradouro * ",
-      name: "addres",
+      name: "address",
       requiredErrorMessage: "Insira seu logradouro",
     },
     number: {
@@ -34,8 +34,8 @@ export function getAddresFormModel() {
     },
   }
 
-  return AddresFormModel;
+  return AddressFormModel;
 }
 
-export { getAddresInitialValues } from "./initialValues";
-export { getAddresFormValidationSchema } from "./validationSchema";
+export { getAddressInitialValues } from "./initialValues";
+export { getAddressFormValidationSchema } from "./validationSchema";

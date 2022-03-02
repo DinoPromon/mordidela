@@ -16,6 +16,10 @@ import {
   getSignUpInitialValues,
 } from "./FormModel";
 
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { AiFillUnlock, AiFillLock } from "react-icons/ai";
+
 type Props = {
   state: UserFormData;
   setState: React.Dispatch<React.SetStateAction<UserFormData>>;
@@ -25,7 +29,12 @@ type Props = {
 
 const SignUpForm: React.FC<Props> = (props) => {
   const { state: formState, setState: setFormState, onBack, onSubmit } = props;
+  const [showPassword, setShowPassword] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
+
+  function changeShowPassword() {
+    setShowPassword((prevState) => !prevState);
+  }
 
   const hasErrorInInputs = (formInputs: typeof formState) => {
     for (let k in userFormValidations) {
@@ -104,6 +113,20 @@ const SignUpForm: React.FC<Props> = (props) => {
             value={values.password}
             variant="outlined"
             helperText={formModel.password.requiredErrorMessage}
+            type={showPassword ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={changeShowPassword}>
+                    {showPassword ? (
+                      <AiFillUnlock size={22} color="black" />
+                    ) : (
+                      <AiFillLock size={22} color="black" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <InputTextFormik
             name={formModel.confirmedPassword.name}
@@ -111,6 +134,20 @@ const SignUpForm: React.FC<Props> = (props) => {
             value={values.confirmedPassword}
             variant="outlined"
             helperText={formModel.confirmedPassword.requiredErrorMessage}
+            type={showPassword ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={changeShowPassword}>
+                    {showPassword ? (
+                      <AiFillUnlock size={22} color="black" />
+                    ) : (
+                      <AiFillLock size={22} color="black" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <p>Preencha os campos obrigatórios marcados com *</p>
           <SignupFormActions onBack={onBack} disabled={!canSubmit} />

@@ -6,7 +6,7 @@ import AddresFormActions from "./AddressFormActions";
 import { FormikForm } from "../styled";
 import { InputTextFormik } from "@components/shared";
 import { addressFormValidations } from "@utils/validations";
-import { getAddresFormModel, getAddresFormValidationSchema, getAddresInitialValues } from "./FormModel";
+import { getAddressFormModel, getAddressFormValidationSchema, getAddressInitialValues } from "./FormModel";
 
 import type { Response } from "@my-types/request";
 import type { AddressFormData } from "@my-types/forms";
@@ -62,24 +62,24 @@ const AddressForm: React.FC<Props> = (props) => {
 
   const shouldShowRequestStatus = request.isLoading || request.error || request.success;
 
-  const formModel = getAddresFormModel();
+  const formModel = getAddressFormModel();
 
   return (
     <Formik
       validateOnChange={false}
       enableReinitialize={true}
-      validationSchema={getAddresFormValidationSchema(formModel)}
-      initialValues={getAddresInitialValues()}
+      validationSchema={getAddressFormValidationSchema(formModel)}
+      initialValues={getAddressInitialValues()}
       onSubmit={(values) => console.log(values)}
     >
       {({ values }) => (
         <FormikForm>
           <InputTextFormik
-            name={formModel.addres.name}
-            label={formModel.addres.label}
-            value={values.addres}
+            name={formModel.address.name}
+            label={formModel.address.label}
+            value={values.address}
             variant="outlined"
-            helperText={formModel.addres.requiredErrorMessage}
+            helperText={formModel.address.requiredErrorMessage}
           />
           <InputTextFormik
             name={formModel.number.name}
