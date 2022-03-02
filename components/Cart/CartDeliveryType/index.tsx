@@ -3,6 +3,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useFormikContext } from "formik";
+import { TipoEntrega } from "@models/pedido";
 import { CartDeliveryTypeContainer } from "./styled";
 
 import type { CartFormValues } from "../FormModel";
@@ -12,10 +13,10 @@ const CartDeliveryType: React.FC = () => {
 
   function deliveryTypeChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const deliveryType = event.target.value;
-    setFieldValue("delivery_type", deliveryType);
-    if (deliveryType === "balcao") {
-      setFieldValue("delivery_price", 0);
-      setFieldValue("address_id", null);
+    setFieldValue("deliveryType", deliveryType);
+    if (deliveryType === TipoEntrega.BALCAO) {
+      setFieldValue("deliveryPrice", 0);
+      setFieldValue("addressId", null);
     }
   }
 

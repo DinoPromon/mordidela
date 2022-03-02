@@ -28,7 +28,7 @@ const CartChangeSelect: React.FC = () => {
 
     if (value === NeedChange.NO) {
       setFieldValue("needChange", false);
-      setFieldValue("payment_amount", transformPriceToString(0));
+      setFieldValue('paymentAmount', transformPriceToString(0));
       return;
     }
     setFieldValue("needChange", true);

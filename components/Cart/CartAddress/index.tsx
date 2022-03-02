@@ -7,12 +7,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useFormikContext } from "formik";
 import { FaPlusCircle } from "react-icons/fa";
 import { PURPLE } from "@utils/colors";
-import {
-  CartAddAddress,
-  CartAddressContainer,
-  CartAddressLoadingContainer,
-} from "./styled";
+import { CartAddAddress, CartAddressContainer, CartAddressLoadingContainer } from "./styled";
 import { AddresComplement, AddresTitle } from "@components/shared/SharedStyledComponents";
+
 import type { CartFormValues } from "../FormModel";
 import type { AddressOnCart } from "@models/endereco";
 
@@ -31,7 +28,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
 
   function changeRadioHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const addressId = Number(event.target.value);
-    setFieldValue("address_id", addressId);
+    setFieldValue("addressId", addressId);
   }
 
   function getDeliveryPriceFromSelectedAddress(addressId: AddressOnCart["id_endereco"]) {
@@ -67,9 +64,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
                   label={
                     <Fragment>
                       <p>{getFormatedAddress(address)}</p>
-                      <AddresComplement>
-                        Complemento: {address.complemento}
-                      </AddresComplement>
+                      <AddresComplement>Complemento: {address.complemento}</AddresComplement>
                     </Fragment>
                   }
                   key={`address-${address.id_endereco}`}

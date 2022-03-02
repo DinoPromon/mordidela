@@ -2,7 +2,11 @@ import React, { useContext } from "react";
 import { PINK } from "@utils/colors";
 import { CartContext } from "@store/cart";
 import { FaTrash } from "react-icons/fa/index";
-import { ItemDescriptionContainer, TrashPriceContainer, TrashPriceText } from "@components/shared/SharedStyledComponents";
+import {
+  ItemDescriptionContainer,
+  TrashPriceContainer,
+  TrashPriceText,
+} from "@components/shared/SharedStyledComponents";
 import { transformPriceToString } from "@utils/transformation";
 
 type Props = {
@@ -10,7 +14,7 @@ type Props = {
   quantity: number;
   productName: string;
   productSize: string | null;
-  standard_price: number;
+  standardPrice: number;
 };
 
 const CartItemDescription: React.FC<Props> = ({
@@ -18,7 +22,7 @@ const CartItemDescription: React.FC<Props> = ({
   productKey,
   productName,
   productSize,
-  standard_price,
+  standardPrice,
 }) => {
   const { removeProductFromCart } = useContext(CartContext);
 
@@ -26,16 +30,15 @@ const CartItemDescription: React.FC<Props> = ({
     removeProductFromCart(productKey);
   }
 
+  function getProductName() {
+    if (productSize) return productName;
+
+    return `${productName} - ${productSize}`;
+  }
+
   return (
     <ItemDescriptionContainer>
-      <span>{quantity}x</span>{" "}
-      {productSize !== null ? (
-        <p>
-          {productName} - {productSize}
-        </p>
-      ) : (
-        <p>{productName}</p>
-      )}
+      <span>{quantity}x</span> <p>{getProductName()}</p>
       <TrashPriceContainer>
         <FaTrash
           cursor="pointer"
@@ -44,7 +47,7 @@ const CartItemDescription: React.FC<Props> = ({
           onClick={removeProductHandler}
           style={{ verticalAlign: "middle" }}
         />
-        <TrashPriceText>R$ {transformPriceToString(standard_price)}</TrashPriceText>
+        <TrashPriceText>R$ {transformPriceToString(standardPrice)}</TrashPriceText>
       </TrashPriceContainer>
     </ItemDescriptionContainer>
   );

@@ -16,11 +16,11 @@ type CartCupomProps = {
 };
 
 const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
-  const [isLoadingCupom, setIsLoadingCupom] = useState(false);
   const { values, setFieldValue } = useFormikContext<CartFormValues>();
+  const [isLoadingCupom, setIsLoadingCupom] = useState(false);
   const [inputCupom, setInputCupom] = useState(cupomFormat(values.coupon?.codigo_cupom || ""));
 
-  function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+  function couponCodeChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     setInputCupom(cupomFormat(event.target.value));
   }
 
@@ -29,7 +29,7 @@ const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
     try {
       const response = await Axios.get<ICupom>(`/cupom?codigo=${inputCupom}`);
       if (response.data) {
-        setFieldValue("cupom", {
+        setFieldValue("coupon", {
           id_cupom: response.data.id_cupom,
           valor_desconto: response.data.valor_desconto,
           codigo_cupom: response.data.codigo,
@@ -52,7 +52,7 @@ const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
       <CartCupomInput
         type="text"
         placeholder="Digite aqui seu cupom"
-        onChange={changeHandler}
+        onChange={couponCodeChangeHandler}
         value={inputCupom}
       />
       {isLoadingCupom ? (

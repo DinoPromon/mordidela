@@ -55,7 +55,6 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   });
   const cartFormValidationSchema = useCartFormValidationSchema(subTotalPrice);
   const cartFormInitialValues = getCartFormInitialValues();
-  const isCartEmpty = products.length === 0;
 
   useEffect(() => {
     let isMounted = true;
@@ -155,7 +154,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
             {!isOrderConfirmed && !request.isLoading && (
               <CartForm>
-                {isCartEmpty ? (
+                {products.length === 0 ? (
                   <CartEmptyMessageContainer>
                     <CartEmptyMessage>Carrinho vazio</CartEmptyMessage>
                   </CartEmptyMessageContainer>

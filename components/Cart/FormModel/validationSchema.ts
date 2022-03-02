@@ -4,9 +4,9 @@ import { transformPriceStringToNumber } from "@utils/transformation";
 export const useCartFormValidationSchema = (subTotalPrice: number) => {
 
   const cartFormValidationSchema = yup.object().shape({
-    delivery_type: yup.string().nullable().required("Selecione um tipo de entrega"),
-    payment_type: yup.string().nullable().required("Selecione um tipo de pagamento"),
-    address_id: yup
+    deliveryType: yup.string().nullable().required("Selecione um tipo de entrega"),
+    paymentType: yup.string().nullable().required("Selecione um tipo de pagamento"),
+    addressId: yup
       .number()
       .nullable()
       .when("delivery_type", (value) => {
@@ -16,35 +16,35 @@ export const useCartFormValidationSchema = (subTotalPrice: number) => {
     needChange: yup
       .boolean()
       .nullable()
-      .when("payment_type", (value) => {
+      .when("paymentType", (value) => {
         if (value === "dinheiro")
           return yup.string().nullable().required("Informe a necessidade de troco");
         return yup.string().nullable();
       }),
-    payment_amount: yup.string().when(["needChange", "payment_type", "delivery_price"], {
+    paymentAmount: yup.string().when(["needChange", "paymentType", "deliveryPrice"], {
       is: (needChange: string, paymentType: string) => {
         if (paymentType === "dinheiro" && needChange === "true") return true;
         return false;
       },
-      then: yup.string().test("payment_amount", "Valor insuficiente", (value, context) => {
-        const payment_amount = value || "";
-        const cupom = context.parent.cupom;
-        if (cupom) {
-          const paymentAmountAsNumber = transformPriceStringToNumber(payment_amount);
+      then: yup.string().test("paymentAmount", "Valor insuficiente", (value, context) => {
+        const paymentAmount = value || "";
+        const coupon = context.parent.coupon;
+        if (coupon) {
+          const paymentAmountAsNumber = transformPriceStringToNumber(paymentAmount);
           if (
             paymentAmountAsNumber <
-            context.parent.delivery_price + ((100 - cupom.valor_desconto) * subTotalPrice) / 100
+            context.parent.deliveryPrice + ((100 - coupon.valor_desconto) * subTotalPrice) / 100
           ) {
             return false;
           }
           return true;
         }
-        const paymentAmountAsNumber = transformPriceStringToNumber(payment_amount);
-        if (paymentAmountAsNumber < context.parent.delivery_price + subTotalPrice) return false;
+        const paymentAmountAsNumber = transformPriceStringToNumber(paymentAmount);
+        if (paymentAmountAsNumber < context.parent.deliveryPrice + subTotalPrice) return false;
         return true;
       }),
     }),
-    cupom: yup
+    coupon: yup
       .object()
       .shape({
         id_cupom: yup.number(),

@@ -11,12 +11,14 @@ import { CustomFade } from "@components/shared";
 import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
+import { CartFormErrorMessage, CartFormErrorContainer } from "./styled";
 import {
-  CartFormErrorMessage,
-  CartFormErrorContainer,
-} from "./styled";
+  SubtotalText,
+  TotalText,
+  CoupomDataContainer,
+  ColoredText,
+} from "@components/shared/SharedStyledComponents";
 
-import { SubtotalText, TotalText, CoupomDataContainer, ColoredText } from "@components/shared/SharedStyledComponents";
 import type { CartFormValues } from "../FormModel";
 
 type Props = {

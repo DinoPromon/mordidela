@@ -20,7 +20,7 @@ const CartPaymentSelect: React.FC = () => {
 
   function changePaymentTypeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const paymentType = event.target.value;
-    setFieldValue("payment_type", paymentType);
+    setFieldValue("paymentType", paymentType);
   }
 
   useEffect(() => {
@@ -40,8 +40,8 @@ const CartPaymentSelect: React.FC = () => {
           <FormControlLabel
             label={
               <span>
-                <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />{" "}
-                Débito
+                <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
+                {" Débito"}
               </span>
             }
             key="payment-type-debito"
@@ -51,8 +51,8 @@ const CartPaymentSelect: React.FC = () => {
           <FormControlLabel
             label={
               <span>
-                <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />{" "}
-                Crédito
+                <FaRegCreditCard color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
+                {" Crédito"}
               </span>
             }
             key="payment-type-credito"
@@ -62,8 +62,8 @@ const CartPaymentSelect: React.FC = () => {
           <FormControlLabel
             label={
               <span>
-                <FaMoneyBill color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />{" "}
-                Dinheiro
+                <FaMoneyBill color={PURPLE} style={{ verticalAlign: "middle" }} size={19} />
+                {" Dinheiro"}
               </span>
             }
             key="payment-type-dinheiro"

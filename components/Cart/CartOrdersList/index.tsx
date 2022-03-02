@@ -1,7 +1,11 @@
 import React from "react";
 import CartItemDescription from "./CartItemDescription";
 import { transformPriceToString } from "@utils/transformation";
-import { ProductsContainer, AddsListContainer,AddsText } from "@components/shared/SharedStyledComponents";
+import {
+  AddsText,
+  ProductsContainer,
+  AddsListContainer,
+} from "@components/shared/SharedStyledComponents";
 
 import type { CartProduct } from "@my-types/context";
 
@@ -9,9 +13,7 @@ type Props = {
   products: CartProduct[];
 };
 
-const CartOrdersList: React.FC<Props> = (props) => {
-  const { products } = props;
-
+const CartOrdersList: React.FC<Props> = ({ products }) => {
   function getFlavorsAsString(product: CartProduct) {
     const flavorsString = product.flavors.reduce((string, cur, index) => {
       if (index < product.flavors.length - 1) {
@@ -32,7 +34,7 @@ const CartOrdersList: React.FC<Props> = (props) => {
             productName={product.name}
             productSize={product.size}
             quantity={product.quantity}
-            standard_price={product.standard_price}
+            standardPrice={product.standard_price}
           />
           <AddsListContainer>
             {product.adds.map((add) => (
