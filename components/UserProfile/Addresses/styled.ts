@@ -29,7 +29,7 @@ export const CustomInputsDesign = styled.div`
   }
 `;
 
-export const AddressContainer = styled.div`
+export const AddressListContainer = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -40,7 +40,7 @@ export const AddressContainer = styled.div`
   padding-bottom: 2rem;
 `;
 
-export const ShowAddress = styled.div`
+export const AddressListItem = styled.li`
   display: flex;
   flex-direction: row;
   gap: 1rem;

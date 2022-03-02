@@ -19,17 +19,27 @@ import {
   IAddressesFormValues,
 } from "./FormModel";
 import {
-  ShowAddress,
+  AddressListItem,
   AddresData,
   AddresIcons,
-  AddressContainer,
+  AddressListContainer,
   CustomInputsDesign,
   AddressesFormikForm,
   AddressesFormButtonContainer,
 } from "./styled";
 
-const Addresses: React.FC = () => {
+import type IEndereco from "@models/endereco";
+
+type AddressesProps = {
+  addresses: IEndereco[];
+};
+
+const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
   const formModel = getAddressesFormModel();
+
+  function getFormattedAddressText(address: IEndereco) {
+    return `${address.logradouro} N° ${address.numero}, ${address.bairro}`;
+  }
 
   async function addressFormSubmitHandler(values: IAddressesFormValues) {
     const addressesFormArg = getAddressFormArg(values);
@@ -103,52 +113,33 @@ const Addresses: React.FC = () => {
         )}
       </Formik>
 
-      <AddressContainer>
+      <AddressListContainer>
         <h3>Endereços cadastrados</h3>
-        <ShowAddress>
-          <span>
-            <HiOutlineLocationMarker size={40} color={PINK} />
-          </span>
-          <AddresData>
-            <p>Rua dos Alfeneiros Nº 4, Little Whinging</p>
-            <p>Complemento: </p>
-          </AddresData>
-          <AddresIcons>
-            <Tooltip title="Editar endereço" placement="bottom">
-              <span>
-                <BsPencil size={20} color={PURPLE} />
-              </span>
-            </Tooltip>
-            <Tooltip title="Excluir endereço" placement="bottom">
-              <span>
-                <FaTrash size={20} color={PURPLE} />
-              </span>
-            </Tooltip>
-          </AddresIcons>
-        </ShowAddress>
 
-        <ShowAddress>
-          <span>
-            <HiOutlineLocationMarker size={40} color={PINK} />
-          </span>
-          <AddresData>
-            <p>Rua dos Alfeneiros Nº 4, Little Whinging</p>
-            <p>Complemento: </p>
-          </AddresData>
-          <AddresIcons>
-            <Tooltip title="Editar endereço" placement="bottom">
-              <span>
-                <BsPencil size={20} color={PURPLE} />
-              </span>
-            </Tooltip>
-            <Tooltip title="Excluir endereço" placement="bottom">
-              <span>
-                <FaTrash size={20} color={PURPLE} />
-              </span>
-            </Tooltip>
-          </AddresIcons>
-        </ShowAddress>
-      </AddressContainer>
+        {addresses.map((address) => (
+          <AddressListItem key={`address-${address.id_endereco}`}>
+            <span>
+              <HiOutlineLocationMarker size={40} color={PINK} />
+            </span>
+            <AddresData>
+              <p>{getFormattedAddressText(address)}</p>
+              {address.complemento && <p>{`Complemento: ${address.complemento}`}</p>}
+            </AddresData>
+            <AddresIcons>
+              <Tooltip title="Editar endereço" placement="bottom">
+                <span>
+                  <BsPencil size={20} color={PURPLE} />
+                </span>
+              </Tooltip>
+              <Tooltip title="Excluir endereço" placement="bottom">
+                <span>
+                  <FaTrash size={20} color={PURPLE} />
+                </span>
+              </Tooltip>
+            </AddresIcons>
+          </AddressListItem>
+        ))}
+      </AddressListContainer>
     </PageContainer>
   );
 };

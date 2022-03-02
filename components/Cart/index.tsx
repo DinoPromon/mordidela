@@ -96,7 +96,9 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   async function fetchAddresses(session: Session | null, isComponentMounted: boolean) {
     try {
       if (session) {
-        const response = await Axios.get<AddressOnCart[]>(`/address/${session.user.id_usuario}`);
+        const response = await Axios.get<AddressOnCart[]>(
+          `/address/relations/${session.user.id_usuario}`
+        );
         if (isComponentMounted) setAddresses(response.data);
       }
     } catch (e) {

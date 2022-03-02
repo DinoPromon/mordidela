@@ -1,21 +1,21 @@
 import React from "react";
 import type { ReactElement } from "react";
 
-import { NavBarFooter } from "@components/Layouts";
-import { NextPageWithLayout } from "@my-types/next-page";
-
-import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import Addresses from "@components/UserProfile/Addresses";
-import { MyUser } from "@my-types/next-auth";
+import { NavBarFooter } from "@components/Layouts";
+import { FindAllAddressesByUserId } from "@controllers/endereco";
+
+import type IEndereco from "@models/endereco";
+import type { GetServerSideProps } from "next";
+import type { NextPageWithLayout } from "@my-types/next-page";
 
 type Props = {
-  user: MyUser;
+  addresses: IEndereco[];
 };
 
-const GeneralDataPage: NextPageWithLayout<Props> = (props) => {
-  const { nome, id_usuario } = props.user;
-  return <Addresses></Addresses>;
+const GeneralDataPage: NextPageWithLayout<Props> = ({ addresses }) => {
+  return <Addresses addresses={addresses}></Addresses>;
 };
 
 GeneralDataPage.getLayout = function getLayout(page: ReactElement) {
@@ -33,9 +33,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const userId = session.user.id_usuario;
+  const findAllAddresses = new FindAllAddressesByUserId(userId);
+  const addresses = await findAllAddresses.exec();
+
   return {
     props: {
-      user: session.user as MyUser,
+      session: session,
+      addresses,
     },
   };
 };

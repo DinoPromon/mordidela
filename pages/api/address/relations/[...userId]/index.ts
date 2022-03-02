@@ -1,9 +1,9 @@
-import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 import { ReqMethod } from "@my-types/backend/req-method";
 import { SessionValidator } from "database/helpers/session";
-import { FindAllAddressesByUserId } from "@controllers/endereco";
+import { findManyAddressByUserId } from "@controllers/endereco";
 
+import type { NextApiHandler } from "next";
 import type { ServerError } from "@errors/index";
 
 const handler: NextApiHandler = async (req, res) => {
@@ -16,8 +16,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     switch (req.method) {
       case ReqMethod.GET: {
-        const findAllAddresses = new FindAllAddressesByUserId(Number(userId));
-        const addresses = await findAllAddresses.exec();
+        const addresses = await findManyAddressByUserId(Number(userId));
         return res.status(200).json(addresses);
       }
 

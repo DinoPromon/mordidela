@@ -23,4 +23,27 @@ export class AddressRepo {
 
     return createdAddress;
   }
+
+  public static async findAllByUserId(userId: IUsuario["id_usuario"]) {
+    const addresses = await Prisma.endereco.findMany({
+      where: {
+        id_usuario: userId,
+      },
+    });
+
+    return addresses;
+  }
+
+  public static async findAllRelationsByUserId(userId: IUsuario["id_usuario"]) {
+    const relatedAddresses = await Prisma.endereco.findMany({
+      include: {
+        entrega: true,
+      },
+      where: {
+        id_usuario: userId,
+      },
+    });
+
+    return relatedAddresses;
+  }
 }
