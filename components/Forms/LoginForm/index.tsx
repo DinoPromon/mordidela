@@ -44,7 +44,7 @@ const LoginForm: React.FC = () => {
       });
 
       if (!result || result.error) {
-        throw new Error("Dado(s) de autenticação errado(s)");
+        throw new Error("Dado(s) de autenticação incorreto(s)");
       }
 
       router.replace("/");
