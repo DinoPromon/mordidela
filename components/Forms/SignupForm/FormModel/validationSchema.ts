@@ -1,14 +1,24 @@
 import * as Yup from "yup";
 
 import type { SignUpFormModel } from "./index";
+import { phoneValidation } from "@utils/validations";
+import { validateDate } from "@components/UserProfile/GeneralData/FormModel/utility";
 
 export function getSignUpFormValidationSchema(formModel: SignUpFormModel) {
   const { name, birthDate, phoneNumber, email, password, confirmedPassword } = formModel;
 
   const validationSchema = Yup.object().shape({
     [name.name]: Yup.string().required(name.requiredErrorMessage),
-    [birthDate.name]: Yup.date().required(birthDate.requiredErrorMessage),
-    [phoneNumber.name]: Yup.string().required(phoneNumber.requiredErrorMessage),
+    [birthDate.name]: Yup.string()
+      .required(birthDate.requiredErrorMessage)
+      .test("is-valid-date", `${birthDate.requiredErrorMessage}`, (value) =>
+        validateDate(value as string)
+      ),
+    [phoneNumber.name]: Yup.string()
+      .required(phoneNumber.requiredErrorMessage)
+      .test("is-phone-valid", "Número de telefone inválido", (value) =>
+        phoneValidation(value || "")
+      ),
     [email.name]: Yup.string().email("Insira um email válido").required(email.requiredErrorMessage),
     [password.name]: Yup.string()
       .required(password.requiredErrorMessage)

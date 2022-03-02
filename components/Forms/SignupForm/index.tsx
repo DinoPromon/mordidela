@@ -19,6 +19,10 @@ import {
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
+import type { SetFieldValue } from "@my-types/formik";
+import type { ISignUpFormValues } from "./FormModel";
+import { maskDate } from "@utils/formatters";
+
 
 type Props = {
   state: UserFormData;
@@ -34,6 +38,23 @@ const SignUpForm: React.FC<Props> = (props) => {
 
   function changeShowPassword() {
     setShowPassword((prevState) => !prevState);
+  }
+
+  function phoneInputChangeHandler(
+    values: ISignUpFormValues,
+    setFieldValue: SetFieldValue<ISignUpFormValues>,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const formatedPhoneInput = phoneNumberChangeHandler(event.target.value, values.phoneNumber);
+    setFieldValue(formModel.phoneNumber.name, formatedPhoneInput);
+  }
+
+  function dateInputChangeHandler(
+    setFieldValue: SetFieldValue<ISignUpFormValues>,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const formatedDate = maskDate(event.target.value);
+    setFieldValue(formModel.birthDate.name, formatedDate);
   }
 
   const hasErrorInInputs = (formInputs: typeof formState) => {
@@ -77,7 +98,7 @@ const SignUpForm: React.FC<Props> = (props) => {
       initialValues={getSignUpInitialValues()}
       onSubmit={(values) => console.log(values)}
     >
-      {({ values }) => (
+      {({ values, setFieldValue }) => (
         <FormikForm>
           <InputTextFormik
             name={formModel.name.name}
@@ -92,6 +113,7 @@ const SignUpForm: React.FC<Props> = (props) => {
             value={values.birthDate}
             variant="outlined"
             helperText={formModel.birthDate.requiredErrorMessage}
+            onChange={dateInputChangeHandler.bind(null, setFieldValue)}
           />
           <InputTextFormik
             name={formModel.phoneNumber.name}
@@ -99,6 +121,7 @@ const SignUpForm: React.FC<Props> = (props) => {
             value={values.phoneNumber}
             variant="outlined"
             helperText={formModel.phoneNumber.requiredErrorMessage}
+            onChange={phoneInputChangeHandler.bind(null, values, setFieldValue)}
           />
           <InputTextFormik
             name={formModel.email.name}
