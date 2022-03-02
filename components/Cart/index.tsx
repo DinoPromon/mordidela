@@ -5,6 +5,7 @@ import CartOrdersList from "./CartOrdersList";
 import CartDeliveryType from "./CartDeliveryType";
 import CartLoggedOptions from "./CartLoggedOptions";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import useIsMounted from "@hooks/useIsMounted";
 import { Formik } from "formik";
 import { CartContext } from "@store/cart";
 import { TipoEntrega } from "@models/pedido";
@@ -43,6 +44,7 @@ type Props = {
 const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const { products, order, resetCart } = useContext(CartContext);
   const subTotalPrice = getSubTotalPrice();
+  const isMounted = useIsMounted();
   const [session, setSession] = useState<Session | null>(null);
   const [isLoadingSession, setIsLoadingSession] = useState(true);
   const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
@@ -57,19 +59,15 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const cartFormInitialValues = getCartFormInitialValues();
 
   useEffect(() => {
-    let isMounted = true;
     async function hasSession() {
       const result = await getSession();
-      if (isMounted) {
+      if (isMounted.current) {
         setSession(result);
         setIsLoadingSession(false);
       }
     }
     if (!session) hasSession();
-    fetchAddresses(session, isMounted);
-    return () => {
-      isMounted = false;
-    };
+    fetchAddresses(session);
   }, [session]);
 
   function getSubTotalPrice() {
@@ -93,17 +91,17 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     setShouldShowConfirmation(shouldShow);
   }
 
-  async function fetchAddresses(session: Session | null, isComponentMounted: boolean) {
+  async function fetchAddresses(session: Session | null) {
     try {
       if (session) {
         const response = await Axios.get<AddressOnCart[]>(
           `/address/relations/${session.user.id_usuario}`
         );
-        if (isComponentMounted) setAddresses(response.data);
+        if (isMounted.current) setAddresses(response.data);
       }
     } catch (e) {
       const error = e as Error;
-      setRequest({ error: error.message, isLoading: false });
+      if (isMounted.current) setRequest({ error: error.message, isLoading: false });
     }
     setIsLoadingAddress(false);
   }
