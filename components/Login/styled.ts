@@ -13,30 +13,30 @@ export const LoginContainer = styled.div`
   justify-content: center;
   gap: 1.5rem;
   max-width: ${FORM_SCREEN_MAX_WIDTH};
+`;
 
-  & > span {
-    position: absolute;
-    top: 2rem;
-  }
+export const LoginContainerArrowLeft = styled.span`
+  position: absolute;
+  top: 2rem;
+`;
 
-  & > img {
-    align-self: center;
-    width: 200px;
-  }
+export const LoginImage = styled.image`
+  align-self: center;
+  width: 200px;
+`;
 
-  & > p {
-    width: auto;
-    font-size: 18px;
-    text-align: center;
-    color: ${ORANGE};
+export const LoginNotHaveAccount = styled.p`
+  width: auto;
+  font-size: 18px;
+  text-align: center;
+  color: ${ORANGE};
+`;
 
-    & > a {
-      text-decoration: none;
-      color: ${PINK};
-      padding: 1px 0;
-      border-bottom: 1px ${PINK} solid;
-    }
-  }
+export const LoginRegister = styled.a`
+  text-decoration: none;
+  color: ${PINK};
+  padding: 1px 0;
+  border-bottom: 1px ${PINK} solid;
 `;
 
 export const FormikForm = styled(Form)`
