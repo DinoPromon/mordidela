@@ -6,6 +6,7 @@ export const HomeContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: 2rem;
 `;
 
 export const HomeTitle = styled.h1`
@@ -28,7 +29,7 @@ export const HomeTitle = styled.h1`
 
 export const HomeMenuTitle = styled.h2`
   color: ${PURPLE};
-  padding: 0 1rem;
+  padding: 1rem;
 
   @media (max-width: 530px) {
     font-size: 13pt;
@@ -41,13 +42,26 @@ export const HomeMenuTitle = styled.h2`
   }
 `;
 
-export const BannerContainer = styled.div`
-  padding: 1rem;
+export const BannerInitial = styled.div`
+  position: relative;
+  width: 820px;
+  height: 312px;
+  border-radius: 10px;
+  overflow: hidden;
 `;
 
 export const DoubleBannerContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  padding: 1rem;
+`;
+
+export const DoubleBanner = styled(BannerInitial)`
+  width: 443px;
+  height: 620.25px;
+`;
+
+export const BannerFinal = styled(BannerInitial)`
+  width: 960px;
+  height: 537px;
 `;
