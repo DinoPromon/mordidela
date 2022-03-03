@@ -18,7 +18,7 @@ const Home: React.FC = () => {
     <HomeContainer>
       <HomeTitle>Bem vindo à Mordidela!</HomeTitle>
       <BannerContainer>
-        <Image src={banner_home} width={820} height={312} className="teste" />
+        <Image src={banner_home} width={820} height={312} alt="Banner com a mensagem paixão à primeira mordida"/>
       </BannerContainer>
       <HomeMenuTitle>
         Visite nosso{" "}
@@ -28,14 +28,14 @@ const Home: React.FC = () => {
         e faça seu pedido!
       </HomeMenuTitle>
       <DoubleBannerContainer>
-        <Image src={banner_01} width={443} height={620.25}/>
-        <Image src={banner_02} width={443} height={620.25}/>
+        <Image src={banner_01} width={443} height={620.25} alt="Banner com alguns produtos do cardápio"/>
+        <Image src={banner_02} width={443} height={620.25} alt="Banner com outros produtos do cardápio"/>
       </DoubleBannerContainer>
       <HomeMenuTitle>
         Quanto mais pedidos fizer em nosso site, mais cupons serão disponibilizados para você!
       </HomeMenuTitle>
       <BannerContainer>
-        <Image src={banner_03} width={960} height={537} className="teste" />
+        <Image src={banner_03} width={960} height={537} alt="Banner com imagem de dino burguers e a mensagem amor à primeira mordidela"/>
       </BannerContainer>
     </HomeContainer>
   );
