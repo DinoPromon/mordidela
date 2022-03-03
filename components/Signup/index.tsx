@@ -1,65 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { Formik } from "formik";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
-import Wrapper from "./styled";
-import { Response } from "@my-types/request";
-import { UserFormData, AddressFormData } from "@my-types/forms";
-import { AddressForm, SignUpForm } from "@components/Forms";
+import Axios from "@api";
+import SignUpForm from "./SignupForm";
+import AddressForm from "./AddressForm";
+import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
+import { FormikForm } from "./styled";
+import { getSignupFormArg } from "./SignupForm/Submit";
+import { getAddressFormArg } from "./AddressForm/Submit";
+import {
+  getSignupCompleteFormModel,
+  getSignupCompleteInitialValues,
+  getSignupCompleteValidationSchema,
+} from "./FormModel";
+import { SignupContainer } from "./styled";
 
-const signupInitialState: UserFormData = {
-  nome: "",
-  data_nascimento: "",
-  email: "",
-  senha: "",
-  senha_confirmada: "",
-  telefone: "",
-};
-
-const addressInitialState: AddressFormData = {
-  logradouro: "",
-  numero: "",
-  bairro: "",
-  complemento: "",
-};
+import type { SetFieldValue } from "@my-types/formik";
+import type { SignupCompleteFormValues } from "./FormModel";
 
 const Signup: React.FC = () => {
   const router = useRouter();
+  const formModel = useMemo(() => getSignupCompleteFormModel(), []);
+  const signupCompleteValidationSchema = useMemo(
+    () => getSignupCompleteValidationSchema(formModel),
+    [formModel]
+  );
   const [isAddressForm, setIsAddresForm] = useState(false);
-  const [signupFormData, setSignupFormData] = useState<UserFormData>(signupInitialState);
-  const [addressFormData, setAddressFormData] = useState<AddressFormData>(addressInitialState);
 
-  const sendRequest = async () => {
+  const submitHandler = async (values: SignupCompleteFormValues) => {
     try {
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        body: JSON.stringify({
-          userFormData: signupFormData,
-          addressFormData: addressFormData,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await Axios.post("/auth/signup", {
+        userFormData: getSignupFormArg(values),
+        addressFormData: getAddressFormArg(values),
       });
-      const data = await response.json();
-
-      if (!response.ok) return { error: true, message: data.message } as Response;
-
-      setSignupFormData(signupInitialState);
-      setAddressFormData(addressInitialState);
-      return { error: false, message: data.message } as Response;
     } catch (e) {
       const error = e as Error;
-      return { error: true, message: error.message } as Response;
+      console.log(error);
     }
   };
 
-  const addressFormBackHandler = () => {
-    setIsAddresForm(false);
+  const addressFormBackHandler = (setFieldValues: SetFieldValue<SignupCompleteFormValues>) => {
+    return () => {
+      setIsAddresForm(false);
+      setFieldValues("isAddressForm", false);
+    };
   };
 
-  const signupFormNextHandler = () => {
-    setIsAddresForm(true);
+  const signupFormNextHandler = (setFieldValues: SetFieldValue<SignupCompleteFormValues>) => {
+    return () => {
+      setIsAddresForm(true);
+      setFieldValues("isAddressForm", true);
+    };
   };
 
   const signupFormBackHandler = () => {
@@ -67,31 +60,51 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <Wrapper>
-      <div className="image-wrapper">
-        <Image
-          src={isAddressForm ? "/images/address.svg" : "/images/profile_pic.svg"}
-          alt="Ícone de criação de perfil."
-          layout="fill"
-          objectFit="scale-down"
-        />
-      </div>
-      {isAddressForm ? (
-        <AddressForm
-          onSubmit={sendRequest}
-          onBack={addressFormBackHandler}
-          state={addressFormData}
-          setState={setAddressFormData}
-        />
-      ) : (
-        <SignUpForm
-          state={signupFormData}
-          setState={setSignupFormData}
-          onSubmit={signupFormNextHandler}
-          onBack={signupFormBackHandler}
-        />
-      )}
-    </Wrapper>
+    <SignupContainer>
+      <Formik
+        validateOnMount
+        enableReinitialize
+        onSubmit={submitHandler}
+        validationSchema={signupCompleteValidationSchema}
+        initialValues={getSignupCompleteInitialValues()}
+      >
+        {({ values, setFieldValue, isValid, dirty }) => (
+          <CustomAnimatePresence exitBeforeEnter>
+            <motion.div
+              key={isAddressForm ? "address-form" : "signup-form"}
+              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: isAddressForm ? 20 : -20 }}
+              exit={{ opacity: 0, x: isAddressForm ? 20 : -20 }}
+              transition={{ duration: 0.25 }}
+            >
+              <FormikForm>
+                {!isAddressForm && (
+                  <SignUpForm
+                    isValid={isValid}
+                    isTouched={dirty}
+                    formikValues={values}
+                    formModel={formModel}
+                    setFieldValue={setFieldValue}
+                    onNext={signupFormNextHandler(setFieldValue)}
+                    onBack={signupFormBackHandler}
+                  />
+                )}
+
+                {isAddressForm && (
+                  <AddressForm
+                    isValid={isValid}
+                    isTouched={dirty}
+                    formikValues={values}
+                    formModel={formModel}
+                    onBack={addressFormBackHandler(setFieldValue)}
+                  />
+                )}
+              </FormikForm>
+            </motion.div>
+          </CustomAnimatePresence>
+        )}
+      </Formik>
+    </SignupContainer>
   );
 };
 

@@ -3,9 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiArrowLeft } from "react-icons/fi/index";
 
-import { LoginContainer } from "./styled";
-import { LoginForm } from "@components/Forms";
+import LoginForm from "./LoginForm";
 import { PINK } from "@utils/colors";
+import { LoginContainer } from "./styled";
 
 const Login: React.FC = () => {
   const router = useRouter();

@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const AddressFormActionsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
-
-export default Wrapper;

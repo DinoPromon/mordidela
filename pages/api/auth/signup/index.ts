@@ -1,8 +1,6 @@
 import type { NextApiHandler } from "next";
 
 import { treatErrorMessage } from "@utils/transformation";
-import { AddressFormData, UserFormData } from "@my-types/forms";
-import { hasErrorInAddressForm, hasErrorInUserForm } from "@utils/validations";
 import { removeAditionalSpaces } from "@utils/formatters";
 import { transformDate } from "@utils/transformation/date";
 import { getDDDFromTelefone, getNumberFromTelefone } from "@utils/transformation";
@@ -11,15 +9,13 @@ import mysql from "database";
 
 const handler: NextApiHandler = async (req, res) => {
   const { userFormData, addressFormData } = req.body as {
-    userFormData: UserFormData;
-    addressFormData: AddressFormData;
+    userFormData: any;
+    addressFormData: any;
   };
 
-  if (req.method === "POST") {
-    if (hasErrorInUserForm(userFormData) || hasErrorInAddressForm(addressFormData)) {
-      return res.status(400).json({ message: "Preencha os dados corretamente!" });
-    }
+  console.log(userFormData, addressFormData);
 
+  if (req.method === "POST") {
     try {
       const results = await mysql.query("CALL pr_insert_usuario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
         removeAditionalSpaces(userFormData.nome),

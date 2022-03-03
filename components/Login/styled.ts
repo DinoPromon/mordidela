@@ -1,9 +1,8 @@
-import styled from 'styled-components'
+import styled from "styled-components";
+import { Form } from "formik";
 
-import { PINK, ORANGE } from '@utils/colors';
-import { FORM_SCREEN_MAX_WIDTH } from '@utils/styles';
-
-// generalizar esse código
+import { PINK, ORANGE } from "@utils/colors";
+import { FORM_SCREEN_MAX_WIDTH } from "@utils/styles";
 
 export const LoginContainer = styled.div`
   display: flex;
@@ -37,5 +36,17 @@ export const LoginContainer = styled.div`
       padding: 1px 0;
       border-bottom: 1px ${PINK} solid;
     }
+  }
+`;
+
+export const FormikForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  & > p {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0.25rem;
   }
 `;

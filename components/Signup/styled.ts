@@ -1,8 +1,7 @@
 import styled from "styled-components";
+import { Form } from "formik";
 
-// generalizar esse código
-
-const Wrapper = styled.div`
+export const SignupContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 85%;
@@ -10,32 +9,22 @@ const Wrapper = styled.div`
   justify-content: center;
   gap: 1.5rem;
   max-width: 400px;
-
-  .image-wrapper {
-    position: relative;
-    height: 140px;
-  }
-
-  & > img {
-    align-self: center;
-    width: 150px;
-    margin-bottom: 1rem;
-  }
-
-  & > p {
-    color: red;
-  }
-
-  & > div {
-    display: flex;
-    margin: 1rem 2px;
-    flex-direction: row;
-    align-items: center;
-    & > p {
-      margin-right: auto;
-      color: blue;
-    }
-  }
 `;
 
-export default Wrapper;
+export const SignupImageContainer = styled.div`
+  position: relative;
+  margin: 1rem 0;
+  height: 140px;
+`;
+
+export const FormikForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  & > p {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0.25rem;
+  }
+`;
