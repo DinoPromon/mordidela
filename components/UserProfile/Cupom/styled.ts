@@ -1,5 +1,6 @@
 import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 export const CupomContainer = styled.div`
   display: flex;
@@ -15,15 +16,22 @@ export const CupomTitle = styled.h3`
   align-items: center;
   justify-content:center;
   font-weight: bold;
-  /* color: ${PURPLE}; */
 `;
 
-export const CupomDataContainer = styled.div`
+export const UsedCupomTitle = styled(CupomTitle)`
+  padding-top: 1rem;
+`;
+
+export const CupomDataContainer = styled(motion.div)`
   display: flex;
   flex-direction: row;
   gap: 1rem;
   align-items: center;
   justify-content: flex-start;
+  border: 2px solid ${PINK};
+  padding: 1rem;
+  border-radius: 50px;
+  background-color: white;
 `;
 
 export const CupomData = styled.div`
@@ -31,3 +39,9 @@ export const CupomData = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
 `;
+
+export const CupomDataHighlight = styled.span`
+  color: ${PINK};
+  font-weight: bold;
+`;
+

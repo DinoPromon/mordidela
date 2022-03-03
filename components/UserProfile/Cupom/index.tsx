@@ -3,7 +3,7 @@ import { PINK } from "@utils/colors";
 import { RiCoupon3Line } from "react-icons/ri";
 import { getFormattedDate } from "@utils/transformation";
 import { PageContainer, PageTitle } from "@components/shared";
-import { CupomContainer, CupomDataContainer, CupomTitle, CupomData } from "./styled";
+import { CupomContainer, CupomDataContainer, CupomTitle, CupomData, CupomDataHighlight, UsedCupomTitle } from "./styled";
 
 import { RelatedUserCoupon, TipoCupom } from "@models/cupom";
 
@@ -36,26 +36,26 @@ const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
       <CupomContainer>
         <CupomTitle>Cupons disponíveis</CupomTitle>
         {availableCoupons.map((availabeCoupon) => (
-          <CupomDataContainer key={`coupon-${availabeCoupon.data_obtencao}`}>
+          <CupomDataContainer key={`coupon-${availabeCoupon.data_obtencao}`} whileHover={{scale: 1.1}}>
             <RiCoupon3Line size={40} color={PINK} />
             <CupomData>
               <p>
-                {availabeCoupon.cupom.codigo} - {getCouponDiscountText(availabeCoupon.cupom)}
+                <CupomDataHighlight>{availabeCoupon.cupom.codigo}</CupomDataHighlight> - {getCouponDiscountText(availabeCoupon.cupom)}
               </p>
-              <span>{getCouponValidDate(availabeCoupon.cupom)}</span>
+              <p>{getCouponValidDate(availabeCoupon.cupom)}</p>
             </CupomData>
           </CupomDataContainer>
         ))}
 
-        <CupomTitle>Cupons utilizados</CupomTitle>
+        <UsedCupomTitle>Cupons utilizados</UsedCupomTitle>
         {usedCoupons.map((usedCoupon) => (
-          <CupomDataContainer key={`coupon-${usedCoupon.id_usuario_cupom}`}>
+          <CupomDataContainer key={`coupon-${usedCoupon.id_usuario_cupom}`} whileHover={{scale: 1.1}}>
             <RiCoupon3Line size={40} color={PINK} />
             <CupomData>
               <p>
-                {usedCoupon.cupom.codigo} - {getCouponDiscountText(usedCoupon.cupom)}
+                <CupomDataHighlight>{usedCoupon.cupom.codigo}</CupomDataHighlight> - {getCouponDiscountText(usedCoupon.cupom)}
               </p>
-              <span>Utilizado no pedido {usedCoupon.pedido?.id_pedido}</span>
+              <p>Utilizado no pedido {usedCoupon.pedido?.id_pedido}</p>
             </CupomData>
           </CupomDataContainer>
         ))}

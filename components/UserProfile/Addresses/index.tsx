@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import { getSession } from "next-auth/client";
 import { FaTrash } from "react-icons/fa/index";
 import { BsPencil } from "react-icons/bs/index";
+import type { RequestState } from "@my-types/request";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { ErrorMessage } from "@components/shared/StyledComponents";
+import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
 
 import Axios from "@api";
 import Button from "@material-ui/core/Button";
@@ -35,6 +39,7 @@ type AddressesProps = {
 };
 
 const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
+  const [requestStatus, setRequestStatus] = useState<RequestState>({ error: "", isLoading: false });
   const formModel = getAddressesFormModel();
 
   function getFormattedAddressText(address: IEndereco) {
@@ -42,12 +47,27 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
   }
 
   async function addressFormSubmitHandler(values: IAddressesFormValues) {
+    setRequestStatus({ error: "", isLoading: true });
+    try {
+      const addressesFormArg = getAddressFormArg(values);
+      const session = await getSession();
+      if (!session) return;
+
+      await Axios.post(`address/${session.user.id_usuario}`, addressesFormArg);
+    } catch (e) {
+      const error = e as Error;
+      setRequestStatus({ error: error.message, isLoading: false });
+    }
+    setRequestStatus((prevState) => ({ ...prevState, isLoading: false }));
+  }
+
+  /*   async function addressFormSubmitHandler(values: IAddressesFormValues) {
     const addressesFormArg = getAddressFormArg(values);
     const session = await getSession();
     if (!session) return;
 
     await Axios.post(`address/${session.user.id_usuario}`, addressesFormArg);
-  }
+  } */
 
   return (
     <PageContainer>
@@ -104,11 +124,14 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
                 variant="contained"
                 color="secondary"
                 type="submit"
-                disabled={!(isValid && dirty)}
+                disabled={!(isValid && dirty) || requestStatus.isLoading}
               >
-                Adicionar endereço
+                {requestStatus.isLoading ? <CircularProgress color="primary" size={24} /> : "Adicionar endereço"}
               </Button>
             </AddressesFormButtonContainer>
+            <ErrorMessageContainer>
+              {requestStatus.error && <ErrorMessage>{requestStatus.error}</ErrorMessage>}
+          </ErrorMessageContainer>
           </AddressesFormikForm>
         )}
       </Formik>
