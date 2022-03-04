@@ -17,11 +17,13 @@ import {
 } from "./FormModel";
 import { SignupContainer } from "./styled";
 
+import type { RequestState } from "@my-types/request";
 import type { SetFieldValue } from "@my-types/formik";
 import type { SignupCompleteFormValues } from "./FormModel";
 
 const Signup: React.FC = () => {
   const router = useRouter();
+  const [requestStatus, setRequestStatus] = useState<RequestState>({ error: "", isLoading: false });
   const formModel = useMemo(() => getSignupCompleteFormModel(), []);
   const signupCompleteValidationSchema = useMemo(
     () => getSignupCompleteValidationSchema(formModel),
@@ -29,16 +31,24 @@ const Signup: React.FC = () => {
   );
   const [isAddressForm, setIsAddresForm] = useState(false);
 
+  function changeRequestStatus(status: Partial<RequestState>) {
+    setRequestStatus((prevState) => ({ ...prevState, ...status }));
+  }
+
   const submitHandler = async (values: SignupCompleteFormValues) => {
+    setRequestStatus({ error: "", isLoading: true });
     try {
       const response = await Axios.post("/auth/signup", {
         userFormData: getSignupFormArg(values),
         addressFormData: getAddressFormArg(values),
       });
+      router.push("/login");
     } catch (e) {
       const error = e as Error;
+      changeRequestStatus({ error: error.message });
       console.log(error);
     }
+    changeRequestStatus({ isLoading: false });
   };
 
   const addressFormBackHandler = (setFieldValues: SetFieldValue<SignupCompleteFormValues>) => {
@@ -68,7 +78,7 @@ const Signup: React.FC = () => {
         validationSchema={signupCompleteValidationSchema}
         initialValues={getSignupCompleteInitialValues()}
       >
-        {({ values, setFieldValue, isValid, dirty }) => (
+        {({ values, isValid, dirty, setFieldValue }) => (
           <CustomAnimatePresence exitBeforeEnter>
             <motion.div
               key={isAddressForm ? "address-form" : "signup-form"}
@@ -96,6 +106,7 @@ const Signup: React.FC = () => {
                     isTouched={dirty}
                     formikValues={values}
                     formModel={formModel}
+                    formRequestStatus={requestStatus}
                     onBack={addressFormBackHandler(setFieldValue)}
                   />
                 )}

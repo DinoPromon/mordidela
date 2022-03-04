@@ -2,10 +2,12 @@ import React, { Fragment, useState } from "react";
 import Image from "next/image";
 import Button from "@material-ui/core/Button";
 
+import LoadingButton from "@components/shared/LoadingButton";
 import { SignupImageContainer } from "../styled";
 import { InputTextFormik } from "@components/shared";
 import { AddressFormActionsContainer } from "./styled";
 
+import type { RequestState } from "@my-types/request";
 import type { IAddressFormValues, SignupCompleteFormModel } from "../FormModel";
 
 type Props = {
@@ -13,13 +15,19 @@ type Props = {
   isTouched: boolean;
   formikValues: IAddressFormValues;
   formModel: SignupCompleteFormModel;
+  formRequestStatus: RequestState;
   onBack: () => void;
 };
 
-const AddressForm: React.FC<Props> = ({ formikValues, formModel, isValid, isTouched, onBack }) => {
-  const [canSubmit, setCanSubmit] = useState(false);
-  const [request, setRequest] = useState({ error: "", isLoading: false, success: false });
-
+const AddressForm: React.FC<Props> = ({
+  isValid,
+  formModel,
+  isTouched,
+  formikValues,
+  formRequestStatus,
+  onBack,
+}) => {
+  console.log(formRequestStatus);
   return (
     <Fragment>
       <SignupImageContainer>
@@ -64,16 +72,16 @@ const AddressForm: React.FC<Props> = ({ formikValues, formModel, isValid, isTouc
         <Button onClick={onBack} color="secondary" variant="contained">
           Voltar
         </Button>
-        <Button
+        <LoadingButton
+          isLoading={formRequestStatus.isLoading}
           type="submit"
           color="secondary"
           variant="contained"
           disabled={!(isValid && isTouched)}
         >
           Finalizar
-        </Button>
+        </LoadingButton>
       </AddressFormActionsContainer>
-      {/* <AddresFormActions onBack={onBack} disabled={!canSubmit} success={request.success} /> */}
     </Fragment>
   );
 };

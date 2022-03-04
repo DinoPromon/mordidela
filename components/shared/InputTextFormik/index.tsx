@@ -1,7 +1,8 @@
 import React from "react";
 import CustomTextField from "../CustomTextField";
 import { useField } from "formik";
-import { TextFieldProps } from "@material-ui/core/TextField";
+
+import type { TextFieldProps } from "@material-ui/core/TextField";
 
 interface InputTextFormikProps extends Partial<Omit<TextFieldProps, "classes">> {
   name: string;
