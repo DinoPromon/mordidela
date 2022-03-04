@@ -48,12 +48,13 @@ export const BannerInitial = styled.div`
   height: 312px;
   border-radius: 10px;
   overflow: hidden;
+  padding: 1rem;
 `;
 
 export const DoubleBannerContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
 export const DoubleBanner = styled(BannerInitial)`

@@ -15,7 +15,7 @@ import type ISabor from "@models/sabor";
 import type IAdicional from "@models/adicional";
 import type { CartProduct } from "@my-types/context";
 import type { RelatedProduct } from "@models/produto";
-import { TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 
 type Props = {
   item: RelatedProduct;
@@ -156,9 +156,9 @@ const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
       <MenuItemActionsContainer>
         <ItemCounter quantity={productOrder.quantity} setQuantity={changeQuantity} />
         <ItemPrice>R$ {transformPriceToString(price * productOrder.quantity)}</ItemPrice>
-        <FormButton type="submit" disabled={!canSubmit}>
+        <Button type="submit" variant="contained" color="secondary" disabled={!canSubmit}>
           Adicionar
-        </FormButton>
+        </Button>
       </MenuItemActionsContainer>
     </ModalItemContainer>
   );
