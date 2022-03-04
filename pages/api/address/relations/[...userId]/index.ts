@@ -1,7 +1,7 @@
 import { getSession } from "next-auth/client";
 import { ReqMethod } from "@my-types/backend/req-method";
 import { SessionValidator } from "database/helpers/session";
-import { findManyAddressByUserId } from "@controllers/endereco";
+import { findManyAddressByUserId } from "@controllers/address";
 
 import type { NextApiHandler } from "next";
 import type { ServerError } from "@errors/index";

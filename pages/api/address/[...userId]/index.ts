@@ -2,10 +2,10 @@ import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 import { ReqMethod } from "@my-types/backend/req-method";
 import { SessionValidator } from "database/helpers/session";
-import { FindAllAddressesByUserId } from "@controllers/endereco";
+import { FindAllAddressesByUserId } from "@controllers/address";
+import { CreateAddress } from "@controllers/address/createAddress";
 
 import type { ServerError } from "@errors/index";
-import { CreateAddress } from "@controllers/endereco/createAddress";
 
 const handler: NextApiHandler = async (req, res) => {
   try {

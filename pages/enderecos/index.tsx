@@ -4,7 +4,7 @@ import type { ReactElement } from "react";
 import { getSession } from "next-auth/client";
 import Addresses from "@components/UserProfile/Addresses";
 import { NavBarFooter } from "@components/Layouts";
-import { FindAllAddressesByUserId } from "@controllers/endereco";
+import { FindAllAddressesByUserId } from "@controllers/address";
 
 import type IEndereco from "@models/endereco";
 import type { GetServerSideProps } from "next";
