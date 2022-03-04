@@ -40,7 +40,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
   useEffect(() => {
     if (values.addressId) {
       const deliveryPrice = getDeliveryPriceFromSelectedAddress(values.addressId);
-      setFieldValue("delivery_price", deliveryPrice);
+      setFieldValue("deliveryPrice", deliveryPrice);
     }
   }, [values.addressId]);
 

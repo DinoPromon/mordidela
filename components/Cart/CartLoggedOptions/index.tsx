@@ -6,6 +6,7 @@ import Loading from "@components/shared/Loading";
 import { PINK } from "@utils/colors";
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega } from "@models/pedido";
+import Button from "@material-ui/core/Button";
 import { FaTrash } from "react-icons/fa/index";
 import { CustomFade } from "@components/shared";
 import { FormButton } from "@components/shared";
@@ -67,7 +68,7 @@ const CartLoggedOptions: React.FC<Props> = ({
   }
 
   function removeSelectedCupom() {
-    setFieldValue("cupom", null);
+    setFieldValue("coupon", null);
   }
 
   useEffect(() => {
@@ -84,7 +85,7 @@ const CartLoggedOptions: React.FC<Props> = ({
       </CustomFade>
 
       <CustomFade triggerAnimation={!Boolean(values.coupon)}>
-        <CartCupom onChangeRequestStatus={onChangeRequestStatus} />
+        <CartCupom requestStatus={request} onChangeRequestStatus={onChangeRequestStatus} />
       </CustomFade>
 
       <CustomFade triggerAnimation={shouldShowDiscount}>
@@ -121,7 +122,7 @@ const CartLoggedOptions: React.FC<Props> = ({
         {!request.isLoading && (
           <Fragment>
             {formError && <CartFormErrorMessage>{formError}</CartFormErrorMessage>}
-            <FormButton onClick={finishOrderClickHandler}>Finalizar pedido</FormButton>
+            <Button variant="contained" color="secondary" size="large" onClick={finishOrderClickHandler}>Finalizar pedido</Button>
             {request.error && <CartFormErrorMessage>{request.error}</CartFormErrorMessage>}
           </Fragment>
         )}

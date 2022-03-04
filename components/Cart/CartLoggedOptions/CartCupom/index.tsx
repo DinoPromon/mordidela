@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import Axios from "@api";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
+import { ErrorMessage } from "@components/shared/StyledComponents";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useFormikContext } from "formik";
-import { FormButton } from "@components/shared";
 import { cupomFormat } from "@utils/formatters";
 import { RequestState } from "@my-types/request";
-import { CartCupomContainer, CartCupomInput } from "./styled";
+import { CartCupomContainer, CartCupomInputButton, CartCupomError } from "./styled";
 
 import type ICupom from "@models/cupom";
 import type { AxiosError } from "axios";
 import type { CartFormValues } from "@components/Cart/FormModel";
 
 type CartCupomProps = {
+  requestStatus: RequestState;
   onChangeRequestStatus: (status: Partial<RequestState>) => void;
 };
 
-const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
+const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus, requestStatus }) => {
   const { values, setFieldValue } = useFormikContext<CartFormValues>();
   const [isLoadingCupom, setIsLoadingCupom] = useState(false);
   const [inputCupom, setInputCupom] = useState(cupomFormat(values.coupon?.codigo_cupom || ""));
@@ -49,19 +53,43 @@ const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus }) => {
 
   return (
     <CartCupomContainer>
-      <CartCupomInput
-        type="text"
-        placeholder="Digite aqui seu cupom"
-        onChange={couponCodeChangeHandler}
-        value={inputCupom}
-      />
-      {isLoadingCupom ? (
-        <CircularProgress size={40} />
-      ) : (
-        <FormButton type="button" onClick={addCupomClickHandler}>
-          Adicionar
-        </FormButton>
-      )}
+      <CartCupomInputButton>
+        <TextField
+          type="text"
+          placeholder="Digite aqui seu cupom"
+          onChange={couponCodeChangeHandler}
+          value={inputCupom}
+          variant="outlined"
+          size="small"
+          autoComplete="off"
+          style={{ width: "clamp(200px, 350px, 100%)" }}
+          inputProps={{ style: { textAlign: "center" } }}
+          /*         error={Boolean(requestStatus.error)}
+        helperText={requestStatus.error}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <Button variant="contained" color="secondary" size="small" onClick={addCupomClickHandler}>
+                Adicionar
+              </Button>
+            </InputAdornment>
+          ),
+          style: { textAlign: "center" }
+        }} */
+        />
+        {isLoadingCupom ? (
+          <CircularProgress size={30} />
+        ) : (
+          <Button variant="contained" color="secondary" onClick={addCupomClickHandler}>
+            Adicionar
+          </Button>
+        )}
+      </CartCupomInputButton>
+      <CartCupomError>
+        <ErrorMessageContainer>
+          {requestStatus.error && <ErrorMessage>{requestStatus.error}</ErrorMessage>}
+        </ErrorMessageContainer>
+      </CartCupomError>
     </CartCupomContainer>
   );
 };
