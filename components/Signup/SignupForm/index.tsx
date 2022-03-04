@@ -61,7 +61,7 @@ const SignUpForm: React.FC<SignupFormProps> = ({
       <SignupImageContainer>
         <Image
           src={"/images/profile_pic.svg"}
-          alt="Ícone de criação de perfil."
+          alt="Ícone de criação de perfil"
           layout="fill"
           objectFit="scale-down"
         />
