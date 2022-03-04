@@ -1,12 +1,26 @@
 import { Prisma } from "@database";
-import IUsuario from "@models/usuario";
-import { telefone } from "@prisma/client";
+
+import type { telefone } from "@prisma/client";
+import type ITelefone from "@models/telefone";
+import type IUsuario from "@models/usuario";
+
+type FindByUseCases = Partial<ITelefone>;
 
 export class PhoneRepo {
   public static async findByUserId(userId: IUsuario["id_usuario"]) {
     const phone = await Prisma.telefone.findFirst({
       where: {
         id_usuario: userId,
+      },
+    });
+
+    return phone;
+  }
+
+  public static async findByUseCase(cases: FindByUseCases) {
+    const phone = await Prisma.telefone.findFirst({
+      where: {
+        ...cases,
       },
     });
 

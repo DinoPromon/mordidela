@@ -39,8 +39,8 @@ const Signup: React.FC = () => {
     setRequestStatus({ error: "", isLoading: true });
     try {
       const response = await Axios.post("/auth/signup", {
-        userFormData: getSignupFormArg(values),
-        addressFormData: getAddressFormArg(values),
+        ...getSignupFormArg(values),
+        ...getAddressFormArg(values),
       });
       router.push("/login");
     } catch (e) {

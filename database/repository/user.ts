@@ -2,6 +2,8 @@ import { Prisma } from "@database";
 import IUsuario, { UserWithoutPassword } from "@models/usuario";
 import { usuario } from "@prisma/client";
 
+type FindUseCases = Partial<IUsuario>;
+
 export class UserRepo {
   public static async findByUserId(userId: IUsuario["id_usuario"]) {
     const user = await Prisma.usuario.findUnique({
@@ -31,7 +33,10 @@ export class UserRepo {
     return userWithoutPassword as UserWithoutPassword | null;
   }
 
-  public static async updateByUserId(userId: IUsuario["id_usuario"], newUserData: Partial<usuario>) {
+  public static async updateByUserId(
+    userId: IUsuario["id_usuario"],
+    newUserData: Partial<usuario>
+  ) {
     const updatedUserData = await Prisma.usuario.update({
       data: {
         ...newUserData,
