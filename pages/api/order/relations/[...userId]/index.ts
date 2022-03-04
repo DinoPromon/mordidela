@@ -1,9 +1,8 @@
-import { Prisma } from "database";
 import { getSession } from "next-auth/client";
 import { ServerError } from "@errors/index";
 import { ReqMethod } from "@my-types/backend/req-method";
 import { SessionValidator } from "database/helpers/session";
-import { FindAllOrderRelationsByUserId } from "@controllers/pedido/findAllOrderRelationsByUserId";
+import { FindAllOrderRelationsByUserId } from "@controllers/order";
 
 import type { NextApiHandler } from "next";
 

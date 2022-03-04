@@ -1,4 +1,4 @@
 import CartContextProvider from "./CartContextProvider";
-import CartContext from "./cart-context";
+import CartContext from "./CartContext";
 
 export { CartContextProvider, CartContext };

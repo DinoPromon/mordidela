@@ -2,7 +2,7 @@ import React from "react";
 import Coupons from "@components/UserProfile/Cupom";
 import { getSession } from "next-auth/client";
 import { NavBarFooter } from "@components/Layouts";
-import { FindManyRelatedUserCouponByUserId } from "@controllers/usuario-cupom";
+import { FindManyRelatedUserCouponByUserId } from "@controllers/userCoupon";
 
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";

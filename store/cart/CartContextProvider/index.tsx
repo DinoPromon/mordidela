@@ -1,8 +1,8 @@
 import { CartOrder, CartProduct } from "@my-types/context";
 import React, { useState } from "react";
-import { orderInitialState } from "../cart-context";
+import { orderInitialState } from "../CartContext";
 import { CartContextState } from "@my-types/context";
-import CartContext from "../cart-context";
+import CartContext from "../CartContext";
 import ICupom from "@models/cupom";
 import IEndereco from "@models/endereco";
 import IPedido from "@models/pedido";

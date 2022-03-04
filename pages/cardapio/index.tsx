@@ -5,7 +5,7 @@ import Menu from "@components/Menu";
 import { RelatedProduct } from "@models/produto";
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
-import { findManyRelatedProducts } from "@controllers/produto/";
+import { findManyRelatedProducts } from "@controllers/product";
 
 type Props = {
   products: RelatedProduct[];

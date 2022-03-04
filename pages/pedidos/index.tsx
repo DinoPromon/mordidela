@@ -1,9 +1,9 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import { FindAllOrderRelationsByUserId } from "@controllers/pedido/findAllOrderRelationsByUserId";
+import { FindAllOrderRelationsByUserId } from "@controllers/order";
 
 const NavBarFooter = dynamic(() => import("../../components/Layouts/NavBarFooter"));
-const Orders = dynamic(() => import('../../components/UserProfile/Orders'));
+const Orders = dynamic(() => import("../../components/UserProfile/Orders"));
 import { NextPageWithLayout } from "@my-types/next-page";
 
 import { getSession } from "next-auth/client";

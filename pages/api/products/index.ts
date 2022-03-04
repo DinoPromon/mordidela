@@ -1,12 +1,12 @@
 import { IncomingForm } from "formidable";
-import { CreateProduct } from "@controllers/produto";
+import { CreateProduct } from "@controllers/product";
 import { ProductRepo } from "@repository/product";
+import { CreateProductArg } from "@controllers/product";
 import { ReqMethod } from "@my-types/backend/req-method";
 
 import type IProduto from "@models/produto";
 import type { NextApiHandler } from "next";
 import type { File as FormidableFile } from "formidable";
-import type { CreateProductArg } from "@controllers/produto";
 
 export const config = {
   api: {

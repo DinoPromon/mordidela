@@ -1,6 +1,6 @@
 import { Prisma } from "database";
 import { getSession } from "next-auth/client";
-import { CreateOrder } from "@controllers/pedido";
+import { CreateOrder } from "@controllers/order";
 import { ServerError } from "@errors/index";
 import { ReqMethod } from "@my-types/backend/req-method";
 import { SessionValidator } from "database/helpers/session";
