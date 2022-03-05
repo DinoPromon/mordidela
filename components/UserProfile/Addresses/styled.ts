@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Form } from "formik";
-import { motion } from "framer-motion";
 
 type AddressFormButtonContainerProps = {
   isEdit: boolean;
@@ -16,7 +15,7 @@ export const AddressesFormikForm = styled(Form)`
   width: 100%;
 `;
 
-export const AddressesFormButtonContainer = styled(motion.div)<AddressFormButtonContainerProps>`
+export const AddressesFormButtonContainer = styled.div<AddressFormButtonContainerProps>`
   display: flex;
   width: 100%;
   justify-content: ${({ isEdit }) => (isEdit ? "space-between" : "center")};
