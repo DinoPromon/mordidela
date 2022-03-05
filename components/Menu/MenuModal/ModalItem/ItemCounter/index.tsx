@@ -1,7 +1,9 @@
-import {ItemCounterContainer} from "./styled";
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai/index";
-import { PURPLE } from "@utils/colors";
 import React from "react";
+import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
+
+import { PURPLE } from "@utils/colors";
+
+import { ItemCounterContainer, CounterButton } from "./styled";
 
 type Props = {
   quantity: number;
@@ -21,13 +23,13 @@ const ItemCounter: React.FC<Props> = (props) => {
 
   return (
     <ItemCounterContainer>
-      <button type="button" onClick={decrementHandler}>
+      <CounterButton type="button" onClick={decrementHandler}>
         <AiOutlineMinusCircle color={PURPLE} size={24} style={{ verticalAlign: "middle" }} />
-      </button>
+      </CounterButton>
       <span>{props.quantity}</span>
-      <button type="button" onClick={incrementHandler}>
+      <CounterButton type="button" onClick={incrementHandler}>
         <AiOutlinePlusCircle color={PURPLE} size={24} style={{ verticalAlign: "middle" }} />
-      </button>
+      </CounterButton>
     </ItemCounterContainer>
   );
 };

@@ -1,17 +1,10 @@
 import React from "react";
+
 import { Modal } from "@components/shared";
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega } from "@models/pedido";
 import {
-  TotalContainer,
-  OrderFlavorsText,
-  OrdersModalTitle,
-  OrdersDataContainer,
-  OrdersAddresContainer,
-} from "./styled";
-import {
   AddsText,
-  TotalText,
   ColoredText,
   AddresTitle,
   SubtotalText,
@@ -24,6 +17,14 @@ import {
   ItemDescriptionContainer,
   TotalTextOrdersUserProfile,
 } from "@components/shared/StyledComponents";
+
+import {
+  TotalContainer,
+  OrderFlavorsText,
+  OrdersModalTitle,
+  OrdersDataContainer,
+  OrdersAddresContainer,
+} from "./styled";
 import {
   getNumberAsCurrency,
   getHasDeliveryPrice,
@@ -41,12 +42,13 @@ import type IAdicional from "@models/adicional";
 import type { IOrderRelations } from "@models/pedido";
 
 type OrderDetailsModalProps = {
-  onClose: () => void;
   orderRelations: IOrderRelations;
+  onClose: () => void;
 };
 
 const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, onClose }) => {
   function filterOrderProductAdds(
+    orderRelations: IOrderRelations,
     orderId: IPedido["id_pedido"],
     productId: IProduto["id_produto"]
   ) {
@@ -57,8 +59,12 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     return filteredOrderProductAdds;
   }
 
-  function getAddsInOrderProduct(orderId: IPedido["id_pedido"], productId: IProduto["id_produto"]) {
-    const filteredOrderProductAdds = filterOrderProductAdds(orderId, productId);
+  function getAddsInOrderProduct(
+    orderRelations: IOrderRelations,
+    orderId: IPedido["id_pedido"],
+    productId: IProduto["id_produto"]
+  ) {
+    const filteredOrderProductAdds = filterOrderProductAdds(orderRelations, orderId, productId);
 
     const addsInOrderProduct = filteredOrderProductAdds.map(
       (orderProductAdd) => orderProductAdd.adicional as IAdicional
@@ -68,6 +74,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
   }
 
   function getStringFlavorsInOrderProduct(
+    orderRelations: IOrderRelations,
     orderId: IPedido["id_pedido"],
     productId: IProduto["id_produto"]
   ) {
@@ -95,8 +102,8 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
     return product.nome;
   }
 
-  function getDeliveryType(deliveryType: TipoEntrega) {
-    switch (deliveryType) {
+  function getDeliveryType(orderRelations: IOrderRelations) {
+    switch (orderRelations.tipo_entrega) {
       case TipoEntrega.BALCAO:
         return "Balcão";
       case TipoEntrega.ENTREGA:
@@ -114,7 +121,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
   }
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} key="order-relations-modal">
       <OrdersModalTitle>Pedido {orderRelations.id_pedido}</OrdersModalTitle>
       <ProductsContainer>
         {orderRelations.pedido_produto.map((orderProduct) => (
@@ -131,18 +138,21 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
 
             {orderRelations.pedido_produto_adicional.length > 0 && (
               <AddsListContainer>
-                {getAddsInOrderProduct(orderProduct.id_pedido, orderProduct.id_produto).map(
-                  (add) => (
-                    <AddsText key={`add-${add.id_adicional}`}>
-                      Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
-                    </AddsText>
-                  )
-                )}
+                {getAddsInOrderProduct(
+                  orderRelations,
+                  orderProduct.id_pedido,
+                  orderProduct.id_produto
+                ).map((add) => (
+                  <AddsText key={`add-${add.id_adicional}`}>
+                    Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
+                  </AddsText>
+                ))}
 
                 {orderRelations.pedido_produto_sabor.length > 0 && (
                   <OrderFlavorsText>
                     {"Sabores: ".concat(
                       getStringFlavorsInOrderProduct(
+                        orderRelations,
                         orderProduct.id_pedido,
                         orderProduct.id_produto
                       )
@@ -175,7 +185,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
         )}
 
         <SubtotalText>
-          Tipo de entrega: <span>{getDeliveryType(orderRelations.tipo_entrega)}</span>
+          Tipo de entrega: <span>{getDeliveryType(orderRelations)}</span>
         </SubtotalText>
 
         {getHasDeliveryPrice(orderRelations) && (

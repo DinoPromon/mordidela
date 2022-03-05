@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+
+import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
+import { PageContainer, PageTitle } from "@components/shared";
+
 import MenuList from "./MenuList";
 import MenuModal from "./MenuModal";
 import MenuFilter from "./MenuFilter";
-import { PageContainer, PageTitle } from "@components/shared";
 
 import type { ProductCategory, RelatedProduct } from "@models/produto";
 
@@ -46,7 +49,9 @@ const Menu: React.FC<Props> = ({ products, error }) => {
 
   return (
     <PageContainer>
-      {showModal && <MenuModal onClose={closeModalHandler} item={modalItem} />}
+      <CustomAnimatePresence>
+        {showModal && <MenuModal onClose={closeModalHandler} item={modalItem} />}
+      </CustomAnimatePresence>
       <PageTitle>Cardápio</PageTitle>
       <MenuFilter
         categories={[categoryAll, ...getAllCategoriesFromProducts()]}

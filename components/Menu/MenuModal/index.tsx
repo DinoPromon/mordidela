@@ -1,6 +1,8 @@
 import React from "react";
-import ModalItem from "./ModalItem";
+
 import Modal from "@components/shared/Modal";
+
+import ModalItem from "./ModalItem";
 
 import type { RelatedProduct } from "@models/produto";
 

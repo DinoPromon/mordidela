@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import OrderDetailsModal from "./OrderDetailsModal";
+import { FaPlusCircle } from "react-icons/fa";
+
+import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { PINK } from "@utils/colors";
 import { StatusPedido } from "@models/pedido";
-import { FaPlusCircle } from "react-icons/fa";
+import { getFormattedHours } from "@utils/formatters";
 import { createDate } from "@utils/transformation/date";
 import { getFormattedDate } from "@utils/transformation";
-import { getFormattedHours } from "@utils/formatters";
 import { PageContainer, PageTitle } from "@components/shared";
-import { MoreDetails, OrdersContainer, OrdersContainerList, OrdersContainerListHighlight } from "./styled";
 
+import OrderDetailsModal from "./OrderDetailsModal";
 import { calculateTotalPrice, getOrderPaymentTypeText, getNumberAsCurrency } from "./utility";
+import {
+  MoreDetails,
+  OrdersContainer,
+  OrdersContainerList,
+  OrdersContainerListHighlight,
+} from "./styled";
 
 import type { IOrderRelations } from "@models/pedido";
 
@@ -18,14 +25,14 @@ type OrdersProps = {
 };
 
 const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
-  const [modalItem, setModalItem] = useState<IOrderRelations | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<IOrderRelations | null>(null);
 
   function openModal(orderRelation: IOrderRelations) {
-    setModalItem(orderRelation);
+    setSelectedOrder(orderRelation);
   }
 
   function closeModal() {
-    setModalItem(null);
+    setSelectedOrder(null);
   }
 
   function getOrderStatusText(orderRelation: IOrderRelations) {
@@ -44,7 +51,15 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
 
   return (
     <PageContainer>
-      {modalItem && <OrderDetailsModal orderRelations={modalItem} onClose={closeModal} />}
+      <CustomAnimatePresence exitBeforeEnter>
+        {selectedOrder && (
+          <OrderDetailsModal
+            key="order-relations-modal"
+            orderRelations={selectedOrder}
+            onClose={closeModal}
+          />
+        )}
+      </CustomAnimatePresence>
       <PageTitle>Pedidos</PageTitle>
       <OrdersContainer>
         {ordersRelations.map((orderRelation) => (
@@ -53,19 +68,24 @@ const Orders: React.FC<OrdersProps> = ({ ordersRelations }) => {
             key={`order-history-${orderRelation.id_pedido}`}
           >
             <p>
-              <OrdersContainerListHighlight>Pedido {`${orderRelation.id_pedido}`}</OrdersContainerListHighlight>{" "}
+              <OrdersContainerListHighlight>
+                Pedido {`${orderRelation.id_pedido}`}
+              </OrdersContainerListHighlight>{" "}
               {`- ${getFormattedDate(orderRelation.data_pedido)} às ${getFormattedHours(
                 createDate(orderRelation.data_pedido)
               )}`}
             </p>
             <p>
-              <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight> {`${getOrderStatusText(orderRelation)}`}
+              <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight>{" "}
+              {`${getOrderStatusText(orderRelation)}`}
             </p>
             <p>
-              <OrdersContainerListHighlight>Total:</OrdersContainerListHighlight> {`${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}
+              <OrdersContainerListHighlight>Total:</OrdersContainerListHighlight>{" "}
+              {`${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}
             </p>
             <p>
-              <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight> {`${getOrderPaymentTypeText(orderRelation)}`}
+              <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight>{" "}
+              {`${getOrderPaymentTypeText(orderRelation)}`}
             </p>
             <MoreDetails onClick={() => openModal(orderRelation)}>
               <FaPlusCircle size={12} color={PINK} />

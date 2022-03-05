@@ -27,7 +27,6 @@ const AddressForm: React.FC<Props> = ({
   formRequestStatus,
   onBack,
 }) => {
-  console.log(formRequestStatus);
   return (
     <Fragment>
       <SignupImageContainer>

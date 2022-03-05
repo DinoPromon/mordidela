@@ -11,11 +11,11 @@ export const ItemCounterContainer = styled.div`
   & > span {
     font-weight: bold;
   }
+`;
 
-  & > button {
-    border: none;
-    background-color: transparent;
-    font-size: 1rem;
-    cursor: pointer;
-  }
+export const CounterButton = styled.button`
+  border: none;
+  background-color: transparent;
+  font-size: 1rem;
+  cursor: pointer;
 `;
