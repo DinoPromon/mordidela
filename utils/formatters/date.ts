@@ -1,4 +1,4 @@
-import dateFormatter from 'date-and-time';
+import dateFormatter from "date-and-time";
 import { transformDayOrMonth } from "@utils/transformation";
 
 export function formatDateInput(date: string) {
@@ -21,13 +21,13 @@ export function formatDateInput(date: string) {
 }
 
 export function maskDate(dateInput: string) {
-  if (dateInput.match(/^\d{2}$/) !== null) {
-    return `${dateInput}/`;
-  } else if (dateInput.match(/^\d{2}\/\d{2}$/) !== null) {
-    return `${dateInput}/`;
+  const cleanInput = dateInput.replace(/\D/g, "").slice(0, 10);
+  if (cleanInput.length >= 5) {
+    return `${cleanInput.slice(0, 2)}/${cleanInput.slice(2, 4)}/${cleanInput.slice(4)}`;
+  } else if (cleanInput.length >= 3) {
+    return `${cleanInput.slice(0, 2)}/${cleanInput.slice(2)}`;
   }
-
-  return dateInput;
+  return cleanInput;
 }
 
 export function dateChangeHandler(curDate: string, prevDate: string) {
