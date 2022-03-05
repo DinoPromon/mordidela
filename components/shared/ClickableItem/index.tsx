@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import type { TooltipProps } from "@material-ui/core/Tooltip";
 
 type ClickableItemProps = TooltipProps & {
-  scale: number;
+  scale?: number;
 };
 
 const ClickableItem: React.FC<ClickableItemProps> = ({ scale, children, ...tooltipProps }) => {

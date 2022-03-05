@@ -1,28 +1,33 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { getSession } from "next-auth/client";
-import { FaUserAlt, FaAngleDown, FaAngleUp } from "react-icons/fa/index";
+import { FaUserAlt, FaAngleDown } from "react-icons/fa/index";
 
-import {ProfileDropdownContainer} from "./styled";
 import DropdownList from "./DropdownList";
+import ClickableItem from "@components/shared/ClickableItem";
+import { ProfileDropdownContainer } from "./styled";
+
+import type { Variants } from "framer-motion";
+
+const angleUpVariants: Variants = {
+  down: (isDown: boolean) => ({
+    rotateX: isDown ? -180 : 0,
+    transition: {
+      duration: 0.25,
+    },
+  }),
+};
 
 const ProfileDropdown: React.FC = (props) => {
-  const [sessionStatus, setSessionStatus] = useState<"loading" | "loggedin" | "loggedout">("loading");
+  const [sessionStatus, setSessionStatus] = useState<"loading" | "loggedin" | "loggedout">(
+    "loading"
+  );
   const [nome, setNome] = useState<string>();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const showDropdownHandler = () => {
     setShowDropdown((prevState) => !prevState);
-  };
-
-  const getUserName = async (email: string) => {
-    const response = await fetch(`/api/users?email=${email}&limit=1`);
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.message);
-    }
-
-    return result;
   };
 
   const handleLoggedIn = async () => {
@@ -50,11 +55,11 @@ const ProfileDropdown: React.FC = (props) => {
       {sessionStatus === "loggedin" && (
         <Fragment>
           <span>{nome}</span>
-          {showDropdown ? (
-            <FaAngleUp size={24} color="white" style={{ verticalAlign: "middle" }} />
-          ) : (
-            <FaAngleDown size={24} color="white" style={{ verticalAlign: "middle" }} />
-          )}
+          <ClickableItem title="Menu de usuário">
+            <motion.div custom={showDropdown} variants={angleUpVariants} animate="down">
+              <FaAngleDown size={24} color="white" style={{ verticalAlign: "middle" }} />
+            </motion.div>
+          </ClickableItem>
         </Fragment>
       )}
       {sessionStatus === "loggedout" && <Link href="/login">Login</Link>}

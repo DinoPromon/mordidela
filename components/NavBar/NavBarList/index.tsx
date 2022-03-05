@@ -1,11 +1,15 @@
 import React, { useContext, useState } from "react";
-import Cart from "@components/Cart";
 import Badge from "@material-ui/core/Badge";
-import ProfileDropdown from "./ProfileDropdown";
+import { FaBars, FaShoppingCart } from "react-icons/fa/index";
+
+import Cart from "@components/Cart";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { CartContext } from "@store/cart";
+
+import ProfileDropdown from "./ProfileDropdown";
+import ClickableItem from "@components/shared/ClickableItem";
+
 import { NavBarListContainer, NavBarListItem } from "./styled";
-import { FaBars, FaShoppingCart } from "react-icons/fa/index";
 
 type Props = {
   setShowSideBar: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +20,7 @@ const NavBarList: React.FC<Props> = (props) => {
 
   const [showModal, setShowModal] = useState(false);
 
-  function itemCountQuantity() {
+  function countItems() {
     const count = products.reduce((acc, product) => (acc += product.quantity), 0);
     return count;
   }
@@ -42,9 +46,11 @@ const NavBarList: React.FC<Props> = (props) => {
         <FaBars size={24} color="white" />
       </NavBarListItem>
       <NavBarListItem className="float-right">
-        <Badge badgeContent={itemCountQuantity()} color="primary">
-          <FaShoppingCart size={24} color="white" onClick={openModalHandler} />
-        </Badge>
+        <ClickableItem title="Carrinho de compras" scale={1.12}>
+          <Badge badgeContent={countItems()} color="primary">
+            <FaShoppingCart size={24} color="white" onClick={openModalHandler} />
+          </Badge>
+        </ClickableItem>
       </NavBarListItem>
       <NavBarListItem className="float-right">
         <ProfileDropdown />
