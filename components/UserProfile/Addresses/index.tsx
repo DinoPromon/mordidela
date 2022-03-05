@@ -1,21 +1,24 @@
 import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
 import { Formik } from "formik";
+import { motion } from "framer-motion";
 import { getSession } from "next-auth/client";
 import { FaTrash } from "react-icons/fa/index";
 import { BsPencil } from "react-icons/bs/index";
-import type { RequestState } from "@my-types/request";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { ErrorMessage } from "@components/shared/StyledComponents";
-import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
 
 import Axios from "@api";
-import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
-import { getAddressFormArg } from "./Submit";
+import useRequestState from "@hooks/useRequestState";
+import LoadingButton from "@components/shared/LoadingButton";
+import ClickableItem from "@components/shared/ClickableItem";
+import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { PINK, PURPLE } from "@utils/colors";
 import { InputTextFormik } from "@components/shared";
 import { PageContainer, PageTitle } from "@components/shared";
+import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
+
+import { getAddressFormArg } from "./Submit";
 import {
   getAddressesFormModel,
   getAddressesFormInitialValues,
@@ -23,12 +26,12 @@ import {
   IAddressesFormValues,
 } from "./FormModel";
 import {
-  AddressListItem,
   AddresData,
   AddresIcons,
-  AddressListContainer,
+  AddressListItem,
   CustomInputsDesign,
   AddressesFormikForm,
+  AddressListContainer,
   AddressesFormButtonContainer,
 } from "./styled";
 
@@ -39,15 +42,17 @@ type AddressesProps = {
 };
 
 const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
-  const [requestStatus, setRequestStatus] = useState<RequestState>({ error: "", isLoading: false });
   const formModel = getAddressesFormModel();
+  const [initialValues, setInitialValues] = useState(getAddressesFormInitialValues());
+  const { requestStatus, changeRequestStatus } = useRequestState();
+  const [editAddressId, setEditAddressId] = useState<number>();
 
   function getFormattedAddressText(address: IEndereco) {
     return `${address.logradouro} N° ${address.numero}, ${address.bairro}`;
   }
 
   async function addressFormSubmitHandler(values: IAddressesFormValues) {
-    setRequestStatus({ error: "", isLoading: true });
+    changeRequestStatus({ error: "", isLoading: true });
     try {
       const addressesFormArg = getAddressFormArg(values);
       const session = await getSession();
@@ -56,18 +61,22 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
       await Axios.post(`address/${session.user.id_usuario}`, addressesFormArg);
     } catch (e) {
       const error = e as Error;
-      setRequestStatus({ error: error.message, isLoading: false });
+      changeRequestStatus({ error: error.message });
     }
-    setRequestStatus((prevState) => ({ ...prevState, isLoading: false }));
+    changeRequestStatus({ isLoading: false });
   }
 
-  /*   async function addressFormSubmitHandler(values: IAddressesFormValues) {
-    const addressesFormArg = getAddressFormArg(values);
-    const session = await getSession();
-    if (!session) return;
+  function setAddressToEdit(address: IEndereco) {
+    return () => {
+      setInitialValues(getAddressesFormInitialValues(address));
+      setEditAddressId(address.id_endereco);
+    };
+  }
 
-    await Axios.post(`address/${session.user.id_usuario}`, addressesFormArg);
-  } */
+  function cancelClickHandler() {
+    setEditAddressId(undefined);
+    setInitialValues(getAddressesFormInitialValues());
+  }
 
   return (
     <PageContainer>
@@ -77,7 +86,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
         enableReinitialize
         validateOnChange={false}
         validationSchema={getAddressesFormValidationSchema(formModel)}
-        initialValues={getAddressesFormInitialValues()}
+        initialValues={initialValues}
         onSubmit={addressFormSubmitHandler}
       >
         {({ values, isValid, dirty }) => (
@@ -118,20 +127,42 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
               autoComplete="off"
               variant="outlined"
             />
-            <AddressesFormButtonContainer>
-              <Button
-                size="large"
-                variant="contained"
-                color="secondary"
-                type="submit"
-                disabled={!(isValid && dirty) || requestStatus.isLoading}
-              >
-                {requestStatus.isLoading ? <CircularProgress color="primary" size={24} /> : "Adicionar endereço"}
-              </Button>
+            <AddressesFormButtonContainer isEdit={Boolean(editAddressId)}>
+              <CustomAnimatePresence>
+                {Boolean(editAddressId) && (
+                  <motion.div
+                    key="cancel-buton"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <Button
+                      size="large"
+                      color="secondary"
+                      variant="contained"
+                      onClick={cancelClickHandler}
+                    >
+                      Cancelar
+                    </Button>
+                  </motion.div>
+                )}
+              </CustomAnimatePresence>
+              <motion.div layout layoutId="submit-button">
+                <LoadingButton
+                  size="large"
+                  type="submit"
+                  color="secondary"
+                  variant="contained"
+                  isLoading={requestStatus.isLoading}
+                  disabled={!(isValid && dirty) || requestStatus.isLoading}
+                >
+                  {Boolean(editAddressId) ? "Salvar alterações" : "Adicionar endereço"}
+                </LoadingButton>
+              </motion.div>
             </AddressesFormButtonContainer>
             <ErrorMessageContainer>
               {requestStatus.error && <ErrorMessage>{requestStatus.error}</ErrorMessage>}
-          </ErrorMessageContainer>
+            </ErrorMessageContainer>
           </AddressesFormikForm>
         )}
       </Formik>
@@ -149,16 +180,17 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
               {address.complemento && <p>{`Complemento: ${address.complemento}`}</p>}
             </AddresData>
             <AddresIcons>
-              <Tooltip title="Editar endereço" placement="bottom">
-                <span>
-                  <BsPencil size={20} color={PURPLE} />
-                </span>
-              </Tooltip>
-              <Tooltip title="Excluir endereço" placement="bottom">
-                <span>
-                  <FaTrash size={20} color={PURPLE} />
-                </span>
-              </Tooltip>
+              <ClickableItem
+                scale={1.25}
+                placement="bottom"
+                title="Editar endereço"
+                onClick={setAddressToEdit(address)}
+              >
+                <BsPencil size={20} color={PURPLE} />
+              </ClickableItem>
+              <ClickableItem title="Editar endereço" placement="bottom" scale={1.25}>
+                <FaTrash size={20} color={PURPLE} />
+              </ClickableItem>
             </AddresIcons>
           </AddressListItem>
         ))}
