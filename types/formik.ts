@@ -1,7 +1,5 @@
-import type { FieldMetaProps } from "formik";
-
-export type SetFieldValue<T> = (
-  field: keyof T,
-  value: any,
+export type SetFieldValue<T> = <R extends keyof T>(
+  field: R,
+  value: T[R],
   shouldValidate?: boolean | undefined
 ) => void;
