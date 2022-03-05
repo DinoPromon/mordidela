@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
+
 import { PINK } from "@utils/colors";
 
-export const MenuItemContainer = styled.li`
+export const MenuItemContainer = styled(motion.li)`
   display: grid;
   grid-template-rows: 2fr clamp(70px, 90px, 120px);
   padding-top: 0.5rem;

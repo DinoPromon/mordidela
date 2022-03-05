@@ -1,8 +1,9 @@
 import React from "react";
 
-import { ItemDescriptionContainer, MenuItemContainer } from "./styled";
-import ItemImage from "./ItemImage";
 import { transformPriceToString } from "@utils/transformation";
+
+import ItemImage from "./ItemImage";
+import { ItemDescriptionContainer, MenuItemContainer } from "./styled";
 
 import type { RelatedProduct } from "@models/produto";
 
@@ -26,7 +27,13 @@ const MenuItem: React.FC<Props> = ({ item, onClick }) => {
   }
 
   return (
-    <MenuItemContainer onClick={menuItemClickHandler}>
+    <MenuItemContainer
+      onClick={menuItemClickHandler}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      whileHover={{ scale: 1.06 }}
+      transition={{ duration: 0.25 }}
+    >
       <ItemImage src={imageSrc} alt={`Imagem ilustrativa de ${item.nome}`} />
       <ItemDescriptionContainer>
         <span>{getItemDescription()}</span>

@@ -1,7 +1,8 @@
 import React from "react";
-import { categoryAll } from "..";
-import { MenuListContainer } from "./styled";
+
 import MenuItem from "./MenuItem";
+import { categoryAll } from "../index";
+import { MenuListContainer } from "./styled";
 
 import type { RelatedProduct } from "@models/produto";
 import type { ProductCategory } from "@models/produto";
@@ -26,9 +27,9 @@ const MenuList: React.FC<Props> = ({ products, selectedCategoryFilter, onItemCli
     <MenuListContainer>
       {getFilteredCategories().map((product) => (
         <MenuItem
-          onClick={onItemClick}
-          item={product}
           key={`${product.nome}-${product.id_produto}`}
+          item={product}
+          onClick={onItemClick}
         />
       ))}
     </MenuListContainer>
