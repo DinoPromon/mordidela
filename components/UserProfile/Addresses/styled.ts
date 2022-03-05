@@ -14,7 +14,7 @@ export const AddressesFormikForm = styled(Form)`
 export const AddressesFormButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;s
+  justify-content: center;
 `;
 
 export const CustomInputsDesign = styled.div`
