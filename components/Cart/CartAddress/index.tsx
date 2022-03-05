@@ -10,6 +10,7 @@ import { PURPLE } from "@utils/colors";
 import { CartAddAddress, CartAddressContainer, CartAddressLoadingContainer } from "./styled";
 import { AddresComplement, AddresTitle } from "@components/shared/StyledComponents";
 
+import type { SetFieldValue } from "@my-types/formik";
 import type { CartFormValues } from "../FormModel";
 import type { AddressOnCart } from "@models/endereco";
 
@@ -20,7 +21,10 @@ type CartAddressProps = {
 };
 
 const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, onCloseModal }) => {
-  const { setFieldValue, values } = useFormikContext<CartFormValues>();
+  const { setFieldValue, values } = useFormikContext<CartFormValues>() as {
+    setFieldValue: SetFieldValue<CartFormValues>;
+    values: CartFormValues;
+  };
 
   function getFormatedAddress(address: AddressOnCart) {
     return `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;

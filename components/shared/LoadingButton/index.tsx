@@ -9,7 +9,6 @@ type LoadingButtonProps = Omit<ButtonProps, "startIcon" | "endIcon"> & {
 };
 
 const LoadingButton: React.FC<LoadingButtonProps> = ({ isLoading, children, ...buttonProps }) => {
-  console.log(isLoading, buttonProps.disabled);
   return (
     <Button
       {...buttonProps}
