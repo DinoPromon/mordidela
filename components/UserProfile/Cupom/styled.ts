@@ -1,6 +1,7 @@
-import { PURPLE, PINK } from "@utils/colors";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+
+import { PINK } from "@utils/colors";
 
 export const CupomContainer = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ export const CupomContainer = styled.div`
 export const CupomTitle = styled.h3`
   display: flex;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
   font-weight: bold;
 `;
 
@@ -44,4 +45,3 @@ export const CupomDataHighlight = styled.span`
   color: ${PINK};
   font-weight: bold;
 `;
-
