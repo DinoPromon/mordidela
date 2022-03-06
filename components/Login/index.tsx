@@ -1,12 +1,17 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FiArrowLeft } from "react-icons/fi/index";
 
 import LoginForm from "./LoginForm";
 import { PINK } from "@utils/colors";
-import { LoginContainer, LoginContainerArrowLeft, LoginImage, LoginRegister, LoginNotHaveAccount } from "./styled";
+import {
+  LoginContainer,
+  LoginContainerArrowLeft,
+  LoginImage,
+  LoginRegister,
+  LoginNotHaveAccount,
+} from "./styled";
 
 const Login: React.FC = () => {
   const router = useRouter();

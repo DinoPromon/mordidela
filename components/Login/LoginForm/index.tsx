@@ -8,10 +8,12 @@ import { useRouter } from "next/router";
 import { signIn } from "next-auth/client";
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
 
-import { FormikForm } from "../styled";
-import { getLoginFormArg } from "./Submit";
+import LoadingButton from "@components/shared/LoadingButton";
 import { InputTextFormik } from "@components/shared";
 import { ErrorMessage } from "@components/shared/StyledComponents";
+
+import { FormikForm } from "../styled";
+import { getLoginFormArg } from "./Submit";
 import { ForgotPasswordText, LoginActionsContainer, ErrorMessageContainer } from "./styled";
 import {
   getLoginFormInitialValues,
@@ -100,14 +102,15 @@ const LoginForm: React.FC = () => {
           </ErrorMessageContainer>
           <LoginActionsContainer>
             <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
-            <Button
+            <LoadingButton
               type="submit"
               variant="contained"
               color="secondary"
+              isLoading={requestStatus.isLoading}
               disabled={!(isValid && dirty) || requestStatus.isLoading}
             >
-              {requestStatus.isLoading ? <CircularProgress color="primary" size={24} /> : "Login"}
-            </Button>
+              Login
+            </LoadingButton>
           </LoginActionsContainer>
         </FormikForm>
       )}
