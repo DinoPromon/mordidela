@@ -41,5 +41,5 @@ export function dateChangeHandler(curDate: string, prevDate: string) {
 }
 
 export function getFormattedHours(date: Date) {
-  return dateFormatter.format(date, "HH:mm", true);
+  return dateFormatter.format(date, "HH:mm", false);
 }
