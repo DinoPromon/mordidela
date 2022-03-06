@@ -3,38 +3,36 @@ import validator from "validator";
 
 import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
-import { SignupUserParser } from "../parser";
 
 import type { SignupUserData } from "../index";
 
 export class SignupUserValidator {
   private signupUserData: SignupUserData;
-  private parser: SignupUserParser;
 
   constructor(signupUserData: SignupUserData) {
     this.signupUserData = signupUserData;
-    this.parser = new SignupUserParser(signupUserData);
   }
 
-  public async exec() {
+  public async validate() {
     const validationSchema = this.getValidationSchema();
     await validationSchema
       .validate(this.signupUserData, { abortEarly: false })
-      .catch((error: Yup.ValidationError) =>
-        throwError("O-C-DI", { customMessage: error.errors.join(", ") })
-      );
+      .catch((error: Yup.ValidationError) => {
+        console.log(error);
+        return throwError("O-C-DI", { customMessage: error.errors.join(", ") });
+      });
 
-    const parsedData = this.parser.exec();
-    await this.verifyPhoneNumber(parsedData.ddd, parsedData.numero).catch(
-      (error: Yup.ValidationError) =>
-        throwError("O-C-DI", { customMessage: error.errors.join(", ") })
+    await this.verifyPhoneNumber(this.signupUserData.ddd, this.signupUserData.numero).catch(
+      (error: Yup.ValidationError) => {
+        console.log("Telefone existente");
+        return throwError("O-C-DI", { customMessage: error.errors.join(", ") });
+      }
     );
 
-    await this.verifyEmail(parsedData.email).catch((error: Yup.ValidationError) =>
-      throwError("O-C-DI", { customMessage: error.errors.join(", ") })
-    );
-
-    return parsedData;
+    await this.verifyEmail(this.signupUserData.email).catch((error: Yup.ValidationError) => {
+      console.log("Email existente");
+      return throwError("O-C-DI", { customMessage: error.errors.join(", ") });
+    });
   }
 
   private async verifyEmail(email: string) {
@@ -79,11 +77,7 @@ export class SignupUserValidator {
           const pattern = /\d{2}/;
           return pattern.test(value || "");
         }),
-      data_nascimento: Yup.string()
-        .required()
-        .test("isValid", "", (value) =>
-          validator.isDate(value || "", { format: "DD/MM/YYYY", strictMode: true })
-        ),
+      data_nascimento: Yup.date().required(),
     });
 
     return validationSchema;

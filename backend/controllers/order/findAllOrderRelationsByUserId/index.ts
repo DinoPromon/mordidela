@@ -31,6 +31,7 @@ export class FindAllOrderRelationsByUserId {
     this.validator.validate();
     try {
       const orderRelationsData = await this.findAllRelationsByUserId();
+
       const serializedOrderRelationsData = this.getSerializedOrdersRelations(
         orderRelationsData as IOrderRelations[]
       );

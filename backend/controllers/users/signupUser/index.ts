@@ -1,10 +1,11 @@
 import { Prisma } from "@backend";
+
 import { throwError } from "@errors/index";
-import { SignupUserParser } from "./parser";
+import { InputSerializer } from "@helpers/input";
+
 import { SignupUserValidator } from "./validator";
 
 import type IUsuario from "@models/usuario";
-import type { SignupUserDataParsed } from "./parser";
 
 export type SignupUserData = {
   complemento: string | null;
@@ -15,30 +16,31 @@ export type SignupUserData = {
   nome: string;
   numero: string;
   senha: string;
-  data_nascimento: string;
+  data_nascimento: string | Date;
   numero_telefone: string;
 };
 
-export class SignupUser {
+export class SignupUser extends InputSerializer {
+  private signupUserdata: SignupUserData;
   private validator: SignupUserValidator;
-  private parser: SignupUserParser;
 
   constructor(signupUserData: SignupUserData) {
-    this.parser = new SignupUserParser(signupUserData);
-    this.validator = new SignupUserValidator(signupUserData);
+    super();
+    this.signupUserdata = this.serialize(signupUserData);
+    this.validator = new SignupUserValidator(this.serialize(signupUserData));
   }
 
   public async exec() {
-    await this.validator.exec();
-    const parsedData = this.parser.exec();
-    const createdUser = await this.createUser(parsedData);
-    await this.createAddress(parsedData, createdUser.id_usuario);
-    await this.createPhone(parsedData, createdUser.id_usuario);
+    await this.validator.validate();
+    console.log(this.signupUserdata);
+    const createdUser = await this.createUser(this.signupUserdata);
+    await this.createAddress(this.signupUserdata, createdUser.id_usuario);
+    await this.createPhone(this.signupUserdata, createdUser.id_usuario);
 
     return createdUser;
   }
 
-  private async createPhone(data: SignupUserDataParsed, userId: number) {
+  private async createPhone(data: SignupUserData, userId: number) {
     await Prisma.telefone
       .create({
         data: {
@@ -50,7 +52,7 @@ export class SignupUser {
       .catch((error) => throwError("O-C-DI"));
   }
 
-  private async createAddress(data: SignupUserDataParsed, userId: number) {
+  private async createAddress(data: SignupUserData, userId: number) {
     await Prisma.endereco
       .create({
         data: {
@@ -64,7 +66,7 @@ export class SignupUser {
       .catch((error) => throwError("O-C-DI"));
   }
 
-  private async createUser(data: SignupUserDataParsed) {
+  private async createUser(data: SignupUserData) {
     const createdUser = await Prisma.usuario
       .create({
         data: {
