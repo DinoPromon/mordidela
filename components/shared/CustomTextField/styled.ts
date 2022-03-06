@@ -6,7 +6,7 @@ export const useTextFieldStyles = makeStyles({
     "& .MuiFormLabel-root": {
       color: "#3b3b3b",
     },
-    '& .MuiOutlinedInput-root input:not([value=""])': {
+    '& .MuiOutlinedInput-root input:not([value=""]):not([disabled])': {
       "& ~fieldset": {
         border: `2px ${PURPLE} solid`,
       },
