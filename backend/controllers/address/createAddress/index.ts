@@ -1,6 +1,8 @@
 import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
 
+import { InputSerializer } from "@helpers/input";
+
 import { CreateAddressValidator } from "./validator";
 
 import type IUsuario from "@models/usuario";
@@ -17,13 +19,14 @@ interface ICreateAddressProps extends CreateAddressData {
   userId: IUsuario["id_usuario"];
 }
 
-export class CreateAddress {
+export class CreateAddress extends InputSerializer {
   private validator: CreateAddressValidator;
   private addressData: CreateAddressData;
   private userId: IUsuario["id_usuario"];
 
   constructor(addressData: ICreateAddressProps) {
-    this.validator = new CreateAddressValidator(addressData);
+    super();
+    this.validator = new CreateAddressValidator(this.serialize(addressData));
     this.userId = addressData.userId;
     this.addressData = {
       bairro: addressData.bairro,
