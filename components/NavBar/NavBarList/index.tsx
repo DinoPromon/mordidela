@@ -46,9 +46,9 @@ const NavBarList: React.FC<Props> = (props) => {
         <FaBars size={24} color="white" />
       </NavBarListItem>
       <NavBarListItem className="float-right">
-        <ClickableItem title="Carrinho de compras" scale={1.12}>
+        <ClickableItem title="Carrinho de compras" scale={1.12} onClick={openModalHandler}>
           <Badge badgeContent={countItems()} color="primary">
-            <FaShoppingCart size={24} color="white" onClick={openModalHandler} />
+            <FaShoppingCart size={24} color="white" />
           </Badge>
         </ClickableItem>
       </NavBarListItem>
