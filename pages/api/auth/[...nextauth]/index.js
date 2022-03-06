@@ -5,6 +5,13 @@ import { Prisma } from "backend";
 export default NextAuth({
   session: {
     jwt: true,
+    maxAge: 2 * 60 * 60,
+  },
+  pages: {
+    signIn: "/login",
+    signOut: "/",
+    newUser: "/",
+    verifyRequest: "/login",
   },
   providers: [
     Providers.Credentials({

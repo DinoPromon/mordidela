@@ -13,7 +13,10 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   return (
     <ThemeProvider theme={theme}>
       <CartContextProvider>
-        <SessionProvider session={pageProps.session}>
+        <SessionProvider
+          session={pageProps.session}
+          options={{ clientMaxAge: 60, keepAlive: 5 * 60 }}
+        >
           {getLayout(<Component {...pageProps} key={router.route} />)}
         </SessionProvider>
       </CartContextProvider>
