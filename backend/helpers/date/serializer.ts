@@ -1,7 +1,7 @@
 import { createDate } from "@utils/transformation/date";
 
 import type ICupom from "@models/cupom";
-import IUsuarioCupom from "@models/usuario_cupom";
+import type IUsuarioCupom from "@models/usuario_cupom";
 
 export class DateSerializer {
   public static serialize(date: Date | number | string | null) {
