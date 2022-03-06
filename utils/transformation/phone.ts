@@ -1,10 +1,10 @@
 export const getDDDFromTelefone = (telefone: string) => {
-  const cleanedTelefone = telefone.replace(/[\(\)-]/, "");
+  const cleanedTelefone = telefone.replaceAll(/\D/g, "");
   return cleanedTelefone.substring(0, 2);
 };
 
 export const getNumberFromTelefone = (telefone: string) => {
-  const cleanedTelefone = telefone.replace(/[\(\)-]/, "");
+  const cleanedTelefone = telefone.replaceAll(/\D/g, "");
   return cleanedTelefone.substring(2);
 };
 
