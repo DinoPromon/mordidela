@@ -1,6 +1,5 @@
 import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
-import { AddressRepo } from "@repository/address";
 
 import type IUsuario from "@models/usuario";
 import type IEndereco from "@models/endereco";

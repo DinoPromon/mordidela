@@ -1,43 +1,39 @@
-import type { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
+
 import { ReqMethod } from "@my-types/backend/reqMethod";
-import { updateGeneralData } from "@controllers/generalData";
+import { SessionValidator } from "@helpers/session";
+import { UpdateGeneralData } from "@controllers/users";
+// import { updateGeneralData } from "@controllers/generalData";
 
-type GeneralDataBody = {
-  nome: string;
-  data_nascimento: string;
-  ddd: string;
-  numero: string;
-};
+import type { NextApiHandler } from "next";
+import type { ServerError } from "@errors/index";
 
-export const handler: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
+const handler: NextApiHandler = async (req, res) => {
+  try {
+    const session = await getSession({ req });
+    const { userId } = req.query;
+    const sessionValidator = new SessionValidator(session);
 
-  if (!session)
-    return res.status(401).json({ message: "É necessário autenticação para acessar os dados" });
+    switch (req.method) {
+      case ReqMethod.PUT: {
+        const numberUserId = Number(userId);
+        sessionValidator.validate({ userId: numberUserId });
 
-  if (req.method === ReqMethod.PUT) {
-    try {
-      const { nome, data_nascimento, ddd, numero } = req.body as GeneralDataBody;
-      const updatedData = await updateGeneralData(session.user.id_usuario, {
-        telefone: {
-          ddd,
-          numero,
-        },
-        user: {
-          nome,
-          data_nascimento: new Date(data_nascimento),
-        },
-      });
+        const updateGeneralData = new UpdateGeneralData(numberUserId, req.body);
+        await updateGeneralData.exec();
 
-      return res.status(200).json(updatedData);
-    } catch (e) {
-      const error = e as Error;
-      return res.status(500).json({ message: "Aconteceu algo de errado" });
+        return res.status(200).json(updateGeneralData);
+      }
+
+      default: {
+        res.setHeader("Allow", [ReqMethod.PUT]);
+        return res.status(405).json({ message: "Requsição inválida." });
+      }
     }
+  } catch (e) {
+    const error = e as ServerError;
+    return res.status(error.httpStatus).json({ message: error.errorMessage });
   }
-
-  res.status(405).json({ message: "Requisição inválida" });
 };
 
 export default handler;

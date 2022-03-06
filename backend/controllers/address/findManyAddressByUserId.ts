@@ -1,5 +1,6 @@
-import IUsuario from "@models/usuario";
 import { Prisma } from "backend";
+
+import type IUsuario from "@models/usuario";
 
 export async function findManyAddressByUserId(userId: IUsuario["id_usuario"]) {
   const addresses = await Prisma.endereco.findMany({
