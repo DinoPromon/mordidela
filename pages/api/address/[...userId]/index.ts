@@ -2,8 +2,8 @@ import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 import { ReqMethod } from "@my-types/backend/reqMethod";
 import { SessionValidator } from "@helpers/session";
+import { CreateAddress } from "@controllers/address";
 import { FindAllAddressesByUserId } from "@controllers/address";
-import { CreateAddress } from "@controllers/address/createAddress";
 
 import type { ServerError } from "@errors/index";
 
