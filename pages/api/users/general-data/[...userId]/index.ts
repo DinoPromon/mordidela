@@ -1,6 +1,6 @@
 import type { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
-import { ReqMethod } from "@my-types/backend/req-method";
+import { ReqMethod } from "@my-types/backend/reqMethod";
 import { updateGeneralData } from "@controllers/generalData";
 
 type GeneralDataBody = {

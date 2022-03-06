@@ -2,7 +2,7 @@ import { IncomingForm } from "formidable";
 import { CreateProduct } from "@controllers/product";
 import { ProductRepo } from "@repository/product";
 import { CreateProductArg } from "@controllers/product";
-import { ReqMethod } from "@my-types/backend/req-method";
+import { ReqMethod } from "@my-types/backend/reqMethod";
 
 import type IProduto from "@models/produto";
 import type { NextApiHandler } from "next";

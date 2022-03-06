@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { Prisma } from "database";
+import { Prisma } from "backend";
 
 export default NextAuth({
   session: {

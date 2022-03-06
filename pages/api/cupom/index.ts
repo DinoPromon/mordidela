@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/client";
 import { CupomRepo } from "@repository/cupom";
-import { ReqMethod } from "@my-types/backend/req-method";
+import { ReqMethod } from "@my-types/backend/reqMethod";
 import { FindCouponByCode } from "@controllers/coupon";
 
 import type ICupom from "@models/cupom";

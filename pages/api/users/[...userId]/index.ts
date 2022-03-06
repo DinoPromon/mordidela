@@ -1,7 +1,7 @@
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 import { findUserGeneralData } from "@controllers/users";
-import { ReqMethod } from "@my-types/backend/req-method";
+import { ReqMethod } from "@my-types/backend/reqMethod";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });

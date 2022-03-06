@@ -1,6 +1,6 @@
 import type { NextApiHandler } from "next";
 
-import mysql from "database";
+import mysql from "backend";
 import { getSession } from "next-auth/client";
 import { ViewUsuario } from "@models/views";
 import { formatPhoneNumber } from "@utils/formatters/phone";

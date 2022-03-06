@@ -1,9 +1,9 @@
-import { Prisma } from "database";
+import { Prisma } from "backend";
 import { getSession } from "next-auth/client";
 import { CreateOrder } from "@controllers/order";
 import { ServerError } from "@errors/index";
-import { ReqMethod } from "@my-types/backend/req-method";
-import { SessionValidator } from "database/helpers/session";
+import { ReqMethod } from "@my-types/backend/reqMethod";
+import { SessionValidator } from "@helpers/session";
 
 import type { NextApiHandler } from "next";
 

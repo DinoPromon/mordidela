@@ -1,5 +1,5 @@
 import { NextApiHandler } from "next";
-import { ReqMethod } from "@my-types/backend/req-method";
+import { ReqMethod } from "@my-types/backend/reqMethod";
 import { AddRepo } from "@repository/add";
 
 const handler: NextApiHandler = async (req, res) => {

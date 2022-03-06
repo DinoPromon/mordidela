@@ -1,7 +1,7 @@
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
-import { ReqMethod } from "@my-types/backend/req-method";
-import { SessionValidator } from "database/helpers/session";
+import { ReqMethod } from "@my-types/backend/reqMethod";
+import { SessionValidator } from "@helpers/session";
 import { FindAllAddressesByUserId } from "@controllers/address";
 import { CreateAddress } from "@controllers/address/createAddress";
 

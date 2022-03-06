@@ -1,6 +1,6 @@
 import type { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
-import { ReqMethod } from "@my-types/backend/req-method";
+import { ReqMethod } from "@my-types/backend/reqMethod";
 
 export const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });

@@ -1,7 +1,7 @@
 import { getSession } from "next-auth/client";
 import { ServerError } from "@errors/index";
-import { ReqMethod } from "@my-types/backend/req-method";
-import { SessionValidator } from "database/helpers/session";
+import { ReqMethod } from "@my-types/backend/reqMethod";
+import { SessionValidator } from "@helpers/session";
 import { FindAllOrderRelationsByUserId } from "@controllers/order";
 
 import type { NextApiHandler } from "next";
