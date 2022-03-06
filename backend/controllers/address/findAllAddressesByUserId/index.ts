@@ -1,3 +1,4 @@
+import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
 import { AddressRepo } from "@repository/address";
 
@@ -19,8 +20,13 @@ export class FindAllAddressesByUserId {
 
   private async findAll() {
     try {
-      const addresses = (await AddressRepo.findAllByUserId(this.userId)) as IEndereco[];
-      return addresses;
+      const addresses = await Prisma.endereco.findMany({
+        where: {
+          id_usuario: this.userId,
+        },
+      });
+      
+      return addresses as IEndereco[];
     } catch (err) {
       throwError("A-FA");
     }

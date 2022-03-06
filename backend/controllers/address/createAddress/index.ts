@@ -1,5 +1,6 @@
+import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
-import { AddressRepo } from "@repository/address";
+
 import { CreateAddressValidator } from "./validator";
 
 import type IUsuario from "@models/usuario";
@@ -41,12 +42,14 @@ export class CreateAddress {
 
   private async create() {
     try {
-      const createdAddress = await AddressRepo.create({
-        numero: this.addressData.numero,
-        logradouro: this.addressData.logradouro,
-        complemento: this.addressData.complemento ? this.addressData.complemento : null,
-        bairro: this.addressData.bairro,
-        id_usuario: this.userId,
+      const createdAddress = await Prisma.endereco.create({
+        data: {
+          numero: this.addressData.numero,
+          logradouro: this.addressData.logradouro,
+          complemento: this.addressData.complemento ? this.addressData.complemento : null,
+          bairro: this.addressData.bairro,
+          id_usuario: this.userId,
+        },
       });
       return createdAddress as IEndereco;
     } catch (error) {
