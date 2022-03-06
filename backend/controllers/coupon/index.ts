@@ -1,1 +1,1 @@
-export { FindCouponByCode } from "./findCouponByCode";
+export { FindCouponByCode } from "./findCoupoByCode";
