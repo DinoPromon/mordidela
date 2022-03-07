@@ -6,9 +6,8 @@ import {
   HomeContainer,
   HomeMenuTitle,
   HomeTitle,
+  DoubleBanner,
 } from "@components/Home/styled";
-import image0 from "public/images/image0.jpeg";
-import image2 from "public/images/image2.jpeg";
 
 const About: React.FC = () => {
   return (
@@ -33,8 +32,8 @@ const About: React.FC = () => {
       </AboutInformation>
       <HomeMenuTitle>Visite nosso espaço físico!</HomeMenuTitle>
       <DoubleBannerContainer>
-        <Image src={image0} width={443} height={620.25}/>
-        <Image src={image2} width={443} height={620.25}/>
+        <DoubleBanner src="/images/image0.jpeg" />
+        <DoubleBanner src="/images/image2.jpeg" />
       </DoubleBannerContainer>
     </HomeContainer>
   );
