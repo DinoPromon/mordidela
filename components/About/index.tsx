@@ -32,8 +32,8 @@ const About: React.FC = () => {
       </AboutInformation>
       <HomeMenuTitle>Visite nosso espaço físico!</HomeMenuTitle>
       <DoubleBannerContainer>
-        <DoubleBanner src="/images/image0.jpeg" />
-        <DoubleBanner src="/images/image2.jpeg" />
+        <DoubleBanner src="/images/image0.jpeg" alt="Primeira imagem dentro do estabelecimento"/>
+        <DoubleBanner src="/images/image2.jpeg" alt="Segunda imagem dentro do estabelecimento"/>
       </DoubleBannerContainer>
     </HomeContainer>
   );
