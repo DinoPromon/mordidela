@@ -1,5 +1,6 @@
-import { ProductRepo } from "@repository/product";
+import { Prisma } from "@backend";
 import { UUIDParse } from "@helpers/uuid";
+import { throwError } from "@errors/index";
 import { ImageHandler } from "@helpers/image";
 import { CreateProductValidator } from "./validator";
 
@@ -17,16 +18,27 @@ export class CreateProduct {
   }
 
   public async exec() {
+    this.validator.validate();
+
+    return await this.createProduct();
+  }
+
+  private async createProduct() {
     const [binUUID, stringUUID] = this.createUUID();
     const productImageHandler = this.createImage(stringUUID);
 
-    this.validator.validate();
-
-    const createdProduct = await ProductRepo.create({
-      ...this.validator.getCreateProductData(),
-      uuid: binUUID,
-      nome_imagem: productImageHandler ? productImageHandler.getFileName(stringUUID) : null,
-    });
+    const createdProduct = await Prisma.produto
+      .create({
+        data: {
+          ...this.validator.getCreateProductData(),
+          uuid: binUUID,
+          nome_imagem: productImageHandler ? productImageHandler.getFileName(stringUUID) : null,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        throwError("O-C-DI");
+      });
 
     return {
       ...createdProduct,

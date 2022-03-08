@@ -1,7 +1,7 @@
 import { Prisma } from "@backend";
 
 import { throwError } from "@errors/index";
-import { InputSerializer } from "@helpers/input";
+import { InputParser } from "@helpers/input";
 
 import { UpdateGeneralDataValidator } from "./validator";
 
@@ -15,7 +15,7 @@ export type GeneralData = {
   data_nascimento: string | Date;
 };
 
-export class UpdateGeneralData extends InputSerializer {
+export class UpdateGeneralData extends InputParser {
   private generalData: Partial<GeneralData>;
   private userId: IUsuario["id_usuario"];
   private validator: UpdateGeneralDataValidator;

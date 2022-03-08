@@ -1,7 +1,7 @@
 import { Prisma } from "@backend";
 
 import { throwError } from "@errors/index";
-import { InputSerializer } from "@helpers/input";
+import { InputParser } from "@helpers/input";
 
 import { SignupUserValidator } from "./validator";
 
@@ -20,7 +20,7 @@ export type SignupUserData = {
   numero_telefone: string;
 };
 
-export class SignupUser extends InputSerializer {
+export class SignupUser extends InputParser {
   private signupUserdata: SignupUserData;
   private validator: SignupUserValidator;
 
@@ -49,7 +49,10 @@ export class SignupUser extends InputSerializer {
           id_usuario: userId,
         },
       })
-      .catch((error) => throwError("O-C-DI"));
+      .catch((error) => {
+        console.log(error);
+        throwError("O-C-DI");
+      });
   }
 
   private async createAddress(data: SignupUserData, userId: number) {
@@ -63,7 +66,10 @@ export class SignupUser extends InputSerializer {
           id_usuario: userId,
         },
       })
-      .catch((error) => throwError("O-C-DI"));
+      .catch((error) => {
+        console.log(error);
+        throwError("O-C-DI");
+      });
   }
 
   private async createUser(data: SignupUserData) {
@@ -78,7 +84,10 @@ export class SignupUser extends InputSerializer {
           data_criacao: new Date(),
         },
       })
-      .catch((error) => throwError("O-C-DI"));
+      .catch((error) => {
+        console.log(error);
+        throwError("O-C-DI");
+      });
 
     return createdUser as IUsuario;
   }

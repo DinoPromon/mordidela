@@ -24,9 +24,10 @@ export class FindAllAddressesByUserId {
           id_usuario: this.userId,
         },
       });
-      
+
       return addresses as IEndereco[];
     } catch (err) {
+      console.log(err);
       throwError("A-FA");
     }
   }

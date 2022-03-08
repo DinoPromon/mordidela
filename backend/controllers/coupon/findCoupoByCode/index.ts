@@ -70,7 +70,10 @@ export class FindCouponByCode {
           id_cupom: coupon.id_cupom,
         },
       })
-      .catch((err) => throwError("O-CT-CID"));
+      .catch((err) => {
+        console.log(err);
+        throwError("O-CT-CID");
+      });
 
     return usedCouponCount > coupon.quantidade_uso;
   }

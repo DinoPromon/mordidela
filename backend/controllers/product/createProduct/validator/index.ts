@@ -20,7 +20,7 @@ export class CreateProductValidator {
     } catch (err) {
       const { errors } = err as Yup.ValidationError;
       console.log(errors);
-      return throwError("O-C-DI", { customMessage: errors.join(", ") });
+      throwError("O-C-DI", { customMessage: errors.join(", ") });
     }
   }
 

@@ -1,33 +1,39 @@
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
-import { findUserGeneralData } from "@controllers/users";
+
+import { SessionValidator } from "@helpers/session";
 import { ReqMethod } from "@my-types/backend/reqMethod";
+import { FindUserGeneralData } from "@controllers/users";
+
+import type { ServerError } from "@errors/index";
 
 const handler: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
-  const { userId } = req.query;
+  try {
+    const session = await getSession({ req });
+    const { userId } = req.query;
 
-  if (!session) {
-    return res.status(401).json({ message: "É necessário autenticação para este endpoint." });
-  }
+    const sessionValidator = new SessionValidator(session);
 
-  if (session.user.id_usuario !== Number(userId)) {
-    return res.status(403).json({ message: "Autenticação inválida." });
-  }
+    switch (req.method) {
+      case ReqMethod.GET: {
+        const numberUserId = Number(userId);
+        sessionValidator.validate({ userId: numberUserId });
 
-  if (req.method === "GET") {
-    try {
-      const userGeneralData = await findUserGeneralData(Number(userId));
-      if (!userGeneralData) return res.status(204).end();
-      return res.status(200).json(userGeneralData);
-    } catch (e) {
-      const error = e as Error;
-      return res.status(500).json({ message: error.message });
+        const findUserGeneralData = new FindUserGeneralData(Number(userId));
+        const userGeneralData = await findUserGeneralData.exec();
+
+        return res.status(200).json(userGeneralData);
+      }
+
+      default: {
+        res.setHeader("Allow", [ReqMethod.GET]);
+        res.status(405).json({ message: "Requisição inválida" });
+      }
     }
+  } catch (err) {
+    const error = err as ServerError;
+    return res.status(error.httpStatus).json({ message: error.errorMessage });
   }
-
-  res.setHeader("Allow", [ReqMethod.GET]);
-  res.status(400).json({ message: "Requisição inválida." });
 };
 
 export default handler;

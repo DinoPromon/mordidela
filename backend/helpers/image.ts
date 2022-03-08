@@ -28,7 +28,7 @@ export class ImageHandler {
     return this.file.originalFilename;
   }
 
-  moveToPublic(newName?: string) {
+  public moveToPublic(newName?: string) {
     const oldPath = this.file.filepath;
     const newPath = `${this._path}/${this.getFileName(newName)}`;
 

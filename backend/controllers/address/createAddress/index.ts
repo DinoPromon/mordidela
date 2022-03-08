@@ -1,7 +1,7 @@
 import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
 
-import { InputSerializer } from "@helpers/input";
+import { InputParser } from "@helpers/input";
 
 import { CreateAddressValidator } from "./validator";
 
@@ -19,7 +19,7 @@ interface ICreateAddressProps extends CreateAddressData {
   userId: IUsuario["id_usuario"];
 }
 
-export class CreateAddress extends InputSerializer {
+export class CreateAddress extends InputParser {
   private validator: CreateAddressValidator;
   private addressData: CreateAddressData;
   private userId: IUsuario["id_usuario"];
@@ -56,6 +56,7 @@ export class CreateAddress extends InputSerializer {
       });
       return createdAddress as IEndereco;
     } catch (error) {
+      console.log(error);
       throwError("A-C");
     }
   }

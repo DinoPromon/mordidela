@@ -15,9 +15,7 @@ interface IUsuario {
   senha: string;
 }
 
-export interface UserWithoutPassword extends Omit<IUsuario, "senha"> {}
-
-export interface UserGeneralData extends UserWithoutPassword {
+export interface UserGeneralData extends Omit<IUsuario, "senha" | "autorizacao"> {
   count_pedido: number;
   telefone: ITelefone;
 }

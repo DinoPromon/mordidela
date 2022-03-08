@@ -1,11 +1,9 @@
 import { NextApiHandler } from "next";
-import { AddressRepo } from "@repository/address";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     try {
-      const addresses = await AddressRepo.findAll();
-      return res.status(200).json(addresses);
+      return res.status(200).json("todo");
     } catch (e) {
       const error = e as Error;
       return res.status(500).json({ message: error.message });

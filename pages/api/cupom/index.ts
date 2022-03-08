@@ -1,5 +1,4 @@
 import { getSession } from "next-auth/client";
-import { CupomRepo } from "@repository/cupom";
 import { ReqMethod } from "@my-types/backend/reqMethod";
 import { FindCouponByCode } from "@controllers/coupon";
 
@@ -11,9 +10,7 @@ const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
 
   if (req.method === ReqMethod.POST) {
-    const cupomData = req.body as Omit<ICupom, "id_cupom">;
-    const createdCupom = await CupomRepo.create(cupomData);
-    return res.status(201).json(createdCupom);
+    return res.status(201).json("todo");
   }
 
   if (!session) return res.status(401).json({ message: "Não autenticado." });

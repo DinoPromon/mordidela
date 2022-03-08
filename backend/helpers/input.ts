@@ -2,7 +2,7 @@ import validator from "validator";
 
 import { createDate } from "@utils/transformation/date";
 
-export class InputSerializer {
+export class InputParser {
   protected serialize<T extends {}>(object: T) {
     const newObject: Partial<T> = {};
 

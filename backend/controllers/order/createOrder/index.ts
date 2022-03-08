@@ -35,15 +35,20 @@ export class CreateOrder {
     const { id_pedido: createdOrderId } = await this.createOrder();
 
     if (this.orderData.id_cupom) {
-      await this.createCouponRelation(createdOrderId, this.orderData.id_cupom).catch((err) =>
-        throwError("O-C", { customMessage: "Erro na criação da relação pedido e cupom" })
-      );
+      await this.createCouponRelation(createdOrderId, this.orderData.id_cupom).catch((err) => {
+        console.log(err);
+        throwError("O-C", { customMessage: "Erro na criação da relação pedido e cupom" });
+      });
     }
-    await this.createProductRelations(createdOrderId).catch((err) =>
-      throwError("O-C", { customMessage: "Erro na criação da relação pedido e produto" })
-    );
+    await this.createProductRelations(createdOrderId).catch((err) => {
+      console.log(err);
+      throwError("O-C", { customMessage: "Erro na criação da relação pedido e produto" });
+    });
 
-    await this.giveFidelityCoupon().catch((err) => throwError("O-C"));
+    await this.giveFidelityCoupon().catch((err) => {
+      console.log(err);
+      throwError("O-C");
+    });
   }
 
   private async createCouponRelation(orderId: IPedido["id_pedido"], couponId: ICupom["id_cupom"]) {
@@ -57,35 +62,53 @@ export class CreateOrder {
           foi_usado: true,
         },
       })
-      .catch((err) => throwError("O-C"));
+      .catch((err) => {
+        console.log(err);
+        throwError("O-C");
+      });
 
     return createdUserCoupon as IUsuarioCupom;
   }
 
   private async giveFidelityCoupon() {
-    const fidelityCoupons = (await Prisma.cupom.findMany({
-      where: {
-        fidelidade: true,
-      },
-    })) as ICupom[];
+    const fidelityCoupons = (await Prisma.cupom
+      .findMany({
+        where: {
+          fidelidade: true,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        throwError("O-C-DI");
+      })) as ICupom[];
 
-    const userOrdersAmount = await Prisma.pedido.count({
-      where: {
-        id_usuario: this.userId,
-      },
-    });
+    const userOrdersAmount = await Prisma.pedido
+      .count({
+        where: {
+          id_usuario: this.userId,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        throwError("O-C-DI");
+      });
 
     for (const coupon of fidelityCoupons) {
       if (userOrdersAmount % coupon.qtde_min_pedido === 0) {
-        await Prisma.usuario_cupom.create({
-          data: {
-            id_cupom: coupon.id_cupom,
-            id_usuario: this.userId,
-            data_uso: null,
-            foi_usado: false,
-            id_pedido: null,
-          },
-        });
+        await Prisma.usuario_cupom
+          .create({
+            data: {
+              id_cupom: coupon.id_cupom,
+              id_usuario: this.userId,
+              data_uso: null,
+              foi_usado: false,
+              id_pedido: null,
+            },
+          })
+          .catch((err) => {
+            console.log(err);
+            throwError("O-C-DI");
+          });
         return;
       }
     }

@@ -1,5 +1,5 @@
+import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
-import { OrderRepo } from "@repository/order";
 import { UUIDParse } from "@helpers/uuid";
 import { DateSerializer } from "@helpers/date/serializer";
 import { FindAllOrdersRelationsByUserIdValidator } from "./validator";
@@ -43,11 +43,43 @@ export class FindAllOrderRelationsByUserId {
   }
 
   private async findAllRelationsByUserId() {
-    const ordersWithRelations = await OrderRepo.findAllRelationsByUserId(
-      this.userId,
-      this.itemsAmount || 10,
-      this.lastOrderId
-    );
+    const ordersWithRelations = await Prisma.pedido
+      .findMany({
+        include: {
+          cupom: true,
+          endereco: true,
+          pedido_produto: {
+            include: {
+              produto: true,
+            },
+          },
+          pedido_produto_adicional: {
+            include: {
+              adicional: true,
+            },
+          },
+          pedido_produto_sabor: {
+            include: {
+              sabor: true,
+            },
+          },
+          usuario_cupom: true,
+        },
+        where: {
+          id_usuario: this.userId,
+        },
+        cursor: this.lastOrderId
+          ? {
+              id_pedido: this.lastOrderId,
+            }
+          : undefined,
+        skip: 1,
+        orderBy: {
+          id_pedido: "asc",
+        },
+        take: this.itemsAmount,
+      })
+      .catch((err) => throwError("O-FA"));
 
     return ordersWithRelations as unknown;
   }

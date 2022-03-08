@@ -1,5 +1,5 @@
 import React from "react";
-import { findUserGeneralData } from "@controllers/users";
+import { FindUserGeneralData } from "@controllers/users";
 
 import { NavBarFooter } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
@@ -36,7 +36,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const userGeneralData = await findUserGeneralData(session.user.id_usuario);
+  const findUserGeneralData = new FindUserGeneralData(session.user.id_usuario);
+  const userGeneralData = await findUserGeneralData.exec();
 
   return {
     props: {

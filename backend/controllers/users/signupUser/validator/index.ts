@@ -23,24 +23,29 @@ export class SignupUserValidator {
       });
 
     await this.verifyPhoneNumber(this.signupUserData.ddd, this.signupUserData.numero).catch(
-      (error: Yup.ValidationError) => {
+      (error) => {
         console.log("Telefone existente");
-        return throwError("O-C-DI", { customMessage: error.errors.join(", ") });
+        return throwError("O-C-DI", { customMessage: "Telefone já cadastrado" });
       }
     );
 
-    await this.verifyEmail(this.signupUserData.email).catch((error: Yup.ValidationError) => {
+    await this.verifyEmail(this.signupUserData.email).catch((error) => {
       console.log("Email existente");
-      return throwError("O-C-DI", { customMessage: error.errors.join(", ") });
+      return throwError("O-C-DI", { customMessage: "Email já cadastrado" });
     });
   }
 
   private async verifyEmail(email: string) {
-    const user = await Prisma.usuario.findFirst({
-      where: {
-        email,
-      },
-    });
+    const user = await Prisma.usuario
+      .findFirst({
+        where: {
+          email,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        throwError("O-C-DI");
+      });
 
     return user ? false : true;
   }

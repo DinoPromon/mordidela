@@ -1,6 +1,5 @@
 import { IncomingForm } from "formidable";
 import { CreateProduct } from "@controllers/product";
-import { ProductRepo } from "@repository/product";
 import { CreateProductArg } from "@controllers/product";
 import { ReqMethod } from "@my-types/backend/reqMethod";
 
@@ -20,8 +19,7 @@ export const handler: NextApiHandler = async (req, res) => {
 
   if (req.method === ReqMethod.GET) {
     try {
-      const products = await ProductRepo.findAll();
-      return res.status(200).json(products);
+      return res.status(200).json("todo");
     } catch (e) {
       const error = e as Error;
       return res.status(500).json({ message: "Aconteceu algo de errado com a requisição." });
