@@ -1,14 +1,17 @@
 import React, { Fragment, useEffect } from "react";
 import Link from "next/link";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { useFormikContext } from "formik";
 import { FaPlusCircle } from "react-icons/fa";
+
 import { PURPLE } from "@utils/colors";
-import { CartAddAddress, CartAddressContainer, CartAddressLoadingContainer } from "./styled";
 import { AddresComplement, AddresTitle } from "@components/shared/StyledComponents";
+
+import { CartFadeVariant } from "../animations";
+import { CartAddAddress, CartAddressContainer, CartAddressLoadingContainer } from "./styled";
 
 import type { SetFieldValue } from "@my-types/formik";
 import type { CartFormValues } from "../FormModel";
@@ -49,7 +52,12 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
   }, [values.addressId]);
 
   return (
-    <CartAddressContainer>
+    <CartAddressContainer
+      variants={CartFadeVariant}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+    >
       {isLoadingAddress ? (
         <CartAddressLoadingContainer>
           <CircularProgress color="primary" />

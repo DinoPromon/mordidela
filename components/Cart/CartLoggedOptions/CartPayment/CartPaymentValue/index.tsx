@@ -1,7 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { useFormikContext } from "formik";
-import { CustomFade } from "@components/shared";
+import { AnimatePresence, motion } from "framer-motion";
+
+import { CartFadeVariant } from "@components/Cart/animations";
 import { formatCurrency } from "@utils/formatters";
+
 import { CartPaymentValueContainer, CartPaymentInputChange } from "./styled";
 
 import type { CartFormValues } from "@components/Cart/FormModel";
@@ -19,9 +22,15 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
   }
 
   return (
-    <Fragment>
-      <CustomFade triggerAnimation={shouldShowPaymentValue}>
-        <CartPaymentValueContainer>
+    <AnimatePresence>
+      {shouldShowPaymentValue && (
+        <CartPaymentValueContainer
+          as={motion.div}
+          variants={CartFadeVariant}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
           <h3>Precisa de troco para quanto?</h3>
           <CartPaymentInputChange>
             <span>R$</span>
@@ -33,8 +42,8 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
             ></input>
           </CartPaymentInputChange>
         </CartPaymentValueContainer>
-      </CustomFade>
-    </Fragment>
+      )}
+    </AnimatePresence>
   );
 };
 

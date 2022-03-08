@@ -23,7 +23,7 @@ import {
   ColoredText,
   AddresTitle,
   AddresComplement,
-  TotalTextOrdersUserProfile
+  TotalTextOrdersUserProfile,
 } from "./styled";
 
 export {
@@ -40,6 +40,5 @@ export {
   ColoredText,
   AddresTitle,
   AddresComplement,
-  TotalTextOrdersUserProfile
+  TotalTextOrdersUserProfile,
 };
-

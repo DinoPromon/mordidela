@@ -1,6 +1,6 @@
-import { PINK, PURPLE } from "@utils/colors";
-import { Form } from "formik";
 import styled from "styled-components";
+import { Form } from "formik";
+import { PINK, PURPLE } from "@utils/colors";
 
 export const CartForm = styled(Form)`
   display: flex;

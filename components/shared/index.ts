@@ -4,7 +4,6 @@ import InputRadio from "./InputRadio";
 import InputCheckbox from "./InputCheckbox";
 import FormRequestStatus from "./FormRequestStatus";
 import CustomTextField from "./CustomTextField";
-import CustomFade from "./CustomFade";
 import Loading from "./Loading";
 import Modal from "./Modal";
 import InputTextFormik from "./InputTextFormik";
@@ -22,7 +21,6 @@ export {
   MordidelaLogoWithLabel,
   PageContainer,
   PageTitle,
-  CustomFade,
   CustomTextField,
   InputTextFormik,
 };

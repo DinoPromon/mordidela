@@ -1,7 +1,9 @@
-import { PINK, PURPLE } from "@utils/colors";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
-export const CartAddressContainer = styled.div`
+import { PINK, PURPLE } from "@utils/colors";
+
+export const CartAddressContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   border-top: dashed 2px ${PINK};

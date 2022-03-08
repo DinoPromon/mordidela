@@ -1,5 +1,5 @@
-import { PURPLE } from "@utils/colors";
 import styled from "styled-components";
+import { PURPLE } from "@utils/colors";
 
 export const CartCupomContainer = styled.div``;
 

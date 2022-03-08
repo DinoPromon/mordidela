@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import Axios from "@api";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
-import { ErrorMessage } from "@components/shared/StyledComponents";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { motion } from "framer-motion";
 import { useFormikContext } from "formik";
+
+import Axios from "@api";
 import { cupomFormat } from "@utils/formatters";
 import { RequestState } from "@my-types/request";
+import { CartFadeVariant } from "@components/Cart/animations";
+import { ErrorMessage } from "@components/shared/StyledComponents";
+import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
+
 import { CartCupomContainer, CartCupomInputButton, CartCupomError } from "./styled";
 
 import type ICupom from "@models/cupom";
@@ -52,7 +56,13 @@ const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus, requestSta
   }
 
   return (
-    <CartCupomContainer>
+    <CartCupomContainer
+      as={motion.div}
+      variants={CartFadeVariant}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+    >
       <CartCupomInputButton>
         <TextField
           type="text"
@@ -64,18 +74,6 @@ const CartCupom: React.FC<CartCupomProps> = ({ onChangeRequestStatus, requestSta
           autoComplete="off"
           style={{ width: "clamp(200px, 350px, 100%)" }}
           inputProps={{ style: { textAlign: "center" } }}
-          /*         error={Boolean(requestStatus.error)}
-        helperText={requestStatus.error}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <Button variant="contained" color="secondary" size="small" onClick={addCupomClickHandler}>
-                Adicionar
-              </Button>
-            </InputAdornment>
-          ),
-          style: { textAlign: "center" }
-        }} */
         />
         {isLoadingCupom ? (
           <CircularProgress size={30} />

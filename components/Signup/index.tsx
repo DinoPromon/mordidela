@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 
 import Axios from "@api";
-import SignUpForm from "./SignupForm";
-import AddressForm from "./AddressForm";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
+
+import SignupForm from "./SignupForm";
+import AddressForm from "./AddressForm";
 import { FormikForm } from "./styled";
 import { getSignupFormArg } from "./SignupForm/Submit";
 import { getAddressFormArg } from "./AddressForm/Submit";
@@ -89,7 +90,7 @@ const Signup: React.FC = () => {
             >
               <FormikForm>
                 {!isAddressForm && (
-                  <SignUpForm
+                  <SignupForm
                     isValid={isValid}
                     isTouched={dirty}
                     formikValues={values}

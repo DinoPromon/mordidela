@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
+import dynamic from "next/dynamic";
 import Badge from "@material-ui/core/Badge";
 import { FaBars, FaShoppingCart } from "react-icons/fa/index";
 
-import Cart from "@components/Cart";
+const Cart = dynamic(() => import("@components/Cart"));
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { CartContext } from "@store/cart";
 

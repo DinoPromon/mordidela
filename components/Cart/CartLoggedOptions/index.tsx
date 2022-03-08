@@ -1,24 +1,27 @@
 import React, { Fragment, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import Button from "@material-ui/core/Button";
 import { useFormikContext } from "formik";
-import CartCupom from "./CartCupom";
-import CartPayment from "./CartPayment";
+import { FaTrash } from "react-icons/fa/index";
+import { AnimatePresence, motion } from "framer-motion";
+
 import Loading from "@components/shared/Loading";
 import { PINK } from "@utils/colors";
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega } from "@models/pedido";
-import Button from "@material-ui/core/Button";
-import { FaTrash } from "react-icons/fa/index";
-import { CustomFade } from "@components/shared";
-import { FormButton } from "@components/shared";
 import { RequestState } from "@my-types/request";
 import { transformPriceToString } from "@utils/transformation";
-import { CartFormErrorMessage, CartFormErrorContainer } from "./styled";
 import {
   SubtotalText,
   TotalText,
   CoupomDataContainer,
   ColoredText,
 } from "@components/shared/StyledComponents";
+
+const CartCupom = dynamic(() => import("./CartCupom"));
+import CartPayment from "./CartPayment";
+import { CartFadeVariant } from "../animations";
+import { CartFormErrorMessage, CartFormErrorContainer } from "./styled";
 
 import type { CartFormValues } from "../FormModel";
 
@@ -78,41 +81,58 @@ const CartLoggedOptions: React.FC<Props> = ({
 
   return (
     <Fragment>
-      <CustomFade triggerAnimation={shouldShowDeliveryPrice}>
-        <SubtotalText>
-          Entrega: <span>R$ {transformPriceToString(Number(values.deliveryPrice))}</span>
-        </SubtotalText>
-      </CustomFade>
+      <AnimatePresence>
+        {shouldShowDeliveryPrice && (
+          <SubtotalText
+            as={motion.p}
+            variants={CartFadeVariant}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            Entrega: <span>R$ {transformPriceToString(Number(values.deliveryPrice))}</span>
+          </SubtotalText>
+        )}
+      </AnimatePresence>
 
-      <CustomFade triggerAnimation={!Boolean(values.coupon)}>
-        <CartCupom requestStatus={request} onChangeRequestStatus={onChangeRequestStatus} />
-      </CustomFade>
+      <AnimatePresence>
+        {!Boolean(values.coupon) && (
+          <CartCupom requestStatus={request} onChangeRequestStatus={onChangeRequestStatus} />
+        )}
+      </AnimatePresence>
 
-      <CustomFade triggerAnimation={shouldShowDiscount}>
-        <CoupomDataContainer>
-          <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
-          <ColoredText>
-            Cupom: <span>{values.coupon?.codigo_cupom}</span>
-          </ColoredText>
-          <ColoredText>
-            Desconto:{" "}
-            {values.coupon?.tipo_cupom === TipoCupom.ENTREGA ? (
-              <span> Frete grátis</span>
-            ) : (
-              <span>{values.coupon?.valor_desconto}%</span>
-            )}
-          </ColoredText>
-          {values.coupon?.tipo_cupom === TipoCupom.PEDIDO && (
+      <AnimatePresence>
+        {shouldShowDiscount && (
+          <CoupomDataContainer
+            as={motion.div}
+            variants={CartFadeVariant}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
             <ColoredText>
-              Valor:{" "}
-              <span>
-                R$ {transformPriceToString((values.coupon.valor_desconto * subTotalPrice) / 100)}
-              </span>
+              Cupom: <span>{values.coupon?.codigo_cupom}</span>
             </ColoredText>
-          )}
-        </CoupomDataContainer>
-      </CustomFade>
-
+            <ColoredText>
+              Desconto:{" "}
+              {values.coupon?.tipo_cupom === TipoCupom.ENTREGA ? (
+                <span> Frete grátis</span>
+              ) : (
+                <span>{values.coupon?.valor_desconto}%</span>
+              )}
+            </ColoredText>
+            {values.coupon?.tipo_cupom === TipoCupom.PEDIDO && (
+              <ColoredText>
+                Valor:{" "}
+                <span>
+                  R$ {transformPriceToString((values.coupon.valor_desconto * subTotalPrice) / 100)}
+                </span>
+              </ColoredText>
+            )}
+          </CoupomDataContainer>
+        )}
+      </AnimatePresence>
       <CartPayment />
       <TotalText>
         Total: <span>R$ {transformPriceToString(getTotalPrice() || 0)}</span>
@@ -122,7 +142,14 @@ const CartLoggedOptions: React.FC<Props> = ({
         {!request.isLoading && (
           <Fragment>
             {formError && <CartFormErrorMessage>{formError}</CartFormErrorMessage>}
-            <Button variant="contained" color="secondary" size="large" onClick={finishOrderClickHandler}>Finalizar pedido</Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              onClick={finishOrderClickHandler}
+            >
+              Finalizar pedido
+            </Button>
             {request.error && <CartFormErrorMessage>{request.error}</CartFormErrorMessage>}
           </Fragment>
         )}

@@ -1,12 +1,15 @@
-import React, { Fragment, useState } from "react";
-import RadioGroup from "@material-ui/core/RadioGroup";
+import React, { useState } from "react";
 import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useFormikContext } from "formik";
+import { AnimatePresence, motion } from "framer-motion";
+
 import { TipoPagamento } from "@models/pedido";
-import { CustomFade } from "@components/shared";
-import { CartChangeSelectContainer } from "./styled";
+import { CartFadeVariant } from "@components/Cart/animations";
 import { transformPriceToString } from "@utils/transformation";
+
+import { CartChangeSelectContainer } from "./styled";
 
 import type { CartFormValues } from "@components/Cart/FormModel";
 
@@ -28,16 +31,22 @@ const CartChangeSelect: React.FC = () => {
 
     if (value === NeedChange.NO) {
       setFieldValue("needChange", false);
-      setFieldValue('paymentAmount', transformPriceToString(0));
+      setFieldValue("paymentAmount", transformPriceToString(0));
       return;
     }
     setFieldValue("needChange", true);
   }
 
   return (
-    <Fragment>
-      <CustomFade triggerAnimation={values.paymentType === TipoPagamento.DINHEIRO}>
-        <CartChangeSelectContainer>
+    <AnimatePresence>
+      {values.paymentType === TipoPagamento.DINHEIRO && (
+        <CartChangeSelectContainer
+          as={motion.div}
+          variants={CartFadeVariant}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
           <h3>Precisa de troco? </h3>
           <RadioGroup
             row
@@ -59,8 +68,8 @@ const CartChangeSelect: React.FC = () => {
             />
           </RadioGroup>
         </CartChangeSelectContainer>
-      </CustomFade>
-    </Fragment>
+      )}
+    </AnimatePresence>
   );
 };
 

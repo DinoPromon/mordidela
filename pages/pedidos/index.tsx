@@ -7,11 +7,11 @@ const Orders = dynamic(() => import("../../components/UserProfile/Orders"));
 import { NextPageWithLayout } from "@my-types/next-page";
 
 import { getSession } from "next-auth/client";
-import { MyUser } from "@my-types/next-auth";
 
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
-import { IOrderRelations } from "@models/pedido";
+import type { MyUser } from "@my-types/next-auth";
+import type { IOrderRelations } from "@models/pedido";
 
 type Props = {
   user: MyUser;

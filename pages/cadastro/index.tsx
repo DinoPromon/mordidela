@@ -1,8 +1,10 @@
-import type { ReactElement } from "react";
+import dynamic from "next/dynamic";
 
-import Signup from "@components/Signup";
-import { Center } from "@components/Layouts";
-import { NextPageWithLayout } from "@my-types/next-page";
+const Signup = dynamic(() => import("../../components/Signup"));
+const Center = dynamic(() => import("../../components/Layouts/Center"));
+
+import type { ReactElement } from "react";
+import type { NextPageWithLayout } from "@my-types/next-page";
 
 const SignupPage: NextPageWithLayout = () => {
   return <Signup />;

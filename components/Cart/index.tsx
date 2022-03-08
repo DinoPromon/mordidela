@@ -1,18 +1,23 @@
 import React, { useContext, Fragment, useState, useEffect } from "react";
-import Axios from "@api";
-import CartAddress from "./CartAddress";
-import CartOrdersList from "./CartOrdersList";
-import CartDeliveryType from "./CartDeliveryType";
-import CartLoggedOptions from "./CartLoggedOptions";
+import dynamic from "next/dynamic";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import useIsMounted from "@hooks/useIsMounted";
 import { Formik } from "formik";
-import { CartContext } from "@store/cart";
-import { TipoEntrega } from "@models/pedido";
 import { getSession } from "next-auth/client";
 import { BsCheck2Circle } from "react-icons/bs/index";
+
+import Axios from "@api";
+import useIsMounted from "@hooks/useIsMounted";
+import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
+import { CartContext } from "@store/cart";
+import { TipoEntrega } from "@models/pedido";
 import { transformPriceToString } from "@utils/transformation";
-import { FormButton, Modal, CustomFade } from "@components/shared";
+import { FormButton, Modal } from "@components/shared";
+
+import CartOrdersList from "./CartOrdersList";
+const CartAddress = dynamic(() => import("./CartAddress"));
+const CartDeliveryType = dynamic(() => import("./CartDeliveryType"));
+const CartLoggedOptions = dynamic(() => import("./CartLoggedOptions"));
+
 import {
   useCartFormValidationSchema,
   getCartFormInitialValues,
@@ -178,17 +183,15 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                         {session && <CartDeliveryType />}
 
-                        {values.deliveryType === TipoEntrega.ENTREGA && (
-                          <CustomFade
-                            triggerAnimation={values.deliveryType === TipoEntrega.ENTREGA}
-                          >
+                        <CustomAnimatePresence>
+                          {values.deliveryType === TipoEntrega.ENTREGA && (
                             <CartAddress
                               onCloseModal={onCloseModal}
                               addresses={addresses}
                               isLoadingAddress={isLoadingAddress}
                             />
-                          </CustomFade>
-                        )}
+                          )}
+                        </CustomAnimatePresence>
 
                         <CartOrdersList products={products} />
                         <SubtotalText>
