@@ -8,7 +8,7 @@ import { SignupUserValidator } from "./validator";
 import type IUsuario from "@models/usuario";
 
 export type SignupUserData = {
-  complemento: string | null;
+  complemento: string | null | undefined;
   ddd: string;
   bairro: string;
   email: string;

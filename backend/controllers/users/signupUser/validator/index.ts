@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import validator from "validator";
 
 import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
@@ -15,6 +14,7 @@ export class SignupUserValidator {
 
   public async validate() {
     const validationSchema = this.getValidationSchema();
+    console.log("validation: ", this.signupUserData);
     await validationSchema
       .validate(this.signupUserData, { abortEarly: false })
       .catch((error: Yup.ValidationError) => {
@@ -63,7 +63,7 @@ export class SignupUserValidator {
 
   private getValidationSchema() {
     const validationSchema: Yup.SchemaOf<SignupUserData> = Yup.object().shape({
-      complemento: Yup.string().nullable().required(),
+      complemento: Yup.string().nullable(),
       bairro: Yup.string().required(),
       email: Yup.string().email().required(),
       logradouro: Yup.string().required(),

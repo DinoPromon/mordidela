@@ -76,6 +76,9 @@ export class CreateOrder {
         where: {
           fidelidade: true,
         },
+        orderBy: {
+          qtde_min_pedido: "desc",
+        },
       })
       .catch((err) => {
         console.log(err);

@@ -8,8 +8,8 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
     try {
       const signpUser = new SignupUser(req.body);
-      console.log(req.body);
       await signpUser.exec();
+      console.log('criado');
       return res.status(201).json({ message: "Cadastrado com sucesso!" });
     } catch (e) {
       const error = e as ServerError;
