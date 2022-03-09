@@ -22,10 +22,10 @@ export class UpdateGeneralData extends InputParser {
 
   constructor(userId: IUsuario["id_usuario"], generalData: Partial<GeneralData>) {
     super();
-    const serializedGeneralData = this.serialize(generalData);
+    const serializedGeneralData = this.parse(generalData);
     this.validator = new UpdateGeneralDataValidator(serializedGeneralData);
     this.userId = userId;
-    this.generalData = this.serialize(serializedGeneralData);
+    this.generalData = this.parse(serializedGeneralData);
   }
 
   public async exec() {

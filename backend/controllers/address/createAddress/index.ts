@@ -26,7 +26,7 @@ export class CreateAddress extends InputParser {
 
   constructor(addressData: ICreateAddressProps) {
     super();
-    this.validator = new CreateAddressValidator(this.serialize(addressData));
+    this.validator = new CreateAddressValidator(this.parse(addressData));
     this.userId = addressData.userId;
     this.addressData = {
       bairro: addressData.bairro,

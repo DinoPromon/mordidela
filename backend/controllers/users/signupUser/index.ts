@@ -26,8 +26,8 @@ export class SignupUser extends InputParser {
 
   constructor(signupUserData: SignupUserData) {
     super();
-    this.signupUserdata = this.serialize(signupUserData);
-    this.validator = new SignupUserValidator(this.serialize(signupUserData));
+    this.signupUserdata = this.parse(signupUserData);
+    this.validator = new SignupUserValidator(this.parse(signupUserData));
   }
 
   public async exec() {

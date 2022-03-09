@@ -3,7 +3,7 @@ import validator from "validator";
 import { createDate } from "@utils/transformation/date";
 
 export class InputParser {
-  protected serialize<T extends {}>(object: T) {
+  protected parse<T extends {}>(object: T) {
     const newObject: Partial<T> = {};
 
     for (const [key, value] of Object.entries(object || {})) {
