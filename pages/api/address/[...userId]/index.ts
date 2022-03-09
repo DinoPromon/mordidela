@@ -29,7 +29,7 @@ const handler: NextApiHandler = async (req, res) => {
       }
 
       default: {
-        res.setHeader("Allow", [ReqMethod.GET]);
+        res.setHeader("Allow", [ReqMethod.GET, ReqMethod.POST]);
         return res.status(405).json({ message: "Requsição inválida." });
       }
     }
