@@ -55,15 +55,21 @@ export const AddressListItem = styled.li`
   }
 `;
 
-export const AddresData = styled.div`
+export const AddressData = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-export const AddresIcons = styled.div`
+export const AddressIcons = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
   margin-left: auto;
   align-items: center;
+`;
+
+export const SuccessMessageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
 `;

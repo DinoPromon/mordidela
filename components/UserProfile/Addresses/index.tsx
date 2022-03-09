@@ -16,9 +16,10 @@ import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { PINK, PURPLE } from "@utils/colors";
 import { InputTextFormik } from "@components/shared";
 import { PageContainer, PageTitle } from "@components/shared";
+import { SuccessMessage } from "@components/shared/StyledComponents";
 import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
 
-import { getAddressFormArg } from "./Submit";
+import { getAddressFormArg, getUpdateAddressFormArg } from "./Submit";
 import {
   getAddressesFormModel,
   getAddressesFormInitialValues,
@@ -26,15 +27,18 @@ import {
   IAddressesFormValues,
 } from "./FormModel";
 import {
-  AddresData,
-  AddresIcons,
+  AddressData,
+  AddressIcons,
   AddressListItem,
   CustomInputsDesign,
   AddressesFormikForm,
   AddressListContainer,
+  SuccessMessageContainer,
   AddressesFormButtonContainer,
 } from "./styled";
 
+import type { AxiosError } from "axios";
+import type { FormikHelpers } from "formik";
 import type IEndereco from "@models/endereco";
 
 type AddressesProps = {
@@ -43,30 +47,63 @@ type AddressesProps = {
 
 const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
   const formModel = getAddressesFormModel();
+  const [addressList, setAddressList] = useState(addresses);
   const [initialValues, setInitialValues] = useState(getAddressesFormInitialValues());
   const { requestStatus, changeRequestStatus } = useRequestState();
+  const [editSuccess, setEditSuccess] = useState(false);
   const [editAddressId, setEditAddressId] = useState<number>();
 
   function getFormattedAddressText(address: IEndereco) {
     return `${address.logradouro} N° ${address.numero}, ${address.bairro}`;
   }
 
+  function changeAddressInList(editAddressId: number, values: IAddressesFormValues) {
+    setAddressList((prevState) => {
+      const addressIndex = prevState.findIndex((address) => address.id_endereco === editAddressId);
+      if (addressIndex < 0) return prevState;
+
+      const newAddressList = [...prevState];
+      newAddressList.splice(addressIndex, 1, {
+        ...prevState[addressIndex],
+        bairro: values.neighborhood,
+        complemento: values.complement ? values.complement : null,
+        logradouro: values.publicPlace,
+        numero: values.number,
+      });
+
+      return newAddressList;
+    });
+  }
+
   async function addressFormSubmitHandler(values: IAddressesFormValues) {
     changeRequestStatus({ error: "", isLoading: true });
+    setEditSuccess(false);
+
     try {
-      const addressesFormArg = getAddressFormArg(values);
       const session = await getSession();
       if (!session) return;
 
-      await Axios.post(`address/${session.user.id_usuario}`, addressesFormArg);
+      if (editAddressId) {
+        const addressFormArg = getUpdateAddressFormArg(initialValues, values);
+        
+        await Axios.put(`/address/update/${editAddressId}`, addressFormArg);
+        setInitialValues(getAddressesFormInitialValues());
+        setEditSuccess(true);
+        setEditAddressId(undefined);
+        changeAddressInList(editAddressId, values);
+      } else {
+        const addressesFormArg = getAddressFormArg(values);
+        await Axios.post(`/address/${session.user.id_usuario}`, addressesFormArg);
+      }
     } catch (e) {
-      const error = e as Error;
-      changeRequestStatus({ error: error.message });
+      const error = e as AxiosError;
+      changeRequestStatus({ error: error.response?.data.message });
     }
+
     changeRequestStatus({ isLoading: false });
   }
 
-  function setAddressToEdit(address: IEndereco) {
+  function getAddressEditClickHandler(address: IEndereco) {
     return () => {
       setInitialValues(getAddressesFormInitialValues(address));
       setEditAddressId(address.id_endereco);
@@ -160,6 +197,11 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
                 </LoadingButton>
               </motion.div>
             </AddressesFormButtonContainer>
+            {editSuccess && (
+              <SuccessMessageContainer>
+                <SuccessMessage>Editado com sucesso</SuccessMessage>
+              </SuccessMessageContainer>
+            )}
             <ErrorMessageContainer>
               {requestStatus.error && <ErrorMessage>{requestStatus.error}</ErrorMessage>}
             </ErrorMessageContainer>
@@ -170,28 +212,28 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
       <AddressListContainer>
         <h3>Endereços cadastrados</h3>
 
-        {addresses.map((address) => (
+        {addressList.map((address) => (
           <AddressListItem key={`address-${address.id_endereco}`}>
             <span>
               <HiOutlineLocationMarker size={40} color={PINK} />
             </span>
-            <AddresData>
+            <AddressData>
               <p>{getFormattedAddressText(address)}</p>
               {address.complemento && <p>{`Complemento: ${address.complemento}`}</p>}
-            </AddresData>
-            <AddresIcons>
+            </AddressData>
+            <AddressIcons>
               <ClickableItem
                 scale={1.25}
                 placement="bottom"
                 title="Editar endereço"
-                onClick={setAddressToEdit(address)}
+                onClick={getAddressEditClickHandler(address)}
               >
                 <BsPencil size={20} color={PURPLE} />
               </ClickableItem>
               <ClickableItem title="Editar endereço" placement="bottom" scale={1.25}>
                 <FaTrash size={20} color={PURPLE} />
               </ClickableItem>
-            </AddresIcons>
+            </AddressIcons>
           </AddressListItem>
         ))}
       </AddressListContainer>

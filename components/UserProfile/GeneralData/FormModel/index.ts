@@ -42,8 +42,10 @@ export function getGeneralDataValidationSchema(formModel: GeneralDataFormModel) 
   const validationSchema = Yup.object().shape({
     [nome.name]: Yup.string().required(nome.requiredErrorMessage),
     [data_nascimento.name]: Yup.string()
-      .test("is-valid-date", `${data_nascimento.requiredErrorMessage}`, (value) =>
-        validateDate(value as string)
+      .test(
+        "is-valid-date",
+        `${data_nascimento.requiredErrorMessage}`,
+        async (value) => await validateDate(value as string)
       )
       .required(data_nascimento.requiredErrorMessage),
     [telefone.name]: Yup.string()
