@@ -73,7 +73,7 @@ export class FindAllOrderRelationsByUserId {
               id_pedido: this.lastOrderId,
             }
           : undefined,
-        skip: 1,
+        skip: 0,
         orderBy: {
           id_pedido: "asc",
         },
