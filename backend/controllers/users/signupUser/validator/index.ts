@@ -22,15 +22,16 @@ export class SignupUserValidator {
         return throwError("O-C-DI", { customMessage: error.errors.join(", ") });
       });
 
-    await this.verifyPhoneNumber(this.signupUserData.ddd, this.signupUserData.numero).catch(
-      (error) => {
-        console.log("Telefone existente");
-        return throwError("O-C-DI", { customMessage: "Telefone já cadastrado" });
-      }
-    );
+    await this.verifyPhoneNumber(
+      this.signupUserData.ddd,
+      this.signupUserData.numero_telefone
+    ).catch((error) => {
+      console.log(error);
+      return throwError("O-C-DI", { customMessage: "Telefone já cadastrado" });
+    });
 
     await this.verifyEmail(this.signupUserData.email).catch((error) => {
-      console.log("Email existente");
+      console.log(error);
       return throwError("O-C-DI", { customMessage: "Email já cadastrado" });
     });
   }
@@ -47,18 +48,24 @@ export class SignupUserValidator {
         throwError("O-C-DI");
       });
 
-    return user ? false : true;
+    if (email) throwError("O-C-DI");
+
+    return;
   }
 
   private async verifyPhoneNumber(ddd: string, number: string) {
-    const phone = await Prisma.telefone.findFirst({
-      where: {
-        ddd,
-        numero: number,
-      },
-    });
+    const phone = await Prisma.telefone
+      .findFirst({
+        where: {
+          ddd,
+          numero: number,
+        },
+      })
+      .catch((err) => {
+        throwError("O-C-DI");
+      });
 
-    return phone ? false : true;
+    if (phone) throwError("O-C-DI");
   }
 
   private getValidationSchema() {
