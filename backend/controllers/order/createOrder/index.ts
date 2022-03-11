@@ -161,14 +161,19 @@ export class CreateOrder {
   private async findDeliveryPrice(addressId: number | null) {
     if (!addressId) return null;
 
-    const address = await Prisma.entrega.findUnique({
-      where: {
-        id_entrega: addressId,
-      },
-      select: {
-        preco_entrega: true,
-      },
-    });
+    const address = await Prisma.entrega
+      .findUnique({
+        where: {
+          id_entrega: addressId,
+        },
+        select: {
+          preco_entrega: true,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        throwError("O-C-DI");
+      });
 
     if (!address) throwError("O-C-DI");
 
