@@ -45,10 +45,10 @@ export class CreateOrder {
       throwError("O-C", { customMessage: "Erro na criação da relação pedido e produto" });
     });
 
-    // await this.giveFidelityCoupon().catch((err) => {
-    //   console.log(err);
-    //   throwError("O-C");
-    // });
+    await this.giveFidelityCoupon().catch((err) => {
+      console.log(err);
+      throwError("O-C");
+    });
   }
 
   private async createCouponRelation(orderId: IPedido["id_pedido"], couponId: ICupom["id_cupom"]) {
@@ -85,7 +85,7 @@ export class CreateOrder {
         throwError("O-C-DI");
       })) as ICupom[];
 
-    const biggestFidelityCoupon = fidelityCoupons.reduce((acc, coupon) => coupon);
+    // const biggestFidelityCoupon = fidelityCoupons.reduce((acc, coupon) => coupon);
 
     const userOrdersAmount = await Prisma.pedido
       .count({
@@ -161,13 +161,17 @@ export class CreateOrder {
   private async findDeliveryPrice(addressId: number | null) {
     if (!addressId) return null;
 
-    const address = await Prisma.entrega
+    const address = await Prisma.endereco
       .findUnique({
         where: {
-          id_entrega: addressId,
+          id_endereco: addressId,
         },
         select: {
-          preco_entrega: true,
+          entrega: {
+            select: {
+              preco_entrega: true,
+            },
+          },
         },
       })
       .catch((err) => {
@@ -177,7 +181,7 @@ export class CreateOrder {
 
     if (!address) throwError("O-C-DI");
 
-    return address.preco_entrega;
+    return address.entrega.preco_entrega;
   }
 
   private checkOrderHasDeliveryPrice() {
