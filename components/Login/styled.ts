@@ -18,6 +18,7 @@ export const LoginContainer = styled.div`
 export const LoginContainerArrowLeft = styled.span`
   position: absolute;
   top: 2rem;
+  cursor: pointer;
 `;
 
 export const LoginImage = styled.image`

@@ -44,8 +44,8 @@ model cupom {
 model desconto {
   id_desconto          Int         @id @default(autoincrement()) @db.UnsignedInt
   porcentagem_desconto Int         @db.UnsignedTinyInt
-  data_inicio          DateTime    @db.DateTime(0)
-  data_fim             DateTime?   @db.DateTime(0)
+  data_inicio          DateTime    @default(now()) @db.Timestamp(0)
+  data_fim             DateTime?   @db.Timestamp(0)
   categoria            categoria[]
   produto              produto[]
 }
@@ -76,7 +76,7 @@ model entrega {
 model pedido {
   id_pedido                Int                        @id @default(autoincrement()) @db.UnsignedInt
   data_pedido              DateTime                   @default(now()) @db.Timestamp(0)
-  data_confirmacao         DateTime?                  @db.DateTime(0)
+  data_confirmacao         DateTime?                  @db.Timestamp(0)
   status_pedido            pedido_status_pedido       @default(dbgenerated("(pendente)"))
   preco_entrega            Float?                     @db.Float
   tipo_entrega             pedido_tipo_entrega
@@ -99,60 +99,70 @@ model pedido {
 }
 
 model pedido_produto {
-  id_pedido    Int     @db.UnsignedInt
-  id_produto   Int     @db.UnsignedInt
-  quantidade   Int     @default(1) @db.UnsignedTinyInt
-  preco_pedido Float   @db.Float
-  observacao   String? @db.VarChar(100)
-  pedido       pedido  @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_id_pedido")
-  produto      produto @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_id_produto")
+  id_pedido_produto        Int                        @id @default(autoincrement()) @db.UnsignedInt
+  quantidade               Int                        @default(1) @db.UnsignedTinyInt
+  preco_pedido             Float                      @db.Float
+  observacao               String?                    @db.VarChar(100)
+  id_pedido                Int                        @db.UnsignedInt
+  id_produto               Int                        @db.UnsignedInt
+  pedido                   pedido                     @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_id_pedido")
+  produto                  produto                    @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_id_produto")
+  pedido_produto_adicional pedido_produto_adicional[]
+  pedido_produto_sabor     pedido_produto_sabor[]
 
-  @@id([id_pedido, id_produto])
   @@index([id_pedido], map: "id_pedido")
   @@index([id_produto], map: "id_produto")
 }
 
 model pedido_produto_adicional {
-  id_pedido    Int       @db.UnsignedInt
-  id_produto   Int       @db.UnsignedInt
-  id_adicional Int       @db.UnsignedInt
-  adicional    adicional @relation(fields: [id_adicional], references: [id_adicional], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_adicional")
-  pedido       pedido    @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_pedido")
-  produto      produto   @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_produto")
+  id_pedido_produto Int            @db.UnsignedInt
+  id_pedido         Int            @db.UnsignedInt
+  id_produto        Int            @db.UnsignedInt
+  id_adicional      Int            @db.UnsignedInt
+  preco_adicional   Float          @db.Float
+  adicional         adicional      @relation(fields: [id_adicional], references: [id_adicional], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_adicional")
+  pedido            pedido         @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_pedido")
+  pedido_produto    pedido_produto @relation(fields: [id_pedido_produto], references: [id_pedido_produto], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_pedido_produto")
+  produto           produto        @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_adicional_id_produto")
 
-  @@id([id_pedido, id_produto, id_adicional])
+  @@id([id_pedido_produto, id_pedido, id_produto, id_adicional])
   @@index([id_adicional], map: "id_adicional")
   @@index([id_pedido], map: "id_pedido")
+  @@index([id_pedido_produto], map: "id_pedido_produto")
   @@index([id_produto], map: "id_produto")
 }
 
 model pedido_produto_sabor {
-  id_pedido  Int     @db.UnsignedInt
-  id_produto Int     @db.UnsignedInt
-  id_sabor   Int     @db.UnsignedInt
-  pedido     pedido  @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_pedido")
-  produto    produto @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_produto")
-  sabor      sabor   @relation(fields: [id_sabor], references: [id_sabor], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_sabor")
+  id_pedido_produto Int            @db.UnsignedInt
+  id_pedido         Int            @db.UnsignedInt
+  id_produto        Int            @db.UnsignedInt
+  id_sabor          Int            @db.UnsignedInt
+  pedido            pedido         @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_pedido")
+  pedido_produto    pedido_produto @relation(fields: [id_pedido_produto], references: [id_pedido_produto], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_pedido_produto")
+  produto           produto        @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_produto")
+  sabor             sabor          @relation(fields: [id_sabor], references: [id_sabor], onDelete: Cascade, map: "fk_pedido_produto_sabor_id_sabor")
 
-  @@id([id_pedido, id_produto, id_sabor])
+  @@id([id_pedido_produto, id_pedido, id_produto, id_sabor])
   @@index([id_pedido], map: "id_pedido")
+  @@index([id_pedido_produto], map: "id_pedido_produto")
   @@index([id_produto], map: "id_produto")
   @@index([id_sabor], map: "id_sabor")
 }
 
 model produto {
   id_produto               Int                        @id @default(autoincrement()) @db.UnsignedInt
+  uuid                     Bytes                      @db.Binary(16)
+  nome_imagem              String?                    @db.VarChar(150)
   preco_padrao             Float                      @db.Float
   nome                     String                     @db.VarChar(50)
-  imagem                   Bytes?                     @db.MediumBlob
   disponivel               Boolean                    @default(true)
   descricao                String?                    @db.VarChar(255)
-  tamanho                  String                     @db.VarChar(50)
+  tamanho                  String?                    @db.VarChar(50)
   qtde_max_sabor           Int?                       @db.UnsignedTinyInt
   id_categoria             Int                        @db.UnsignedInt
   id_desconto              Int?                       @db.UnsignedInt
-  categoria                categoria                  @relation(fields: [id_categoria], references: [id_categoria], onDelete: Cascade, map: "id_categoria")
-  desconto                 desconto?                  @relation(fields: [id_desconto], references: [id_desconto], onDelete: Cascade, map: "id_desconto2")
+  categoria                categoria                  @relation(fields: [id_categoria], references: [id_categoria], onDelete: Cascade, map: "fk_produto_id_categoria")
+  desconto                 desconto?                  @relation(fields: [id_desconto], references: [id_desconto], onDelete: Cascade, map: "fk_produto_id_desconto")
   pedido_produto           pedido_produto[]
   pedido_produto_adicional pedido_produto_adicional[]
   pedido_produto_sabor     pedido_produto_sabor[]
@@ -166,8 +176,8 @@ model produto {
 model produto_sabor {
   id_produto Int     @db.UnsignedInt
   id_sabor   Int     @db.UnsignedInt
-  produto    produto @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "id_produto2")
-  sabor      sabor   @relation(fields: [id_sabor], references: [id_sabor], onDelete: Cascade, map: "id_sabor2")
+  produto    produto @relation(fields: [id_produto], references: [id_produto], onDelete: Cascade, map: "fk_produto_sabor_id_produto")
+  sabor      sabor   @relation(fields: [id_sabor], references: [id_sabor], onDelete: Cascade, map: "fk_produto_sabor_id_sabor")
 
   @@id([id_produto, id_sabor])
   @@index([id_produto], map: "id_produto")
