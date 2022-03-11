@@ -48,7 +48,7 @@ export class SignupUserValidator {
         throwError("O-C-DI");
       });
 
-    if (email) throwError("O-C-DI");
+    if (user) throwError("O-C-DI");
 
     return;
   }
