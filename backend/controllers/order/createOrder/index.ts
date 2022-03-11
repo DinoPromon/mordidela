@@ -45,10 +45,10 @@ export class CreateOrder {
       throwError("O-C", { customMessage: "Erro na criação da relação pedido e produto" });
     });
 
-    await this.giveFidelityCoupon().catch((err) => {
-      console.log(err);
-      throwError("O-C");
-    });
+    // await this.giveFidelityCoupon().catch((err) => {
+    //   console.log(err);
+    //   throwError("O-C");
+    // });
   }
 
   private async createCouponRelation(orderId: IPedido["id_pedido"], couponId: ICupom["id_cupom"]) {
