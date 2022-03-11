@@ -21,11 +21,11 @@ export class CreateAddressValidator {
   }
 
   private getValidationSchema() {
-    const validationSchema: Yup.SchemaOf<CreateAddressData> = Yup.object().shape({
+    const validationSchema = Yup.object().shape({
       logradouro: Yup.string().required(),
       bairro: Yup.string().required(),
       numero: Yup.string().required(),
-      complemento: Yup.string().notRequired(),
+      complemento: Yup.string().notRequired().nullable(),
     });
 
     return validationSchema;
