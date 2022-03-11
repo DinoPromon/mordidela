@@ -23,8 +23,8 @@ export class UpdateAddressValidator {
   }
 
   private getValidationSchema() {
-    const validationSchema: Yup.SchemaOf<UpdateAddressArg> = Yup.object().shape({
-      bairro: Yup.string().notRequired(),
+    const validationSchema = Yup.object().shape({
+      bairro: Yup.string().nullable().notRequired(),
       complemento: Yup.string().nullable().notRequired(),
       id_endereco: Yup.number().required("id_endereço é obrigatório"),
       logradouro: Yup.string().notRequired(),

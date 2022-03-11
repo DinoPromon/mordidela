@@ -14,7 +14,7 @@ export class SignupUserValidator {
 
   public async validate() {
     const validationSchema = this.getValidationSchema();
-    console.log("validation: ", this.signupUserData);
+    
     await validationSchema
       .validate(this.signupUserData, { abortEarly: false })
       .catch((error: Yup.ValidationError) => {
