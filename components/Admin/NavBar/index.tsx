@@ -5,19 +5,19 @@ import { NavBarAdminContainer, NavBarAdminListItem } from "./styled";
 const NavBarAdmin: React.FC = () => {
   return (
     <NavBarAdminContainer>
-      <Link href={"/admin-inicio"}>
+      <Link href={"/admin/inicio"}>
         <NavBarAdminListItem>Início</NavBarAdminListItem>
       </Link>
-      <Link href={"/admin-pedidos"}>
+      <Link href={"/admin/pedidos"}>
         <NavBarAdminListItem>Pedidos</NavBarAdminListItem>
       </Link>
-      <Link href={"/admin-produtos"}>
+      <Link href={"/admin/produtos"}>
         <NavBarAdminListItem>Produtos</NavBarAdminListItem>
       </Link>
-      <Link href={"/admin-promocoes"}>
+      <Link href={"/admin/promocoes"}>
         <NavBarAdminListItem>Promoções</NavBarAdminListItem>
       </Link>
-      <Link href={"/admin-cupons"}>
+      <Link href={"/admin/cupons"}>
         <NavBarAdminListItem>Cupons</NavBarAdminListItem>
       </Link>
     </NavBarAdminContainer>

@@ -3,10 +3,10 @@ import type { ReactElement } from "react";
 
 import { NavBarAdmin } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
-import Admin from "@components/Admin";
+import Orders from "@components/Admin/Orders";
 
 const OrdersPage: NextPageWithLayout = () => {
-  return <Admin></Admin>;
+  return <Orders></Orders>;
 };
 
 OrdersPage.getLayout = function getLayout(page: ReactElement) {
