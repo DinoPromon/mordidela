@@ -85,7 +85,9 @@ export class CreateOrder {
         throwError("O-C-DI");
       })) as ICupom[];
 
-    // const biggestFidelityCoupon = fidelityCoupons.reduce((acc, coupon) => coupon);
+    const biggestFidelityCoupon = fidelityCoupons.reduce((acc, coupon) => {
+      return acc.qtde_min_pedido > coupon.qtde_min_pedido ? acc : coupon;
+    }, fidelityCoupons[0]);
 
     const userOrdersAmount = await Prisma.pedido
       .count({
@@ -98,8 +100,10 @@ export class CreateOrder {
         throwError("O-C-DI");
       });
 
+    const fidelityCouponRest = userOrdersAmount % biggestFidelityCoupon.qtde_min_pedido;
+
     for (const coupon of fidelityCoupons) {
-      if (userOrdersAmount % coupon.qtde_min_pedido === 0) {
+      if (fidelityCouponRest % coupon.qtde_min_pedido === 0) {
         await Prisma.usuario_cupom
           .create({
             data: {
