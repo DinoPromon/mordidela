@@ -8,7 +8,7 @@ import type IUsuario from "@models/usuario";
 import type IAdicional from "@models/adicional";
 import type IUsuarioCupom from "@models/usuario_cupom";
 import type IPedidoProduto from "@models/pedido_produto";
-import type { CartPedido } from "@models/pedido";
+import { CartPedido, TipoEntrega } from "@models/pedido";
 import type { CartProduto } from "@models/produto";
 
 export type CreateOrderData = {
@@ -85,6 +85,8 @@ export class CreateOrder {
         throwError("O-C-DI");
       })) as ICupom[];
 
+    const biggestFidelityCoupon = fidelityCoupons.reduce((acc, coupon) => coupon);
+
     const userOrdersAmount = await Prisma.pedido
       .count({
         where: {
@@ -156,9 +158,38 @@ export class CreateOrder {
     });
   }
 
+  private async findDeliveryPrice(addressId: number | null) {
+    if (!addressId) return null;
+
+    const address = await Prisma.entrega.findUnique({
+      where: {
+        id_entrega: addressId,
+      },
+      select: {
+        preco_entrega: true,
+      },
+    });
+
+    if (!address) throwError("O-C-DI");
+
+    return address.preco_entrega;
+  }
+
+  private checkOrderHasDeliveryPrice() {
+    return this.orderData.tipo_entrega === TipoEntrega.ENTREGA;
+  }
+
   private async createOrder() {
+    const hasDeliveryPrice = this.checkOrderHasDeliveryPrice();
+    const deliveryPrice = hasDeliveryPrice
+      ? await this.findDeliveryPrice(this.orderData.id_endereco)
+      : null;
+
     const createdOrderId = await Prisma.pedido.create({
-      data: this.orderData,
+      data: {
+        ...this.orderData,
+        preco_entrega: deliveryPrice,
+      },
     });
     return createdOrderId as IPedido;
   }
