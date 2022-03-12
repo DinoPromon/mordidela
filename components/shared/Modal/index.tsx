@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 
 import { ScrollContainer, Backdrop, CloseModalButton, ModalContentContainer } from "./styled";
 
@@ -7,6 +7,17 @@ type Props = {
 };
 
 const Modal: React.FC<Props> = ({ onClose, children }) => {
+  const disableScroll = useCallback(() => {
+    const scrollbarWidth = getScrollbarWidth();
+    document.body.style.overflowY = "hidden";
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+  }, []);
+
+  const enableScroll = useCallback(() => {
+    document.body.style.overflowY = "auto";
+    document.body.style.paddingRight = "0";
+  }, []);
+
   function buttonCloseHandler() {
     onClose();
   }
@@ -26,23 +37,12 @@ const Modal: React.FC<Props> = ({ onClose, children }) => {
     return scrollbarWidth;
   }
 
-  function disableScroll() {
-    const scrollbarWidth = getScrollbarWidth();
-    document.body.style.overflowY = "hidden";
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
-  }
-
-  function enableScroll() {
-    document.body.style.overflowY = "auto";
-    document.body.style.paddingRight = "0";
-  }
-
   useEffect(() => {
     disableScroll();
     return () => {
       enableScroll();
     };
-  }, []);
+  }, [disableScroll, enableScroll]);
 
   return (
     <Backdrop

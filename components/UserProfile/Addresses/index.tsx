@@ -105,6 +105,30 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
     setInitialValues(getAddressesFormInitialValues());
   }
 
+  async function editAddressSubmitHandler(editAddressId: number, values: IAddressesFormValues) {
+    const addressFormArg = getUpdateAddressFormArg(initialValues, values);
+
+    await Axios.put<IEndereco>(`/address/update/${editAddressId}`, addressFormArg);
+
+    setEditSuccess(true);
+    setEditAddressId(undefined);
+    changeAddressInList(editAddressId, values);
+    setInitialValues(getAddressesFormInitialValues());
+  }
+
+  async function createAddressSubmitHandler(
+    userId: number,
+    values: IAddressesFormValues,
+    formikHelpers: FormikHelpers<IAddressesFormValues>
+  ) {
+    const addressesFormArg = getAddressFormArg(values);
+
+    const response = await Axios.post<IEndereco>(`/address/${userId}`, addressesFormArg);
+
+    setAddressList((prevState) => [...prevState, response.data]);
+    formikHelpers.resetForm();
+  }
+
   async function addressFormSubmitHandler(
     values: IAddressesFormValues,
     formikHelpers: FormikHelpers<IAddressesFormValues>
@@ -117,26 +141,10 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
       if (!session) return;
 
       if (editAddressId) {
-        const addressFormArg = getUpdateAddressFormArg(initialValues, values);
-
-        await Axios.put(`/address/update/${editAddressId}`, addressFormArg);
-
-        setEditSuccess(true);
-        setEditAddressId(undefined);
-        changeAddressInList(editAddressId, values);
-        setInitialValues(getAddressesFormInitialValues());
-        return;
+        await editAddressSubmitHandler(editAddressId, values);
+      } else {
+        await createAddressSubmitHandler(session.user.id_usuario, values, formikHelpers);
       }
-
-      const addressesFormArg = getAddressFormArg(values);
-
-      const response = await Axios.post<IEndereco>(
-        `/address/${session.user.id_usuario}`,
-        addressesFormArg
-      );
-
-      setAddressList((prevState) => [...prevState, response.data]);
-      formikHelpers.resetForm();
     } catch (e) {
       const error = e as AxiosError;
       changeRequestStatus({ error: error.response?.data.message });
