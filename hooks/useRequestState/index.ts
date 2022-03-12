@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import type { RequestState } from "@my-types/request";
 
@@ -7,9 +7,9 @@ const useRequestState = (initialStatus?: RequestState) => {
     initialStatus ? initialStatus : { error: "", isLoading: false }
   );
 
-  function changeRequestStatus(status: Partial<RequestState>) {
+  const changeRequestStatus = useCallback((status: Partial<RequestState>) => {
     setRequestStatus((prevState) => ({ ...prevState, ...status }));
-  }
+  }, []);
 
   return { requestStatus, changeRequestStatus };
 };
