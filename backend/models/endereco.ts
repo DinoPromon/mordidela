@@ -7,6 +7,7 @@ interface IEndereco {
   numero: string;
   bairro: string;
   complemento: string | null;
+  deletado: boolean;
   id_usuario: IUsuario["id_usuario"];
   id_entrega: IEntrega["id_entrega"];
 }

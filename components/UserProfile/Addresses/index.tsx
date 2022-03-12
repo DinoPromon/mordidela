@@ -81,7 +81,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
       if (!session) return;
 
       try {
-        const response = await Axios.delete<IEndereco>(`/address/delete/${address.id_endereco}`);
+        const response = await Axios.put<IEndereco>(`/address/delete/${address.id_endereco}`);
 
         setAddressList((prevState) =>
           prevState.filter((listAddress) => listAddress.id_endereco !== response.data.id_endereco)

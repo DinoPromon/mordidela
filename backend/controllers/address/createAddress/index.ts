@@ -52,6 +52,7 @@ export class CreateAddress extends InputParser {
           complemento: this.addressData.complemento ? this.addressData.complemento : null,
           bairro: this.addressData.bairro,
           id_usuario: this.userId,
+          deletado: false,
         },
       });
       return createdAddress as IEndereco;

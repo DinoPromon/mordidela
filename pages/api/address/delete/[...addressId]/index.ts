@@ -15,7 +15,7 @@ const handler: NextApiHandler = async (req, res) => {
     const sessionValidator = new SessionValidator(session);
 
     switch (req.method) {
-      case ReqMethod.DELETE: {
+      case ReqMethod.PUT: {
         sessionValidator.validate();
         const numberAddressId = Number(addressId);
         const numberUserId = Number(session?.user.id_usuario);
@@ -30,7 +30,7 @@ const handler: NextApiHandler = async (req, res) => {
       }
 
       default: {
-        res.setHeader("Allow", [ReqMethod.DELETE]);
+        res.setHeader("Allow", [ReqMethod.PUT]);
         return res.status(405).json({ message: "Requsição inválida." });
       }
     }

@@ -45,9 +45,12 @@ export class DeleteAddress {
 
   private async deleteAddress() {
     const deletedAddress = await Prisma.endereco
-      .delete({
+      .update({
         where: {
           id_endereco: this.deleteAddressArg.id_endereco,
+        },
+        data: {
+          deletado: true,
         },
       })
       .catch((err) => {
