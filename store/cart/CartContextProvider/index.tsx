@@ -12,7 +12,7 @@ import type IEndereco from "@models/endereco";
 import type { CartOrder, CartProduct } from "@my-types/context";
 
 const CartContextProvider: React.FC = (props) => {
-  const { products, setProducts } = useCartPersistence();
+  const [products, setProducts] = useCartPersistence();
   const [order, setOrder] = useState<CartOrder>(ORDER_INITIAL_STATE);
 
   const incrementProductQuantity = React.useCallback(

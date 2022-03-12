@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 // import { ORDER_INITIAL_STATE } from "../CartContext";
 
+import type { Dispatch, SetStateAction } from "react";
 import type { CartProduct, CartOrder } from "@my-types/context";
 
 enum CartPersistence {
@@ -28,8 +29,5 @@ export const useCartPersistence = () => {
     }
   }
 
-  return {
-    products,
-    setProducts,
-  };
+  return [products, setProducts] as [CartProduct[], Dispatch<SetStateAction<CartProduct[]>>];
 };
