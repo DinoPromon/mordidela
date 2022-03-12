@@ -13,6 +13,7 @@ export async function findManyAddressByUserId(userId: IUsuario["id_usuario"]) {
     },
     where: {
       id_usuario: userId,
+      deletado: false,
     },
   });
 
