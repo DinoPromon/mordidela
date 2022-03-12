@@ -47,13 +47,12 @@ const Modal: React.FC<Props> = ({ onClose, children }) => {
   return (
     <Backdrop
       key="modal-backdrop"
-      onClick={onClose}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
     >
-      <ModalContentContainer onClick={(event) => event.stopPropagation()}>
+      <ModalContentContainer>
         <CloseModalButton onClick={buttonCloseHandler}>&times;</CloseModalButton>
         <ScrollContainer>{children}</ScrollContainer>
       </ModalContentContainer>
