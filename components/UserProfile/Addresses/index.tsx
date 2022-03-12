@@ -164,7 +164,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
         initialValues={initialValues}
         onSubmit={addressFormSubmitHandler}
       >
-        {({ values, isValid, dirty }) => (
+        {({ values, isValid, dirty, isSubmitting }) => (
           <AddressesFormikForm>
             <CustomInputsDesign>
               <InputTextFormik
@@ -215,6 +215,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
                       size="large"
                       color="secondary"
                       variant="contained"
+                      disabled={isSubmitting}
                       onClick={cancelClickHandler}
                     >
                       Cancelar
