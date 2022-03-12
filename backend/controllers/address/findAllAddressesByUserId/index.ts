@@ -4,11 +4,16 @@ import { throwError } from "@errors/index";
 import type IUsuario from "@models/usuario";
 import type IEndereco from "@models/endereco";
 
-export class FindAllAddressesByUserId {
-  private userId: IUsuario["id_usuario"];
+type FindAllAddressesArg = {
+  getDeleted?: boolean;
+  id_usuario: IUsuario["id_usuario"];
+};
 
-  constructor(userId: IUsuario["id_usuario"]) {
-    this.userId = userId;
+export class FindAllAddressesByUserId {
+  private findAllAddressesArg: FindAllAddressesArg;
+
+  constructor(findAllAddressesArg: FindAllAddressesArg) {
+    this.findAllAddressesArg = findAllAddressesArg;
   }
 
   public async exec() {
@@ -21,7 +26,8 @@ export class FindAllAddressesByUserId {
     try {
       const addresses = await Prisma.endereco.findMany({
         where: {
-          id_usuario: this.userId,
+          id_usuario: this.findAllAddressesArg.id_usuario,
+          deletado: this.findAllAddressesArg.getDeleted ? undefined : false,
         },
       });
 

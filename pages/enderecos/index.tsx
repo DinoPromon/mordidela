@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const userId = session.user.id_usuario;
-  const findAllAddresses = new FindAllAddressesByUserId(userId);
+  const findAllAddresses = new FindAllAddressesByUserId({ id_usuario: userId, getDeleted: false });
   const addresses = await findAllAddresses.exec();
 
   return {

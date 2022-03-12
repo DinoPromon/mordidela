@@ -17,7 +17,10 @@ const handler: NextApiHandler = async (req, res) => {
 
     switch (req.method) {
       case ReqMethod.GET: {
-        const findAllAddresses = new FindAllAddressesByUserId(Number(userId));
+        const findAllAddresses = new FindAllAddressesByUserId({
+          id_usuario: Number(userId),
+          getDeleted: false,
+        });
         const addresses = await findAllAddresses.exec();
         return res.status(200).json(addresses);
       }
