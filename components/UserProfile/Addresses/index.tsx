@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import { Formik } from "formik";
 import { motion } from "framer-motion";
-import { getSession } from "next-auth/client";
+import { getSession, session } from "next-auth/client";
 import { FaTrash } from "react-icons/fa/index";
 import { BsPencil } from "react-icons/bs/index";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
@@ -75,6 +75,36 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
     });
   }
 
+  function getDeleteAddressHandler(address: IEndereco) {
+    return async () => {
+      const session = await getSession().catch((err) => console.log(err));
+      if (!session) return;
+
+      try {
+        const response = await Axios.delete<IEndereco>(`/address/delete/${address.id_endereco}`);
+
+        setAddressList((prevState) =>
+          prevState.filter((listAddress) => listAddress.id_endereco !== response.data.id_endereco)
+        );
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error.response?.data.message);
+      }
+    };
+  }
+
+  function getAddressEditClickHandler(address: IEndereco) {
+    return () => {
+      setInitialValues(getAddressesFormInitialValues(address));
+      setEditAddressId(address.id_endereco);
+    };
+  }
+
+  function cancelClickHandler() {
+    setEditAddressId(undefined);
+    setInitialValues(getAddressesFormInitialValues());
+  }
+
   async function addressFormSubmitHandler(
     values: IAddressesFormValues,
     formikHelpers: FormikHelpers<IAddressesFormValues>
@@ -113,18 +143,6 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
     }
 
     changeRequestStatus({ isLoading: false });
-  }
-
-  function getAddressEditClickHandler(address: IEndereco) {
-    return () => {
-      setInitialValues(getAddressesFormInitialValues(address));
-      setEditAddressId(address.id_endereco);
-    };
-  }
-
-  function cancelClickHandler() {
-    setEditAddressId(undefined);
-    setInitialValues(getAddressesFormInitialValues());
   }
 
   return (
@@ -242,7 +260,12 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
               >
                 <BsPencil size={20} color={PURPLE} />
               </ClickableItem>
-              <ClickableItem title="Editar endereço" placement="bottom" scale={1.25}>
+              <ClickableItem
+                title="Excluir endereço"
+                placement="bottom"
+                scale={1.25}
+                onClick={getDeleteAddressHandler(address)}
+              >
                 <FaTrash size={20} color={PURPLE} />
               </ClickableItem>
             </AddressIcons>

@@ -3,5 +3,5 @@ export enum ReqMethod {
   PUT = "PUT",
   POST = "POST",
   PATCH = "PATCH",
-  DELTE = "DELETE",
+  DELETE = "DELETE",
 }
