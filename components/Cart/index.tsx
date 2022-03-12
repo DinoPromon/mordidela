@@ -110,19 +110,18 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   async function cartSubmitHandler(formValues: CartFormValues) {
     try {
       changeRequestStatus({ error: "", isLoading: true });
-      if (session) {
-        const cartSubmitData = getCartSubmitData(formValues, products, session.user.id_usuario);
+      if (!session) throw new Error("É necessário estar logado para finalizar pedidos");
 
-        await Axios.post("/order", cartSubmitData);
-        setIsOrderConfirmed(true);
-        resetCart();
-        return;
-      }
-      throw new Error("É necessário estar logado para finalizar pedidos");
+      const cartSubmitData = getCartSubmitData(formValues, products, session.user.id_usuario);
+
+      await Axios.post("/order", cartSubmitData);
+      setIsOrderConfirmed(true);
+      resetCart();
     } catch (e) {
       const error = e as Error;
       changeRequestStatus({ error: error.message });
     }
+
     changeRequestStatus({ isLoading: false });
   }
 
