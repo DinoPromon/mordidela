@@ -75,7 +75,10 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
     });
   }
 
-  async function addressFormSubmitHandler(values: IAddressesFormValues) {
+  async function addressFormSubmitHandler(
+    values: IAddressesFormValues,
+    formikHelpers: FormikHelpers<IAddressesFormValues>
+  ) {
     changeRequestStatus({ error: "", isLoading: true });
     setEditSuccess(false);
 
@@ -85,16 +88,25 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
 
       if (editAddressId) {
         const addressFormArg = getUpdateAddressFormArg(initialValues, values);
-        
+
         await Axios.put(`/address/update/${editAddressId}`, addressFormArg);
-        setInitialValues(getAddressesFormInitialValues());
+
         setEditSuccess(true);
         setEditAddressId(undefined);
         changeAddressInList(editAddressId, values);
-      } else {
-        const addressesFormArg = getAddressFormArg(values);
-        await Axios.post(`/address/${session.user.id_usuario}`, addressesFormArg);
+        setInitialValues(getAddressesFormInitialValues());
+        return;
       }
+
+      const addressesFormArg = getAddressFormArg(values);
+
+      const response = await Axios.post<IEndereco>(
+        `/address/${session.user.id_usuario}`,
+        addressesFormArg
+      );
+
+      setAddressList((prevState) => [...prevState, response.data]);
+      formikHelpers.resetForm();
     } catch (e) {
       const error = e as AxiosError;
       changeRequestStatus({ error: error.response?.data.message });
