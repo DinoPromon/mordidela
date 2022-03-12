@@ -24,7 +24,5 @@ export function getChangedValues<T>(initialState: T, currentState: T) {
     }
   }
 
-  console.log(currentState, changedValues);
-
   return changedValues;
 }

@@ -1,24 +1,31 @@
-import { CartOrder, CartProduct } from "@my-types/context";
 import React, { useState } from "react";
-import { orderInitialState } from "../CartContext";
+
 import { CartContextState } from "@my-types/context";
+
 import CartContext from "../CartContext";
-import ICupom from "@models/cupom";
-import IEndereco from "@models/endereco";
-import IPedido from "@models/pedido";
+import { ORDER_INITIAL_STATE } from "../CartContext";
+import { useCartPersistence } from "./hooks/useCartPersistence";
+
+import type ICupom from "@models/cupom";
+import type IPedido from "@models/pedido";
+import type IEndereco from "@models/endereco";
+import type { CartOrder, CartProduct } from "@my-types/context";
 
 const CartContextProvider: React.FC = (props) => {
-  const [products, setProducts] = useState<CartProduct[]>([]);
-  const [order, setOrder] = useState<CartOrder>(orderInitialState);
+  const { products, setProducts } = useCartPersistence();
+  const [order, setOrder] = useState<CartOrder>(ORDER_INITIAL_STATE);
 
-  const incrementProductQuantity = React.useCallback((key: string) => {
-    setProducts((prevState) =>
-      prevState.map((item) => {
-        if (item.key === key) return { ...item, quantity: item.quantity + 1 };
-        return { ...item };
-      })
-    );
-  }, []);
+  const incrementProductQuantity = React.useCallback(
+    (key: string) => {
+      setProducts((prevState) =>
+        prevState.map((item) => {
+          if (item.key === key) return { ...item, quantity: item.quantity + 1 };
+          return { ...item };
+        })
+      );
+    },
+    [setProducts]
+  );
 
   const addProductToCart = React.useCallback(
     (product: CartProduct) => {
@@ -32,7 +39,7 @@ const CartContextProvider: React.FC = (props) => {
         return [...prevState, product];
       });
     },
-    [incrementProductQuantity]
+    [incrementProductQuantity, setProducts]
   );
 
   function removeProductFromCart(key: string) {
@@ -101,9 +108,9 @@ const CartContextProvider: React.FC = (props) => {
   }, []);
 
   const resetCart = React.useCallback(() => {
-    setOrder(orderInitialState);
+    setOrder(ORDER_INITIAL_STATE);
     setProducts([]);
-  }, []);
+  }, [setProducts]);
 
   const context: CartContextState = {
     products: products,

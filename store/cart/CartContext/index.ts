@@ -1,20 +1,23 @@
 import { createContext } from "react";
-import { CartContextState, CartOrder, CartProduct } from "@my-types/context";
-import ICupom from "@models/cupom";
-import IPedido from "@models/pedido";
-import IEndereco from "@models/endereco";
+import { CartContextState } from "@my-types/context";
 
-export const orderInitialState: CartOrder = {
+import type ICupom from "@models/cupom";
+import type IPedido from "@models/pedido";
+import type IEndereco from "@models/endereco";
+import type { CartOrder } from "@my-types/context";
+import type { CartProduct } from "@my-types/context";
+
+export const ORDER_INITIAL_STATE: CartOrder = Object.freeze({
   address_id: null,
   delivery_type: null,
   payment_type: null,
   payment_amount: 0,
   delivery_price: 0,
-};
+});
 
 const CartContext = createContext({
   products: [],
-  order: orderInitialState,
+  order: ORDER_INITIAL_STATE,
   addProductToCart(product: CartProduct) {},
   removeProductFromCart(key: string) {},
   getProductTotalPrice(id: string): number | void {},

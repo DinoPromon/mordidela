@@ -7,6 +7,7 @@ import { BsCheck2Circle } from "react-icons/bs/index";
 
 import Axios from "@api";
 import useIsMounted from "@hooks/useIsMounted";
+import useRequestState from "@hooks/useRequestState";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { CartContext } from "@store/cart";
 import { TipoEntrega } from "@models/pedido";
@@ -39,7 +40,7 @@ import {
 import { SubtotalText } from "@components/shared/StyledComponents";
 
 import type { Session } from "next-auth";
-import type { RequestState } from "@my-types/request";
+import type { AxiosError } from "axios";
 import type { AddressOnCart } from "@models/endereco";
 
 type Props = {
@@ -48,7 +49,10 @@ type Props = {
 
 const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const { products, order, resetCart } = useContext(CartContext);
-  const subTotalPrice = getSubTotalPrice();
+  const { requestStatus, changeRequestStatus } = useRequestState({
+    error: "",
+    isLoading: false,
+  });
   const isMounted = useIsMounted();
   const [session, setSession] = useState<Session | null>(null);
   const [isLoadingSession, setIsLoadingSession] = useState(true);
@@ -56,24 +60,38 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
   const [addresses, setAddresses] = useState<AddressOnCart[]>([]);
   const [isLoadingAddress, setIsLoadingAddress] = useState(true);
-  const [request, setRequest] = useState<RequestState>({
-    error: "",
-    isLoading: false,
-  });
-  const cartFormValidationSchema = useCartFormValidationSchema(subTotalPrice);
+
+  const subTotalPrice = getSubTotalPrice();
   const cartFormInitialValues = getCartFormInitialValues();
+  const cartFormValidationSchema = useCartFormValidationSchema(subTotalPrice);
 
   useEffect(() => {
-    async function hasSession() {
+    async function fetchAddresses(session: Session | null) {
+      try {
+        if (session) {
+          const response = await Axios.get<AddressOnCart[]>(
+            `/address/relations/${session.user.id_usuario}`
+          );
+          if (isMounted) setAddresses(response.data);
+        }
+      } catch (e) {
+        const error = e as AxiosError;
+        if (isMounted) changeRequestStatus({ error: error.response?.data.message });
+      }
+      setIsLoadingAddress(false);
+    }
+
+    async function fetchSession() {
       const result = await getSession();
-      if (isMounted.current) {
+      if (isMounted) {
         setSession(result);
         setIsLoadingSession(false);
       }
     }
-    if (!session) hasSession();
-    fetchAddresses(session);
-  }, [session]);
+
+    if (!session) fetchSession();
+    if (isMounted) fetchAddresses(session);
+  }, [session, isMounted, changeRequestStatus]);
 
   function getSubTotalPrice() {
     const subTotal = products.reduce(
@@ -85,41 +103,17 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     return subTotal;
   }
 
-  function changeRequestStatus(status: Partial<RequestState>) {
-    setRequest((prevState) => ({
-      ...prevState,
-      ...status,
-    }));
-  }
-
   function changeShouldShowConfirmation(shouldShow: boolean) {
     setShouldShowConfirmation(shouldShow);
   }
 
-  async function fetchAddresses(session: Session | null) {
-    try {
-      if (session) {
-        const response = await Axios.get<AddressOnCart[]>(
-          `/address/relations/${session.user.id_usuario}`
-        );
-        if (isMounted.current) setAddresses(response.data);
-      }
-    } catch (e) {
-      const error = e as Error;
-      if (isMounted.current) setRequest({ error: error.message, isLoading: false });
-    }
-    setIsLoadingAddress(false);
-  }
-
   async function cartSubmitHandler(formValues: CartFormValues) {
     try {
-      setRequest({ error: "", isLoading: true });
+      changeRequestStatus({ error: "", isLoading: true });
       if (session) {
         const cartSubmitData = getCartSubmitData(formValues, products, session.user.id_usuario);
 
         await Axios.post("/order", cartSubmitData);
-
-        setRequest({ error: "", isLoading: false });
         setIsOrderConfirmed(true);
         resetCart();
         return;
@@ -127,13 +121,14 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       throw new Error("É necessário estar logado para finalizar pedidos");
     } catch (e) {
       const error = e as Error;
-      setRequest({ error: error.message, isLoading: false });
+      changeRequestStatus({ error: error.message });
     }
+    changeRequestStatus({ isLoading: false });
   }
 
   return (
     <Modal onClose={onCloseModal}>
-      {request.isLoading && (
+      {requestStatus.isLoading && (
         <CartLoadingContainer>
           <CircularProgress />
         </CartLoadingContainer>
@@ -148,7 +143,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
       >
         {({ values }) => (
           <Fragment>
-            {isOrderConfirmed && !request.isLoading && (
+            {isOrderConfirmed && !requestStatus.isLoading && (
               <Fragment>
                 <CartOrderConfirmedIcon>
                   <BsCheck2Circle size={50} color="green" />
@@ -157,7 +152,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
               </Fragment>
             )}
 
-            {!isOrderConfirmed && !request.isLoading && (
+            {!isOrderConfirmed && !requestStatus.isLoading && (
               <CartForm>
                 {products.length === 0 ? (
                   <CartEmptyMessageContainer>
@@ -200,7 +195,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                         {session && !isLoadingSession && (
                           <CartLoggedOptions
-                            request={request}
+                            request={requestStatus}
                             subTotalPrice={subTotalPrice}
                             onChangeRequestStatus={changeRequestStatus}
                             onChangeShouldShowConfirmation={changeShouldShowConfirmation}
