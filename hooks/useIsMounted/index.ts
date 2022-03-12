@@ -9,7 +9,7 @@ function useIsMounted() {
     };
   }, []);
 
-  return isMounted.current;
+  return isMounted;
 }
 
 export default useIsMounted;

@@ -72,25 +72,25 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
           const response = await Axios.get<AddressOnCart[]>(
             `/address/relations/${session.user.id_usuario}`
           );
-          if (isMounted) setAddresses(response.data);
+          if (isMounted.current) setAddresses(response.data);
         }
       } catch (e) {
         const error = e as AxiosError;
-        if (isMounted) changeRequestStatus({ error: error.response?.data.message });
+        if (isMounted.current) changeRequestStatus({ error: error.response?.data.message });
       }
       setIsLoadingAddress(false);
     }
 
     async function fetchSession() {
       const result = await getSession();
-      if (isMounted) {
+      if (isMounted.current) {
         setSession(result);
         setIsLoadingSession(false);
       }
     }
 
     if (!session) fetchSession();
-    if (isMounted) fetchAddresses(session);
+    if (isMounted.current) fetchAddresses(session);
   }, [session, isMounted, changeRequestStatus]);
 
   function getSubTotalPrice() {
