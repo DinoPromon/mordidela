@@ -8,6 +8,7 @@ import FormRequestStatus from "./FormRequestStatus";
 import ConfirmationLayout from "./ConfirmationLayout";
 import MordidelaLogoWithLabel from "./MordidelaLogoWithLabel";
 import { PageContainer, PageTitle } from "./PageComponents";
+import CentralizedLoading from "./CentralizedLoading";
 
 export {
   Modal,
@@ -19,6 +20,7 @@ export {
   CustomTextField,
   InputTextFormik,
   FormRequestStatus,
+  CentralizedLoading,
   ConfirmationLayout,
   MordidelaLogoWithLabel,
 };
