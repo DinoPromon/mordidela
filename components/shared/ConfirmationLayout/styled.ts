@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ConfirmationLayoutContainer = styled.p`
+export const ConfirmationLayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
