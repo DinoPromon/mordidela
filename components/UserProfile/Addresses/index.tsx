@@ -41,7 +41,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
   const formModel = getAddressesFormModel();
   const [addressList, setAddressList] = useState(addresses);
   const [initialValues, setInitialValues] = useState(getAddressesFormInitialValues());
-  const { requestStatus, changeRequestStatus } = useRequestState();
+  const [requestStatus, changeRequestStatus] = useRequestState();
   const [editSuccess, setEditSuccess] = useState(false);
   const [submitSuccess, setSubmitSucess] = useState(false);
   const [editAddressId, setEditAddressId] = useState<number>();
