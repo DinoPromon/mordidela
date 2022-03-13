@@ -25,7 +25,7 @@ const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
   }
 
   function getCouponValidDate(coupon: RelatedUserCoupon["cupom"]) {
-    if (coupon.data_fim === null) return `Válido até o uso`;
+    if (coupon.data_fim === null) return `Válido até sua utilização`;
 
     return `Válido até ${getFormattedDate(coupon.data_fim)}`;
   }
@@ -35,6 +35,7 @@ const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
       <PageTitle>Cupons</PageTitle>
       <CupomContainer>
         <CupomTitle>Cupons disponíveis</CupomTitle>
+        {availableCoupons.length === 0 && <p>Você não possui cupons!</p>}
         {availableCoupons.map((availabeCoupon) => (
           <CupomDataContainer key={`coupon-${availabeCoupon.data_obtencao}`} whileHover={{scale: 1.1}}>
             <RiCoupon3Line size={40} color={PINK} />
@@ -48,6 +49,7 @@ const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
         ))}
 
         <UsedCupomTitle>Cupons utilizados</UsedCupomTitle>
+        {usedCoupons.length === 0 && <p>Você não utilizou cupons!</p>}
         {usedCoupons.map((usedCoupon) => (
           <CupomDataContainer key={`coupon-${usedCoupon.id_usuario_cupom}`} whileHover={{scale: 1.1}}>
             <RiCoupon3Line size={40} color={PINK} />
