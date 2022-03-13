@@ -9,7 +9,7 @@ export const OrdersModalTitle = styled.h2`
   padding-bottom: 1rem;
 `;
 
-export const OrdersAddresContainer = styled.div`
+export const OrdersAddressContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 1.5rem;
@@ -30,7 +30,7 @@ export const OrderFlavorsText = styled.p`
   font-size: 0.75rem;
 `;
 
-export const OrdersAddresComplement = styled.p`
+export const OrdersAddressComplement = styled.p`
   font-size: 13px;
 `;
 

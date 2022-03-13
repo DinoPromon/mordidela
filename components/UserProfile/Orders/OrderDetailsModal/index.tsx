@@ -6,10 +6,10 @@ import { TipoEntrega } from "@models/pedido";
 import {
   AddsText,
   ColoredText,
-  AddresTitle,
+  AddressTitle,
   SubtotalText,
   TrashPriceText,
-  AddresComplement,
+  AddressComplement,
   AddsListContainer,
   TrashPriceContainer,
   CoupomDataContainer,
@@ -23,8 +23,8 @@ import {
   OrderFlavorsText,
   OrdersModalTitle,
   OrdersDataContainer,
-  OrdersAddresContainer,
-  OrdersAddresComplement,
+  OrdersAddressContainer,
+  OrdersAddressComplement,
 } from "./styled";
 import {
   getNumberAsCurrency,
@@ -116,9 +116,9 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
   }
 
   function getFormattedOrderAddress(address: IEndereco) {
-    const formattedOrderAddres = `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
+    const formattedOrderAddress = `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
 
-    return formattedOrderAddres;
+    return formattedOrderAddress;
   }
 
   return (
@@ -201,15 +201,15 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
       </OrdersDataContainer>
 
       {orderRelations.endereco && (
-        <OrdersAddresContainer>
-          <AddresTitle>Endereço de entrega</AddresTitle>
+        <OrdersAddressContainer>
+          <AddressTitle>Endereço de entrega</AddressTitle>
           <p>{getFormattedOrderAddress(orderRelations.endereco)}</p>
           {orderRelations.endereco.complemento && (
-            <OrdersAddresComplement>
+            <OrdersAddressComplement>
               Complemento: {orderRelations.endereco.complemento}
-            </OrdersAddresComplement>
+            </OrdersAddressComplement>
           )}
-        </OrdersAddresContainer>
+        </OrdersAddressContainer>
       )}
 
       <TotalContainer>
