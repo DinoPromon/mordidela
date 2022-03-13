@@ -61,9 +61,6 @@ export function getHasDeliveryPrice(orderRelations: IOrderRelations) {
   if (orderRelations.tipo_entrega === TipoEntrega.BALCAO) {
     return false;
   }
-  if (orderRelations.cupom && orderRelations.cupom.tipo === TipoCupom.ENTREGA) {
-    return false;
-  }
 
   return true;
 }
@@ -93,7 +90,7 @@ export function calculateSubTotalPrice(orderRelations: IOrderRelations) {
       orderProduct.id_produto
     );
 
-    return totalPrice + product.preco_padrao + addsTotalPrice;
+    return totalPrice + product.preco_padrao * orderProduct.quantidade + addsTotalPrice;
   }, 0);
 
   return subtTotalPrice;
@@ -102,11 +99,10 @@ export function calculateSubTotalPrice(orderRelations: IOrderRelations) {
 export function calculateTotalPrice(orderRelations: IOrderRelations) {
   const subTotalPrice = calculateSubTotalPrice(orderRelations);
   const hasDeliveryPrice = getHasDeliveryPrice(orderRelations);
-  if (orderRelations.cupom !== null) {
-  }
 
-  if (hasDeliveryPrice)
+  if (hasDeliveryPrice) {
     return subTotalPrice + orderRelations.preco_entrega - calculateCouponDiscount(orderRelations);
+  }
 
   return subTotalPrice - calculateCouponDiscount(orderRelations);
 }
