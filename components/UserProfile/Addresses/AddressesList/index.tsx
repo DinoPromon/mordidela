@@ -17,13 +17,17 @@ import type IEndereco from "@models/endereco";
 
 type AddressesListProps = {
   addresses: IEndereco[];
-  onEditAddress: (address: IEndereco) => void;
-  onDeleteAddress: (address: IEndereco) => Promise<void>;
+  onEditClick: (address: IEndereco) => void;
+  onDeleteClick: (address: IEndereco) => void;
 };
 
 type AddressesListType = (props: AddressesListProps) => JSX.Element;
 
-const AddressesList: AddressesListType = ({ addresses, onEditAddress, onDeleteAddress }) => {
+const AddressesList: AddressesListType = ({
+  addresses,
+  onEditClick: onEditAddress,
+  onDeleteClick,
+}) => {
   function getFormattedAddressText(address: IEndereco) {
     return `${address.logradouro} N° ${address.numero}, ${address.bairro}`;
   }
@@ -36,7 +40,7 @@ const AddressesList: AddressesListType = ({ addresses, onEditAddress, onDeleteAd
 
   function getDeleteAddressClickHandler(address: IEndereco) {
     return () => {
-      onDeleteAddress(address);
+      onDeleteClick(address);
     };
   }
 

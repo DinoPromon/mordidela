@@ -1,10 +1,8 @@
 import React, { useContext, Fragment, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
 import { Formik } from "formik";
 import { getSession } from "next-auth/client";
-import { BsCheck2Circle } from "react-icons/bs/index";
 
 import Axios from "@api";
 import useIsMounted from "@hooks/useIsMounted";
@@ -13,7 +11,8 @@ import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { CartContext } from "@store/cart";
 import { TipoEntrega } from "@models/pedido";
 import { transformPriceToString } from "@utils/transformation";
-import { Modal, ConfirmationLayout } from "@components/shared";
+import { SubtotalText } from "@components/shared/StyledComponents";
+import { Modal, ConfirmationLayout, SuccessRequestLayout } from "@components/shared";
 
 import CartOrdersList from "./CartOrdersList";
 const CartAddress = dynamic(() => import("./CartAddress"));
@@ -32,11 +31,8 @@ import {
   CartFormLoginText,
   CartEmptyMessage,
   CartLoadingContainer,
-  CartOrderConfirmedIcon,
-  CartOrderConfirmedMessage,
   CartEmptyMessageContainer,
 } from "./styled";
-import { SubtotalText } from "@components/shared/StyledComponents";
 
 import type { Session } from "next-auth";
 import type { AxiosError } from "axios";
@@ -47,9 +43,9 @@ type Props = {
 };
 
 const Cart: React.FC<Props> = ({ onCloseModal }) => {
+  const isMounted = useIsMounted();
   const { products, order, resetCart } = useContext(CartContext);
   const [requestStatus, changeRequestStatus] = useRequestState();
-  const isMounted = useIsMounted();
   const [session, setSession] = useState<Session | null>(null);
   const [isLoadingSession, setIsLoadingSession] = useState(true);
   const [shouldShowConfirmation, setShouldShowConfirmation] = useState(false);
@@ -143,12 +139,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
         {({ values }) => (
           <Fragment>
             {isOrderConfirmed && !requestStatus.isLoading && (
-              <Fragment>
-                <CartOrderConfirmedIcon>
-                  <BsCheck2Circle size={50} color="green" />
-                </CartOrderConfirmedIcon>
-                <CartOrderConfirmedMessage>Pedido realizado com sucesso!</CartOrderConfirmedMessage>
-              </Fragment>
+              <SuccessRequestLayout successMessage="Pedido realizado com sucesso!" />
             )}
 
             {!isOrderConfirmed && !requestStatus.isLoading && (

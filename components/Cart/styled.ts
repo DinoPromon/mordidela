@@ -23,20 +23,6 @@ export const CartFormLoginText = styled.p`
   }
 `;
 
-export const CartOrderConfirmedIcon = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
-`;
-
-export const CartOrderConfirmedMessage = styled.div`
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-`;
-
 export const CartEmptyMessageContainer = styled.div`
   display: flex;
   justify-content: center;

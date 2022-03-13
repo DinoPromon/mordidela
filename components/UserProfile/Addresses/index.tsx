@@ -10,11 +10,13 @@ import useRequestState from "@hooks/useRequestState";
 import LoadingButton from "@components/shared/LoadingButton";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { InputTextFormik } from "@components/shared";
-import { PageContainer, PageTitle } from "@components/shared";
-import { SuccessMessage } from "@components/shared/StyledComponents";
 import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
+import { PageContainer, PageTitle } from "@components/shared";
 
 import AddressesList from "./AddressesList";
+import AddressesModal from "./AddressesModal";
+import AddressFormRequestSuccess from "./AddressFormRequestSuccess";
+import { DeleteStep, FormRequestSuccess } from "./constants";
 import { getAddressFormArg, getUpdateAddressFormArg } from "./Submit";
 import {
   getAddressesFormModel,
@@ -40,11 +42,12 @@ type AddressesProps = {
 const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
   const formModel = getAddressesFormModel();
   const [addressList, setAddressList] = useState(addresses);
-  const [initialValues, setInitialValues] = useState(getAddressesFormInitialValues());
+  const [deleteStep, setDeleteStep] = useState<DeleteStep | null>(null);
   const [requestStatus, changeRequestStatus] = useRequestState();
-  const [editSuccess, setEditSuccess] = useState(false);
-  const [submitSuccess, setSubmitSucess] = useState(false);
+  const [formRequestSuccess, setFormRequestSuccess] = useState<FormRequestSuccess | null>(null);
   const [editAddressId, setEditAddressId] = useState<number>();
+  const [selectedDeleteAddress, setSelectedDeleteAddress] = useState<IEndereco>();
+  const [initialValues, setInitialValues] = useState(getAddressesFormInitialValues());
 
   function changeAddressInList(editAddressId: number, values: IAddressesFormValues) {
     setAddressList((prevState) => {
@@ -71,13 +74,20 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
 
   async function editAddressSubmitHandler(editAddressId: number, values: IAddressesFormValues) {
     const addressFormArg = getUpdateAddressFormArg(initialValues, values);
+    setFormRequestSuccess(null);
 
-    await Axios.put<IEndereco>(`/address/update/${editAddressId}`, addressFormArg);
+    try {
+      await Axios.put<IEndereco>(`/address/update/${editAddressId}`, addressFormArg);
 
-    setEditSuccess(true);
-    setEditAddressId(undefined);
-    changeAddressInList(editAddressId, values);
-    setInitialValues(getAddressesFormInitialValues());
+      setFormRequestSuccess(FormRequestSuccess.EDIT);
+      setEditAddressId(undefined);
+      changeAddressInList(editAddressId, values);
+      setInitialValues(getAddressesFormInitialValues());
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(err);
+      changeRequestStatus({ error: error.response?.data.message });
+    }
   }
 
   async function createAddressSubmitHandler(
@@ -98,7 +108,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
     formikHelpers: FormikHelpers<IAddressesFormValues>
   ) {
     changeRequestStatus({ error: "", isLoading: true });
-    setEditSuccess(false);
+    setFormRequestSuccess(null);
 
     try {
       const session = await getSession();
@@ -108,7 +118,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
         await editAddressSubmitHandler(editAddressId, values);
       } else {
         await createAddressSubmitHandler(session.user.id_usuario, values, formikHelpers);
-        setSubmitSucess(true);
+        setFormRequestSuccess(FormRequestSuccess.CREATE);
       }
     } catch (e) {
       const error = e as AxiosError;
@@ -118,29 +128,55 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
     changeRequestStatus({ isLoading: false });
   }
 
-  const editAddress = useCallback((address: IEndereco) => {
-    setInitialValues(getAddressesFormInitialValues(address));
-    setEditAddressId(address.id_endereco);
-  }, []);
+  function closeModalHandler() {
+    setDeleteStep(null);
+  }
 
-  const deleteAddress = useCallback(async (address: IEndereco) => {
+  async function deleteAddressHandler() {
+    if (!selectedDeleteAddress) return;
+
     const session = await getSession().catch((err) => console.log(err));
     if (!session) return;
 
+    setFormRequestSuccess(null);
+    setDeleteStep(DeleteStep.DELETING);
+    changeRequestStatus({ isLoading: true });
+
     try {
-      const response = await Axios.put<IEndereco>(`/address/delete/${address.id_endereco}`);
+      const response = await Axios.put<IEndereco>(
+        `/address/delete/${selectedDeleteAddress.id_endereco}`
+      );
 
       setAddressList((prevState) =>
         prevState.filter((listAddress) => listAddress.id_endereco !== response.data.id_endereco)
       );
     } catch (err) {
       const error = err as AxiosError;
+      changeRequestStatus({ error: error.response?.data.message });
       console.log(error.response?.data.message);
     }
+
+    setDeleteStep(DeleteStep.DELETED);
+    changeRequestStatus({ isLoading: false });
+  }
+
+  const editAddressClickHandler = useCallback((address: IEndereco) => {
+    setInitialValues(getAddressesFormInitialValues(address));
+    setEditAddressId(address.id_endereco);
+  }, []);
+
+  const deleteAddressClickHandler = useCallback((address: IEndereco) => {
+    setDeleteStep(DeleteStep.CONFIRMATION);
+    setSelectedDeleteAddress(address);
   }, []);
 
   return (
     <PageContainer>
+      <AddressesModal
+        deleteStep={deleteStep}
+        onDeleteAddress={deleteAddressHandler}
+        onCloseModal={closeModalHandler}
+      />
       <PageTitle>Endereços</PageTitle>
       <Formik
         validateOnMount
@@ -222,16 +258,9 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
                 </LoadingButton>
               </motion.div>
             </AddressesFormButtonContainer>
-            {submitSuccess && (
-              <SuccessMessageContainer>
-                <SuccessMessage>Endereço criado com sucesso</SuccessMessage>
-              </SuccessMessageContainer>
-            )}
-            {editSuccess && (
-              <SuccessMessageContainer>
-                <SuccessMessage>Editado com sucesso</SuccessMessage>
-              </SuccessMessageContainer>
-            )}
+
+            <AddressFormRequestSuccess requestSuccess={formRequestSuccess} />
+
             <ErrorMessageContainer>
               {requestStatus.error && <ErrorMessage>{requestStatus.error}</ErrorMessage>}
             </ErrorMessageContainer>
@@ -241,8 +270,8 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
 
       <AddressesList
         addresses={addressList}
-        onEditAddress={editAddress}
-        onDeleteAddress={deleteAddress}
+        onEditClick={editAddressClickHandler}
+        onDeleteClick={deleteAddressClickHandler}
       />
     </PageContainer>
   );

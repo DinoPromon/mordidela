@@ -6,6 +6,8 @@ import CustomTextField from "./CustomTextField";
 import InputTextFormik from "./InputTextFormik";
 import FormRequestStatus from "./FormRequestStatus";
 import ConfirmationLayout from "./ConfirmationLayout";
+import SuccessRequestLayout from "./SuccessRequestLayout";
+import CustomAnimatePresence from "./CustomAnimatePresence";
 import MordidelaLogoWithLabel from "./MordidelaLogoWithLabel";
 import { PageContainer, PageTitle } from "./PageComponents";
 import CentralizedLoading from "./CentralizedLoading";
@@ -21,6 +23,8 @@ export {
   InputTextFormik,
   FormRequestStatus,
   CentralizedLoading,
+  SuccessRequestLayout,
+  CustomAnimatePresence,
   ConfirmationLayout,
   MordidelaLogoWithLabel,
 };
