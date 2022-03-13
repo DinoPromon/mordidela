@@ -30,3 +30,7 @@ export const OrderFlavorsText = styled.p`
   font-size: 0.75rem;
 `;
 
+export const OrdersAddresComplement = styled.p`
+  font-size: 13px;
+`;
+
