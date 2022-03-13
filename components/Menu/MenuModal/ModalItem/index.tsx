@@ -1,21 +1,22 @@
 import React, { useState, useContext } from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
-import { ModalItemContainer, MenuItemActionsContainer, ItemPrice, useStyles } from "./styled";
+import { CartContext } from "@store/cart";
+import { getProductImagePath } from "@utils/images";
+import { formatProductId } from "@utils/formatters";
+import { transformPriceToString } from "@utils/transformation";
+
 import ItemImage from "./ItemImage";
 import ItemFlavorsList from "./ItemFlavorsList";
 import ItemAddsList from "./ItemAddsList";
 import ItemCounter from "./ItemCounter";
-import { CartContext } from "@store/cart";
-import { CustomTextField, FormButton } from "@components/shared";
-import { getProductImagePath } from "@utils/images";
-import { formatProductId } from "@utils/formatters";
-import { transformPriceToString } from "@utils/transformation";
+import { ModalItemContainer, MenuItemActionsContainer, ItemPrice, useStyles } from "./styled";
 
 import type ISabor from "@models/sabor";
 import type IAdicional from "@models/adicional";
 import type { CartProduct } from "@my-types/context";
 import type { RelatedProduct } from "@models/produto";
-import { Button, TextField } from "@material-ui/core";
 
 type Props = {
   item: RelatedProduct;
@@ -150,7 +151,7 @@ const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
         multiline
         onBlur={noteBlurHandler}
         fullWidth
-        inputProps={{style: {textAlign: "center"}}}
+        inputProps={{ style: { textAlign: "center" } }}
         label="Observação"
       ></TextField>
       <MenuItemActionsContainer>

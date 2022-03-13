@@ -13,7 +13,7 @@ import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { CartContext } from "@store/cart";
 import { TipoEntrega } from "@models/pedido";
 import { transformPriceToString } from "@utils/transformation";
-import { FormButton, Modal } from "@components/shared";
+import { Modal, ConfirmationLayout } from "@components/shared";
 
 import CartOrdersList from "./CartOrdersList";
 const CartAddress = dynamic(() => import("./CartAddress"));
@@ -165,23 +165,15 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
                 ) : (
                   <Fragment>
                     {shouldShowConfirmation ? (
-                      <Fragment>
-                        <CartOrderConfirmation>
-                          Tem certeza que deseja finalizar seu pedido?
-                        </CartOrderConfirmation>
-                        <CartOrderConfirmationButtons>
-                          <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={cancelConfirmationHandler}
-                          >
-                            Não
-                          </Button>
-                          <Button type="submit" variant="contained" color="secondary">
-                            Sim
-                          </Button>
-                        </CartOrderConfirmationButtons>
-                      </Fragment>
+                      <ConfirmationLayout
+                        cancelProps={{
+                          onClick: cancelConfirmationHandler,
+                        }}
+                        confirmProps={{
+                          type: "submit",
+                        }}
+                        confirmationMessage="Tem certeza que deseja finalizar seu pedido?"
+                      />
                     ) : (
                       <Fragment>
                         <CartFormTitle>Seu pedido</CartFormTitle>

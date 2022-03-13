@@ -1,26 +1,24 @@
-import FormInput from "./FormInput";
-import FormButton from "./FormButton";
+import Modal from "./Modal";
+import Loading from "./Loading";
 import InputRadio from "./InputRadio";
 import InputCheckbox from "./InputCheckbox";
-import FormRequestStatus from "./FormRequestStatus";
 import CustomTextField from "./CustomTextField";
-import Loading from "./Loading";
-import Modal from "./Modal";
 import InputTextFormik from "./InputTextFormik";
+import FormRequestStatus from "./FormRequestStatus";
+import ConfirmationLayout from "./ConfirmationLayout";
 import MordidelaLogoWithLabel from "./MordidelaLogoWithLabel";
 import { PageContainer, PageTitle } from "./PageComponents";
 
 export {
-  FormButton,
-  FormInput,
+  Modal,
+  Loading,
+  PageTitle,
   InputRadio,
   InputCheckbox,
-  FormRequestStatus,
-  Loading,
-  Modal,
-  MordidelaLogoWithLabel,
   PageContainer,
-  PageTitle,
   CustomTextField,
   InputTextFormik,
+  FormRequestStatus,
+  ConfirmationLayout,
+  MordidelaLogoWithLabel,
 };

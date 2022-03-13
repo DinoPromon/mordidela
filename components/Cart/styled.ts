@@ -39,17 +39,6 @@ export const CartOrderConfirmationButtons = styled.div`
   justify-content: center;
   margin-top: 1rem;
   margin-bottom: 2rem;
-
-  & > button:nth-child(odd) {
-    color: ${PINK};
-    border: 1px ${PINK} solid;
-    background-color: transparent;
-  }
-
-  & > button:nth-child(even) {
-    background-color: ${PINK};
-    color: white;
-  }
 `;
 
 export const CartOrderConfirmedIcon = styled.div`
