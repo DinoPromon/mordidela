@@ -1,6 +1,7 @@
 import React, { useContext, Fragment, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 import { Formik } from "formik";
 import { getSession } from "next-auth/client";
 import { BsCheck2Circle } from "react-icons/bs/index";
@@ -107,6 +108,10 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
     setShouldShowConfirmation(shouldShow);
   }
 
+  function cancelConfirmationHandler() {
+    changeShouldShowConfirmation(false);
+  }
+
   async function cartSubmitHandler(formValues: CartFormValues) {
     try {
       changeRequestStatus({ error: "", isLoading: true });
@@ -165,10 +170,16 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
                           Tem certeza que deseja finalizar seu pedido?
                         </CartOrderConfirmation>
                         <CartOrderConfirmationButtons>
-                          <FormButton onClick={changeShouldShowConfirmation.bind(null, false)}>
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={cancelConfirmationHandler}
+                          >
                             Não
-                          </FormButton>
-                          <FormButton type="submit">Sim</FormButton>
+                          </Button>
+                          <Button type="submit" variant="contained" color="secondary">
+                            Sim
+                          </Button>
                         </CartOrderConfirmationButtons>
                       </Fragment>
                     ) : (
