@@ -3,27 +3,40 @@ import { motion } from "framer-motion";
 
 import { PINK } from "@utils/colors";
 
-export const CupomContainer = styled.div`
+export const CouponContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 500px;
   margin: 0 auto;
   padding-bottom: 50px;
 `;
 
-export const CupomTitle = styled.h3`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const CouponTitle = styled.h3`
+  text-align: center;
   font-weight: bold;
 `;
 
-export const UsedCupomTitle = styled(CupomTitle)`
+export const UsedCouponTitle = styled(CouponTitle)`
   padding-top: 1rem;
 `;
 
-export const CupomDataContainer = styled(motion.div)`
+export const CouponGrid = styled.ul`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0 auto;
+  list-style: none;
+  gap: 2rem;
+
+  @media (max-width: 1160px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const CouponDataContainer = styled(motion.li)`
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -35,13 +48,13 @@ export const CupomDataContainer = styled(motion.div)`
   background-color: white;
 `;
 
-export const CupomData = styled.div`
+export const CouponData = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
 `;
 
-export const CupomDataHighlight = styled.span`
+export const CouponDataHighlight = styled.span`
   color: ${PINK};
   font-weight: bold;
 `;

@@ -1,5 +1,5 @@
 import React from "react";
-import Coupons from "@components/UserProfile/Cupom";
+import Coupons from "@components/UserProfile/Coupons";
 import { getSession } from "next-auth/client";
 import { NavBarFooter } from "@components/Layouts";
 import { FindManyRelatedUserCouponByUserId } from "@controllers/userCoupon";
