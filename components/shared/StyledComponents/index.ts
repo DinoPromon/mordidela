@@ -21,8 +21,8 @@ import {
   TotalText,
   CoupomDataContainer,
   ColoredText,
-  AddresTitle,
-  AddresComplement,
+  AddressTitle,
+  AddressComplement,
   TotalTextOrdersUserProfile,
 } from "./styled";
 
@@ -38,7 +38,7 @@ export {
   TotalText,
   CoupomDataContainer,
   ColoredText,
-  AddresTitle,
-  AddresComplement,
+  AddressTitle,
+  AddressComplement,
   TotalTextOrdersUserProfile,
 };

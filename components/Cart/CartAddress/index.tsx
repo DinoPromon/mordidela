@@ -8,7 +8,7 @@ import { useFormikContext } from "formik";
 import { FaPlusCircle } from "react-icons/fa";
 
 import { PURPLE } from "@utils/colors";
-import { AddresComplement, AddresTitle } from "@components/shared/StyledComponents";
+import { AddressComplement, AddressTitle } from "@components/shared/StyledComponents";
 
 import { CartFadeVariant } from "../animations";
 import { CartAddAddress, CartAddressContainer, CartAddressLoadingContainer } from "./styled";
@@ -64,7 +64,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
         </CartAddressLoadingContainer>
       ) : (
         <Fragment>
-          <AddresTitle>Endereços de entrega</AddresTitle>
+          <AddressTitle>Endereços de entrega</AddressTitle>
           <RadioGroup
             name="address-input-radio"
             value={values.addressId}
@@ -76,7 +76,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
                   label={
                     <Fragment>
                       <p>{getFormatedAddress(address)}</p>
-                      <AddresComplement>Complemento: {address.complemento}</AddresComplement>
+                      <AddressComplement>Complemento: {address.complemento}</AddressComplement>
                     </Fragment>
                   }
                   key={`address-${address.id_endereco}`}

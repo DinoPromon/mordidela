@@ -116,14 +116,14 @@ export const ColoredText = styled.p`
   }
 `;
 
-export const AddresTitle = styled.h2`
+export const AddressTitle = styled.h2`
   color: ${PURPLE};
   font-size: 1rem;
   padding-bottom: 0.25rem;
   padding-top: 0.25rem;
 `;
 
-export const AddresComplement = styled.p`
+export const AddressComplement = styled.p`
   font-size: 13px;
   cursor: pointer;
 `;
