@@ -14,8 +14,7 @@ export const CartChangeSelectContainer = styled.div`
     flex-direction: column;
   }
 
-  & > h3 {
+  & > h4 {
     color: ${PURPLE};
-    font-size: 1rem;
   }
 `;

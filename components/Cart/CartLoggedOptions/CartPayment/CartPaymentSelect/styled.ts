@@ -3,11 +3,9 @@ import { PURPLE } from "@utils/colors";
 
 export const CartPaymentSelectContainer = styled.div``;
 
-export const CartPaymentSelectTitle = styled.h3`
-  display: flex;
-  justify-content: center;
+export const CartPaymentSelectTitle = styled.h4`
+  text-align: center;
   color: ${PURPLE};
-  font-size: 1rem;
 `;
 
 export const CartPaymentSelectContainerRadioGroup = styled.div`

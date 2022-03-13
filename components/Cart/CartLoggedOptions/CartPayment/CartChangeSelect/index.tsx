@@ -47,7 +47,7 @@ const CartChangeSelect: React.FC = () => {
           animate="visible"
           exit="hidden"
         >
-          <h3>Precisa de troco? </h3>
+          <h4>Precisa de troco? </h4>
           <RadioGroup
             row
             name="input-need-change"

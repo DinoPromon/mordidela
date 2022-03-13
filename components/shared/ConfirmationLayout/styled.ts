@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const ConfirmationLayoutContainer = styled.p`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 `;
 
 export const ConfirmationMessageContainer = styled.h4`

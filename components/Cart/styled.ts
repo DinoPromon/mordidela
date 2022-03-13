@@ -9,7 +9,7 @@ export const CartForm = styled(Form)`
 `;
 
 export const CartFormTitle = styled.h2`
-  font-size: 18px;
+  font-size: 18pt;
   text-align: center;
   color: ${PURPLE};
 `;

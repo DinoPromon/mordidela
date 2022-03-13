@@ -31,7 +31,7 @@ const CartPaymentValue: React.FC<Props> = ({ shouldShowPaymentValue }) => {
           animate="visible"
           exit="hidden"
         >
-          <h3>Precisa de troco para quanto?</h3>
+          <h4>Precisa de troco para quanto?</h4>
           <CartPaymentInputChange>
             <span>R$</span>
             <input

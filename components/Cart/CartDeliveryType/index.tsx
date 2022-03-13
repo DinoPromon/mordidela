@@ -22,6 +22,7 @@ const CartDeliveryType: React.FC = () => {
 
   return (
     <CartDeliveryTypeContainer>
+      <h4>Como vai ser o tipo de entrega?</h4>
       <RadioGroup
         row
         name="input-delivery-type"

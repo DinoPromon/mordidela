@@ -116,9 +116,8 @@ export const ColoredText = styled.p`
   }
 `;
 
-export const AddressTitle = styled.h2`
+export const AddressTitle = styled.h4`
   color: ${PURPLE};
-  font-size: 1rem;
   padding-bottom: 0.25rem;
   padding-top: 0.25rem;
 `;

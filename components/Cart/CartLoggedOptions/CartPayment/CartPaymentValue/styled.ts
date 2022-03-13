@@ -8,9 +8,8 @@ export const CartPaymentValueContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
 
-  & > h3 {
+  & > h4 {
     color: ${PURPLE};
-    font-size: 1rem;
   }
 `;
 
