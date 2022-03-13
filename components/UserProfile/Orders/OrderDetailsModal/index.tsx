@@ -24,6 +24,7 @@ import {
   OrdersModalTitle,
   OrdersDataContainer,
   OrdersAddresContainer,
+  OrdersAddresComplement,
 } from "./styled";
 import {
   getNumberAsCurrency,
@@ -204,7 +205,9 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
           <AddresTitle>Endereço de entrega</AddresTitle>
           <p>{getFormattedOrderAddress(orderRelations.endereco)}</p>
           {orderRelations.endereco.complemento && (
-            <AddresComplement>Complemento: {orderRelations.endereco.complemento}</AddresComplement>
+            <OrdersAddresComplement>
+              Complemento: {orderRelations.endereco.complemento}
+            </OrdersAddresComplement>
           )}
         </OrdersAddresContainer>
       )}
