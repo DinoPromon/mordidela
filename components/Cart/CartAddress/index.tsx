@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useCallback, useEffect } from "react";
 import Link from "next/link";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
@@ -38,18 +38,21 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
     setFieldValue("addressId", addressId);
   }
 
-  function getDeliveryPriceFromSelectedAddress(addressId: AddressOnCart["id_endereco"]) {
-    const selectedAddress = addresses.find((address) => address.id_endereco === addressId);
-    if (selectedAddress) return selectedAddress.entrega.preco_entrega;
-    return null;
-  }
+  const getDeliveryPriceFromSelectedAddress = useCallback(
+    (addressId: AddressOnCart["id_endereco"]) => {
+      const selectedAddress = addresses.find((address) => address.id_endereco === addressId);
+      if (selectedAddress) return selectedAddress.entrega.preco_entrega;
+      return null;
+    },
+    [addresses]
+  );
 
   useEffect(() => {
     if (values.addressId) {
       const deliveryPrice = getDeliveryPriceFromSelectedAddress(values.addressId);
       setFieldValue("deliveryPrice", deliveryPrice);
     }
-  }, [values.addressId]);
+  }, [values.addressId, getDeliveryPriceFromSelectedAddress, setFieldValue]);
 
   return (
     <CartAddressContainer
@@ -85,7 +88,7 @@ const CartAddress: React.FC<CartAddressProps> = ({ addresses, isLoadingAddress, 
                 />
               ))}
           </RadioGroup>
-          <Link href={"/enderecos"}>
+          <Link href={"/enderecos"} passHref>
             <CartAddAddress onClick={onCloseModal}>
               <FaPlusCircle size={14} color={PURPLE} />
               <p>Adicionar endereço</p>

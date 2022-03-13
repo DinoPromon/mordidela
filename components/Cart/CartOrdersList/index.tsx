@@ -1,11 +1,13 @@
-import React from "react";
-import CartItemDescription from "./CartItemDescription";
+import React, { memo } from "react";
+
 import { transformPriceToString } from "@utils/transformation";
 import {
   AddsText,
   ProductsContainer,
   AddsListContainer,
 } from "@components/shared/StyledComponents";
+
+import CartItemDescription from "./CartItemDescription";
 
 import type { CartProduct } from "@my-types/context";
 
@@ -50,4 +52,4 @@ const CartOrdersList: React.FC<Props> = ({ products }) => {
   );
 };
 
-export default CartOrdersList;
+export default memo(CartOrdersList);

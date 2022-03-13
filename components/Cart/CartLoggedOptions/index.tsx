@@ -79,70 +79,70 @@ const CartLoggedOptions: React.FC<Props> = ({
   useEffect(() => {
     setFormError("");
     onChangeRequestStatus({ error: "" });
-  }, [values]);
+  }, [values, onChangeRequestStatus]);
 
   return (
-    <Fragment>
-      <AnimatePresence>
-        {shouldShowDeliveryPrice && (
-          <SubtotalText
-            as={motion.p}
-            variants={CartFadeVariant}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            Entrega: <span>R$ {transformPriceToString(Number(values.deliveryPrice))}</span>
-          </SubtotalText>
-        )}
-      </AnimatePresence>
+    <AnimatePresence>
+      {shouldShowDeliveryPrice && (
+        <SubtotalText
+          key="cart-subtotal-text"
+          as={motion.p}
+          variants={CartFadeVariant}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
+          Entrega: <span>R$ {transformPriceToString(Number(values.deliveryPrice))}</span>
+        </SubtotalText>
+      )}
 
-      <AnimatePresence>
-        {!Boolean(values.coupon) && (
-          <CartCupom
-            requestStatus={couponRequestStatus}
-            onChangeRequestStatus={changeCouponRequestStatus}
-          />
-        )}
-      </AnimatePresence>
+      {!Boolean(values.coupon) && (
+        <CartCupom
+          key="cart-coupon-input"
+          requestStatus={couponRequestStatus}
+          onChangeRequestStatus={changeCouponRequestStatus}
+        />
+      )}
 
-      <AnimatePresence>
-        {shouldShowDiscount && (
-          <CoupomDataContainer
-            as={motion.div}
-            variants={CartFadeVariant}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
-            <ColoredText>
-              Cupom: <span>{values.coupon?.codigo_cupom}</span>
-            </ColoredText>
-            <ColoredText>
-              Desconto:{" "}
-              {values.coupon?.tipo_cupom === TipoCupom.ENTREGA ? (
-                <span> Frete grátis</span>
-              ) : (
-                <span>{values.coupon?.valor_desconto}%</span>
-              )}
-            </ColoredText>
-            {values.coupon?.tipo_cupom === TipoCupom.PEDIDO && (
-              <ColoredText>
-                Valor:{" "}
-                <span>
-                  R$ {transformPriceToString((values.coupon.valor_desconto * subTotalPrice) / 100)}
-                </span>
-              </ColoredText>
+      {shouldShowDiscount && (
+        <CoupomDataContainer
+          key="cart-coupon-data"
+          as={motion.div}
+          variants={CartFadeVariant}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
+          <FaTrash cursor="pointer" size={16} color={PINK} onClick={removeSelectedCupom} />
+          <ColoredText>
+            Cupom: <span>{values.coupon?.codigo_cupom}</span>
+          </ColoredText>
+          <ColoredText>
+            Desconto:{" "}
+            {values.coupon?.tipo_cupom === TipoCupom.ENTREGA ? (
+              <span> Frete grátis</span>
+            ) : (
+              <span>{values.coupon?.valor_desconto}%</span>
             )}
-          </CoupomDataContainer>
-        )}
-      </AnimatePresence>
-      <CartPayment />
-      <TotalText>
+          </ColoredText>
+          {values.coupon?.tipo_cupom === TipoCupom.PEDIDO && (
+            <ColoredText>
+              Valor:{" "}
+              <span>
+                R$ {transformPriceToString((values.coupon.valor_desconto * subTotalPrice) / 100)}
+              </span>
+            </ColoredText>
+          )}
+        </CoupomDataContainer>
+      )}
+
+      <CartPayment key="cart-payment-type" />
+
+      <TotalText key="cart-totalprice-text">
         Total: <span>R$ {transformPriceToString(getTotalPrice() || 0)}</span>
       </TotalText>
-      <CartFormErrorContainer>
+
+      <CartFormErrorContainer key="cart-button-error">
         {request.isLoading && <Loading />}
         {!request.isLoading && (
           <Fragment>
@@ -159,7 +159,7 @@ const CartLoggedOptions: React.FC<Props> = ({
           </Fragment>
         )}
       </CartFormErrorContainer>
-    </Fragment>
+    </AnimatePresence>
   );
 };
 
