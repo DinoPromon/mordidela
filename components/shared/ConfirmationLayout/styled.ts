@@ -17,6 +17,5 @@ export const ConfirmationActionsContainer = styled.div`
   flex-direction: row;
   gap: 1.5rem;
   justify-content: center;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 `;
