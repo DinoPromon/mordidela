@@ -6,6 +6,7 @@ import { FaTrash } from "react-icons/fa/index";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Loading from "@components/shared/Loading";
+import useRequestState from "@hooks/useRequestState";
 import { PINK } from "@utils/colors";
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega } from "@models/pedido";
@@ -40,6 +41,7 @@ const CartLoggedOptions: React.FC<Props> = ({
 }) => {
   const { validateForm, values, setFieldValue } = useFormikContext<CartFormValues>();
   const [formError, setFormError] = useState("");
+  const [couponRequestStatus, changeCouponRequestStatus] = useRequestState();
 
   const isDelivery = values.deliveryType === TipoEntrega.ENTREGA;
   const shouldShowDeliveryPrice = isDelivery && values.coupon?.tipo_cupom !== TipoCupom.ENTREGA;
@@ -97,7 +99,10 @@ const CartLoggedOptions: React.FC<Props> = ({
 
       <AnimatePresence>
         {!Boolean(values.coupon) && (
-          <CartCupom requestStatus={request} onChangeRequestStatus={onChangeRequestStatus} />
+          <CartCupom
+            requestStatus={couponRequestStatus}
+            onChangeRequestStatus={changeCouponRequestStatus}
+          />
         )}
       </AnimatePresence>
 

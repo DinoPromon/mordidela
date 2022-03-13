@@ -32,11 +32,9 @@ import {
   CartFormLoginText,
   CartEmptyMessage,
   CartLoadingContainer,
-  CartOrderConfirmation,
   CartOrderConfirmedIcon,
   CartOrderConfirmedMessage,
   CartEmptyMessageContainer,
-  CartOrderConfirmationButtons,
 } from "./styled";
 import { SubtotalText } from "@components/shared/StyledComponents";
 
@@ -50,10 +48,7 @@ type Props = {
 
 const Cart: React.FC<Props> = ({ onCloseModal }) => {
   const { products, order, resetCart } = useContext(CartContext);
-  const { requestStatus, changeRequestStatus } = useRequestState({
-    error: "",
-    isLoading: false,
-  });
+  const [requestStatus, changeRequestStatus] = useRequestState();
   const isMounted = useIsMounted();
   const [session, setSession] = useState<Session | null>(null);
   const [isLoadingSession, setIsLoadingSession] = useState(true);

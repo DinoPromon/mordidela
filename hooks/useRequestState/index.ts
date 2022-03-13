@@ -11,7 +11,7 @@ const useRequestState = (initialStatus?: RequestState) => {
     setRequestStatus((prevState) => ({ ...prevState, ...status }));
   }, []);
 
-  return { requestStatus, changeRequestStatus };
+  return [requestStatus, changeRequestStatus] as [RequestState, typeof changeRequestStatus];
 };
 
 export default useRequestState;
