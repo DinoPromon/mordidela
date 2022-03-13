@@ -51,6 +51,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
   const [initialValues, setInitialValues] = useState(getAddressesFormInitialValues());
   const { requestStatus, changeRequestStatus } = useRequestState();
   const [editSuccess, setEditSuccess] = useState(false);
+  const [submitSuccess, setSubmitSucess] = useState(false);
   const [editAddressId, setEditAddressId] = useState<number>();
 
   function getFormattedAddressText(address: IEndereco) {
@@ -144,6 +145,7 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
         await editAddressSubmitHandler(editAddressId, values);
       } else {
         await createAddressSubmitHandler(session.user.id_usuario, values, formikHelpers);
+        setSubmitSucess(true);
       }
     } catch (e) {
       const error = e as AxiosError;
@@ -236,6 +238,11 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
                 </LoadingButton>
               </motion.div>
             </AddressesFormButtonContainer>
+            {submitSuccess && (
+              <SuccessMessageContainer>
+                <SuccessMessage>Endereço criado com sucesso</SuccessMessage>
+              </SuccessMessageContainer>
+            )}
             {editSuccess && (
               <SuccessMessageContainer>
                 <SuccessMessage>Editado com sucesso</SuccessMessage>
