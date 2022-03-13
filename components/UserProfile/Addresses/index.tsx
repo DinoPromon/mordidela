@@ -1,24 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Button from "@material-ui/core/Button";
 import { Formik } from "formik";
 import { motion } from "framer-motion";
-import { getSession, session } from "next-auth/client";
-import { FaTrash } from "react-icons/fa/index";
-import { BsPencil } from "react-icons/bs/index";
-import { HiOutlineLocationMarker } from "react-icons/hi/index";
+import { getSession } from "next-auth/client";
 import { ErrorMessage } from "@components/shared/StyledComponents";
 
 import Axios from "@api";
 import useRequestState from "@hooks/useRequestState";
 import LoadingButton from "@components/shared/LoadingButton";
-import ClickableItem from "@components/shared/ClickableItem";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
-import { PINK, PURPLE } from "@utils/colors";
 import { InputTextFormik } from "@components/shared";
 import { PageContainer, PageTitle } from "@components/shared";
 import { SuccessMessage } from "@components/shared/StyledComponents";
 import { ErrorMessageContainer } from "@components/Login/LoginForm/styled";
 
+import AddressesList from "./AddressesList";
 import { getAddressFormArg, getUpdateAddressFormArg } from "./Submit";
 import {
   getAddressesFormModel,
@@ -27,12 +23,8 @@ import {
   IAddressesFormValues,
 } from "./FormModel";
 import {
-  AddressData,
-  AddressIcons,
-  AddressListItem,
   CustomInputsDesign,
   AddressesFormikForm,
-  AddressListContainer,
   SuccessMessageContainer,
   AddressesFormButtonContainer,
 } from "./styled";
@@ -54,10 +46,6 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
   const [submitSuccess, setSubmitSucess] = useState(false);
   const [editAddressId, setEditAddressId] = useState<number>();
 
-  function getFormattedAddressText(address: IEndereco) {
-    return `${address.logradouro} N° ${address.numero}, ${address.bairro}`;
-  }
-
   function changeAddressInList(editAddressId: number, values: IAddressesFormValues) {
     setAddressList((prevState) => {
       const addressIndex = prevState.findIndex((address) => address.id_endereco === editAddressId);
@@ -74,31 +62,6 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
 
       return newAddressList;
     });
-  }
-
-  function getDeleteAddressHandler(address: IEndereco) {
-    return async () => {
-      const session = await getSession().catch((err) => console.log(err));
-      if (!session) return;
-
-      try {
-        const response = await Axios.put<IEndereco>(`/address/delete/${address.id_endereco}`);
-
-        setAddressList((prevState) =>
-          prevState.filter((listAddress) => listAddress.id_endereco !== response.data.id_endereco)
-        );
-      } catch (err) {
-        const error = err as AxiosError;
-        console.log(error.response?.data.message);
-      }
-    };
-  }
-
-  function getAddressEditClickHandler(address: IEndereco) {
-    return () => {
-      setInitialValues(getAddressesFormInitialValues(address));
-      setEditAddressId(address.id_endereco);
-    };
   }
 
   function cancelClickHandler() {
@@ -154,6 +117,27 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
 
     changeRequestStatus({ isLoading: false });
   }
+
+  const editAddress = useCallback((address: IEndereco) => {
+    setInitialValues(getAddressesFormInitialValues(address));
+    setEditAddressId(address.id_endereco);
+  }, []);
+
+  const deleteAddress = useCallback(async (address: IEndereco) => {
+    const session = await getSession().catch((err) => console.log(err));
+    if (!session) return;
+
+    try {
+      const response = await Axios.put<IEndereco>(`/address/delete/${address.id_endereco}`);
+
+      setAddressList((prevState) =>
+        prevState.filter((listAddress) => listAddress.id_endereco !== response.data.id_endereco)
+      );
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data.message);
+    }
+  }, []);
 
   return (
     <PageContainer>
@@ -255,39 +239,11 @@ const Addresses: React.FC<AddressesProps> = ({ addresses }) => {
         )}
       </Formik>
 
-      <AddressListContainer>
-        <h3>Endereços cadastrados</h3>
-
-        {addressList.map((address) => (
-          <AddressListItem key={`address-${address.id_endereco}`}>
-            <span>
-              <HiOutlineLocationMarker size={40} color={PINK} />
-            </span>
-            <AddressData>
-              <p>{getFormattedAddressText(address)}</p>
-              {address.complemento && <p>{`Complemento: ${address.complemento}`}</p>}
-            </AddressData>
-            <AddressIcons>
-              <ClickableItem
-                scale={1.25}
-                placement="bottom"
-                title="Editar endereço"
-                onClick={getAddressEditClickHandler(address)}
-              >
-                <BsPencil size={20} color={PURPLE} />
-              </ClickableItem>
-              <ClickableItem
-                title="Excluir endereço"
-                placement="bottom"
-                scale={1.25}
-                onClick={getDeleteAddressHandler(address)}
-              >
-                <FaTrash size={20} color={PURPLE} />
-              </ClickableItem>
-            </AddressIcons>
-          </AddressListItem>
-        ))}
-      </AddressListContainer>
+      <AddressesList
+        addresses={addressList}
+        onEditAddress={editAddress}
+        onDeleteAddress={deleteAddress}
+      />
     </PageContainer>
   );
 };
