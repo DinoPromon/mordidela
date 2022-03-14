@@ -44,7 +44,9 @@ const NavBarList: React.FC<Props> = (props) => {
         {showModal && <Cart onCloseModal={closeModalHandler} />}
       </CustomAnimatePresence>
       <NavBarListItem onClick={openSideBar}>
-        <FaBars size={24} color="white" />
+        <ClickableItem title="Menu lateral" scale={1.12}>
+          <FaBars size={24} color="white" />
+        </ClickableItem>
       </NavBarListItem>
       <NavBarListItem className="float-right">
         <ClickableItem title="Carrinho de compras" scale={1.12} onClick={openModalHandler}>
