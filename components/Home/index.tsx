@@ -8,17 +8,18 @@ import {
   BannerInitial,
   DoubleBanner,
   BannerFinal,
+  HomeMenuTitleHighlight,
 } from "./styled";
 
 const Home: React.FC = () => {
   return (
     <HomeContainer>
-      <HomeTitle>Bem vindo à Mordidela!</HomeTitle>
+      <HomeTitle>Bem vindo ao Mordidela!</HomeTitle>
       <BannerInitial src="/images/banner_home.png" />
       <HomeMenuTitle>
         Visite nosso{" "}
         <Link href={"/cardapio"}>
-          <span>cardápio</span>
+          <HomeMenuTitleHighlight>cardápio</HomeMenuTitleHighlight>
         </Link>{" "}
         e faça seu pedido!
       </HomeMenuTitle>

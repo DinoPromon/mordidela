@@ -42,12 +42,12 @@ export const HomeMenuTitle = styled.h2`
   @media (max-width: 425px) {
     font-size: 11pt;
   }
+`;
 
-  & > span {
-    color: ${PINK};
-    text-decoration: underline;
-    cursor: pointer;
-  }
+export const HomeMenuTitleHighlight = styled.span`
+  color: ${PINK};
+  border-bottom: 2px ${PINK} solid;
+  cursor: pointer;
 `;
 
 export const BannerInitial = styled.img`
