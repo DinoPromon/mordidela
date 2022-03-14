@@ -36,6 +36,7 @@ export default NextAuth({
           nome: user.nome,
           email: user.email,
           id_usuario: user.id_usuario,
+          autorizacao: user.autorizacao,
         };
       },
     }),

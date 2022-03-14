@@ -1,12 +1,13 @@
 import { throwError } from "@errors/index";
+import { Autorizacao } from "@models/usuario";
 
 import type { Session } from "next-auth";
-import type { Autorizacao } from "@models/usuario";
 import type IUsuario from "@models/usuario";
 
 type PermissionsData = {
   userId: IUsuario["id_usuario"];
-  authorization: Autorizacao;
+  userAuth?: Autorizacao;
+  necessaryAuthorization?: Autorizacao;
 };
 
 export class SessionValidator {
@@ -28,19 +29,25 @@ export class SessionValidator {
     }
   }
 
-  private validateAuthorization(authorization: Autorizacao) {
-    return throwError("S-NP");
+  private validateAdminAuthorization(
+    necessaryAuthorization: Autorizacao,
+    userAuth: Autorizacao | undefined
+  ) {
+    if (!userAuth) return throwError("S-NP");
+
+    if (necessaryAuthorization !== userAuth) return throwError("S-NP");
   }
 
   public validate(permissionsData?: Partial<PermissionsData>) {
     this.validateSession();
     if (permissionsData) {
-      const { authorization, userId } = permissionsData;
+      const { userAuth, necessaryAuthorization, userId } = permissionsData;
       if (userId) {
         this.validateUser(userId);
       }
-      if (authorization) {
-        this.validateAuthorization;
+
+      if (necessaryAuthorization) {
+        this.validateAdminAuthorization(necessaryAuthorization, userAuth);
       }
     }
   }

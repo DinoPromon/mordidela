@@ -5,7 +5,8 @@ import type IUsuario from "@models/usuario";
 interface MyUser {
   nome: IUsuario["nome"];
   email: IUsuario["email"];
-  id_usuario: number;
+  id_usuario: IUsuario["id_usuario"];
+  autorizacao: IUsuario["autorizacao"];
 }
 
 declare module "next-auth" {
