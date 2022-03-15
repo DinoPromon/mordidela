@@ -18,8 +18,10 @@ export const CartFormLoginText = styled.p`
   text-align: center;
   font-size: 1.25rem;
   padding: 0.25rem 0;
-  & > span {
-    font-size: inherit;
+  font-weight: bold;
+
+  & > a {
+    color: ${PINK};
   }
 `;
 
