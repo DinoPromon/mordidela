@@ -6,7 +6,6 @@ import type IUsuario from "@models/usuario";
 
 type PermissionsData = {
   userId: IUsuario["id_usuario"];
-  userAuth?: Autorizacao;
   necessaryAuthorization?: Autorizacao;
 };
 
@@ -29,11 +28,8 @@ export class SessionValidator {
     }
   }
 
-  private validateAdminAuthorization(
-    necessaryAuthorization: Autorizacao,
-    userAuth: Autorizacao | undefined
-  ) {
-    if (!userAuth) return throwError("S-NP");
+  private validateAdminAuthorization(necessaryAuthorization: Autorizacao) {
+    const userAuth = this.session?.user.autorizacao;
 
     if (necessaryAuthorization !== userAuth) return throwError("S-NP");
   }
@@ -41,13 +37,13 @@ export class SessionValidator {
   public validate(permissionsData?: Partial<PermissionsData>) {
     this.validateSession();
     if (permissionsData) {
-      const { userAuth, necessaryAuthorization, userId } = permissionsData;
+      const { necessaryAuthorization, userId } = permissionsData;
       if (userId) {
         this.validateUser(userId);
       }
 
       if (necessaryAuthorization) {
-        this.validateAdminAuthorization(necessaryAuthorization, userAuth);
+        this.validateAdminAuthorization(necessaryAuthorization);
       }
     }
   }
