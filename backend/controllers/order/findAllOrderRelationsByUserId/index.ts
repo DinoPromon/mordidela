@@ -1,30 +1,26 @@
 import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
 import { UUIDParse } from "@helpers/uuid";
+import { PaginationHelper } from "@helpers/pagination";
 import { DateSerializer } from "@helpers/date/serializer";
-import { FindAllOrdersRelationsByUserIdValidator } from "./validator";
 
-import type IPedido from "@models/pedido";
-import type IUsuario from "@models/usuario";
+import { FindAllOrderRelationsByUserIdValidator } from "./validator";
+
 import type IUsuarioCupom from "@models/usuario_cupom";
 import type { IOrderRelations } from "@models/pedido";
+import type { PaginatedSearchArg } from "@helpers/pagination/types";
 import type { IOrderProductRelations } from "@models/pedido_produto";
+import type { FindAllOrderRelationsByUserIdArg } from "./types";
 
 export class FindAllOrderRelationsByUserId {
-  private userId: IUsuario["id_usuario"];
-  private itemsAmount?: number;
-  private lastOrderId?: IPedido["id_pedido"];
-  private validator: FindAllOrdersRelationsByUserIdValidator;
+  private findAllArg: FindAllOrderRelationsByUserIdArg;
+  private validator: FindAllOrderRelationsByUserIdValidator;
+  private paginationHelper: PaginationHelper;
 
-  constructor(
-    userId: IUsuario["id_usuario"],
-    itemsAmount?: number,
-    lastOrderId?: IPedido["id_pedido"]
-  ) {
-    this.userId = userId;
-    this.itemsAmount = itemsAmount;
-    this.lastOrderId = lastOrderId;
-    this.validator = new FindAllOrdersRelationsByUserIdValidator(userId, itemsAmount, lastOrderId);
+  constructor(findAllArg: FindAllOrderRelationsByUserIdArg, paginationData: PaginatedSearchArg) {
+    this.findAllArg = findAllArg;
+    this.validator = new FindAllOrderRelationsByUserIdValidator(findAllArg);
+    this.paginationHelper = new PaginationHelper(paginationData);
   }
 
   public async exec() {
@@ -43,6 +39,8 @@ export class FindAllOrderRelationsByUserId {
   }
 
   private async findAllRelationsByUserId() {
+    const { itemsAmount, skip } = this.paginationHelper.getPaginationData();
+
     const ordersWithRelations = await Prisma.pedido
       .findMany({
         include: {
@@ -66,18 +64,13 @@ export class FindAllOrderRelationsByUserId {
           usuario_cupom: true,
         },
         where: {
-          id_usuario: this.userId,
+          id_usuario: this.findAllArg.userId,
         },
-        cursor: this.lastOrderId
-          ? {
-              id_pedido: this.lastOrderId,
-            }
-          : undefined,
-        skip: 0,
+        take: itemsAmount,
         orderBy: {
           id_pedido: "asc",
         },
-        take: this.itemsAmount,
+        skip: skip,
       })
       .catch((err) => throwError("O-FA"));
 
