@@ -16,7 +16,11 @@ const handler: NextApiHandler = async (req, res) => {
       case ReqMethod.GET: {
         const numberUserId = Number(userId);
         sessionValidator.validate({ userId: numberUserId });
-        const findAllOrderRelations = new FindAllOrderRelationsByUserId(numberUserId, 10);
+
+        const findAllOrderRelations = new FindAllOrderRelationsByUserId(
+          { userId: numberUserId },
+          req.query
+        );
         const orderRelationsData = await findAllOrderRelations.exec();
 
         return res.status(200).json(orderRelationsData);
