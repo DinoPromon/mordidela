@@ -1,8 +1,12 @@
-export type PaginatedSearchData = {
+export type PaginationData = {
   itemsAmount?: number;
   skip?: number;
 };
 
 export type PaginatedSearchArg = {
-  [key in keyof PaginatedSearchData]: string | string[];
+  [key in keyof PaginationData]: string | string[];
+};
+
+export type PaginatedData<T> = {
+  [key in keyof T]: T[key];
 };
