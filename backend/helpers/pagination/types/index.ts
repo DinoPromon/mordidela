@@ -4,7 +4,7 @@ export type PaginationData = {
 };
 
 export type PaginatedSearchArg = {
-  [key in keyof PaginationData]: string | string[];
+  [key in keyof PaginationData]: string | string[] | undefined;
 };
 
 export type PaginatedData<T> = {

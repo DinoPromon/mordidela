@@ -3,12 +3,15 @@ import * as Yup from "yup";
 import { throwError } from "@errors/index";
 import { PaginationHelperParser } from "./parser";
 
-import type { PaginatedSearchArg, PaginationData } from "./types";
+import type { PaginatedData, PaginatedSearchArg, PaginationData } from "./types";
 
 export class PaginationHelper extends PaginationHelperParser {
+  private ITEMS_AMOUNT_DEFAULT = 12;
+  private ITEMS_AMOUNT_MAX = 20;
+  private SKIP_DEFAULT = 0;
   private paginationData: PaginationData;
 
-  constructor(paginationData: PaginatedSearchArg) {
+  constructor(paginationData?: PaginatedSearchArg) {
     super(paginationData);
     this.paginationData = this.getParsedArg();
   }
@@ -16,12 +19,17 @@ export class PaginationHelper extends PaginationHelperParser {
   public getPaginationData() {
     this.validatePaginationData();
 
-    return this.paginationData;
+    return {
+      itemsAmount: this.paginationData.itemsAmount || this.ITEMS_AMOUNT_DEFAULT,
+      skip: this.paginationData.skip || this.SKIP_DEFAULT,
+    } as PaginationData;
   }
 
   private getValidationSchema() {
     const validationSchema: Yup.SchemaOf<PaginationData> = Yup.object().shape({
-      itemsAmount: Yup.number().max(20, "Permitido um máximo de 20 items por página").notRequired(),
+      itemsAmount: Yup.number()
+        .max(this.ITEMS_AMOUNT_MAX, "Permitido um máximo de 20 items por página")
+        .notRequired(),
       skip: Yup.number().notRequired(),
     });
 

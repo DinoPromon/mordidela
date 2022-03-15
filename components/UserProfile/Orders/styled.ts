@@ -18,11 +18,10 @@ export const OrdersContainer = styled.ul`
   }
 `;
 
-export const OrdersContainerList = styled(motion.li)`
+export const OrdersContainerItem = styled(motion.li)`
   padding: 1rem;
   background-color: white;
   border: 2px ${PURPLE} solid;
-  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
   border-radius: 10px;
 `;
 
@@ -45,4 +44,11 @@ export const MoreDetails = styled.div`
   & > p:hover {
     text-decoration: underline;
   }
+`;
+
+export const LoadMoreContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 0;
 `;

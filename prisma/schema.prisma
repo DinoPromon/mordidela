@@ -56,6 +56,7 @@ model endereco {
   numero      String   @db.VarChar(5)
   bairro      String   @db.VarChar(50)
   complemento String?  @db.VarChar(255)
+  deletado    Boolean  @default(false)
   id_usuario  Int      @db.UnsignedInt
   id_entrega  Int      @default(1) @db.UnsignedInt
   entrega     entrega  @relation(fields: [id_entrega], references: [id_entrega], onUpdate: Restrict, map: "id_entrega")

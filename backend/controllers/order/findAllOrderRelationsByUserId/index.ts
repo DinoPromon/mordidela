@@ -17,7 +17,7 @@ export class FindAllOrderRelationsByUserId {
   private validator: FindAllOrderRelationsByUserIdValidator;
   private paginationHelper: PaginationHelper;
 
-  constructor(findAllArg: FindAllOrderRelationsByUserIdArg, paginationData: PaginatedSearchArg) {
+  constructor(findAllArg: FindAllOrderRelationsByUserIdArg, paginationData?: PaginatedSearchArg) {
     this.findAllArg = findAllArg;
     this.validator = new FindAllOrderRelationsByUserIdValidator(findAllArg);
     this.paginationHelper = new PaginationHelper(paginationData);
@@ -68,7 +68,7 @@ export class FindAllOrderRelationsByUserId {
         },
         take: itemsAmount,
         orderBy: {
-          id_pedido: "asc",
+          id_pedido: "desc",
         },
         skip: skip,
       })

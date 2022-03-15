@@ -8,9 +8,9 @@ type DataParserArg = {
 export class PaginationHelperParser extends InputParser {
   private dataParserArg: DataParserArg;
 
-  constructor(dataParserArg: DataParserArg) {
+  constructor(dataParserArg?: DataParserArg) {
     super();
-    this.dataParserArg = this.parse(dataParserArg);
+    this.dataParserArg = this.parse(dataParserArg || {});
   }
 
   protected getParsedArg() {

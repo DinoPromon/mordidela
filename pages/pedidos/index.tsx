@@ -10,16 +10,11 @@ import { getSession } from "next-auth/client";
 
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
-import type { MyUser } from "@my-types/next-auth";
-import type { IOrderRelations } from "@models/pedido";
+// import type { MyUser } from "@my-types/next-auth";
+// import type { IOrderRelations } from "@models/pedido";
 
-type Props = {
-  user: MyUser;
-  ordersRelations: IOrderRelations[];
-};
-
-const OrdersPage: NextPageWithLayout<Props> = ({ user, ordersRelations }) => {
-  return <Orders ordersRelations={ordersRelations}></Orders>;
+const OrdersPage: NextPageWithLayout = () => {
+  return <Orders></Orders>;
 };
 
 OrdersPage.getLayout = function getLayout(page: ReactElement) {
@@ -38,27 +33,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  try {
-    const findAllOrderRelations = new FindAllOrderRelationsByUserId(session.user.id_usuario);
-    const ordersRelations = await findAllOrderRelations.exec();
-
-    return {
-      props: {
-        session,
-        ordersRelations,
-      },
-    };
-  } catch (err) {
-    return {
-      props: {
-        session,
-        redirect: {
-          detinations: "/",
-          permanent: false,
-        },
-      },
-    };
-  }
+  return {
+    props: {
+      session,
+    },
+  };
 };
 
 export default OrdersPage;

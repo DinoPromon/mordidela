@@ -3,6 +3,7 @@ import Loading from "./Loading";
 import InputRadio from "./InputRadio";
 import InputCheckbox from "./InputCheckbox";
 import CustomTextField from "./CustomTextField";
+import LoadingButton from "./LoadingButton";
 import InputTextFormik from "./InputTextFormik";
 import FormRequestStatus from "./FormRequestStatus";
 import ConfirmationLayout from "./ConfirmationLayout";
@@ -18,9 +19,10 @@ export {
   PageTitle,
   InputRadio,
   InputCheckbox,
+  LoadingButton,
   PageContainer,
-  CustomTextField,
   InputTextFormik,
+  CustomTextField,
   FormRequestStatus,
   CentralizedLoading,
   SuccessRequestLayout,
