@@ -1,5 +1,6 @@
 import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
+import { TipoEntrega } from "@models/pedido";
 import { CreateOrderValidator } from "./validator";
 
 import type ICupom from "@models/cupom";
@@ -8,18 +9,13 @@ import type IUsuario from "@models/usuario";
 import type IAdicional from "@models/adicional";
 import type IUsuarioCupom from "@models/usuario_cupom";
 import type IPedidoProduto from "@models/pedido_produto";
-import { CartPedido, TipoEntrega } from "@models/pedido";
 import type { CartProduto } from "@models/produto";
-
-export type CreateOrderData = {
-  orderData: CartPedido;
-  productsData: CartProduto[];
-};
+import type { CartOrderData, CreateOrderData } from "./types";
 
 export class CreateOrder {
   protected userId: IUsuario["id_usuario"];
   private validator: CreateOrderValidator;
-  private orderData: CartPedido;
+  private orderData: CartOrderData;
   private productsData: CartProduto[];
 
   constructor(userId: IUsuario["id_usuario"], createOrderData: CreateOrderData) {
@@ -36,17 +32,17 @@ export class CreateOrder {
 
     if (this.orderData.id_cupom) {
       await this.createCouponRelation(createdOrderId, this.orderData.id_cupom).catch((err) => {
-        console.log(err);
+        console.error(err);
         throwError("O-C", { customMessage: "Erro na criação da relação pedido e cupom" });
       });
     }
     await this.createProductRelations(createdOrderId).catch((err) => {
-      console.log(err);
+      console.error(err);
       throwError("O-C", { customMessage: "Erro na criação da relação pedido e produto" });
     });
 
     await this.giveFidelityCoupon().catch((err) => {
-      console.log(err);
+      console.error(err);
       throwError("O-C");
     });
   }

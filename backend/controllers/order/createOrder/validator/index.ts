@@ -2,12 +2,11 @@ import * as Yup from "yup";
 import { TipoEntrega, TipoPagamento } from "@models/pedido";
 import { throwError } from "@errors/index";
 
-import type { CreateOrderData } from "../index";
-import type { CartPedido } from "@models/pedido";
 import type { CartProduto } from "@models/produto";
+import type { CartOrderData, CreateOrderData } from "../types";
 
 export class CreateOrderValidator {
-  private orderData: CartPedido;
+  private orderData: CartOrderData;
   private productsData: CartProduto[];
 
   constructor(createOrderData: CreateOrderData) {
