@@ -29,16 +29,18 @@ const Orders: React.FC = () => {
   }
 
   function closeModal() {
-    setShowModal(false)
+    setShowModal(false);
   }
 
   return (
     <OrdersContainer>
       <CustomAnimatePresence exitBeforeEnter>
-{/*         <AdminOrderDetailsModal
-          key="admin-order-relations-modal"
-          onClose={closeModal}
-        /> */}
+        {show && (
+          <AdminOrderDetailsModal
+            key="admin-order-relations-modal"
+            onClose={closeModal}
+          />
+        )}
       </CustomAnimatePresence>
       <OrdersButtonContainer>
         <OrdersButton>Pedidos pendentes (10)</OrdersButton>

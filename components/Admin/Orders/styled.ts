@@ -85,7 +85,7 @@ export const OrdersUserContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 5px;
+  gap: 0.5rem;
 `;
 
 export const OrderUserDataContainer = styled.div`
