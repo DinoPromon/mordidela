@@ -1,4 +1,5 @@
 import React, { useContext, Fragment, useState, useEffect } from "react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Formik } from "formik";
@@ -13,6 +14,7 @@ import { TipoEntrega } from "@models/pedido";
 import { transformPriceToString } from "@utils/transformation";
 import { SubtotalText } from "@components/shared/StyledComponents";
 import { Modal, ConfirmationLayout, SuccessRequestLayout } from "@components/shared";
+
 
 import CartOrdersList from "./CartOrdersList";
 const CartAddress = dynamic(() => import("./CartAddress"));
@@ -192,7 +194,7 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                         {!session && !isLoadingSession && (
                           <CartFormLoginText>
-                            Faça login para continuar sua compra!
+                            Faça <Link href={"/login"}><a>login</a></Link> para continuar sua compra!
                           </CartFormLoginText>
                         )}
                       </Fragment>
