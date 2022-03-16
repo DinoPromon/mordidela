@@ -6,7 +6,3 @@ export type PaginationData = {
 export type PaginatedSearchArg = {
   [key in keyof PaginationData]: string | string[] | undefined;
 };
-
-export type PaginatedData<T> = {
-  [key in keyof T]: T[key];
-};

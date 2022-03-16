@@ -3,11 +3,11 @@ import * as Yup from "yup";
 import { throwError } from "@errors/index";
 import { PaginationHelperParser } from "./parser";
 
-import type { PaginatedData, PaginatedSearchArg, PaginationData } from "./types";
+import type { PaginatedSearchArg, PaginationData } from "./types";
 
 export class PaginationHelper extends PaginationHelperParser {
   private ITEMS_AMOUNT_DEFAULT = 12;
-  private ITEMS_AMOUNT_MAX = 20;
+  private ITEMS_AMOUNT_MAX = 24;
   private SKIP_DEFAULT = 0;
   private paginationData: PaginationData;
 
