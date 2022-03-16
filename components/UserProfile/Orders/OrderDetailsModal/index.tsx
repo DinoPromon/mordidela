@@ -9,7 +9,6 @@ import {
   AddressTitle,
   SubtotalText,
   TrashPriceText,
-  AddressComplement,
   AddsListContainer,
   TrashPriceContainer,
   CoupomDataContainer,
