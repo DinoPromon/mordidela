@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { NavBarAdminContainer, NavBarAdminListItem } from "./styled";
+import ProductsDropdown from "./ProductsDropdown";
 
 const NavBarAdmin: React.FC = () => {
   return (
@@ -11,9 +12,7 @@ const NavBarAdmin: React.FC = () => {
       <Link href={"/admin/pedidos"}>
         <NavBarAdminListItem>Pedidos</NavBarAdminListItem>
       </Link>
-      <Link href={"/admin/produtos"}>
-        <NavBarAdminListItem>Produtos</NavBarAdminListItem>
-      </Link>
+      <ProductsDropdown>Produtos</ProductsDropdown>
       <Link href={"/admin/promocoes"}>
         <NavBarAdminListItem>Promoções</NavBarAdminListItem>
       </Link>
