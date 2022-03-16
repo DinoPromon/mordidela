@@ -9,6 +9,7 @@ import { FindAllOrderRelationsByUserIdValidator } from "./validator";
 import type IUsuarioCupom from "@models/usuario_cupom";
 import type { IOrderRelations } from "@models/pedido";
 import type { PaginatedSearchArg } from "@helpers/pagination/types";
+import type { PaginatedResponse } from "@my-types/backend/pagination";
 import type { IOrderProductRelations } from "@models/pedido_produto";
 import type { FindAllOrderRelationsByUserIdArg } from "./types";
 
@@ -32,10 +33,25 @@ export class FindAllOrderRelationsByUserId {
         orderRelationsData as IOrderRelations[]
       );
 
-      return serializedOrderRelationsData;
+      const countOrderRelationsData = await this.countFindAllRelationsByUserId();
+
+      return {
+        count: countOrderRelationsData,
+        items: serializedOrderRelationsData,
+      } as PaginatedResponse<IOrderRelations>;
     } catch (err) {
       return throwError("O-FA");
     }
+  }
+
+  private async countFindAllRelationsByUserId() {
+    const count = await Prisma.pedido.count({
+      where: {
+        id_usuario: this.findAllArg.userId,
+      },
+    });
+
+    return count;
   }
 
   private async findAllRelationsByUserId() {

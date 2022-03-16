@@ -4,6 +4,7 @@ import { PaginationHelper } from "@helpers/pagination";
 
 import type { IOrderGeneralData } from "@models/pedido";
 import type { PaginatedSearchArg } from "@helpers/pagination/types";
+import type { PaginatedResponse } from "@my-types/backend/pagination";
 
 export class FindAllOrderGeneralData {
   private paginationHelper: PaginationHelper;
@@ -14,8 +15,18 @@ export class FindAllOrderGeneralData {
 
   public async exec() {
     const ordersGeneralData = await this.findAll();
+    const countOrdersGeneralData = await this.countFindAll();
 
-    return ordersGeneralData;
+    return {
+      count: countOrdersGeneralData,
+      items: ordersGeneralData,
+    } as PaginatedResponse<IOrderGeneralData>;
+  }
+
+  private async countFindAll() {
+    const count = await Prisma.pedido.count();
+
+    return count;
   }
 
   private async findAll() {

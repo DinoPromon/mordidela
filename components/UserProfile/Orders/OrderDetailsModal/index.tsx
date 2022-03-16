@@ -122,7 +122,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
   }
 
   return (
-    <Modal onClose={onClose} key="order-relations-modal">
+    <Modal onClose={onClose}>
       <OrdersModalTitle>Pedido {orderRelations.id_pedido}</OrdersModalTitle>
       <ProductsContainer>
         {orderRelations.pedido_produto.map((orderProduct) => (

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment } from "react";
-import Button from "@material-ui/core/Button";
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 import { getSession } from "next-auth/client";
 import { FaPlusCircle } from "react-icons/fa";
 
@@ -30,44 +30,44 @@ import {
 
 import type { AxiosError } from "axios";
 import type { IOrderRelations } from "@models/pedido";
+import type { FindAllOrderRelationsResponse } from "@my-types/responses";
 
 const Orders: React.FC = () => {
   const [isInitialRequest, setIsInitialRequest] = useState(true);
+  const [count, setCount] = useState<number>();
   const [skipItems, setSkipItems] = useState(0);
   const [requestStatus, changeRequestStatus] = useRequestState();
   const [ordersRelations, setOrdersRelations] = useState<IOrderRelations[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<IOrderRelations | null>(null);
 
-  useEffect(() => {
-    fetchUserOrdersRelations();
-  }, []);
+  const fetchUserOrdersRelations = useCallback(
+    async (skip?: number) => {
+      changeRequestStatus({ isLoading: true });
+      const session = await getSession();
+      if (!session) return;
 
-  async function fetchUserOrdersRelations(skip?: number) {
-    changeRequestStatus({ isLoading: true });
-    const session = await getSession();
-    if (!session) {
-      return;
-    }
-
-    try {
-      const response = await Axios.get<IOrderRelations[]>(
-        `/order/relations/${session.user.id_usuario}`,
-        {
-          params: {
-            skip: skip || 0,
-          },
-        }
-      );
-      setOrdersRelations((prevState) => [...prevState, ...response.data]);
-      setSkipItems((prevState) => prevState + response.data.length);
-      setIsInitialRequest(false);
-    } catch (err) {
-      const error = err as AxiosError;
-      console.log(error.response?.data.message);
-      changeRequestStatus({ error: error.response?.data.message });
-    }
-    changeRequestStatus({ isLoading: false });
-  }
+      try {
+        const response = await Axios.get<FindAllOrderRelationsResponse>(
+          `/order/relations/${session.user.id_usuario}`,
+          {
+            params: {
+              skip: skip || 0,
+            },
+          }
+        );
+        setCount(response.data.count);
+        setOrdersRelations((prevState) => [...prevState, ...response.data.items]);
+        setSkipItems((prevState) => prevState + response.data.items.length);
+        setIsInitialRequest(false);
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error.response?.data.message);
+        changeRequestStatus({ error: error.response?.data.message });
+      }
+      changeRequestStatus({ isLoading: false });
+    },
+    [changeRequestStatus]
+  );
 
   function openModal(orderRelation: IOrderRelations) {
     setSelectedOrder(orderRelation);
@@ -95,55 +95,57 @@ const Orders: React.FC = () => {
     fetchUserOrdersRelations(skipItems);
   }
 
+  useEffect(() => {
+    fetchUserOrdersRelations();
+  }, [fetchUserOrdersRelations]);
+
   return (
     <PageContainer>
       <CustomAnimatePresence exitBeforeEnter>
-        {selectedOrder && (
-          <OrderDetailsModal
-            key="order-relations-modal"
-            orderRelations={selectedOrder}
-            onClose={closeModal}
-          />
-        )}
+        {selectedOrder && <OrderDetailsModal orderRelations={selectedOrder} onClose={closeModal} />}
       </CustomAnimatePresence>
+
       <PageTitle>Pedidos</PageTitle>
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
       {!isInitialRequest && ordersRelations.length && (
-        <Fragment>
-          <OrdersContainer>
-            {ordersRelations.map((orderRelation) => (
-              <OrdersContainerItem
-                whileHover={{ scale: 1.07 }}
-                key={`order-history-${orderRelation.id_pedido}`}
-              >
-                <p>
-                  <OrdersContainerListHighlight>
-                    Pedido {`${orderRelation.id_pedido}`}
-                  </OrdersContainerListHighlight>{" "}
-                  {`- ${getFormattedDate(orderRelation.data_pedido)} às ${getFormattedHours(
-                    createDate(orderRelation.data_pedido)
-                  )}`}
-                </p>
-                <p>
-                  <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight>{" "}
-                  {`${getOrderStatusText(orderRelation)}`}
-                </p>
-                <p>
-                  <OrdersContainerListHighlight>Total:</OrdersContainerListHighlight>{" "}
-                  {`${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}
-                </p>
-                <p>
-                  <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight>{" "}
-                  {`${getOrderPaymentTypeText(orderRelation)}`}
-                </p>
-                <MoreDetails onClick={() => openModal(orderRelation)}>
-                  <FaPlusCircle size={12} color={PINK} />
-                  <p>Detalhes</p>
-                </MoreDetails>
-              </OrdersContainerItem>
-            ))}
-          </OrdersContainer>
-          <LoadMoreContainer>
+        <OrdersContainer>
+          {ordersRelations.map((orderRelation) => (
+            <OrdersContainerItem
+              whileHover={{ scale: 1.07 }}
+              key={`order-history-${orderRelation.id_pedido}`}
+            >
+              <p>
+                <OrdersContainerListHighlight>
+                  Pedido {`${orderRelation.id_pedido}`}
+                </OrdersContainerListHighlight>{" "}
+                {`- ${getFormattedDate(orderRelation.data_pedido)} às ${getFormattedHours(
+                  createDate(orderRelation.data_pedido)
+                )}`}
+              </p>
+              <p>
+                <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight>{" "}
+                {`${getOrderStatusText(orderRelation)}`}
+              </p>
+              <p>
+                <OrdersContainerListHighlight>Total:</OrdersContainerListHighlight>{" "}
+                {`${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}
+              </p>
+              <p>
+                <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight>{" "}
+                {`${getOrderPaymentTypeText(orderRelation)}`}
+              </p>
+              <MoreDetails onClick={() => openModal(orderRelation)}>
+                <FaPlusCircle size={12} color={PINK} />
+                <p>Detalhes</p>
+              </MoreDetails>
+            </OrdersContainerItem>
+          ))}
+        </OrdersContainer>
+      )}
+
+      <CustomAnimatePresence>
+        {count && count < skipItems && (
+          <LoadMoreContainer key="sabe-de-nada-hehe" as={motion.div} exit={{ opacity: 0 }}>
             <LoadingButton
               variant="contained"
               color="secondary"
@@ -153,8 +155,8 @@ const Orders: React.FC = () => {
               Carregar mais
             </LoadingButton>
           </LoadMoreContainer>
-        </Fragment>
-      )}
+        )}
+      </CustomAnimatePresence>
     </PageContainer>
   );
 };
