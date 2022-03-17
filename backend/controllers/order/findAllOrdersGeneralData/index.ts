@@ -46,7 +46,7 @@ export class FindAllOrderGeneralData {
         },
         take: itemsAmount,
         orderBy: {
-          id_pedido: "asc",
+          id_pedido: "desc",
         },
         skip: skip,
       })
