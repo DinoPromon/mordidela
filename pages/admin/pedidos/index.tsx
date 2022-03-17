@@ -11,7 +11,7 @@ import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
 
 const OrdersPage: NextPageWithLayout = () => {
-  return <Orders></Orders>;
+  return <Orders />;
 };
 
 OrdersPage.getLayout = function getLayout(page: ReactElement) {

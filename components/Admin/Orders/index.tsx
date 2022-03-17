@@ -1,28 +1,61 @@
-import React, { useState } from "react";
-import { Button } from "@material-ui/core";
-import { BiUserCircle } from "react-icons/bi/index";
-import { HiOutlineLocationMarker } from "react-icons/hi/index";
+import React, { useState, useEffect, Fragment } from "react";
+import dynamic from "next/dynamic";
+
+import Axios from "@api";
+import useIsMounted from "@hooks/useIsMounted";
+import useRequestState from "@hooks/useRequestState";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
+import { CentralizedLoading, LoadingButton } from "@components/shared";
+
+const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
 import AdminOrderDetailsModal from "./AdminOrderDetailsModal";
 import {
+  OrdersButton,
   OrdersContainer,
   OrdersButtonContainer,
-  OrdersButton,
-  OrdersCardContainer,
-  ButtonContainer,
-  OrdersCard,
-  OrdersCardContent,
-  OrdersCardContentContainer,
-  OrdersCardTitleContainer,
-  OrdersCardTitle,
-  OrdersUserContainer,
-  OrdersUser,
-  OrderUserDataContainer,
+  LoadMoreButtonContainer,
 } from "./styled";
-import { PURPLE, PINK } from "@utils/colors";
+
+import type { AxiosError } from "axios";
+import type { IOrderGeneralData } from "@models/pedido";
+import type { OrdersGeneralDataResponse } from "@my-types/responses";
 
 const Orders: React.FC = () => {
+  const isMounted = useIsMounted();
+  const [requestStatus, changeRequestStatus] = useRequestState();
+  const [count, setCount] = useState<number>();
+  const [skipItems, setSkipItems] = useState(0);
   const [show, setShowModal] = useState(false);
+  const [isInitialRequest, setIsInitialRequest] = useState(true);
+  const [ordersGeneralData, setOrdersGeneralData] = useState<IOrderGeneralData[]>([]);
+
+  async function fetchOrdersGeneralData(skip?: number) {
+    changeRequestStatus({ error: "", isLoading: true });
+    try {
+      const response = await Axios.get<OrdersGeneralDataResponse>("/order/general-data", {
+        params: {
+          skip: skip || 0,
+        },
+      });
+      if (!isMounted.current) return;
+
+      setCount(response.data.count);
+      setIsInitialRequest(false);
+      setOrdersGeneralData((prevsState) => [...prevsState, ...response.data.items]);
+      setSkipItems((prevState) => prevState + response.data.items.length);
+    } catch (err) {
+      if (!isMounted.current) return;
+
+      const error = err as AxiosError;
+      console.log(error.response?.data.message);
+      changeRequestStatus({ error: error.response?.data.message });
+    }
+    changeRequestStatus({ isLoading: false });
+  }
+
+  function loadMoreHandler() {
+    fetchOrdersGeneralData(skipItems);
+  }
 
   function openModal() {
     setShowModal(true);
@@ -32,297 +65,44 @@ const Orders: React.FC = () => {
     setShowModal(false);
   }
 
+  useEffect(() => {
+    fetchOrdersGeneralData();
+  }, []);
+
   return (
     <OrdersContainer>
       <CustomAnimatePresence exitBeforeEnter>
-        {show && (
-          <AdminOrderDetailsModal
-            key="admin-order-relations-modal"
-            onClose={closeModal}
-          />
-        )}
+        {show && <AdminOrderDetailsModal key="admin-order-relations-modal" onClose={closeModal} />}
       </CustomAnimatePresence>
-      <OrdersButtonContainer>
-        <OrdersButton>Pedidos pendentes (10)</OrdersButton>
-        <OrdersButton>Pedidos confirmados (5)</OrdersButton>
-        <OrdersButton>Pedidos rejeitados (1)</OrdersButton>
-        <OrdersButton>Relatório de pedidos</OrdersButton>
-      </OrdersButtonContainer>
-      <OrdersCardContainer>
-        <OrdersCard>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>#1987</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
-          </OrdersCardTitleContainer>
-          <OrdersUserContainer>
-            <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rafael Hiro Kato Kawakami</p>
-              <span>(44) 98765-4321</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <ButtonContainer>
-            <Button onClick={openModal} variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button>
-          </ButtonContainer>
-        </OrdersCard>
+      {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
 
-        <OrdersCard>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>#1987</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
-          </OrdersCardTitleContainer>
-          <OrdersUserContainer>
-            <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rafael Hiro Kato Kawakami</p>
-              <span>(44) 98765-4321</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <ButtonContainer>
-            <Button variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            {/*             <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button> */}
-            <p>Confirmado em 11/03/2022 às 21:35</p>
-          </ButtonContainer>
-        </OrdersCard>
+      {!isInitialRequest && (
+        <Fragment>
+          <OrdersButtonContainer>
+            <OrdersButton>Pedidos pendentes (10)</OrdersButton>
+            <OrdersButton>Pedidos confirmados (5)</OrdersButton>
+            <OrdersButton>Pedidos rejeitados (1)</OrdersButton>
+            <OrdersButton>Relatório de pedidos</OrdersButton>
+          </OrdersButtonContainer>
 
-        <OrdersCard>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>#1987</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
-          </OrdersCardTitleContainer>
-          <OrdersUserContainer>
-            <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rafael Hiro Kato Kawakami</p>
-              <span>(44) 98765-4321</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <ButtonContainer>
-            <Button variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            {/*             <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button> */}
-            <p>Rejeitado em 11/03/2022 às 21:40</p>
-          </ButtonContainer>
-        </OrdersCard>
+          {ordersGeneralData.length > 0 && (
+            <OrdersGeneralDataList openModal={openModal} ordersGeneralData={ordersGeneralData} />
+          )}
+        </Fragment>
+      )}
 
-        <OrdersCard>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>#1987</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
-          </OrdersCardTitleContainer>
-          <OrdersUserContainer>
-            <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rafael Hiro Kato Kawakami</p>
-              <span>(44) 98765-4321</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <ButtonContainer>
-            <Button variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button>
-          </ButtonContainer>
-        </OrdersCard>
-
-        <OrdersCard>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>#1987</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
-          </OrdersCardTitleContainer>
-          <OrdersUserContainer>
-            <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rafael Hiro Kato Kawakami</p>
-              <span>(44) 98765-4321</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <ButtonContainer>
-            <Button variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button>
-          </ButtonContainer>
-        </OrdersCard>
-
-        <OrdersCard>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>#1987</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
-          </OrdersCardTitleContainer>
-          <OrdersUserContainer>
-            <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rafael Hiro Kato Kawakami</p>
-              <span>(44) 98765-4321</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <ButtonContainer>
-            <Button variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button>
-          </ButtonContainer>
-        </OrdersCard>
-
-        <OrdersCard>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>#1987</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
-          </OrdersCardTitleContainer>
-          <OrdersUserContainer>
-            <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rafael Hiro Kato Kawakami</p>
-              <span>(44) 98765-4321</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <ButtonContainer>
-            <Button variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button>
-          </ButtonContainer>
-        </OrdersCard>
-
-        <OrdersCard>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>#1987</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
-          </OrdersCardTitleContainer>
-          <OrdersUserContainer>
-            <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rafael Hiro Kato Kawakami</p>
-              <span>(44) 98765-4321</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
-          </OrdersUserContainer>
-          <ButtonContainer>
-            <Button variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button>
-          </ButtonContainer>
-        </OrdersCard>
-      </OrdersCardContainer>
+      {count && skipItems < count && (
+        <LoadMoreButtonContainer>
+          <LoadingButton
+            color="secondary"
+            variant="contained"
+            isLoading={requestStatus.isLoading}
+            onClick={loadMoreHandler}
+          >
+            Carregar mais
+          </LoadingButton>
+        </LoadMoreButtonContainer>
+      )}
     </OrdersContainer>
   );
 };

@@ -20,7 +20,7 @@ import { LoadMoreContainer } from "./styled";
 
 import type { AxiosError } from "axios";
 import type { IOrderRelations } from "@models/pedido";
-import type { FindAllOrderRelationsResponse } from "@my-types/responses";
+import type { OrdersRelationsResponse } from "@my-types/responses";
 
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
@@ -38,7 +38,7 @@ const Orders: React.FC = () => {
       if (!session) return;
 
       try {
-        const response = await Axios.get<FindAllOrderRelationsResponse>(
+        const response = await Axios.get<OrdersRelationsResponse>(
           `/order/relations/${session.user.id_usuario}`,
           {
             params: {
@@ -93,7 +93,7 @@ const Orders: React.FC = () => {
       )}
 
       <CustomAnimatePresence>
-        {count && count < skipItems && (
+        {count && skipItems < count && (
           <LoadMoreContainer key="sabe-de-nada-hehe" as={motion.div} exit={{ opacity: 0 }}>
             <LoadingButton
               variant="contained"
