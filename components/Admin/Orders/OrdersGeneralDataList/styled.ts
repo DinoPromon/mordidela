@@ -29,21 +29,7 @@ export const OrdersCardTitle = styled.h2`
   font-size: 13pt;
 `;
 
-export const OrdersUserContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-`;
 
-export const OrdersUser = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  & > span {
-    font-size: 13px;
-  }
-`;
 
 export const ButtonContainer = styled.div`
   display: flex;
