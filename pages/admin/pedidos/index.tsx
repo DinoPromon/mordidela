@@ -1,10 +1,11 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import { getSession } from "next-auth/client";
 import { SessionValidator } from "@helpers/session";
 
-import Orders from "@components/Admin/Orders";
+const Orders = dynamic(() => import("@components/Admin/Orders"));
+const NavBarAdmin = dynamic(() => import("@components/Layouts/NavBarAdmin"));
 import { Autorizacao } from "@models/usuario";
-import { NavBarAdmin } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
 
 import type { ReactElement } from "react";
@@ -20,6 +21,7 @@ OrdersPage.getLayout = function getLayout(page: ReactElement) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
+
   try {
     const sessionValidator = new SessionValidator(session);
     sessionValidator.validate({ necessaryAuthorization: Autorizacao.ADMIN });

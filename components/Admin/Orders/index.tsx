@@ -8,7 +8,7 @@ import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { CentralizedLoading, LoadingButton } from "@components/shared";
 
 const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
-import AdminOrderDetailsModal from "./AdminOrderDetailsModal";
+const AdminOrderDetailsModal = dynamic(() => import("./AdminOrderDetailsModal"));
 import {
   OrdersButton,
   OrdersContainer,
