@@ -6,14 +6,13 @@ import { HiOutlineLocationMarker } from "react-icons/hi/index";
 import { PURPLE } from "@utils/colors";
 
 import {
-  OrdersUser,
   OrdersCard,
   ButtonContainer,
   OrdersCardTitle,
-  OrdersUserContainer,
   OrdersCardContainer,
   OrdersCardTitleContainer,
 } from "./styled";
+import { OrdersUser, OrdersUserContainer } from "../styled";
 
 import type { IOrderGeneralData } from "@models/pedido";
 

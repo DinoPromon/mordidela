@@ -12,7 +12,6 @@ import {
   AdminOrdersPaymentValuesContainer,
   AdminPaymentType,
 } from "./styled";
-
 import { OrdersUserContainer, OrdersUser } from "../styled";
 
 type AdminOrderDetailsModalProps = {
@@ -91,7 +90,9 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({ onClose
           <p>R$ 20,90</p>
         </AdminOrdersPaymentValues>
         <AdminOrdersPaymentValues>
-          <p>Cupom de desconto: <span>TESTE</span></p>
+          <p>
+            Cupom de desconto: <span>TESTE</span>
+          </p>
           <p>R$ 2,00</p>
         </AdminOrdersPaymentValues>
         <AdminOrdersPaymentValues>
