@@ -76,3 +76,8 @@ export const GeneralDataContainer = styled.div`
     font-size: 13px;
   }
 `;
+
+export const NoRequests = styled.h3`
+  text-align: center;
+  padding-top: 3rem;
+`;

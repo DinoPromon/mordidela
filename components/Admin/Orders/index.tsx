@@ -10,7 +10,13 @@ import { CentralizedLoading, LoadingButton } from "@components/shared";
 
 const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
 const AdminOrderDetailsModal = dynamic(() => import("./AdminOrderDetailsModal"));
-import { OrdersFilter, OrdersContainer, FiltersContainer, LoadMoreButtonContainer } from "./styled";
+import {
+  OrdersFilter,
+  OrdersContainer,
+  FiltersContainer,
+  LoadMoreButtonContainer,
+  NoRequests,
+} from "./styled";
 
 import type { AxiosError } from "axios";
 import type { IOrderGeneralData } from "@models/pedido";
@@ -124,6 +130,18 @@ const Orders: React.FC = () => {
 
       {!isInitialRequest && ordersGeneralData.length > 0 && (
         <OrdersGeneralDataList openModal={openModal} ordersGeneralData={ordersGeneralData} />
+      )}
+
+      {!isInitialRequest && count === 0 && selectedOrderStatus === StatusPedido.REJEITADO && (
+        <NoRequests>Não há pedidos rejeitados!</NoRequests>
+      )}
+
+      {!isInitialRequest && count === 0 && selectedOrderStatus === StatusPedido.CONFIRMADO && (
+        <NoRequests>Não há pedidos confirmados!</NoRequests>
+      )}
+
+      {!isInitialRequest && count === 0 && selectedOrderStatus === StatusPedido.PENDENTE && (
+        <NoRequests>Não há pedidos pendentes</NoRequests>
       )}
 
       {count !== undefined && skipItems < count && (
