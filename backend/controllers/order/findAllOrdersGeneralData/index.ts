@@ -2,14 +2,22 @@ import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
 import { PaginationHelper } from "@helpers/pagination";
 
+import { FindAllOrderGeneralDataParser } from "./parser";
+
 import type { IOrderGeneralData } from "@models/pedido";
 import type { PaginatedSearchArg } from "@helpers/pagination/types";
 import type { PaginatedResponse } from "@my-types/backend/pagination";
 
+import type { FiltersData, RawFiltersData } from "./types/filter";
+
 export class FindAllOrderGeneralData {
   private paginationHelper: PaginationHelper;
+  private filtersData: FiltersData;
 
-  constructor(paginationData: PaginatedSearchArg) {
+  constructor(rawFiltersData: RawFiltersData, paginationData: PaginatedSearchArg) {
+    const parser = new FindAllOrderGeneralDataParser(rawFiltersData);
+
+    this.filtersData = parser.parse();
     this.paginationHelper = new PaginationHelper(paginationData);
   }
 
@@ -24,7 +32,11 @@ export class FindAllOrderGeneralData {
   }
 
   private async countFindAll() {
-    const count = await Prisma.pedido.count();
+    const count = await Prisma.pedido.count({
+      where: {
+        ...this.filtersData,
+      },
+    });
 
     return count;
   }
@@ -45,6 +57,9 @@ export class FindAllOrderGeneralData {
           },
         },
         take: itemsAmount,
+        where: {
+          ...this.filtersData,
+        },
         orderBy: {
           id_pedido: "desc",
         },

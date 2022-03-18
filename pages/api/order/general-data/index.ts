@@ -21,7 +21,14 @@ const handler: NextApiHandler = async (req, res) => {
 
     switch (req.method) {
       case ReqMethod.GET: {
-        const findAllOrdersGeneralData = new FindAllOrderGeneralData(req.query);
+        const { status_pedido, ...paginationData } = req.query;
+
+        const findAllOrdersGeneralData = new FindAllOrderGeneralData(
+          {
+            status_pedido: req.query.status_pedido,
+          },
+          paginationData
+        );
         const ordersGeneralData = await findAllOrdersGeneralData.exec();
 
         return res.status(200).json(ordersGeneralData);
