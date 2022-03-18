@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import { BiUserCircle } from "react-icons/bi/index";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
+import { IoMdRestaurant } from "react-icons/io/index";
 
 import { PURPLE } from "@utils/colors";
 import { getFormattedHours } from "@utils/formatters";
@@ -60,7 +61,7 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({ ordersGeneralData, o
           </OrdersUserContainer>
 
           <OrdersUserContainer>
-            {order.endereco && (
+            {order.endereco ? (
               <Fragment>
                 <HiOutlineLocationMarker size={40} color={PURPLE} />
                 <GeneralDataContainer>
@@ -68,6 +69,13 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({ ordersGeneralData, o
                   {order.endereco.complemento && (
                     <span>Complemento: {order.endereco.complemento}</span>
                   )}
+                </GeneralDataContainer>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <IoMdRestaurant size={40} color={PURPLE} />
+                <GeneralDataContainer>
+                  <p>O pedido será retirado no restaurante</p>
                 </GeneralDataContainer>
               </Fragment>
             )}
