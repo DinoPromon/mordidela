@@ -1,9 +1,11 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import { BiUserCircle } from "react-icons/bi/index";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
 
 import { PURPLE } from "@utils/colors";
+import { getFormattedHours } from "@utils/formatters";
+import { getFormattedDate } from "@utils/transformation";
 
 import {
   OrdersCard,
@@ -12,8 +14,10 @@ import {
   OrdersCardContainer,
   OrdersCardTitleContainer,
 } from "./styled";
-import { OrdersUser, OrdersUserContainer } from "../styled";
+import { GeneralDataContainer, OrdersUserContainer } from "../styled";
 
+import type ITelefone from "@models/telefone";
+import type IEndereco from "@models/endereco";
 import type { IOrderGeneralData } from "@models/pedido";
 
 type OrdersGeneralDataListProps = {
@@ -24,28 +28,51 @@ type OrdersGeneralDataListProps = {
 type OrdersGeneralDataListType = (props: OrdersGeneralDataListProps) => JSX.Element;
 
 const OrdersGeneralDataList: OrdersGeneralDataListType = ({ ordersGeneralData, openModal }) => {
+  function getFormattedAddress(address: IEndereco) {
+    return `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
+  }
+
+  function getFormattedOrderDate(date: Date) {
+    const parsedDate = new Date(date);
+
+    return `${getFormattedDate(parsedDate)} - ${getFormattedHours(parsedDate)}`;
+  }
+
+  function getFormattedOrderPhone(phone: ITelefone) {
+    return `(${phone.ddd})-${phone.numero}`;
+  }
+
   return (
     <OrdersCardContainer>
       {ordersGeneralData.map((order) => (
         <OrdersCard key={`${order.id_pedido}`}>
           <OrdersCardTitleContainer>
             <OrdersCardTitle>{`#${order.id_pedido}`}</OrdersCardTitle>
-            <OrdersCardTitle>11/03/2022 - 21:34</OrdersCardTitle>
+            <OrdersCardTitle>{getFormattedOrderDate(order.data_pedido as Date)}</OrdersCardTitle>
           </OrdersCardTitleContainer>
+
           <OrdersUserContainer>
             <BiUserCircle size={40} color={PURPLE} />
-            <OrdersUser>
+            <GeneralDataContainer>
               <p>{order.usuario.nome}</p>
-              <span>{`${order.usuario.telefone[0].ddd}-${order.usuario.telefone[0].numero}`}</span>
-            </OrdersUser>
+              <span>{getFormattedOrderPhone(order.usuario.telefone[0])}</span>
+            </GeneralDataContainer>
           </OrdersUserContainer>
+
           <OrdersUserContainer>
-            <HiOutlineLocationMarker size={40} color={PURPLE} />
-            <OrdersUser>
-              <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-              <span>Complemento: Casa</span>
-            </OrdersUser>
+            {order.endereco && (
+              <Fragment>
+                <HiOutlineLocationMarker size={40} color={PURPLE} />
+                <GeneralDataContainer>
+                  <p>{getFormattedAddress(order.endereco)}</p>
+                  {order.endereco.complemento && (
+                    <span>Complemento: {order.endereco.complemento}</span>
+                  )}
+                </GeneralDataContainer>
+              </Fragment>
+            )}
           </OrdersUserContainer>
+
           <ButtonContainer>
             <Button onClick={openModal} variant="contained" color="primary" size="small">
               Detalhes do pedido

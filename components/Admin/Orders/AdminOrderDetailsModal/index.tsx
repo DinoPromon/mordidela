@@ -12,7 +12,7 @@ import {
   AdminOrdersPaymentValuesContainer,
   AdminPaymentType,
 } from "./styled";
-import { OrdersUserContainer, OrdersUser } from "../styled";
+import { OrdersUserContainer, GeneralDataContainer } from "../styled";
 
 type AdminOrderDetailsModalProps = {
   onClose: () => void;
@@ -28,17 +28,17 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({ onClose
       <AdminOrdersModalUserDataContainer>
         <OrdersUserContainer>
           <BiUserCircle size={40} color={PURPLE} />
-          <OrdersUser>
+          <GeneralDataContainer>
             <p>Rafael Hiro Kato Kawakami</p>
             <span>(44) 98765-4321</span>
-          </OrdersUser>
+          </GeneralDataContainer>
         </OrdersUserContainer>
         <OrdersUserContainer>
           <HiOutlineLocationMarker size={40} color={PURPLE} />
-          <OrdersUser>
+          <GeneralDataContainer>
             <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
             <span>Complemento: Casa</span>
-          </OrdersUser>
+          </GeneralDataContainer>
         </OrdersUserContainer>
       </AdminOrdersModalUserDataContainer>
 

@@ -1,5 +1,26 @@
+import styled, { css } from "styled-components";
+
 import { PINK } from "@utils/colors";
-import styled from "styled-components";
+
+const selectedFilterStyle = css`
+  color: white;
+  background-color: ${PINK};
+`;
+
+const defaultFilterStyle = css`
+  color: ${PINK};
+  background-color: white;
+`;
+
+const disabledFilterStyle = css`
+  color: #989898;
+  background-color: #dcdcdc;
+  border-color: #dcdcdc;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
 
 export const OrdersContainer = styled.div`
   display: flex;
@@ -9,21 +30,30 @@ export const OrdersContainer = styled.div`
   padding: 1.5rem 0;
 `;
 
-export const OrdersButtonContainer = styled.ul`
+export const FiltersContainer = styled.ul`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
 `;
 
-export const OrdersButton = styled.li`
+export const OrdersFilter = styled.li<{ selected?: boolean; disabled?: boolean }>`
   padding: 10px;
   border-radius: 100px;
   border: 1px solid ${PINK};
-  cursor: pointer;
   list-style: none;
-  color: ${PINK};
+  transition: background-color 300ms, color 300ms, opacity 500ms;
   font-weight: bold;
+
+  ${({ selected, disabled }) => {
+    if (selected) return selectedFilterStyle;
+
+    return disabled ? disabledFilterStyle : defaultFilterStyle;
+  }}
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const LoadMoreButtonContainer = styled.div`
@@ -38,7 +68,7 @@ export const OrdersUserContainer = styled.div`
   gap: 0.5rem;
 `;
 
-export const OrdersUser = styled.div`
+export const GeneralDataContainer = styled.div`
   display: flex;
   flex-direction: column;
 
