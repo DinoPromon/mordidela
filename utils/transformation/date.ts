@@ -18,13 +18,6 @@ export function getFormattedDate(unformattedDate: string | number | Date) {
   return formattedDate;
 }
 
-export function getHourFromDate(dateAsString: string) {
-  const date = new Date(dateAsString);
-  const hours = date.getHours();
-  const minute = date.getMinutes();
-  return `${hours}:${minute}`;
-}
-
 export const transformDayOrMonth = (subStr: string, maxValue: number) => {
   const numberDayOrMonth = Number(subStr);
   if (numberDayOrMonth > maxValue) String(maxValue);
