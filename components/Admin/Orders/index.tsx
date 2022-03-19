@@ -30,8 +30,10 @@ const Orders: React.FC = () => {
   const [skipItems, setSkipItems] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [isInitialRequest, setIsInitialRequest] = useState(true);
-  const [selectedOrderStatus, setSelectedOrderStatus] = useState<StatusPedido>();
   const [ordersGeneralData, setOrdersGeneralData] = useState<IOrderGeneralData[]>([]);
+  const [selectedOrderStatus, setSelectedOrderStatus] = useState<StatusPedido | undefined>(
+    StatusPedido.PENDENTE
+  );
 
   const fetchOrdersGeneralData = useCallback(
     async (skip?: number, orderStatus?: StatusPedido) => {
@@ -98,13 +100,14 @@ const Orders: React.FC = () => {
 
       const newOrdersGeneralData = [...prevState];
       newOrdersGeneralData[orderIndex].status_pedido = newOrderData.status_pedido;
+      newOrdersGeneralData[orderIndex].data_confirmacao = newOrderData.data_confirmacao;
 
       return newOrdersGeneralData;
     });
   }
 
   useEffect(() => {
-    fetchOrdersGeneralData();
+    fetchOrdersGeneralData(0, StatusPedido.PENDENTE);
   }, [fetchOrdersGeneralData]);
 
   return (

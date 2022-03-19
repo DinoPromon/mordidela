@@ -9,9 +9,8 @@ import useRequestState from "@hooks/useRequestState";
 import { PURPLE } from "@utils/colors";
 import { StatusPedido } from "@models/pedido";
 import { LoadingButton } from "@components/shared";
-import { getFormattedHours } from "@utils/formatters";
+import { getFormattedHours, formatPhoneNumber } from "@utils/formatters";
 import { getFormattedDate } from "@utils/transformation";
-import { formatPhoneNumber } from "@utils/formatters";
 
 import {
   OrdersCard,
@@ -31,6 +30,11 @@ import type ITelefone from "@models/telefone";
 import type IEndereco from "@models/endereco";
 import type { IOrderGeneralData } from "@models/pedido";
 
+type LoadingOrderStatus = {
+  orderId: number;
+  orderStatus: StatusPedido;
+};
+
 type OrdersGeneralDataListProps = {
   ordersGeneralData: IOrderGeneralData[];
   onOpenModal: () => void;
@@ -45,7 +49,7 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
   onUpdateListedOrderStatus,
 }) => {
   const [orderRequestStatus, changeOrderRequestStatus] = useRequestState();
-  const [loadingStatus, setLoadingStatus] = useState<StatusPedido>();
+  const [loadingStatus, setLoadingStatus] = useState<LoadingOrderStatus>();
 
   function getFormattedAddress(address: IEndereco) {
     return `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
@@ -58,13 +62,12 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
   }
 
   function getFormattedOrderPhone(phone: ITelefone) {
-
-    return `(${phone.ddd}) ${phone.numero.slice(0, 5)}-${phone.numero.slice(5, 9)}`;
+    return formatPhoneNumber(phone.ddd.concat(phone.numero));
   }
 
   async function updateOrderStatus(orderId: number, newStatus: StatusPedido) {
     changeOrderRequestStatus({ isLoading: true });
-    setLoadingStatus(newStatus);
+    setLoadingStatus({ orderId, orderStatus: newStatus });
 
     try {
       const response = await Axios.put<IPedido>(`order/update-status/${orderId}`, {
@@ -150,7 +153,10 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
                   variant="outlined"
                   color="secondary"
                   disabled={orderRequestStatus.isLoading}
-                  isLoading={loadingStatus === StatusPedido.REJEITADO}
+                  isLoading={
+                    loadingStatus?.orderStatus === StatusPedido.REJEITADO &&
+                    loadingStatus.orderId === order.id_pedido
+                  }
                   onClick={() => updateOrderStatus(order.id_pedido, StatusPedido.REJEITADO)}
                 >
                   Rejeitar
@@ -159,7 +165,10 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
                   color="secondary"
                   variant="contained"
                   disabled={orderRequestStatus.isLoading}
-                  isLoading={loadingStatus === StatusPedido.CONFIRMADO}
+                  isLoading={
+                    loadingStatus?.orderStatus === StatusPedido.CONFIRMADO &&
+                    loadingStatus.orderId === order.id_pedido
+                  }
                   onClick={() => updateOrderStatus(order.id_pedido, StatusPedido.CONFIRMADO)}
                 >
                   Confirmar
