@@ -32,11 +32,16 @@ export class FindAllOrderGeneralData {
   }
 
   private async countFindAll() {
-    const count = await Prisma.pedido.count({
-      where: {
-        ...this.filtersData,
-      },
-    });
+    const count = await Prisma.pedido
+      .count({
+        where: {
+          ...this.filtersData,
+        },
+      })
+      .catch((err) => {
+        console.error(err);
+        throwError("O-C-DI", { customMessage: "Algo de inesperado aconteceu" });
+      });
 
     return count;
   }
