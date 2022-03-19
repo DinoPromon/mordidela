@@ -16,7 +16,7 @@ export const OrdersCardActionsContainer = styled.div`
 
 export const OrdersCard = styled.li`
   width: 350px;
-  height: 300px;
+  height: 330px;
   border-radius: 10px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   padding: 1rem;
