@@ -11,6 +11,7 @@ import { StatusPedido } from "@models/pedido";
 import { LoadingButton } from "@components/shared";
 import { getFormattedHours } from "@utils/formatters";
 import { getFormattedDate } from "@utils/transformation";
+import { formatPhoneNumber } from "@utils/formatters";
 
 import {
   OrdersCard,
@@ -57,7 +58,8 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
   }
 
   function getFormattedOrderPhone(phone: ITelefone) {
-    return `(${phone.ddd})-${phone.numero}`;
+
+    return `(${phone.ddd}) ${phone.numero.slice(0, 5)}-${phone.numero.slice(5, 9)}`;
   }
 
   async function updateOrderStatus(orderId: number, newStatus: StatusPedido) {
