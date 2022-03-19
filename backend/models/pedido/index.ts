@@ -23,4 +23,5 @@ export default IPedido;
 export { StatusPedido, TipoEntrega, TipoPagamento };
 
 export type { IOrderRelations } from "./orderRelations";
+export type { IOrderFullData } from "./orderFullData";
 export type { IOrderGeneralData } from "./orderGeneralData";
