@@ -37,6 +37,13 @@ export const AdminOrdersPaymentValues = styled.div`
   }
 `;
 
+export const LoadingContainer = styled.div`
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const AdminPaymentType = styled.div`
   display: flex;
   justify-content: space-between;
@@ -46,7 +53,7 @@ export const AdminPaymentType = styled.div`
     font-weight: bold;
     color: ${PURPLE};
   }
-  
+
   & > span {
     font-weight: bold;
     color: ${PINK};

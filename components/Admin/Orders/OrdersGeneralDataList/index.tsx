@@ -37,7 +37,7 @@ type LoadingOrderStatus = {
 
 type OrdersGeneralDataListProps = {
   ordersGeneralData: IOrderGeneralData[];
-  onOpenModal: () => void;
+  onOpenModal: (selectedOrderId: number) => void;
   onUpdateListedOrderStatus: (newOrderData: IPedido) => void;
 };
 
@@ -140,7 +140,7 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
                 size="small"
                 color="primary"
                 variant="contained"
-                onClick={onOpenModal}
+                onClick={() => onOpenModal(order.id_pedido)}
                 disabled={orderRequestStatus.isLoading}
               >
                 Detalhes do pedido

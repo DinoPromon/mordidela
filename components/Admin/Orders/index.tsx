@@ -28,8 +28,8 @@ const Orders: React.FC = () => {
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
   const [count, setCount] = useState<number>();
   const [skipItems, setSkipItems] = useState(0);
-  const [showModal, setShowModal] = useState(false);
   const [isInitialRequest, setIsInitialRequest] = useState(true);
+  const [selectedOrderDetails, setSelectedOrderDetails] = useState<number>();
   const [ordersGeneralData, setOrdersGeneralData] = useState<IOrderGeneralData[]>([]);
   const [selectedOrderStatus, setSelectedOrderStatus] = useState<StatusPedido | undefined>(
     StatusPedido.PENDENTE
@@ -67,12 +67,12 @@ const Orders: React.FC = () => {
     fetchOrdersGeneralData(skipItems, selectedOrderStatus);
   }
 
-  function openModal() {
-    setShowModal(true);
+  function openModal(selectedOrderId: number) {
+    setSelectedOrderDetails(selectedOrderId);
   }
 
   function closeModal() {
-    setShowModal(false);
+    setSelectedOrderDetails(undefined);
   }
 
   function resetSearch() {
@@ -113,8 +113,12 @@ const Orders: React.FC = () => {
   return (
     <OrdersContainer>
       <CustomAnimatePresence exitBeforeEnter>
-        {showModal && (
-          <AdminOrderDetailsModal key="admin-order-relations-modal" onClose={closeModal} />
+        {selectedOrderDetails && (
+          <AdminOrderDetailsModal
+            key="admin-order-relations-modal"
+            onClose={closeModal}
+            selectedOrderId={selectedOrderDetails}
+          />
         )}
       </CustomAnimatePresence>
 
