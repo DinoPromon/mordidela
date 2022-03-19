@@ -30,6 +30,7 @@ export class UpdateOrderStatus {
         },
         data: {
           status_pedido: this.updateArg.status_pedido as StatusPedido,
+          data_confirmacao: new Date(),
         },
       })
       .catch((err) => {
