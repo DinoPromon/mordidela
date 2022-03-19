@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
-import { PINK } from "@utils/colors";
-
 export const OrdersCardContainer = styled.ul`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-row-gap: 3rem;
   column-gap: 3rem;
+`;
+
+export const OrdersCardActionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 export const OrdersCard = styled.li`
@@ -17,7 +21,11 @@ export const OrdersCard = styled.li`
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 1rem;
+
+  ${OrdersCardActionsContainer} {
+    margin-top: auto;
+  }
 `;
 
 export const OrdersCardTitleContainer = styled.div`
@@ -29,16 +37,24 @@ export const OrdersCardTitle = styled.h2`
   font-size: 13pt;
 `;
 
-
-
 export const ButtonContainer = styled.div`
   display: flex;
-  flex-direction: row;
   gap: 1rem;
   justify-content: center;
+`;
 
-  & > p {
-    color: ${PINK};
-    font-weight: bold;
+export const GeneralDataContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > span {
+    font-size: 13px;
   }
+`;
+
+export const OrdersUserContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 `;

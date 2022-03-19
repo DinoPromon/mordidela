@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 
 import Axios from "@api";
@@ -11,14 +11,15 @@ import { CentralizedLoading, LoadingButton } from "@components/shared";
 const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
 const AdminOrderDetailsModal = dynamic(() => import("./AdminOrderDetailsModal"));
 import {
+  NoRequests,
   OrdersFilter,
   OrdersContainer,
   FiltersContainer,
   LoadMoreButtonContainer,
-  NoRequests,
 } from "./styled";
 
 import type { AxiosError } from "axios";
+import type IPedido from "@models/pedido";
 import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
 
@@ -27,7 +28,7 @@ const Orders: React.FC = () => {
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
   const [count, setCount] = useState<number>();
   const [skipItems, setSkipItems] = useState(0);
-  const [show, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [isInitialRequest, setIsInitialRequest] = useState(true);
   const [selectedOrderStatus, setSelectedOrderStatus] = useState<StatusPedido>();
   const [ordersGeneralData, setOrdersGeneralData] = useState<IOrderGeneralData[]>([]);
@@ -87,6 +88,21 @@ const Orders: React.FC = () => {
     fetchOrdersGeneralData(0, orderStatus);
   }
 
+  function updateListedOrderStatus(newOrderData: IPedido) {
+    setOrdersGeneralData((prevState) => {
+      const orderIndex = prevState.findIndex(
+        (prevOrder) => prevOrder.id_pedido === newOrderData.id_pedido
+      );
+
+      if (orderIndex <= -1) return prevState;
+
+      const newOrdersGeneralData = [...prevState];
+      newOrdersGeneralData[orderIndex].status_pedido = newOrderData.status_pedido;
+
+      return newOrdersGeneralData;
+    });
+  }
+
   useEffect(() => {
     fetchOrdersGeneralData();
   }, [fetchOrdersGeneralData]);
@@ -94,8 +110,11 @@ const Orders: React.FC = () => {
   return (
     <OrdersContainer>
       <CustomAnimatePresence exitBeforeEnter>
-        {show && <AdminOrderDetailsModal key="admin-order-relations-modal" onClose={closeModal} />}
+        {showModal && (
+          <AdminOrderDetailsModal key="admin-order-relations-modal" onClose={closeModal} />
+        )}
       </CustomAnimatePresence>
+
       <FiltersContainer>
         <OrdersFilter
           disabled={requestStatus.isLoading}
@@ -126,21 +145,26 @@ const Orders: React.FC = () => {
           Relatório de pedidos
         </OrdersFilter>
       </FiltersContainer>
+
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
 
       {!isInitialRequest && ordersGeneralData.length > 0 && (
-        <OrdersGeneralDataList openModal={openModal} ordersGeneralData={ordersGeneralData} />
+        <OrdersGeneralDataList
+          ordersGeneralData={ordersGeneralData}
+          onOpenModal={openModal}
+          onUpdateListedOrderStatus={updateListedOrderStatus}
+        />
       )}
 
-      {!isInitialRequest && count === 0 && selectedOrderStatus === StatusPedido.REJEITADO && (
+      {count === 0 && selectedOrderStatus === StatusPedido.REJEITADO && (
         <NoRequests>Não há pedidos rejeitados!</NoRequests>
       )}
 
-      {!isInitialRequest && count === 0 && selectedOrderStatus === StatusPedido.CONFIRMADO && (
+      {count === 0 && selectedOrderStatus === StatusPedido.CONFIRMADO && (
         <NoRequests>Não há pedidos confirmados!</NoRequests>
       )}
 
-      {!isInitialRequest && count === 0 && selectedOrderStatus === StatusPedido.PENDENTE && (
+      {count === 0 && selectedOrderStatus === StatusPedido.PENDENTE && (
         <NoRequests>Não há pedidos pendentes</NoRequests>
       )}
 

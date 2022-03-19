@@ -13,8 +13,11 @@ const defaultFilterStyle = css`
 `;
 
 const disabledFilterStyle = css`
-  color: #989898;
-  background-color: #dcdcdc;
+  --light-gray: #f0f0f0;
+  --dark-gray: #989898;
+
+  color: var(--dark-gray);
+  background-color: var(--light-gray);
   border-color: #dcdcdc;
 
   &:hover {
@@ -59,22 +62,6 @@ export const OrdersFilter = styled.li<{ selected?: boolean; disabled?: boolean }
 export const LoadMoreButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-export const OrdersUserContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-export const GeneralDataContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  & > span {
-    font-size: 13px;
-  }
 `;
 
 export const NoRequests = styled.h3`

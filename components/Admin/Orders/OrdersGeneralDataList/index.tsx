@@ -1,10 +1,14 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Button from "@material-ui/core/Button";
 import { BiUserCircle } from "react-icons/bi/index";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
 import { IoMdRestaurant } from "react-icons/io/index";
 
+import Axios from "@api";
+import useRequestState from "@hooks/useRequestState";
 import { PURPLE } from "@utils/colors";
+import { StatusPedido } from "@models/pedido";
+import { LoadingButton } from "@components/shared";
 import { getFormattedHours } from "@utils/formatters";
 import { getFormattedDate } from "@utils/transformation";
 
@@ -12,23 +16,35 @@ import {
   OrdersCard,
   ButtonContainer,
   OrdersCardTitle,
+  OrdersUserContainer,
   OrdersCardContainer,
+  GeneralDataContainer,
   OrdersCardTitleContainer,
+  OrdersCardActionsContainer,
 } from "./styled";
-import { GeneralDataContainer, OrdersUserContainer } from "../styled";
 
+import type { AxiosError } from "axios";
+import type IPedido from "@models/pedido";
 import type ITelefone from "@models/telefone";
 import type IEndereco from "@models/endereco";
 import type { IOrderGeneralData } from "@models/pedido";
 
 type OrdersGeneralDataListProps = {
-  openModal: () => void;
   ordersGeneralData: IOrderGeneralData[];
+  onOpenModal: () => void;
+  onUpdateListedOrderStatus: (newOrderData: IPedido) => void;
 };
 
 type OrdersGeneralDataListType = (props: OrdersGeneralDataListProps) => JSX.Element;
 
-const OrdersGeneralDataList: OrdersGeneralDataListType = ({ ordersGeneralData, openModal }) => {
+const OrdersGeneralDataList: OrdersGeneralDataListType = ({
+  ordersGeneralData,
+  onOpenModal,
+  onUpdateListedOrderStatus,
+}) => {
+  const [orderRequestStatus, changeOrderRequestStatus] = useRequestState();
+  const [loadingStatus, setLoadingStatus] = useState<StatusPedido>();
+
   function getFormattedAddress(address: IEndereco) {
     return `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
   }
@@ -41,6 +57,25 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({ ordersGeneralData, o
 
   function getFormattedOrderPhone(phone: ITelefone) {
     return `(${phone.ddd})-${phone.numero}`;
+  }
+
+  async function updateOrderStatus(orderId: number, newStatus: StatusPedido) {
+    changeOrderRequestStatus({ isLoading: true });
+    setLoadingStatus(newStatus);
+
+    try {
+      const response = await Axios.put<IPedido>(`order/update-status/${orderId}`, {
+        status_pedido: newStatus,
+      });
+
+      onUpdateListedOrderStatus(response.data);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data.message);
+    }
+
+    changeOrderRequestStatus({ isLoading: false });
+    setLoadingStatus(undefined);
   }
 
   return (
@@ -81,19 +116,42 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({ ordersGeneralData, o
             )}
           </OrdersUserContainer>
 
-          <ButtonContainer>
-            <Button onClick={openModal} variant="contained" color="primary" size="small">
-              Detalhes do pedido
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button variant="outlined" color="secondary">
-              Rejeitar
-            </Button>
-            <Button variant="contained" color="secondary">
-              Confirmar
-            </Button>
-          </ButtonContainer>
+          <OrdersCardActionsContainer>
+            <ButtonContainer>
+              <Button
+                size="small"
+                color="primary"
+                variant="contained"
+                onClick={onOpenModal}
+                disabled={orderRequestStatus.isLoading}
+              >
+                Detalhes do pedido
+              </Button>
+            </ButtonContainer>
+
+            {order.status_pedido === StatusPedido.PENDENTE && (
+              <ButtonContainer>
+                <LoadingButton
+                  variant="outlined"
+                  color="secondary"
+                  disabled={orderRequestStatus.isLoading}
+                  isLoading={loadingStatus === StatusPedido.REJEITADO}
+                  onClick={() => updateOrderStatus(order.id_pedido, StatusPedido.REJEITADO)}
+                >
+                  Rejeitar
+                </LoadingButton>
+                <LoadingButton
+                  color="secondary"
+                  variant="contained"
+                  disabled={orderRequestStatus.isLoading}
+                  isLoading={loadingStatus === StatusPedido.CONFIRMADO}
+                  onClick={() => updateOrderStatus(order.id_pedido, StatusPedido.CONFIRMADO)}
+                >
+                  Confirmar
+                </LoadingButton>
+              </ButtonContainer>
+            )}
+          </OrdersCardActionsContainer>
         </OrdersCard>
       ))}
     </OrdersCardContainer>
