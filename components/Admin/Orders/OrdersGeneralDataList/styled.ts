@@ -1,3 +1,4 @@
+import { PINK } from "@utils/colors";
 import styled from "styled-components";
 
 export const OrdersCardContainer = styled.ul`
@@ -57,4 +58,9 @@ export const OrdersUserContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
+`;
+
+export const ConfirmationMessage = styled.h4`
+  text-align: center;
+  color: ${PINK};
 `;

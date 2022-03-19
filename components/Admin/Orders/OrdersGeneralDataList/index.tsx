@@ -21,6 +21,7 @@ import {
   GeneralDataContainer,
   OrdersCardTitleContainer,
   OrdersCardActionsContainer,
+  ConfirmationMessage,
 } from "./styled";
 
 import type { AxiosError } from "axios";
@@ -115,6 +116,18 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
               </Fragment>
             )}
           </OrdersUserContainer>
+
+          {order.status_pedido === StatusPedido.CONFIRMADO && (
+            <ConfirmationMessage>
+              Confirmado em {getFormattedOrderDate(order.data_confirmacao as Date)}
+            </ConfirmationMessage>
+          )}
+
+          {order.status_pedido === StatusPedido.REJEITADO && (
+            <ConfirmationMessage>
+              Rejeitado em {getFormattedOrderDate(order.data_confirmacao as Date)}
+            </ConfirmationMessage>
+          )}
 
           <OrdersCardActionsContainer>
             <ButtonContainer>

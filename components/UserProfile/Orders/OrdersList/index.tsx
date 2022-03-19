@@ -30,11 +30,15 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
       const confirmatedDate = createDate(orderRelation.data_confirmacao);
       const formattedConfirmationDate = getFormattedDate(confirmatedDate);
       const confirmatioDateHours = getFormattedHours(confirmatedDate);
-
       return `confirmado em ${formattedConfirmationDate} às ${confirmatioDateHours}`;
     }
 
-    if (orderRelation.status_pedido === StatusPedido.REJEITADO) return `rejeitado`;
+    if (orderRelation.status_pedido === StatusPedido.REJEITADO && orderRelation.data_confirmacao) {
+      const confirmatedDate = createDate(orderRelation.data_confirmacao);
+      const formattedConfirmationDate = getFormattedDate(confirmatedDate);
+      const confirmatioDateHours = getFormattedHours(confirmatedDate);
+      return `rejeitado em ${formattedConfirmationDate} às ${confirmatioDateHours}`;
+    }
 
     if (orderRelation.status_pedido === StatusPedido.PENDENTE) return `pendente`;
   }

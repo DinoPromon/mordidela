@@ -12,7 +12,8 @@ import {
   AdminOrdersPaymentValuesContainer,
   AdminPaymentType,
 } from "./styled";
-import { OrdersUserContainer, GeneralDataContainer } from "../styled";
+
+import { OrdersUserContainer, GeneralDataContainer } from "../OrdersGeneralDataList/styled";
 
 type AdminOrderDetailsModalProps = {
   onClose: () => void;
