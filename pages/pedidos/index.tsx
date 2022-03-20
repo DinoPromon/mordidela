@@ -1,14 +1,14 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import { getSession } from "next-auth/client";
 
 const NavBarFooter = dynamic(() => import("../../components/Layouts/NavBarFooter"));
 const Orders = dynamic(() => import("../../components/UserProfile/Orders"));
-import { NextPageWithLayout } from "@my-types/next-page";
-
-import { getSession } from "next-auth/client";
 
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
+
+import type { NextPageWithLayout } from "@my-types/next-page";
 
 const OrdersPage: NextPageWithLayout = () => {
   return <Orders></Orders>;

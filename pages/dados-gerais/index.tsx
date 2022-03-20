@@ -1,14 +1,15 @@
 import React from "react";
-import { FindUserGeneralData } from "@controllers/users";
-
-import { NavBarFooter } from "@components/Layouts";
-import { NextPageWithLayout } from "@my-types/next-page";
-
+import dynamic from "next/dynamic";
 import { getSession } from "next-auth/client";
-import GeneralData from "@components/UserProfile/GeneralData";
+
+import { FindUserGeneralData } from "@controllers/users";
+const NavBarFooter = dynamic(() => import("@components/Layouts/NavBarFooter"));
+const GeneralData = dynamic(() => import("@components/UserProfile/GeneralData"));
 
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
+import type { NextPageWithLayout } from "@my-types/next-page";
+
 import type { MyUser } from "@my-types/next-auth";
 import type { UserGeneralData } from "@models/usuario";
 

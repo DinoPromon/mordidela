@@ -1,8 +1,11 @@
 import React from "react";
-import Coupons from "@components/UserProfile/Coupons";
+import dynamic from "next/dynamic";
 import { getSession } from "next-auth/client";
-import { NavBarFooter } from "@components/Layouts";
+
 import { FindManyRelatedUserCouponByUserId } from "@controllers/userCoupon";
+
+const Coupons = dynamic(() => import("@components/UserProfile/Coupons"));
+const NavBarFooter = dynamic(() => import("@components/Layouts/NavBarFooter"));
 
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";

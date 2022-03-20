@@ -1,11 +1,15 @@
-import type { GetStaticProps } from "next";
-import type { ReactElement } from "react";
+import dynamic from "next/dynamic";
 
-import Menu from "@components/Menu";
-import { RelatedProduct } from "@models/produto";
-import { NavBarFooter } from "@components/Layouts";
-import { NextPageWithLayout } from "@my-types/next-page";
 import { findManyRelatedProducts } from "@controllers/product";
+
+const Menu = dynamic(() => import("@components/Menu"));
+const NavBarFooter = dynamic(() => import("@components/Layouts/NavBarFooter"));
+
+import type { ReactElement } from "react";
+import type { GetStaticProps } from "next";
+import type { NextPageWithLayout } from "@my-types/next-page";
+
+import type { RelatedProduct } from "@models/produto";
 
 type Props = {
   products: RelatedProduct[];

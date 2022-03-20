@@ -1,13 +1,16 @@
 import React from "react";
-import type { ReactElement } from "react";
-
+import dynamic from "next/dynamic";
 import { getSession } from "next-auth/client";
-import Addresses from "@components/UserProfile/Addresses";
-import { NavBarFooter } from "@components/Layouts";
+
 import { FindAllAddressesByUserId } from "@controllers/address";
 
-import type IEndereco from "@models/endereco";
+const Addresses = dynamic(() => import("@components/UserProfile/Addresses"));
+const NavBarFooter = dynamic(() => import("@components/Layouts/NavBarFooter"));
+
+import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
+
+import type IEndereco from "@models/endereco";
 import type { NextPageWithLayout } from "@my-types/next-page";
 
 type Props = {

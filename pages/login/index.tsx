@@ -1,9 +1,13 @@
+import React from "react";
+import dynamic from "next/dynamic";
 import { getSession } from "next-auth/client";
+
+const Login = dynamic(() => import("@components/Login"));
+const Center = dynamic(() => import("@components/Layouts/Center"));
+
 import type { ReactElement } from "react";
 import type { GetServerSideProps } from "next";
 
-import Login from "@components/Login";
-import { Center } from "@components/Layouts";
 import { NextPageWithLayout } from "@my-types/next-page";
 
 const LoginPage: NextPageWithLayout = (props) => {
