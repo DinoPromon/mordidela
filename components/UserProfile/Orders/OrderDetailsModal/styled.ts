@@ -26,11 +26,6 @@ export const TotalContainer = styled.div`
   padding-top: 1rem;
 `;
 
-export const OrderFlavorsText = styled.p`
-  font-size: 0.75rem;
-`;
-
 export const OrdersAddressComplement = styled.p`
   font-size: 13px;
 `;
-

@@ -9,36 +9,36 @@ import {
   AddressTitle,
   SubtotalText,
   TrashPriceText,
+  OrderFlavorsText,
+  ProductsContainer,
   AddsListContainer,
   TrashPriceContainer,
   CoupomDataContainer,
-  ProductsContainer,
   ItemDescriptionContainer,
   TotalTextOrdersUserProfile,
 } from "@components/shared/StyledComponents";
+import { getNumberAsCurrency } from "@utils/transformation";
+import {
+  calculateTotalPrice,
+  getHasDeliveryPrice,
+  getAddsInOrderProduct,
+  calculateSubTotalPrice,
+  calculateCouponDiscount,
+  getStringFlavorsInOrderProduct,
+} from "@utils/order";
 
 import {
   TotalContainer,
-  OrderFlavorsText,
   OrdersModalTitle,
   OrdersDataContainer,
   OrdersAddressContainer,
   OrdersAddressComplement,
 } from "./styled";
-import {
-  getNumberAsCurrency,
-  getHasDeliveryPrice,
-  calculateTotalPrice,
-  calculateSubTotalPrice,
-  getOrderPaymentTypeText,
-  calculateCouponDiscount,
-} from "../utility";
+import { getOrderPaymentTypeText } from "../utility";
 
 import type ICupom from "@models/cupom";
-import type IPedido from "@models/pedido";
 import type IProduto from "@models/produto";
 import type IEndereco from "@models/endereco";
-import type IAdicional from "@models/adicional";
 import type { IOrderRelations } from "@models/pedido";
 
 type OrderDetailsModalProps = {
@@ -47,49 +47,7 @@ type OrderDetailsModalProps = {
 };
 
 const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, onClose }) => {
-  function filterOrderProductAdds(
-    orderRelations: IOrderRelations,
-    orderId: IPedido["id_pedido"],
-    productId: IProduto["id_produto"]
-  ) {
-    const filteredOrderProductAdds = orderRelations.pedido_produto_adicional.filter(
-      ({ id_pedido, id_produto }) => id_pedido === orderId && id_produto === productId
-    );
-
-    return filteredOrderProductAdds;
-  }
-
-  function getAddsInOrderProduct(
-    orderRelations: IOrderRelations,
-    orderId: IPedido["id_pedido"],
-    productId: IProduto["id_produto"]
-  ) {
-    const filteredOrderProductAdds = filterOrderProductAdds(orderRelations, orderId, productId);
-
-    const addsInOrderProduct = filteredOrderProductAdds.map(
-      (orderProductAdd) => orderProductAdd.adicional as IAdicional
-    );
-
-    return addsInOrderProduct;
-  }
-
-  function getStringFlavorsInOrderProduct(
-    orderRelations: IOrderRelations,
-    orderId: IPedido["id_pedido"],
-    productId: IProduto["id_produto"]
-  ) {
-    const filteredOrderProductFlavors = orderRelations.pedido_produto_sabor.filter(
-      ({ id_pedido, id_produto }) => id_pedido === orderId && id_produto === productId
-    );
-
-    const flavorsNameInOrderProduct = filteredOrderProductFlavors.map(
-      (orderProductFlavor) => orderProductFlavor.sabor?.nome as string
-    );
-
-    return flavorsNameInOrderProduct.join(", ");
-  }
-
-  function getCouponDiscount(coupon: ICupom) {
+  function getCouponDiscountText(coupon: ICupom) {
     if (coupon.tipo === TipoCupom.ENTREGA) return "Entrega grátis";
     return `${coupon.valor_desconto}%`;
   }
@@ -139,7 +97,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
             {orderRelations.pedido_produto_adicional.length > 0 && (
               <AddsListContainer>
                 {getAddsInOrderProduct(
-                  orderRelations,
+                  orderRelations.pedido_produto_adicional as any,
                   orderProduct.id_pedido,
                   orderProduct.id_produto
                 ).map((add) => (
@@ -152,7 +110,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
                   <OrderFlavorsText>
                     {"Sabores: ".concat(
                       getStringFlavorsInOrderProduct(
-                        orderRelations,
+                        orderRelations.pedido_produto_sabor as any,
                         orderProduct.id_pedido,
                         orderProduct.id_produto
                       )
@@ -167,7 +125,15 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
 
       <OrdersDataContainer>
         <SubtotalText>
-          Subtotal: <span>{getNumberAsCurrency(calculateSubTotalPrice(orderRelations))}</span>
+          Subtotal:{" "}
+          <span>
+            {getNumberAsCurrency(
+              calculateSubTotalPrice(
+                orderRelations.pedido_produto as any,
+                orderRelations.pedido_produto_adicional as any
+              )
+            )}
+          </span>
         </SubtotalText>
 
         {orderRelations.cupom && (
@@ -176,10 +142,20 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
               Cupom: <span>{orderRelations.cupom.codigo}</span>
             </ColoredText>
             <ColoredText>
-              Desconto: <span>{getCouponDiscount(orderRelations.cupom)}</span>
+              Desconto: <span>{getCouponDiscountText(orderRelations.cupom)}</span>
             </ColoredText>
             <ColoredText>
-              Valor: <span>{getNumberAsCurrency(calculateCouponDiscount(orderRelations))}</span>
+              Valor:{" "}
+              <span>
+                {getNumberAsCurrency(
+                  calculateCouponDiscount(
+                    orderRelations.pedido_produto as any,
+                    orderRelations.pedido_produto_adicional as any,
+                    orderRelations.cupom,
+                    orderRelations.preco_entrega
+                  )
+                )}
+              </span>
             </ColoredText>
           </CoupomDataContainer>
         )}
@@ -188,7 +164,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
           Tipo de entrega: <span>{getDeliveryType(orderRelations)}</span>
         </SubtotalText>
 
-        {getHasDeliveryPrice(orderRelations) && (
+        {getHasDeliveryPrice(orderRelations.tipo_entrega) && (
           <SubtotalText>
             Taxa de entrega: <span>{getNumberAsCurrency(orderRelations.preco_entrega)}</span>
           </SubtotalText>
@@ -213,7 +189,18 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
 
       <TotalContainer>
         <TotalTextOrdersUserProfile>
-          Total: <span>{getNumberAsCurrency(calculateTotalPrice(orderRelations))}</span>
+          Total:{" "}
+          <span>
+            {getNumberAsCurrency(
+              calculateTotalPrice(
+                orderRelations.pedido_produto as any,
+                orderRelations.pedido_produto_adicional as any,
+                orderRelations.tipo_entrega,
+                orderRelations.preco_entrega,
+                orderRelations.cupom
+              )
+            )}
+          </span>
         </TotalTextOrdersUserProfile>
       </TotalContainer>
     </Modal>
