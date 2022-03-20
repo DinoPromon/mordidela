@@ -105,7 +105,7 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
           const currencyPaymentAmount = getNumberAsCurrency(orderFullData.troco_para);
           const currencyChangeValue = getNumberAsCurrency(changeValue);
 
-          return `Dinheiro - (troco para ${currencyPaymentAmount}) = ${currencyChangeValue}}`;
+          return `Dinheiro - (troco para ${currencyPaymentAmount}) = ${currencyChangeValue}`;
         }
       }
 
