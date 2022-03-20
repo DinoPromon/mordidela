@@ -31,10 +31,7 @@ export class CreateOrder {
     const { id_pedido: createdOrderId } = await this.createOrder();
 
     if (this.orderData.id_cupom) {
-      await this.createCouponRelation(createdOrderId, this.orderData.id_cupom).catch((err) => {
-        console.error(err);
-        throwError("O-C", { customMessage: "Erro na criação da relação pedido e cupom" });
-      });
+      await this.createCouponRelation(createdOrderId, this.orderData.id_cupom);
     }
 
     await this.createProductRelations(createdOrderId).catch((err) => {
@@ -60,8 +57,8 @@ export class CreateOrder {
         },
       })
       .catch((err) => {
-        console.log(err);
-        throwError("O-C");
+        console.error(err);
+        throwError("O-C", { customMessage: "Erro na criação da relação pedido e cupom" });
       });
 
     return createdUserCoupon as IUsuarioCupom;
@@ -84,6 +81,21 @@ export class CreateOrder {
       });
   }
 
+  private async countUserOrders(userId: IUsuario["id_usuario"]) {
+    const userOrdersAmount = await Prisma.pedido
+      .count({
+        where: {
+          id_usuario: userId,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        throwError("O-C-DI");
+      });
+
+    return userOrdersAmount;
+  }
+
   private async giveFidelityCoupon() {
     const fidelityCoupons = (await Prisma.cupom
       .findMany({
@@ -101,16 +113,7 @@ export class CreateOrder {
 
     const biggestFidelityCoupon = fidelityCoupons[0];
 
-    const userOrdersAmount = await Prisma.pedido
-      .count({
-        where: {
-          id_usuario: this.userId,
-        },
-      })
-      .catch((err) => {
-        console.log(err);
-        throwError("O-C-DI");
-      });
+    const userOrdersAmount = await this.countUserOrders(this.userId);
 
     const fidelityCouponRest = userOrdersAmount % biggestFidelityCoupon.qtde_min_pedido;
 
@@ -197,13 +200,19 @@ export class CreateOrder {
       ? await this.findDeliveryPrice(this.orderData.id_endereco)
       : null;
 
-    const createdOrderId = await Prisma.pedido.create({
-      data: {
-        ...this.orderData,
-        troco_para: this.orderData.troco_para || null,
-        preco_entrega: deliveryPrice,
-      },
-    });
+    const createdOrderId = await Prisma.pedido
+      .create({
+        data: {
+          ...this.orderData,
+          troco_para: this.orderData.troco_para || null,
+          preco_entrega: deliveryPrice,
+        },
+      })
+      .catch((err) => {
+        console.error(err);
+        throwError("O-C", { customMessage: "Erro na criação de pedido" });
+      });
+
     return createdOrderId as IPedido;
   }
 }
