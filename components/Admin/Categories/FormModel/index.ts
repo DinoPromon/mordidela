@@ -1,5 +1,4 @@
 import type { FormField } from "@my-types/form";
-import { getCategoriesFormValidationSchema } from "./validationSchema";
 
 export interface ICategoriesFormValues {
   name: string;
