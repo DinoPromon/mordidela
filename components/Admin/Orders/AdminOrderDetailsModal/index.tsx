@@ -1,6 +1,7 @@
-import React, { useEffect, useCallback, Fragment } from "react";
+import React, { useEffect, useCallback, Fragment, useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { BiUserCircle } from "react-icons/bi/index";
+import { IoMdRestaurant } from "react-icons/io/index";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
 
 import Axios from "@api";
@@ -8,16 +9,42 @@ import useIsMounted from "@hooks/useIsMounted";
 import useRequestState from "@hooks/useRequestState";
 import { PURPLE } from "@utils/colors";
 import { Modal } from "@components/shared";
+import { TipoPagamento } from "@models/pedido";
+import { getNumberAsCurrency } from "@utils/transformation";
+import {
+  getProductLabel,
+  getAddsInOrderProduct,
+  calculateTotalPrice,
+  getHasDeliveryPrice,
+  calculateSubTotalPrice,
+  calculateCouponDiscount,
+  getStringFlavorsInOrderProduct,
+} from "@utils/order";
+import {
+  AddsText,
+  TrashPriceText,
+  OrderFlavorsText,
+  AddsListContainer,
+  ProductsContainer,
+  TrashPriceContainer,
+  ItemDescriptionContainer,
+} from "@components/shared/StyledComponents";
 
 import {
   LoadingContainer,
   AdminPaymentType,
   AdminOrdersModalTitle,
   AdminOrdersPaymentValues,
+  AdminOrdersModalDataContainer,
   AdminOrdersModalUserDataContainer,
   AdminOrdersPaymentValuesContainer,
 } from "./styled";
 import { OrdersUserContainer, GeneralDataContainer } from "../OrdersGeneralDataList/styled";
+import {
+  getFormattedAddress,
+  getFormattedOrderDate,
+  getFormattedOrderPhone,
+} from "../utility/order";
 
 import type { AxiosError } from "axios";
 import type { IOrderFullData } from "@models/pedido";
@@ -32,7 +59,18 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
   onClose,
 }) => {
   const isMounted = useIsMounted();
+  const [orderFullData, setOrderFullData] = useState<IOrderFullData>();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
+
+  const orderTotalPrice =
+    orderFullData &&
+    calculateTotalPrice(
+      orderFullData.pedido_produto,
+      orderFullData.pedido_produto_adicional,
+      orderFullData.tipo_entrega,
+      orderFullData.preco_entrega,
+      orderFullData.cupom
+    );
 
   const fetchOrderFullData = useCallback(
     async (orderId: number) => {
@@ -42,6 +80,7 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
         if (!isMounted.current) return;
 
         console.log(response.data);
+        setOrderFullData(response.data);
       } catch (err) {
         const error = err as AxiosError;
         console.error(error.response?.data.message);
@@ -50,6 +89,35 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
     },
     [isMounted, changeRequestStatus]
   );
+
+  function calculateChangeValue(paymentValue: number) {
+    if (orderTotalPrice) return paymentValue - orderTotalPrice;
+  }
+
+  function getOrderPaymentTypeText(orderFullData: IOrderFullData) {
+    switch (orderFullData.tipo_pagamento) {
+      case TipoPagamento.DINHEIRO: {
+        if (orderFullData.troco_para === null) return "Dinheiro - sem troco";
+
+        const changeValue = calculateChangeValue(orderFullData.troco_para);
+
+        if (changeValue)
+          return `Dinheiro - (troco para R$ ${orderFullData.troco_para}) = ${changeValue}`;
+      }
+
+      case TipoPagamento.DEBITO: {
+        return "Cartão débito";
+      }
+
+      case TipoPagamento.CREDITO: {
+        return "Cartão crédito";
+      }
+
+      default: {
+        return orderFullData.tipo_pagamento;
+      }
+    }
+  }
 
   useEffect(() => {
     fetchOrderFullData(selectedOrderId);
@@ -63,97 +131,138 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
         </LoadingContainer>
       )}
 
-      {!requestStatus.isLoading && (
-        <Fragment>
+      {!requestStatus.isLoading && orderFullData && (
+        <AdminOrdersModalDataContainer>
           <AdminOrdersModalTitle>
-            Pedido #1987
-            <p>11/03/2022 - 21:34</p>
+            Pedido #{orderFullData.id_pedido}
+            <p>{getFormattedOrderDate(new Date(orderFullData.data_pedido))}</p>
           </AdminOrdersModalTitle>
+
           <AdminOrdersModalUserDataContainer>
             <OrdersUserContainer>
               <BiUserCircle size={40} color={PURPLE} />
               <GeneralDataContainer>
-                <p>Rafael Hiro Kato Kawakami</p>
-                <span>(44) 98765-4321</span>
+                <p>{orderFullData.usuario.nome}</p>
+                <span>{getFormattedOrderPhone(orderFullData.usuario.telefone[0])}</span>
               </GeneralDataContainer>
             </OrdersUserContainer>
+
             <OrdersUserContainer>
-              <HiOutlineLocationMarker size={40} color={PURPLE} />
-              <GeneralDataContainer>
-                <p>Rua Vitória de Monte Castelo N° 472, Centro</p>
-                <span>Complemento: Casa</span>
-              </GeneralDataContainer>
+              {orderFullData.endereco ? (
+                <Fragment>
+                  <HiOutlineLocationMarker size={40} color={PURPLE} />
+                  <GeneralDataContainer>
+                    <p>{getFormattedAddress(orderFullData.endereco)}</p>
+                    {orderFullData.endereco.complemento && (
+                      <span>Complemento: {orderFullData.endereco.complemento}</span>
+                    )}
+                  </GeneralDataContainer>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <IoMdRestaurant size={40} color={PURPLE} />
+                  <GeneralDataContainer>
+                    <p>O pedido será retirado no restaurante</p>
+                  </GeneralDataContainer>
+                </Fragment>
+              )}
             </OrdersUserContainer>
           </AdminOrdersModalUserDataContainer>
 
-          {/*       <ProductsContainer>
-        {orderRelations.pedido_produto.map((orderProduct) => (
-          <li key={orderProduct.id_pedido_produto}>
-            <ItemDescriptionContainer>
-              <span>{`${orderProduct.quantidade}x`}</span>
-              <p>{getProductLabel(orderProduct.produto as IProduto)}</p>
-              <TrashPriceContainer>
-                <TrashPriceText>
-                  {getNumberAsCurrency(orderProduct.produto?.preco_padrao as number)}
-                </TrashPriceText>
-              </TrashPriceContainer>
-            </ItemDescriptionContainer>
+          <ProductsContainer>
+            {orderFullData.pedido_produto.map((orderProduct) => (
+              <li key={orderProduct.id_pedido_produto}>
+                <ItemDescriptionContainer>
+                  <span>{`${orderProduct.quantidade}x`}</span>
+                  <p>{getProductLabel(orderProduct.produto)}</p>
+                  <TrashPriceContainer>
+                    <TrashPriceText>
+                      {getNumberAsCurrency(orderProduct.produto?.preco_padrao as number)}
+                    </TrashPriceText>
+                  </TrashPriceContainer>
+                </ItemDescriptionContainer>
 
-            {orderRelations.pedido_produto_adicional.length > 0 && (
-              <AddsListContainer>
-                {getAddsInOrderProduct(
-                  orderRelations,
-                  orderProduct.id_pedido,
-                  orderProduct.id_produto
-                ).map((add) => (
-                  <AddsText key={`add-${add.id_adicional}`}>
-                    Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
-                  </AddsText>
-                ))}
-
-                {orderRelations.pedido_produto_sabor.length > 0 && (
-                  <OrderFlavorsText>
-                    {"Sabores: ".concat(
-                      getStringFlavorsInOrderProduct(
-                        orderRelations,
+                {orderFullData.pedido_produto_adicional &&
+                  orderFullData.pedido_produto_adicional.length > 0 && (
+                    <AddsListContainer>
+                      {getAddsInOrderProduct(
+                        orderFullData.pedido_produto_adicional,
                         orderProduct.id_pedido,
                         orderProduct.id_produto
-                      )
-                    )}
-                  </OrderFlavorsText>
-                )}
-              </AddsListContainer>
-            )}
-          </li>
-        ))}
-      </ProductsContainer> */}
+                      ).map((add) => (
+                        <AddsText key={`add-${add.id_adicional}`}>
+                          Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
+                        </AddsText>
+                      ))}
+
+                      {orderFullData.pedido_produto_sabor.length > 0 && (
+                        <OrderFlavorsText>
+                          {"Sabores: ".concat(
+                            getStringFlavorsInOrderProduct(
+                              orderFullData.pedido_produto_sabor,
+                              orderProduct.id_pedido,
+                              orderProduct.id_produto
+                            )
+                          )}
+                        </OrderFlavorsText>
+                      )}
+                    </AddsListContainer>
+                  )}
+              </li>
+            ))}
+          </ProductsContainer>
 
           <AdminOrdersPaymentValuesContainer>
             <AdminOrdersPaymentValues>
               <p>Subtotal</p>
-              <p>R$ 20,90</p>
-            </AdminOrdersPaymentValues>
-            <AdminOrdersPaymentValues>
               <p>
-                Cupom de desconto: <span>TESTE</span>
+                {getNumberAsCurrency(
+                  calculateSubTotalPrice(
+                    orderFullData.pedido_produto,
+                    orderFullData.pedido_produto_adicional
+                  )
+                )}
               </p>
-              <p>R$ 2,00</p>
             </AdminOrdersPaymentValues>
-            <AdminOrdersPaymentValues>
-              <p>Taxa de entrega</p>
-              <p>R$ 4,00</p>
-            </AdminOrdersPaymentValues>
-            <AdminOrdersPaymentValues>
-              <p>TOTAL</p>
-              <p>R$ 22,90</p>
-            </AdminOrdersPaymentValues>
+
+            {orderFullData.cupom && (
+              <AdminOrdersPaymentValues>
+                <p>
+                  Cupom de desconto: <span>{orderFullData.cupom.codigo}</span>
+                </p>
+                <p>
+                  {getNumberAsCurrency(
+                    calculateCouponDiscount(
+                      orderFullData.pedido_produto,
+                      orderFullData.pedido_produto_adicional,
+                      orderFullData.cupom,
+                      orderFullData.preco_entrega
+                    )
+                  )}
+                </p>
+              </AdminOrdersPaymentValues>
+            )}
+
+            {getHasDeliveryPrice(orderFullData.tipo_entrega) && (
+              <AdminOrdersPaymentValues>
+                <p>Taxa de entrega</p>
+                <p>{getNumberAsCurrency(orderFullData.preco_entrega)}</p>
+              </AdminOrdersPaymentValues>
+            )}
+
+            {orderTotalPrice && (
+              <AdminOrdersPaymentValues>
+                <p>TOTAL</p>
+                <p>{getNumberAsCurrency(orderTotalPrice)}</p>
+              </AdminOrdersPaymentValues>
+            )}
           </AdminOrdersPaymentValuesContainer>
 
           <AdminPaymentType>
             <p>Forma de pagamento</p>
-            <span>Dinheiro (troco para R$ 50,00) = R$ 27,10</span>
+            <span>{getOrderPaymentTypeText(orderFullData)}</span>
           </AdminPaymentType>
-        </Fragment>
+        </AdminOrdersModalDataContainer>
       )}
     </Modal>
   );

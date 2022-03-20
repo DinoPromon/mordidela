@@ -1,16 +1,20 @@
 import React, { Fragment, useState } from "react";
 import Button from "@material-ui/core/Button";
 import { BiUserCircle } from "react-icons/bi/index";
-import { HiOutlineLocationMarker } from "react-icons/hi/index";
 import { IoMdRestaurant } from "react-icons/io/index";
+import { HiOutlineLocationMarker } from "react-icons/hi/index";
 
 import Axios from "@api";
 import useRequestState from "@hooks/useRequestState";
 import { PURPLE } from "@utils/colors";
 import { StatusPedido } from "@models/pedido";
 import { LoadingButton } from "@components/shared";
-import { getFormattedHours, formatPhoneNumber } from "@utils/formatters";
-import { getFormattedDate } from "@utils/transformation";
+
+import {
+  getFormattedAddress,
+  getFormattedOrderPhone,
+  getFormattedOrderDate,
+} from "../utility/order";
 
 import {
   OrdersCard,
@@ -26,7 +30,6 @@ import {
 
 import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
-import type ITelefone from "@models/telefone";
 import type IEndereco from "@models/endereco";
 import type { IOrderGeneralData } from "@models/pedido";
 
@@ -50,20 +53,6 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
 }) => {
   const [orderRequestStatus, changeOrderRequestStatus] = useRequestState();
   const [loadingStatus, setLoadingStatus] = useState<LoadingOrderStatus>();
-
-  function getFormattedAddress(address: IEndereco) {
-    return `${address.logradouro} Nº ${address.numero}, ${address.bairro}`;
-  }
-
-  function getFormattedOrderDate(date: Date) {
-    const parsedDate = new Date(date);
-
-    return `${getFormattedDate(parsedDate)} - ${getFormattedHours(parsedDate)}`;
-  }
-
-  function getFormattedOrderPhone(phone: ITelefone) {
-    return formatPhoneNumber(phone.ddd.concat(phone.numero));
-  }
 
   async function updateOrderStatus(orderId: number, newStatus: StatusPedido) {
     changeOrderRequestStatus({ isLoading: true });

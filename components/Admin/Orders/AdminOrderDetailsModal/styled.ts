@@ -13,8 +13,13 @@ export const AdminOrdersModalTitle = styled.h3`
 export const AdminOrdersModalUserDataContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const AdminOrdersModalDataContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  margin: 1.5rem 0;
 `;
 
 export const AdminOrdersPaymentValuesContainer = styled.div`
