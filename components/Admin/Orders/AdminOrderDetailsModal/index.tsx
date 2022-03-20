@@ -107,6 +107,8 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
 
           return `Dinheiro - (troco para ${currencyPaymentAmount}) = ${currencyChangeValue}`;
         }
+
+        return "Dinheiro - sem troco";
       }
 
       case TipoPagamento.DEBITO: {
