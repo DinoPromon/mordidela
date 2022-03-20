@@ -2,6 +2,7 @@ import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
 
 import { FindOrderFullDataValidtor } from "./validator";
+import { UUIDParse } from "@helpers/uuid";
 
 import type { IOrderFullData } from "@models/pedido";
 import type { FindOrderFullDataArg } from "./types";
@@ -37,9 +38,21 @@ export class FindOrderFullData {
           },
           cupom: true,
           endereco: true,
-          pedido_produto: true,
-          pedido_produto_adicional: true,
-          pedido_produto_sabor: true,
+          pedido_produto: {
+            include: {
+              produto: true,
+            },
+          },
+          pedido_produto_adicional: {
+            include: {
+              adicional: true,
+            },
+          },
+          pedido_produto_sabor: {
+            include: {
+              sabor: true,
+            },
+          },
         },
       })
       .catch((err) => {
@@ -49,6 +62,15 @@ export class FindOrderFullData {
 
     if (!orderFullData) throwError("O-C-DI", { customMessage: "Pedido não encontrado" });
 
-    return orderFullData as IOrderFullData;
+    return {
+      ...orderFullData,
+      pedido_produto: orderFullData.pedido_produto.map((orderProduct) => ({
+        ...orderProduct,
+        produto: {
+          ...orderProduct.produto,
+          uuid: UUIDParse.getStringUUID(orderProduct.produto.uuid),
+        },
+      })),
+    } as IOrderFullData;
   }
 }
