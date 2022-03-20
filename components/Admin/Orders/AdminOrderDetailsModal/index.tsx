@@ -79,7 +79,6 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
         const response = await Axios.get<IOrderFullData>(`order/full-data/${orderId}`);
         if (!isMounted.current) return;
 
-        console.log(response.data);
         setOrderFullData(response.data);
       } catch (err) {
         const error = err as AxiosError;
@@ -91,6 +90,7 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
   );
 
   function calculateChangeValue(paymentValue: number) {
+    console.log(paymentValue, orderTotalPrice);
     if (orderTotalPrice) return paymentValue - orderTotalPrice;
   }
 
@@ -101,8 +101,12 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
 
         const changeValue = calculateChangeValue(orderFullData.troco_para);
 
-        if (changeValue)
-          return `Dinheiro - (troco para R$ ${orderFullData.troco_para}) = ${changeValue}`;
+        if (changeValue) {
+          const currencyPaymentAmount = getNumberAsCurrency(orderFullData.troco_para);
+          const currencyChangeValue = getNumberAsCurrency(changeValue);
+
+          return `Dinheiro - (troco para ${currencyPaymentAmount}) = ${currencyChangeValue}}`;
+        }
       }
 
       case TipoPagamento.DEBITO: {
