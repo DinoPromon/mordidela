@@ -126,3 +126,7 @@ export const AddressComplement = styled.p`
   font-size: 13px;
   cursor: pointer;
 `;
+
+export const OrderFlavorsText = styled.p`
+  font-size: 0.75rem;
+`;

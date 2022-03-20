@@ -1,44 +1,19 @@
-import styled from "styled-components";
-import { ERROR_RED, SUCCESS_GREEN } from "@utils/colors";
-
-export const ErrorMessage = styled.p`
-  color: ${ERROR_RED};
-`;
-
-export const SuccessMessage = styled.p`
-  color: ${SUCCESS_GREEN};
-`;
-
-import {
-  ProductsContainer,
-  TrashPriceContainer,
-  TrashPriceText,
-  ItemDescriptionContainer,
-  AddsListContainer,
-  AddsText,
-  HighLightText,
-  SubtotalText,
-  TotalText,
-  CoupomDataContainer,
-  ColoredText,
-  AddressTitle,
-  AddressComplement,
-  TotalTextOrdersUserProfile,
-} from "./styled";
+export { ErrorMessage, SuccessMessage } from "./error";
 
 export {
-  ProductsContainer,
-  TrashPriceContainer,
-  TrashPriceText,
-  ItemDescriptionContainer,
-  AddsListContainer,
   AddsText,
-  HighLightText,
-  SubtotalText,
   TotalText,
-  CoupomDataContainer,
   ColoredText,
+  SubtotalText,
   AddressTitle,
+  HighLightText,
+  TrashPriceText,
+  OrderFlavorsText,
+  ProductsContainer,
+  AddsListContainer,
   AddressComplement,
+  TrashPriceContainer,
+  CoupomDataContainer,
+  ItemDescriptionContainer,
   TotalTextOrdersUserProfile,
-};
+} from "./order";
