@@ -4,7 +4,6 @@ import { FaPlusCircle } from "react-icons/fa";
 import { PINK } from "@utils/colors";
 import { StatusPedido } from "@models/pedido";
 import { getFormattedHours } from "@utils/formatters";
-import { createDate } from "@utils/transformation/date";
 import { getFormattedDate } from "@utils/transformation";
 
 import {
@@ -29,20 +28,24 @@ type OrdersListType = (props: OrdersListProps) => JSX.Element;
 const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
   function getOrderStatusText(orderRelation: IOrderRelations) {
     if (orderRelation.status_pedido === StatusPedido.CONFIRMADO && orderRelation.data_confirmacao) {
-      const confirmatedDate = createDate(orderRelation.data_confirmacao);
+      const confirmatedDate = new Date(orderRelation.data_confirmacao);
       const formattedConfirmationDate = getFormattedDate(confirmatedDate);
       const confirmatioDateHours = getFormattedHours(confirmatedDate);
       return `confirmado em ${formattedConfirmationDate} às ${confirmatioDateHours}`;
     }
 
     if (orderRelation.status_pedido === StatusPedido.REJEITADO && orderRelation.data_confirmacao) {
-      const confirmatedDate = createDate(orderRelation.data_confirmacao);
+      const confirmatedDate = new Date(orderRelation.data_confirmacao);
       const formattedConfirmationDate = getFormattedDate(confirmatedDate);
       const confirmatioDateHours = getFormattedHours(confirmatedDate);
       return `rejeitado em ${formattedConfirmationDate} às ${confirmatioDateHours}`;
     }
 
     if (orderRelation.status_pedido === StatusPedido.PENDENTE) return `pendente`;
+  }
+
+  function getOrderDateText(orderDate: Date) {
+    return `${getFormattedDate(orderDate)} às ${getFormattedHours(orderDate)}`;
   }
 
   return (
@@ -56,9 +59,7 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
             <OrdersContainerListHighlight>
               Pedido {`${orderRelation.id_pedido}`}
             </OrdersContainerListHighlight>{" "}
-            {`- ${getFormattedDate(orderRelation.data_pedido)} às ${getFormattedHours(
-              new Date(orderRelation.data_pedido)
-            )}`}
+            {getOrderDateText(new Date(orderRelation.data_pedido))}
           </p>
           <p>
             <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight>{" "}
