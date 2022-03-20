@@ -21,3 +21,5 @@ export {
   transformPriceToString,
   transformPriceStringToNumber,
 };
+
+export { getNumberAsCurrency } from "./currency";
