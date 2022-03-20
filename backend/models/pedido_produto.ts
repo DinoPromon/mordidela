@@ -10,9 +10,4 @@ interface IPedidoProduto {
   observacao: string | null;
 }
 
-export interface IOrderProductRelations extends IPedidoProduto {
-  pedido?: IPedido;
-  produto?: IProduto;
-}
-
 export default IPedidoProduto;

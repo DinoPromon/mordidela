@@ -12,10 +12,4 @@ interface IPedidoProdutoAdicional {
   preco_adicional: number;
 }
 
-export interface IOrderProductAddRelations extends IPedidoProdutoAdicional {
-  pedido?: IPedido;
-  produto?: IProduto;
-  adicional?: IAdicional;
-}
-
 export default IPedidoProdutoAdicional;

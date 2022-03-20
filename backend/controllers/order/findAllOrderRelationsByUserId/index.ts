@@ -10,7 +10,6 @@ import type IUsuarioCupom from "@models/usuario_cupom";
 import type { IOrderRelations } from "@models/pedido";
 import type { PaginatedSearchArg } from "@helpers/pagination/types";
 import type { PaginatedResponse } from "@my-types/backend/pagination";
-import type { IOrderProductRelations } from "@models/pedido_produto";
 import type { FindAllOrderRelationsByUserIdArg } from "./types";
 
 export class FindAllOrderRelationsByUserId {
@@ -94,44 +93,17 @@ export class FindAllOrderRelationsByUserId {
   }
 
   private getSerializedOrdersRelations(ordersRelations: IOrderRelations[]) {
-    const serializedOrdersRelations: IOrderRelations[] = ordersRelations.map(
-      (orderRelations) =>
-        ({
-          ...orderRelations,
-          data_confirmacao: DateSerializer.serialize(orderRelations.data_confirmacao),
-          data_pedido: DateSerializer.serialize(orderRelations.data_pedido),
-          cupom: orderRelations.cupom ? DateSerializer.serializeCoupon(orderRelations.cupom) : null,
-          usuario_cupom: this.getSerializedUserCoupons(orderRelations.usuario_cupom),
-          pedido_produto: this.getSerializedOrderProduct(
-            orderRelations.pedido_produto as unknown as IOrderProductRelations[]
-          ),
-        } as IOrderRelations)
-    );
+    const serializedOrdersRelations = ordersRelations.map((orderRelations) => ({
+      ...orderRelations,
+      pedido_produto: orderRelations.pedido_produto.map((orderProduct) => ({
+        ...orderProduct,
+        produto: {
+          ...orderProduct.produto,
+          uuid: UUIDParse.getStringUUID(orderProduct.produto.uuid as unknown as Buffer),
+        },
+      })),
+    }));
 
     return serializedOrdersRelations;
-  }
-
-  private getSerializedOrderProduct(ordersProducts: IOrderProductRelations[]) {
-    const serializedOrdersProducts: IOrderProductRelations[] = ordersProducts.map(
-      (orderProduct) => ({
-        ...orderProduct,
-        produto: orderProduct.produto
-          ? {
-              ...orderProduct.produto,
-              uuid: UUIDParse.getStringUUID(orderProduct.produto.uuid as unknown as Buffer),
-            }
-          : undefined,
-      })
-    );
-
-    return serializedOrdersProducts;
-  }
-
-  private getSerializedUserCoupons(userCoupons: IUsuarioCupom[]) {
-    const serializedUserCoupons: IUsuarioCupom[] = userCoupons.map((userCoupon) =>
-      DateSerializer.serializeUserCoupon(userCoupon)
-    );
-
-    return serializedUserCoupons;
   }
 }

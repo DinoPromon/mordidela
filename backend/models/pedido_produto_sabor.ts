@@ -10,10 +10,4 @@ interface IPedidoProdutoSabor {
   id_sabor: ISabor["id_sabor"];
 }
 
-export interface IOrderProductFlavorRelations extends IPedidoProdutoSabor {
-  pedido?: IPedido;
-  produto?: IProduto;
-  sabor?: ISabor;
-}
-
 export default IPedidoProdutoSabor;
