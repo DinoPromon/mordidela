@@ -18,7 +18,7 @@ const Home: React.FC = () => {
       <BannerInitial src="/images/banner_home.png" />
       <HomeMenuTitle>
         Visite nosso{" "}
-        <Link href={"/cardapio"}>
+        <Link passHref href={"/cardapio"}>
           <HomeMenuTitleHighlight>cardápio</HomeMenuTitleHighlight>
         </Link>{" "}
         e faça seu pedido!
