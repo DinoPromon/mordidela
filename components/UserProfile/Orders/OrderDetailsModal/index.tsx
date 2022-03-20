@@ -3,6 +3,15 @@ import React from "react";
 import { Modal } from "@components/shared";
 import { TipoCupom } from "@models/cupom";
 import { TipoEntrega } from "@models/pedido";
+import { getNumberAsCurrency } from "@utils/transformation";
+import {
+  calculateTotalPrice,
+  getHasDeliveryPrice,
+  getAddsInOrderProduct,
+  calculateSubTotalPrice,
+  calculateCouponDiscount,
+  getStringFlavorsInOrderProduct,
+} from "@utils/order";
 import {
   AddsText,
   ColoredText,
@@ -17,15 +26,6 @@ import {
   ItemDescriptionContainer,
   TotalTextOrdersUserProfile,
 } from "@components/shared/StyledComponents";
-import { getNumberAsCurrency } from "@utils/transformation";
-import {
-  calculateTotalPrice,
-  getHasDeliveryPrice,
-  getAddsInOrderProduct,
-  calculateSubTotalPrice,
-  calculateCouponDiscount,
-  getStringFlavorsInOrderProduct,
-} from "@utils/order";
 
 import {
   TotalContainer,
@@ -94,31 +94,32 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
               </TrashPriceContainer>
             </ItemDescriptionContainer>
 
-            {orderRelations.pedido_produto_adicional.length > 0 && (
-              <AddsListContainer>
-                {getAddsInOrderProduct(
-                  orderRelations.pedido_produto_adicional as any,
-                  orderProduct.id_pedido,
-                  orderProduct.id_produto
-                ).map((add) => (
-                  <AddsText key={`add-${add.id_adicional}`}>
-                    Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
-                  </AddsText>
-                ))}
+            {orderRelations.pedido_produto_adicional &&
+              orderRelations.pedido_produto_adicional.length > 0 && (
+                <AddsListContainer>
+                  {getAddsInOrderProduct(
+                    orderRelations.pedido_produto_adicional,
+                    orderProduct.id_pedido,
+                    orderProduct.id_produto
+                  ).map((add) => (
+                    <AddsText key={`add-${add.id_adicional}`}>
+                      Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
+                    </AddsText>
+                  ))}
 
-                {orderRelations.pedido_produto_sabor.length > 0 && (
-                  <OrderFlavorsText>
-                    {"Sabores: ".concat(
-                      getStringFlavorsInOrderProduct(
-                        orderRelations.pedido_produto_sabor as any,
-                        orderProduct.id_pedido,
-                        orderProduct.id_produto
-                      )
-                    )}
-                  </OrderFlavorsText>
-                )}
-              </AddsListContainer>
-            )}
+                  {orderRelations.pedido_produto_sabor.length > 0 && (
+                    <OrderFlavorsText>
+                      {"Sabores: ".concat(
+                        getStringFlavorsInOrderProduct(
+                          orderRelations.pedido_produto_sabor,
+                          orderProduct.id_pedido,
+                          orderProduct.id_produto
+                        )
+                      )}
+                    </OrderFlavorsText>
+                  )}
+                </AddsListContainer>
+              )}
           </li>
         ))}
       </ProductsContainer>
@@ -129,8 +130,8 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
           <span>
             {getNumberAsCurrency(
               calculateSubTotalPrice(
-                orderRelations.pedido_produto as any,
-                orderRelations.pedido_produto_adicional as any
+                orderRelations.pedido_produto,
+                orderRelations.pedido_produto_adicional
               )
             )}
           </span>
@@ -149,8 +150,8 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
               <span>
                 {getNumberAsCurrency(
                   calculateCouponDiscount(
-                    orderRelations.pedido_produto as any,
-                    orderRelations.pedido_produto_adicional as any,
+                    orderRelations.pedido_produto,
+                    orderRelations.pedido_produto_adicional,
                     orderRelations.cupom,
                     orderRelations.preco_entrega
                   )
@@ -193,8 +194,8 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
           <span>
             {getNumberAsCurrency(
               calculateTotalPrice(
-                orderRelations.pedido_produto as any,
-                orderRelations.pedido_produto_adicional as any,
+                orderRelations.pedido_produto,
+                orderRelations.pedido_produto_adicional,
                 orderRelations.tipo_entrega,
                 orderRelations.preco_entrega,
                 orderRelations.cupom
