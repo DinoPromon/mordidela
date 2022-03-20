@@ -13,7 +13,9 @@ import {
   OrdersContainerItem,
   OrdersContainerListHighlight,
 } from "./styled";
-import { calculateTotalPrice, getOrderPaymentTypeText, getNumberAsCurrency } from "../utility";
+import { getOrderPaymentTypeText } from "../utility";
+import { calculateTotalPrice } from "@utils/order";
+import { getNumberAsCurrency } from "@utils/transformation";
 
 import type { IOrderRelations } from "@models/pedido";
 
@@ -64,7 +66,15 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
           </p>
           <p>
             <OrdersContainerListHighlight>Total:</OrdersContainerListHighlight>{" "}
-            {`${getNumberAsCurrency(calculateTotalPrice(orderRelation))}`}
+            {`${getNumberAsCurrency(
+              calculateTotalPrice(
+                orderRelation.pedido_produto as any,
+                orderRelation.pedido_produto_adicional as any,
+                orderRelation.tipo_entrega,
+                orderRelation.preco_entrega,
+                orderRelation.cupom
+              )
+            )}`}
           </p>
           <p>
             <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight>{" "}
