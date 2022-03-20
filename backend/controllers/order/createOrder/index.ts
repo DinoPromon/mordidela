@@ -36,6 +36,7 @@ export class CreateOrder {
         throwError("O-C", { customMessage: "Erro na criação da relação pedido e cupom" });
       });
     }
+
     await this.createProductRelations(createdOrderId).catch((err) => {
       console.error(err);
       throwError("O-C", { customMessage: "Erro na criação da relação pedido e produto" });
@@ -66,6 +67,23 @@ export class CreateOrder {
     return createdUserCoupon as IUsuarioCupom;
   }
 
+  private async createFidelityCouponRelation(coupon: ICupom, userId: IUsuario["id_usuario"]) {
+    return await Prisma.usuario_cupom
+      .create({
+        data: {
+          id_cupom: coupon.id_cupom,
+          id_usuario: userId,
+          data_uso: null,
+          foi_usado: false,
+          id_pedido: null,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        throwError("O-C-DI");
+      });
+  }
+
   private async giveFidelityCoupon() {
     const fidelityCoupons = (await Prisma.cupom
       .findMany({
@@ -81,9 +99,7 @@ export class CreateOrder {
         throwError("O-C-DI");
       })) as ICupom[];
 
-    const biggestFidelityCoupon = fidelityCoupons.reduce((acc, coupon) => {
-      return acc.qtde_min_pedido > coupon.qtde_min_pedido ? acc : coupon;
-    }, fidelityCoupons[0]);
+    const biggestFidelityCoupon = fidelityCoupons[0];
 
     const userOrdersAmount = await Prisma.pedido
       .count({
@@ -100,20 +116,7 @@ export class CreateOrder {
 
     for (const coupon of fidelityCoupons) {
       if (fidelityCouponRest % coupon.qtde_min_pedido === 0) {
-        await Prisma.usuario_cupom
-          .create({
-            data: {
-              id_cupom: coupon.id_cupom,
-              id_usuario: this.userId,
-              data_uso: null,
-              foi_usado: false,
-              id_pedido: null,
-            },
-          })
-          .catch((err) => {
-            console.log(err);
-            throwError("O-C-DI");
-          });
+        await this.createFidelityCouponRelation(coupon, this.userId);
         return;
       }
     }
@@ -197,6 +200,7 @@ export class CreateOrder {
     const createdOrderId = await Prisma.pedido.create({
       data: {
         ...this.orderData,
+        troco_para: this.orderData.troco_para || null,
         preco_entrega: deliveryPrice,
       },
     });
