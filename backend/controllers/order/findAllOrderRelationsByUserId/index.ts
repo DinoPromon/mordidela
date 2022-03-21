@@ -2,11 +2,9 @@ import { Prisma } from "@backend";
 import { throwError } from "@errors/index";
 import { UUIDParse } from "@helpers/uuid";
 import { PaginationHelper } from "@helpers/pagination";
-import { DateSerializer } from "@helpers/date/serializer";
 
 import { FindAllOrderRelationsByUserIdValidator } from "./validator";
 
-import type IUsuarioCupom from "@models/usuario_cupom";
 import type { IOrderRelations } from "@models/pedido";
 import type { PaginatedSearchArg } from "@helpers/pagination/types";
 import type { PaginatedResponse } from "@my-types/backend/pagination";

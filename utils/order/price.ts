@@ -7,7 +7,7 @@ import type { OrderProductRelation, OrderProductAddRelation } from "./types";
 
 export function calculateSubTotalPrice(
   orderProducts: OrderProductRelation[],
-  orderProductAdds: OrderProductAddRelation[] | null
+  orderProductAdds: OrderProductAddRelation[]
 ) {
   const subtTotalPrice = orderProducts.reduce((totalPrice, orderProduct) => {
     const addsTotalPrice = calculateAddsTotalPrice(
@@ -34,7 +34,7 @@ export function getHasDeliveryPrice(deliveryType: TipoEntrega) {
 
 export function calculateTotalPrice(
   orderProducts: OrderProductRelation[],
-  orderProductAdds: OrderProductAddRelation[] | null,
+  orderProductAdds: OrderProductAddRelation[],
   deliveryType: TipoEntrega,
   deliveryPrice: number,
   cupom: ICupom | null

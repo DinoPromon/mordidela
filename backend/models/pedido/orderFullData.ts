@@ -19,11 +19,9 @@ export interface IOrderFullData extends IPedido {
   pedido_produto: (IPedidoProduto & {
     produto: IProduto;
   })[];
-  pedido_produto_adicional:
-    | (IPedidoProdutoAdicional & {
-        adicional: IAdicional;
-      })[]
-    | null;
+  pedido_produto_adicional: (IPedidoProdutoAdicional & {
+    adicional: IAdicional;
+  })[];
   pedido_produto_sabor: (IPedidoProdutoSabor & {
     sabor: ISabor;
   })[];

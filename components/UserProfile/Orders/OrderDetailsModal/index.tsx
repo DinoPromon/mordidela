@@ -94,32 +94,31 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
               </TrashPriceContainer>
             </ItemDescriptionContainer>
 
-            {orderRelations.pedido_produto_adicional &&
-              orderRelations.pedido_produto_adicional.length > 0 && (
-                <AddsListContainer>
-                  {getAddsInOrderProduct(
-                    orderRelations.pedido_produto_adicional,
-                    orderProduct.id_pedido,
-                    orderProduct.id_produto
-                  ).map((add) => (
-                    <AddsText key={`add-${add.id_adicional}`}>
-                      Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
-                    </AddsText>
-                  ))}
+            {orderRelations.pedido_produto_adicional.length > 0 && (
+              <AddsListContainer>
+                {getAddsInOrderProduct(
+                  orderRelations.pedido_produto_adicional,
+                  orderProduct.id_pedido,
+                  orderProduct.id_produto
+                ).map((add) => (
+                  <AddsText key={`add-${add.id_adicional}`}>
+                    Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
+                  </AddsText>
+                ))}
 
-                  {orderRelations.pedido_produto_sabor.length > 0 && (
-                    <OrderFlavorsText>
-                      {"Sabores: ".concat(
-                        getStringFlavorsInOrderProduct(
-                          orderRelations.pedido_produto_sabor,
-                          orderProduct.id_pedido,
-                          orderProduct.id_produto
-                        )
-                      )}
-                    </OrderFlavorsText>
-                  )}
-                </AddsListContainer>
-              )}
+                {orderRelations.pedido_produto_sabor.length > 0 && (
+                  <OrderFlavorsText>
+                    {"Sabores: ".concat(
+                      getStringFlavorsInOrderProduct(
+                        orderRelations.pedido_produto_sabor,
+                        orderProduct.id_pedido,
+                        orderProduct.id_produto
+                      )
+                    )}
+                  </OrderFlavorsText>
+                )}
+              </AddsListContainer>
+            )}
           </li>
         ))}
       </ProductsContainer>

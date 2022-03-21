@@ -13,7 +13,7 @@ export interface IOrderRelations extends IPedido {
   cupom: ICupom | null;
   endereco: IEndereco | null;
   pedido_produto: (IPedidoProduto & { produto: IProduto })[];
-  pedido_produto_adicional: (IPedidoProdutoAdicional & { adicional: IAdicional })[] | null;
+  pedido_produto_adicional: (IPedidoProdutoAdicional & { adicional: IAdicional })[];
   pedido_produto_sabor: (IPedidoProdutoSabor & { sabor: ISabor })[];
   usuario_cupom: IUsuarioCupom[];
 }

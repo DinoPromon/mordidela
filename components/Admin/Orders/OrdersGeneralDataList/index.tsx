@@ -30,7 +30,6 @@ import {
 
 import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
-import type IEndereco from "@models/endereco";
 import type { IOrderGeneralData } from "@models/pedido";
 
 type LoadingOrderStatus = {

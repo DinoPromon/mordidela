@@ -13,7 +13,7 @@ function filterOrderProductAdds(
 }
 
 export function calculateAddsTotalPrice(
-  orderProductAdds: OrderProductAddRelation[] | null,
+  orderProductAdds: OrderProductAddRelation[],
   orderId: OrderProductAddRelation["id_pedido"],
   productId: OrderProductAddRelation["id_produto"]
 ) {

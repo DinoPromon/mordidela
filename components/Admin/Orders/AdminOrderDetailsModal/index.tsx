@@ -112,11 +112,11 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
       }
 
       case TipoPagamento.DEBITO: {
-        return "Cartão débito";
+        return "Cartão de débito";
       }
 
       case TipoPagamento.CREDITO: {
-        return "Cartão crédito";
+        return "Cartão de crédito";
       }
 
       default: {

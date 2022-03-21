@@ -6,7 +6,7 @@ import type { OrderProductAddRelation, OrderProductRelation } from "./types";
 
 export function calculateCouponDiscount(
   orderProducts: OrderProductRelation[],
-  orderProductAdds: OrderProductAddRelation[] | null,
+  orderProductAdds: OrderProductAddRelation[],
   coupon: ICupom | null,
   deliveryPrice: number
 ) {
