@@ -21,6 +21,8 @@ import {
   getFlavorsFormModel,
 } from "./FormModel";
 
+import { FlavorsListContainer } from "./styled";
+
 import { Formik } from "formik";
 import { FormikForm } from "@components/Login/styled";
 import { InputTextFormik } from "@components/shared";
@@ -40,9 +42,9 @@ const Flavors: React.FC = () => {
         {({ values }) => (
           <CategoriesContainer>
             <CategoriesTitle>Sabores</CategoriesTitle>
-            <CategoriesListContainer>
+            <FlavorsListContainer>
               <CategoriesList>
-                Cones
+                Bolinha de queijo
                 <CategoriesIcons>
                   <ClickableItem title="Editar sabor" scale={1.3}>
                     <BsPencil size={16} color={PINK} />
@@ -53,61 +55,50 @@ const Flavors: React.FC = () => {
                 </CategoriesIcons>
               </CategoriesList>
               <CategoriesListWhitBorder>
-                Pratos executivos
+                Coxinha de frango
                 <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
+                  <ClickableItem title="Editar sabor" scale={1.3}>
                     <BsPencil size={16} color={PINK} />
                   </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
+                  <ClickableItem title="Excluir sabor" scale={1.3}>
                     <FaTrash size={16} color={PINK} />
                   </ClickableItem>
                 </CategoriesIcons>
               </CategoriesListWhitBorder>
               <CategoriesListWhitBorder>
-                Lanches
+                Coxinha de carne
                 <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
+                  <ClickableItem title="Editar sabor" scale={1.3}>
                     <BsPencil size={16} color={PINK} />
                   </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
+                  <ClickableItem title="Excluir sabor" scale={1.3}>
                     <FaTrash size={16} color={PINK} />
                   </ClickableItem>
                 </CategoriesIcons>
               </CategoriesListWhitBorder>
               <CategoriesListWhitBorder>
-                Caixas
+                Coxinha de presunto e queijo
                 <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
+                  <ClickableItem title="Editar sabor" scale={1.3}>
                     <BsPencil size={16} color={PINK} />
                   </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
+                  <ClickableItem title="Excluir sabor" scale={1.3}>
                     <FaTrash size={16} color={PINK} />
                   </ClickableItem>
                 </CategoriesIcons>
               </CategoriesListWhitBorder>
               <CategoriesListWhitBorder>
-                Cremes gelados
+                Quibe
                 <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
+                  <ClickableItem title="Editar sabor" scale={1.3}>
                     <BsPencil size={16} color={PINK} />
                   </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
+                  <ClickableItem title="Excluir sabor" scale={1.3}>
                     <FaTrash size={16} color={PINK} />
                   </ClickableItem>
                 </CategoriesIcons>
               </CategoriesListWhitBorder>
-              <CategoriesListWhitBorder>
-                Bebidas
-                <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesListWhitBorder>
-            </CategoriesListContainer>
+            </FlavorsListContainer>
 
             <AddCategoriesTitle>Adicionar sabor</AddCategoriesTitle>
             <FormikForm>
@@ -117,7 +108,7 @@ const Flavors: React.FC = () => {
                 values={values.name}
                 variant="outlined"
                 helperText={formModel.name.requiredErrorMessage}
-                style={{ width: "400px" }}
+                style={{ width: "500px" }}
               />
               <ButtonContainer>
                 <Button variant="contained" color="secondary" type="submit">
