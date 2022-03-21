@@ -1,12 +1,16 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { motion } from "framer-motion";
 import { getSession } from "next-auth/client";
 import { FaUserAlt, FaAngleDown } from "react-icons/fa/index";
 
-import DropdownList from "./DropdownList";
+const DropdownList = dynamic(() => import("./DropdownList"));
 import ClickableItem from "@components/shared/ClickableItem";
-import { ProfileDropdownContainer } from "./styled";
+
+import { SessionStatus } from "./constants/sessionStatus";
+import { ProfileDropdownContainer, LoadingContainer } from "./styled";
 
 import type { Variants } from "framer-motion";
 
@@ -20,10 +24,8 @@ const angleUpVariants: Variants = {
 };
 
 const ProfileDropdown: React.FC = (props) => {
-  const [sessionStatus, setSessionStatus] = useState<"loading" | "loggedin" | "loggedout">(
-    "loading"
-  );
-  const [nome, setNome] = useState<string>();
+  const [sessionStatus, setSessionStatus] = useState<SessionStatus>(SessionStatus.LOADING);
+  const [userFirstName, setUserFirstName] = useState<string>();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const showDropdownHandler = () => {
@@ -33,15 +35,17 @@ const ProfileDropdown: React.FC = (props) => {
   const handleLoggedIn = async () => {
     try {
       const session = await getSession();
-      if (session) {
-        const { nome } = session.user as { nome: string };
-        setNome(nome.split(" ")[0]);
-        setSessionStatus("loggedin");
-        return;
-      }
-      setSessionStatus("loggedout");
+
+      if (!session) return setSessionStatus(SessionStatus.LOGGED_OUT);
+
+      const { nome } = session.user as { nome: string };
+
+      setUserFirstName(nome.split(" ")[0]);
+      setSessionStatus(SessionStatus.LOGGED_IN);
     } catch (e) {
       const error = e as Error;
+      setSessionStatus(SessionStatus.LOGGED_OUT);
+      console.log(error);
     }
   };
 
@@ -52,9 +56,16 @@ const ProfileDropdown: React.FC = (props) => {
   return (
     <ProfileDropdownContainer onClick={showDropdownHandler}>
       <FaUserAlt size={24} color="white" style={{ verticalAlign: "middle" }} />
-      {sessionStatus === "loggedin" && (
+
+      {sessionStatus === SessionStatus.LOADING && (
+        <LoadingContainer>
+          <CircularProgress color="primary" size={20} />
+        </LoadingContainer>
+      )}
+
+      {sessionStatus === SessionStatus.LOGGED_IN && (
         <Fragment>
-          <span>{nome}</span>
+          <span>{userFirstName}</span>
           <ClickableItem title="Menu de usuário">
             <motion.div custom={showDropdown} variants={angleUpVariants} animate="down">
               <FaAngleDown size={24} color="white" style={{ verticalAlign: "middle" }} />
@@ -62,8 +73,10 @@ const ProfileDropdown: React.FC = (props) => {
           </ClickableItem>
         </Fragment>
       )}
-      {sessionStatus === "loggedout" && <Link href="/login">Login</Link>}
-      {showDropdown && sessionStatus === "loggedin" && (
+
+      {sessionStatus === SessionStatus.LOGGED_OUT && <Link href="/login">Login</Link>}
+
+      {showDropdown && sessionStatus === SessionStatus.LOGGED_IN && (
         <DropdownList isShowingDropdown={showDropdown} setShowDropdown={setShowDropdown} />
       )}
     </ProfileDropdownContainer>
