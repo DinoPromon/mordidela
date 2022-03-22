@@ -6,7 +6,7 @@ import useIsMounted from "@hooks/useIsMounted";
 import useRequestState from "@hooks/useRequestState";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { StatusPedido } from "@models/pedido";
-import { CentralizedLoading, LoadingButton } from "@components/shared";
+import { CentralizedLoading, InputTextFormik, LoadingButton } from "@components/shared";
 
 const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
 const AdminOrderDetailsModal = dynamic(() => import("./AdminOrderDetailsModal"));
@@ -16,12 +16,14 @@ import {
   OrdersContainer,
   FiltersContainer,
   LoadMoreButtonContainer,
+  DateFilterContainer,
 } from "./styled";
 
 import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
 import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
+import { Input, TextField } from "@material-ui/core";
 
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
@@ -152,6 +154,11 @@ const Orders: React.FC = () => {
           Relatório de pedidos
         </OrdersFilter>
       </FiltersContainer>
+
+      <DateFilterContainer>
+        <h4>Exibindo os pedidos do dia</h4>
+        <TextField variant="outlined" size="small" type={"date"}></TextField>
+      </DateFilterContainer>
 
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
 
