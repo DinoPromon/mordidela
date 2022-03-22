@@ -48,10 +48,10 @@ const Orders: React.FC = () => {
         );
         if (!isMounted.current) return;
 
-        setCount(response.data.count);
-        setOrdersRelations((prevState) => [...prevState, ...response.data.items]);
-        setSkipItems((prevState) => prevState + response.data.items.length);
         setIsInitialRequest(false);
+        setSkipItems((prevState) => prevState + response.data.items.length);
+        setOrdersRelations((prevState) => [...prevState, ...response.data.items]);
+        setCount(response.data.count);
       } catch (err) {
         if (!isMounted.current) return;
 
@@ -93,7 +93,7 @@ const Orders: React.FC = () => {
       )}
 
       <CustomAnimatePresence>
-        {count !== undefined && skipItems < count && (
+        {count !== undefined && count > skipItems && (
           <LoadMoreContainer key="sabe-de-nada-hehe" as={motion.div} exit={{ opacity: 0 }}>
             <LoadingButton
               variant="contained"
