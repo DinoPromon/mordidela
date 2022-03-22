@@ -1,12 +1,14 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { Prisma } from "backend";
+import { LoginUser } from "@controllers/users";
 
 export default NextAuth({
   session: {
     jwt: true,
     maxAge: 2 * 60 * 60,
   },
+  secret: process.env.NEXT_AUTH_SECRET,
   pages: {
     signIn: "/login",
     signOut: "/",
@@ -16,21 +18,14 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       async authorize(credentials, req) {
-        const user = await Prisma.usuario.findFirst({
-          where: {
-            AND: [
-              {
-                email: credentials.email,
-              },
-              {
-                senha: credentials.password,
-              },
-            ],
-          },
+        const loginUser = new LoginUser({
+          email: credentials.email,
+          senha: credentials.password,
         });
-        if (!user) {
-          return null;
-        }
+
+        const user = await loginUser.exec().catch((err) => null);
+
+        if (!user) return null;
 
         return {
           nome: user.nome,

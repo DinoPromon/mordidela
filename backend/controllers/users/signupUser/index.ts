@@ -2,6 +2,7 @@ import { Prisma } from "@backend";
 
 import { throwError } from "@errors/index";
 import { InputParser } from "@helpers/input";
+import { PasswordHasher } from "@helpers/password";
 
 import { SignupUserValidator } from "./validator";
 
@@ -22,6 +23,7 @@ export type SignupUserData = {
 
 export class SignupUser extends InputParser {
   private signupUserdata: SignupUserData;
+  private passwordHasher = new PasswordHasher();
   private validator: SignupUserValidator;
 
   constructor(signupUserData: SignupUserData) {
@@ -32,8 +34,9 @@ export class SignupUser extends InputParser {
 
   public async exec() {
     await this.validator.validate();
-    console.log(this.signupUserdata);
+
     const createdUser = await this.createUser(this.signupUserdata);
+
     await this.createAddress(this.signupUserdata, createdUser.id_usuario);
     await this.createPhone(this.signupUserdata, createdUser.id_usuario);
 
@@ -79,7 +82,7 @@ export class SignupUser extends InputParser {
           data_nascimento: data.data_nascimento,
           email: data.email,
           nome: data.nome,
-          senha: data.senha,
+          senha: await this.passwordHasher.hash(data.senha),
           autorizacao: "cliente",
           data_criacao: new Date(),
         },
