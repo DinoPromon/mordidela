@@ -41,8 +41,6 @@ export class LoginUser {
 
     const isPasswordEquals = this.passwordHasher.compare(hashedPassword, user.senha);
 
-    console.log(user.senha, hashedPassword);
-
     if (!isPasswordEquals) throwError("O-C-DI", { customMessage: "Dado(s) inválido(s)" });
 
     return user;

@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { Prisma } from "backend";
 import { LoginUser } from "@controllers/users";
 
 export default NextAuth({
