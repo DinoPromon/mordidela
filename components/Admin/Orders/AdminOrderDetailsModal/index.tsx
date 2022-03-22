@@ -16,6 +16,7 @@ import {
   getAddsInOrderProduct,
   calculateTotalPrice,
   getHasDeliveryPrice,
+  getProductHasFlavors,
   calculateSubTotalPrice,
   calculateCouponDiscount,
   getStringFlavorsInOrderProduct,
@@ -188,32 +189,31 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
                   </TrashPriceContainer>
                 </ItemDescriptionContainer>
 
-                {orderFullData.pedido_produto_adicional &&
-                  orderFullData.pedido_produto_adicional.length > 0 && (
-                    <AddsListContainer>
-                      {getAddsInOrderProduct(
-                        orderFullData.pedido_produto_adicional,
+                {orderFullData.pedido_produto_adicional.length > 0 && (
+                  <AddsListContainer>
+                    {getAddsInOrderProduct(
+                      orderFullData.pedido_produto_adicional,
+                      orderProduct.id_pedido,
+                      orderProduct.id_produto
+                    ).map((add) => (
+                      <AddsText key={`add-${add.id_adicional}`}>
+                        Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
+                      </AddsText>
+                    ))}
+                  </AddsListContainer>
+                )}
+
+                {getProductHasFlavors(orderProduct, orderFullData.pedido_produto_sabor) && (
+                  <OrderFlavorsText>
+                    {"Sabores: ".concat(
+                      getStringFlavorsInOrderProduct(
+                        orderFullData.pedido_produto_sabor,
                         orderProduct.id_pedido,
                         orderProduct.id_produto
-                      ).map((add) => (
-                        <AddsText key={`add-${add.id_adicional}`}>
-                          Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
-                        </AddsText>
-                      ))}
-
-                      {orderFullData.pedido_produto_sabor.length > 0 && (
-                        <OrderFlavorsText>
-                          {"Sabores: ".concat(
-                            getStringFlavorsInOrderProduct(
-                              orderFullData.pedido_produto_sabor,
-                              orderProduct.id_pedido,
-                              orderProduct.id_produto
-                            )
-                          )}
-                        </OrderFlavorsText>
-                      )}
-                    </AddsListContainer>
-                  )}
+                      )
+                    )}
+                  </OrderFlavorsText>
+                )}
               </li>
             ))}
           </ProductsContainer>

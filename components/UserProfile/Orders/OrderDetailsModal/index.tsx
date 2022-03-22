@@ -7,6 +7,7 @@ import { getNumberAsCurrency } from "@utils/transformation";
 import {
   calculateTotalPrice,
   getHasDeliveryPrice,
+  getProductHasFlavors,
   getAddsInOrderProduct,
   calculateSubTotalPrice,
   calculateCouponDiscount,
@@ -105,19 +106,19 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderRelations, o
                     Adicional: {add.nome} <span>{getNumberAsCurrency(add.preco)}</span>
                   </AddsText>
                 ))}
-
-                {orderRelations.pedido_produto_sabor.length > 0 && (
-                  <OrderFlavorsText>
-                    {"Sabores: ".concat(
-                      getStringFlavorsInOrderProduct(
-                        orderRelations.pedido_produto_sabor,
-                        orderProduct.id_pedido,
-                        orderProduct.id_produto
-                      )
-                    )}
-                  </OrderFlavorsText>
-                )}
               </AddsListContainer>
+            )}
+
+            {getProductHasFlavors(orderProduct, orderRelations.pedido_produto_sabor) && (
+              <OrderFlavorsText>
+                {"Sabores: ".concat(
+                  getStringFlavorsInOrderProduct(
+                    orderRelations.pedido_produto_sabor,
+                    orderProduct.id_pedido,
+                    orderProduct.id_produto
+                  )
+                )}
+              </OrderFlavorsText>
             )}
           </li>
         ))}

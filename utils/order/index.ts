@@ -21,12 +21,13 @@ export function getStringFlavorsInOrderProduct(
   );
 
   const flavorsNameInOrderProduct = filteredOrderProductFlavors.map(
-    (orderProductFlavor) => orderProductFlavor.sabor?.nome as string
+    (orderProductFlavor) => orderProductFlavor.sabor.nome
   );
 
   return flavorsNameInOrderProduct.join(", ");
 }
 
+export { getProductHasFlavors } from "./flavor";
 export { calculateCouponDiscount } from "./coupon";
 export { getAddsInOrderProduct, calculateAddsTotalPrice } from "./add";
 export { calculateSubTotalPrice, calculateTotalPrice, getHasDeliveryPrice } from "./price";

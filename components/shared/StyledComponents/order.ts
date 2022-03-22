@@ -128,5 +128,6 @@ export const AddressComplement = styled.p`
 `;
 
 export const OrderFlavorsText = styled.p`
-  font-size: 0.75rem;
+  font-size: 13px;
+  padding: 0.25rem 0;
 `;
