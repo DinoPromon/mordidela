@@ -20,9 +20,8 @@ const AllProducts: React.FC = () => {
   return (
     <AllProductsContainer>
       <FiltersContainer>
-        <OrdersFilter>Produtos disponíveis (32)</OrdersFilter>
-        <OrdersFilter>Produtos indisponíveis (5)</OrdersFilter>
-        <OrdersFilter>Cadastrar/editar produtos</OrdersFilter>
+        <OrdersFilter>Produtos disponíveis</OrdersFilter>
+        <OrdersFilter>Produtos indisponíveis</OrdersFilter>
       </FiltersContainer>
       <OrdersCardContainer>
         <OrdersCard>
