@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-import { PINK } from "@utils/colors";
+import { PINK, PURPLE } from "@utils/colors";
 
 const selectedFilterStyle = css`
   color: white;
@@ -29,7 +29,7 @@ export const OrdersContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   padding: 1.5rem 0;
 `;
 
@@ -67,4 +67,15 @@ export const LoadMoreButtonContainer = styled.div`
 export const NoRequests = styled.h3`
   text-align: center;
   padding-top: 3rem;
+`;
+
+export const DateFilterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+
+  & > h4 {
+    color: ${PURPLE};
+  }
 `;

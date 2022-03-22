@@ -59,7 +59,7 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
             <OrdersContainerListHighlight>
               Pedido {`${orderRelation.id_pedido}`}
             </OrdersContainerListHighlight>{" "}
-            {getOrderDateText(new Date(orderRelation.data_pedido))}
+            - {getOrderDateText(new Date(orderRelation.data_pedido))}
           </p>
           <p>
             <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight>{" "}
