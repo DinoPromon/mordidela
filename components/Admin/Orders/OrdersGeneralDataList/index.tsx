@@ -26,6 +26,7 @@ import {
   OrdersCardTitleContainer,
   OrdersCardActionsContainer,
   ConfirmationMessage,
+  RejectionMessage,
 } from "./styled";
 
 import type { AxiosError } from "axios";
@@ -117,9 +118,9 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
           )}
 
           {order.status_pedido === StatusPedido.REJEITADO && (
-            <ConfirmationMessage>
+            <RejectionMessage>
               Rejeitado em {getFormattedOrderDate(order.data_confirmacao as Date)}
-            </ConfirmationMessage>
+            </RejectionMessage>
           )}
 
           <OrdersCardActionsContainer>

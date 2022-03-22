@@ -1,4 +1,4 @@
-import { PINK } from "@utils/colors";
+import { PINK, SUCCESS_GREEN, ERROR_RED} from "@utils/colors";
 import styled from "styled-components";
 
 export const OrdersCardContainer = styled.ul`
@@ -62,5 +62,9 @@ export const OrdersUserContainer = styled.div`
 
 export const ConfirmationMessage = styled.h4`
   text-align: center;
-  color: ${PINK};
+  color: ${SUCCESS_GREEN};
+`;
+
+export const RejectionMessage = styled(ConfirmationMessage)`
+  color: ${ERROR_RED};
 `;
