@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { Button, TextField } from "@material-ui/core";
+import { Button, FormControl, MenuItem, TextField } from "@material-ui/core";
 
 import Axios from "@api";
 import useIsMounted from "@hooks/useIsMounted";
 import useRequestState from "@hooks/useRequestState";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { StatusPedido } from "@models/pedido";
-import { CentralizedLoading, InputTextFormik, LoadingButton } from "@components/shared";
+import { CentralizedLoading, LoadingButton } from "@components/shared";
 
 import { FindDateFilter } from "./constants";
 
@@ -27,6 +27,9 @@ import type IPedido from "@models/pedido";
 import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
 
+import { InputLabel } from "@material-ui/core";
+import { Select } from "@material-ui/core";
+
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
@@ -39,6 +42,19 @@ const Orders: React.FC = () => {
   const [selectedOrderStatus, setSelectedOrderStatus] = useState<StatusPedido | undefined>(
     StatusPedido.PENDENTE
   );
+
+  const [state, setState] = React.useState<{ age: string; name: string }>({
+    age: "",
+    name: "hai",
+  });
+
+  const handleChange = (event: React.ChangeEvent<{ name?: string; value: string }>) => {
+    const name = event.target.name as keyof typeof state;
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
+  };
 
   const fetchOrdersGeneralData = useCallback(
     async (skip?: number, orderStatus?: StatusPedido) => {
@@ -186,7 +202,27 @@ const Orders: React.FC = () => {
 
       <DateFilterContainer>
         <h4>{getDateFilterText(filterOptions)}</h4>
-        <TextField variant="outlined" size="small" select style={{ width: "120px" }} />
+        <FormControl variant="outlined" size="small">
+          <InputLabel htmlFor="age-native-simple"></InputLabel>
+          <Select
+            native
+            value={state.age}
+            onChange={handleChange}
+            inputProps={{
+              name: "age",
+              id: "age-native-simple",
+            }}
+          >
+            <option value={FindDateFilter.TODAY}>hoje</option>
+            <option value={FindDateFilter.LAST_7_DAYS}>últimos 7 dias</option>
+            <option value={FindDateFilter.LAST_30_DAYS}>últimos 30 dias</option>
+            <option value={FindDateFilter.DATE}>data</option>
+          </Select>
+        </FormControl>
+        <Button variant="contained" color="primary">
+          Filtrar
+        </Button>
+        {/*         <TextField variant="outlined" size="small" select style={{ width: "120px" }} />
         <TextField
           size="small"
           label="Data"
@@ -196,7 +232,7 @@ const Orders: React.FC = () => {
         />
         <Button variant="contained" color="primary">
           Filtrar
-        </Button>
+        </Button> */}
       </DateFilterContainer>
 
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
