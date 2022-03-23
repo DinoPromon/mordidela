@@ -15,26 +15,22 @@ const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
 const AdminOrderDetailsModal = dynamic(() => import("./AdminOrderDetailsModal"));
 import {
   NoRequests,
-  OrdersFilter,
   OrdersContainer,
   FiltersContainer,
   LoadMoreButtonContainer,
-  DateFilterContainer,
+  OrdersFilter,
 } from "./styled";
 
 import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
 import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
-
-import { InputLabel } from "@material-ui/core";
-import { Select } from "@material-ui/core";
+import DateFilter from "./DateFilter";
 
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
   const [count, setCount] = useState<number>();
-  const [filterOptions] = useState<FindDateFilter>(FindDateFilter.TODAY);
   const [skipItems, setSkipItems] = useState(0);
   const [isInitialRequest, setIsInitialRequest] = useState(true);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState<number>();
@@ -43,19 +39,6 @@ const Orders: React.FC = () => {
     StatusPedido.PENDENTE
   );
 
-  const [state, setState] = React.useState<{ age: string; name: string }>({
-    age: "",
-    name: "hai",
-  });
-
-  const handleChange = (event: React.ChangeEvent<{ name?: string; value: string }>) => {
-    const name = event.target.name as keyof typeof state;
-    setState({
-      ...state,
-      [name]: event.target.value,
-    });
-  };
-
   const fetchOrdersGeneralData = useCallback(
     async (skip?: number, orderStatus?: StatusPedido) => {
       changeRequestStatus({ error: "", isLoading: true });
@@ -63,10 +46,8 @@ const Orders: React.FC = () => {
         const response = await Axios.get<OrdersGeneralDataResponse>("/order/general-data", {
           params: {
             status_pedido: orderStatus,
-            // tipo de filtro
-            // filtro_data_pedido?: FindDateFilter;
-            // data
-            // data_pedido?: ;
+            filtro_data_pedido: FindDateFilter,
+            /* data_pedido?: , */
             skip: skip || 0,
           },
         });
@@ -131,28 +112,6 @@ const Orders: React.FC = () => {
     });
   }
 
-  function getDateFilterText(filterOption?: FindDateFilter) {
-    switch (filterOption) {
-      case FindDateFilter.TODAY:
-        return "Exibindo os pedidos de";
-
-      case FindDateFilter.LAST_7_DAYS:
-        return "Exibindo os pedidos dos últimos";
-
-      case FindDateFilter.LAST_30_DAYS:
-        return "Exibindo os pedidos dos últimos";
-
-      case FindDateFilter.DATE:
-        return "Exibindo os pedidos da";
-
-      case undefined:
-        return "Exibindo todos os pedidos";
-
-      default:
-        return filterOption;
-    }
-  }
-
   useEffect(() => {
     fetchOrdersGeneralData(0, StatusPedido.PENDENTE);
   }, [fetchOrdersGeneralData]);
@@ -200,40 +159,7 @@ const Orders: React.FC = () => {
         </OrdersFilter>
       </FiltersContainer>
 
-      <DateFilterContainer>
-        <h4>{getDateFilterText(filterOptions)}</h4>
-        <FormControl variant="outlined" size="small">
-          <InputLabel htmlFor="age-native-simple"></InputLabel>
-          <Select
-            native
-            value={state.age}
-            onChange={handleChange}
-            inputProps={{
-              name: "age",
-              id: "age-native-simple",
-            }}
-          >
-            <option value={FindDateFilter.TODAY}>hoje</option>
-            <option value={FindDateFilter.LAST_7_DAYS}>últimos 7 dias</option>
-            <option value={FindDateFilter.LAST_30_DAYS}>últimos 30 dias</option>
-            <option value={FindDateFilter.DATE}>data</option>
-          </Select>
-        </FormControl>
-        <Button variant="contained" color="primary">
-          Filtrar
-        </Button>
-        {/*         <TextField variant="outlined" size="small" select style={{ width: "120px" }} />
-        <TextField
-          size="small"
-          label="Data"
-          variant="outlined"
-          style={{ width: "120px" }}
-          inputProps={{ style: { textAlign: "center" } }}
-        />
-        <Button variant="contained" color="primary">
-          Filtrar
-        </Button> */}
-      </DateFilterContainer>
+      <DateFilter />
 
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
 

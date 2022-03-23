@@ -68,14 +68,3 @@ export const NoRequests = styled.h3`
   text-align: center;
   padding-top: 3rem;
 `;
-
-export const DateFilterContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  align-items: center;
-
-  & > h4 {
-    color: ${PURPLE};
-  }
-`;
