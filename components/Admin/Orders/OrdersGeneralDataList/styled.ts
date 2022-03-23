@@ -1,11 +1,12 @@
-import { PINK, SUCCESS_GREEN, ERROR_RED} from "@utils/colors";
+import { SUCCESS_GREEN, ERROR_RED } from "@utils/colors";
 import styled from "styled-components";
 
 export const OrdersCardContainer = styled.ul`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-row-gap: 3rem;
-  column-gap: 3rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+  justify-content: center;
 `;
 
 export const OrdersCardActionsContainer = styled.div`
