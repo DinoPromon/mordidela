@@ -1,5 +1,8 @@
 import { StatusPedido } from "@models/pedido";
 
+import { createDate } from "@utils/transformation/date";
+import { FindDateFilter } from "../constants";
+
 import type { RawFiltersData, FiltersData } from "../types/filter";
 
 export class FindAllOrderGeneralDataParser {
@@ -7,6 +10,31 @@ export class FindAllOrderGeneralDataParser {
 
   constructor(rawFiltersData: RawFiltersData) {
     this.rawFiltersData = rawFiltersData;
+  }
+
+  private parseOrderDate(rawOrderDate?: string | string[]) {
+    if (!rawOrderDate || Array.isArray(rawOrderDate)) return undefined;
+
+    const orderDate = createDate(rawOrderDate);
+
+    if (isNaN(orderDate.getDate())) return undefined;
+
+    return orderDate;
+  }
+
+  private parseOrderDateFilter(rawOrderDate?: string | string[]) {
+    if (!rawOrderDate || Array.isArray(rawOrderDate)) return undefined;
+
+    const orderDateFitler = rawOrderDate as FindDateFilter;
+
+    const possibleValues: FindDateFilter[] = [
+      FindDateFilter.DATE,
+      FindDateFilter.LAST_30_DAYS,
+      FindDateFilter.LAST_7_DAYS,
+      FindDateFilter.TODAY,
+    ];
+
+    return possibleValues.indexOf(orderDateFitler) > -1 ? orderDateFitler : undefined;
   }
 
   private parseOrderStatus(rawOrderStatus?: string | string[]) {
@@ -20,14 +48,14 @@ export class FindAllOrderGeneralDataParser {
       StatusPedido.REJEITADO,
     ];
 
-    const isValid = possibleValues.indexOf(orderStatus) > -1;
-
-    return isValid ? orderStatus : undefined;
+    return possibleValues.indexOf(orderStatus) > -1 ? orderStatus : undefined;
   }
 
   public parse() {
     const parsedFiltersData: FiltersData = {
       status_pedido: this.parseOrderStatus(this.rawFiltersData.status_pedido),
+      data_pedido: this.parseOrderDate(this.rawFiltersData.filtro_data_pedido),
+      filtro_data_pedido: this.parseOrderDateFilter(this.rawFiltersData.filtro_data_pedido),
     };
 
     return parsedFiltersData;

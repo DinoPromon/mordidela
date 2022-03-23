@@ -1,12 +1,14 @@
 import { getSession } from "next-auth/client";
 
-import { ServerError, throwError } from "@errors/index";
+import { FindDateFilter } from "@controllers/order/findAllOrdersGeneralData/constants";
+import { throwError } from "@errors/index";
 import { Autorizacao } from "@models/usuario";
 import { SessionValidator } from "@helpers/session";
 import { ReqMethod } from "@my-types/backend/reqMethod";
 import { FindAllOrderGeneralData } from "@controllers/order";
 
 import type { NextApiHandler } from "next";
+import type { ServerError } from "@errors/index";
 
 const handler: NextApiHandler = async (req, res) => {
   try {
@@ -26,6 +28,8 @@ const handler: NextApiHandler = async (req, res) => {
         const findAllOrdersGeneralData = new FindAllOrderGeneralData(
           {
             status_pedido: req.query.status_pedido,
+            filtro_data_pedido: req.query.filtro_data_pedido,
+            data_pedido: req.query.data_pedido,
           },
           paginationData
         );
