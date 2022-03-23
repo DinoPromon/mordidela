@@ -23,7 +23,8 @@ import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
 import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
-import { Input, TextField } from "@material-ui/core";
+import { Button, Input, TextField } from "@material-ui/core";
+import { FindDateFilter } from "./constants";
 
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
@@ -108,6 +109,26 @@ const Orders: React.FC = () => {
     });
   }
 
+/*     function getDateFilterText() {
+    switch (filterOption) {
+      case FindDateFilter.TODAY: {
+        return "Exibindo os pedidos de"
+      }
+      case FindDateFilter.LAST_7_DAYS: {
+        return "Exibindo os pedidos dos últimos"
+      }
+      case FindDateFilter.LAST_30_DAYS: {
+        return "Exibindo os pedidos dos últimos"
+      }
+      case FindDateFilter.DATE: {
+        return "Exibindo os pedidos da"
+      }
+      default: {
+        return "Exibindo todos os pedidos"
+      }
+    }
+  } */
+
   useEffect(() => {
     fetchOrdersGeneralData(0, StatusPedido.PENDENTE);
   }, [fetchOrdersGeneralData]);
@@ -151,13 +172,20 @@ const Orders: React.FC = () => {
           selected={selectedOrderStatus === undefined}
           onClick={() => changeOrderFilter(undefined)}
         >
-          Relatório de pedidos
+          Todos os pedidos
         </OrdersFilter>
       </FiltersContainer>
 
       <DateFilterContainer>
-        <h4>Exibindo os pedidos do dia</h4>
-        <TextField variant="outlined" size="small" type={"date"}></TextField>
+        <h4>Exibindo os pedidos de</h4>
+        <TextField variant="outlined" size="small" select style={{ width: "120px" }}/>
+        <TextField
+          variant="outlined"
+          size="small"
+          style={{ width: "120px" }}
+          inputProps={{ style: { textAlign: "center" } }}
+        />
+        <Button variant="contained" color="primary">Filtrar</Button>
       </DateFilterContainer>
 
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}

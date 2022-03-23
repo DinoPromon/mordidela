@@ -11,6 +11,7 @@ import { PURPLE } from "@utils/colors";
 import { Modal } from "@components/shared";
 import { TipoPagamento } from "@models/pedido";
 import { getNumberAsCurrency } from "@utils/transformation";
+
 import {
   getProductLabel,
   getAddsInOrderProduct,
@@ -21,6 +22,7 @@ import {
   calculateCouponDiscount,
   getStringFlavorsInOrderProduct,
 } from "@utils/order";
+
 import {
   AddsText,
   TrashPriceText,
@@ -40,13 +42,14 @@ import {
   AdminOrdersModalUserDataContainer,
   AdminOrdersPaymentValuesContainer,
 } from "./styled";
+
 import { OrdersUserContainer, GeneralDataContainer } from "../OrdersGeneralDataList/styled";
+
 import {
   getFormattedAddress,
   getFormattedOrderDate,
   getFormattedOrderPhone,
 } from "../utility/order";
-
 import type { AxiosError } from "axios";
 import type { IOrderFullData } from "@models/pedido";
 
