@@ -6,7 +6,6 @@ export const DateFilterForm = styled(Form)`
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  height: 90px;
 
   & > h4 {
     color: ${PURPLE};
