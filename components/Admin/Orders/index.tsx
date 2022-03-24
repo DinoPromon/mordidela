@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { Button, TextField } from "@material-ui/core";
+import { Button, FormControl, MenuItem, TextField } from "@material-ui/core";
 
 import Axios from "@api";
 import useIsMounted from "@hooks/useIsMounted";
 import useRequestState from "@hooks/useRequestState";
 import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { StatusPedido } from "@models/pedido";
-import { CentralizedLoading, InputTextFormik, LoadingButton } from "@components/shared";
+import { CentralizedLoading, LoadingButton } from "@components/shared";
 
 import { FindDateFilter } from "./constants";
 
@@ -15,23 +15,22 @@ const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
 const AdminOrderDetailsModal = dynamic(() => import("./AdminOrderDetailsModal"));
 import {
   NoRequests,
-  OrdersFilter,
   OrdersContainer,
   FiltersContainer,
   LoadMoreButtonContainer,
-  DateFilterContainer,
+  OrdersFilter,
 } from "./styled";
 
 import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
 import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
+import DateFilter from "./DateFilter";
 
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
   const [count, setCount] = useState<number>();
-  const [filterOptions] = useState<FindDateFilter>(FindDateFilter.TODAY);
   const [skipItems, setSkipItems] = useState(0);
   const [isInitialRequest, setIsInitialRequest] = useState(true);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState<number>();
@@ -47,10 +46,8 @@ const Orders: React.FC = () => {
         const response = await Axios.get<OrdersGeneralDataResponse>("/order/general-data", {
           params: {
             status_pedido: orderStatus,
-            // tipo de filtro
-            // filtro_data_pedido?: FindDateFilter;
-            // data
-            // data_pedido?: ;
+            filtro_data_pedido: FindDateFilter,
+            /* data_pedido?: , */
             skip: skip || 0,
           },
         });
@@ -115,28 +112,6 @@ const Orders: React.FC = () => {
     });
   }
 
-  function getDateFilterText(filterOption?: FindDateFilter) {
-    switch (filterOption) {
-      case FindDateFilter.TODAY:
-        return "Exibindo os pedidos de";
-
-      case FindDateFilter.LAST_7_DAYS:
-        return "Exibindo os pedidos dos últimos";
-
-      case FindDateFilter.LAST_30_DAYS:
-        return "Exibindo os pedidos dos últimos";
-
-      case FindDateFilter.DATE:
-        return "Exibindo os pedidos da";
-
-      case undefined:
-        return "Exibindo todos os pedidos";
-
-      default:
-        return filterOption;
-    }
-  }
-
   useEffect(() => {
     fetchOrdersGeneralData(0, StatusPedido.PENDENTE);
   }, [fetchOrdersGeneralData]);
@@ -184,20 +159,7 @@ const Orders: React.FC = () => {
         </OrdersFilter>
       </FiltersContainer>
 
-      <DateFilterContainer>
-        <h4>{getDateFilterText(filterOptions)}</h4>
-        <TextField variant="outlined" size="small" select style={{ width: "120px" }} />
-        <TextField
-          size="small"
-          label="Data"
-          variant="outlined"
-          style={{ width: "120px" }}
-          inputProps={{ style: { textAlign: "center" } }}
-        />
-        <Button variant="contained" color="primary">
-          Filtrar
-        </Button>
-      </DateFilterContainer>
+      <DateFilter />
 
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
 

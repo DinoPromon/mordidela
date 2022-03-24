@@ -1,4 +1,5 @@
-import { SUCCESS_GREEN, ERROR_RED } from "@utils/colors";
+import { SuccessMessage } from "@components/shared/StyledComponents";
+import { ERROR_RED } from "@utils/colors";
 import styled from "styled-components";
 
 export const OrdersCardContainer = styled.ul`
@@ -61,9 +62,10 @@ export const OrdersUserContainer = styled.div`
   gap: 0.5rem;
 `;
 
-export const ConfirmationMessage = styled.h4`
+export const ConfirmationMessage = styled(SuccessMessage)`
   text-align: center;
-  color: ${SUCCESS_GREEN};
+  font-weight: bold;
+  margin-top: auto;
 `;
 
 export const RejectionMessage = styled(ConfirmationMessage)`
