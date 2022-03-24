@@ -37,10 +37,13 @@ const ProductsDropdownList: React.FC<Props> = (props) => {
       animation={dropdownAnimation}
     >
       <ProductsDropdownListItem>
-        <Link href="/admin/produtos/todos-os-produtos">Todos os produtos</Link>
+        <Link href="/admin/produtos">Todos os produtos</Link>
       </ProductsDropdownListItem>
       <ProductsDropdownListItem>
-        <Link href="/admin/produtos/adicionar-produto">Adicionar produto</Link>
+        <Link href="/admin/produtos/adicionar">Adicionar produto</Link>
+      </ProductsDropdownListItem>
+      <ProductsDropdownListItem>
+        <Link href="/admin/produtos/editar">Editar produto</Link>
       </ProductsDropdownListItem>
       <ProductsDropdownListItem>
         <Link href="/admin/produtos/adicionais">Adicionais</Link>

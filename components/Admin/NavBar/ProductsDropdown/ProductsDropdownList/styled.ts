@@ -19,7 +19,7 @@ export const ProductsDropdownListContainer = styled.ul<Props>`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   animation: ${(props) => props.animation} ${DROPDOWN_ANIMATION_TIME}ms ease-out forwards;
   margin: 0.5rem auto;
-  top: 475%;
+  top: 550%;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
