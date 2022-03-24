@@ -3,8 +3,8 @@ import { getSession } from "next-auth/client";
 import { throwError } from "@errors/index";
 import { Autorizacao } from "@models/usuario";
 import { SessionValidator } from "@helpers/session";
+import { FindAllFlavors } from "@controllers/flavor";
 import { ReqMethod } from "@my-types/backend/reqMethod";
-import { FindAllOrderGeneralData } from "@controllers/order";
 
 import type { NextApiHandler } from "next";
 import type { ServerError } from "@errors/index";
@@ -22,19 +22,12 @@ const handler: NextApiHandler = async (req, res) => {
 
     switch (req.method) {
       case ReqMethod.GET: {
-        const { status_pedido, ...paginationData } = req.query;
+        const { getDeleted, ...paginationArg } = req.query;
 
-        const findAllOrdersGeneralData = new FindAllOrderGeneralData(
-          {
-            status_pedido: req.query.status_pedido,
-            filtro_data_pedido: req.query.filtro_data_pedido,
-            data_pedido: req.query.data_pedido,
-          },
-          paginationData
-        );
-        const ordersGeneralData = await findAllOrdersGeneralData.exec();
+        const findAllFlavors = new FindAllFlavors({ getDeleted }, paginationArg);
+        const allFlavors = await findAllFlavors.exec();
 
-        return res.status(200).json(ordersGeneralData);
+        return res.status(200).json(allFlavors);
       }
 
       default: {

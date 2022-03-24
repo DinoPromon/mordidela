@@ -2,9 +2,9 @@ import { getSession } from "next-auth/client";
 
 import { throwError } from "@errors/index";
 import { Autorizacao } from "@models/usuario";
+import { CreateFlavor } from "@controllers/flavor";
 import { SessionValidator } from "@helpers/session";
 import { ReqMethod } from "@my-types/backend/reqMethod";
-import { FindAllOrderGeneralData } from "@controllers/order";
 
 import type { NextApiHandler } from "next";
 import type { ServerError } from "@errors/index";
@@ -21,24 +21,15 @@ const handler: NextApiHandler = async (req, res) => {
     });
 
     switch (req.method) {
-      case ReqMethod.GET: {
-        const { status_pedido, ...paginationData } = req.query;
+      case ReqMethod.POST: {
+        const createFlavor = new CreateFlavor(req.body);
+        const createdFlavor = await createFlavor.exec();
 
-        const findAllOrdersGeneralData = new FindAllOrderGeneralData(
-          {
-            status_pedido: req.query.status_pedido,
-            filtro_data_pedido: req.query.filtro_data_pedido,
-            data_pedido: req.query.data_pedido,
-          },
-          paginationData
-        );
-        const ordersGeneralData = await findAllOrdersGeneralData.exec();
-
-        return res.status(200).json(ordersGeneralData);
+        return res.status(200).json(createdFlavor);
       }
 
       default: {
-        res.setHeader("Allow", [ReqMethod.GET]);
+        res.setHeader("Allow", [ReqMethod.POST]);
         return res.status(405).json({ message: "Requsição inválida." });
       }
     }
