@@ -1,5 +1,5 @@
 export type FindAllFlavorsArg = {
-  getDeleted?: boolean;
+  getDeleted: boolean;
 };
 
 export type RawFindAllFlavorsArg = {
