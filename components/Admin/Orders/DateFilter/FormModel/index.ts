@@ -1,7 +1,9 @@
 import type { FormField } from "@my-types/form";
+import { FindDateFilter } from "../../constants";
 
 export interface IDateFilterFormValues {
   date: string;
+  dateFilter: FindDateFilter;
 }
 
 export type DateFilterFormModel = {
@@ -14,6 +16,10 @@ export function getDateFilterFormModel() {
       label: "Data",
       name: "date",
       requiredErrorMessage: "Insira uma data",
+    },
+    dateFilter: {
+      label: "Filtro",
+      name: "dateFilter",
     },
   };
 

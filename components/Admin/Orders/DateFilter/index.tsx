@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { FindDateFilter } from "../constants";
-import { DateFilterContainer } from "./styled";
+import { DateFilterForm, ButtonContainer } from "./styled";
 
-import { InputLabel, Select, Button, FormControl, MenuItem, TextField } from "@material-ui/core";
+import { InputLabel, Select, Button, FormControl, MenuItem } from "@material-ui/core";
 
 import {
   getDateFilterFormInitialValues,
@@ -16,33 +16,28 @@ import { maskDate } from "@utils/formatters";
 import { InputTextFormik } from "@components/shared";
 import type { SetFieldValue } from "@my-types/formik";
 
-type DateFilerFormProps = {
-  setFieldValue: SetFieldValue<IDateFilterFormValues>;
+type DateFilterProps = {
+  onSubmit: (dateFilter?: FindDateFilter, date?: string) => Promise<void>;
 };
 
-const DateFilter: React.FC<DateFilerFormProps> = ({ setFieldValue }) => {
-  const [filterOptions] = useState<FindDateFilter>(FindDateFilter.TODAY);
-  const [dateOption, setDateOption] = React.useState("");
+const DateFilter: React.FC<DateFilterProps> = ({ onSubmit }) => {
+  const formModel = getDateFilterFormModel();
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setDateOption(event.target.value as string);
-  };
-
-  function getDateFilterText(filterOption?: FindDateFilter) {
+  function getDateFilterText(filterOption: FindDateFilter | null) {
     switch (filterOption) {
       case FindDateFilter.TODAY:
         return "Exibindo os pedidos de";
 
       case FindDateFilter.LAST_7_DAYS:
-        return "Exibindo os pedidos dos últimos";
+        return "Exibindo os pedidos dos";
 
       case FindDateFilter.LAST_30_DAYS:
-        return "Exibindo os pedidos dos últimos";
+        return "Exibindo os pedidos dos";
 
       case FindDateFilter.DATE:
         return "Exibindo os pedidos da";
 
-      case undefined:
+      case FindDateFilter.NONE:
         return "Exibindo todos os pedidos";
 
       default:
@@ -58,45 +53,49 @@ const DateFilter: React.FC<DateFilerFormProps> = ({ setFieldValue }) => {
     setFieldValue("date", formatedDate);
   }
 
-  const formModel = getDateFilterFormModel();
+  async function submitHandler(values: IDateFilterFormValues) {
+    await onSubmit(values.dateFilter, values.date);
+  }
 
   return (
-    <Fragment>
-      <Formik
-        enableReinitialize
-        validateOnChange={false}
-        validationSchema={getDateFilterFormValidationSchema(formModel)}
-        initialValues={getDateFilterFormInitialValues()}
-        onSubmit={console.log}
-      >
-        {({ values }) => (
-          <DateFilterContainer>
-            <h4>{getDateFilterText(filterOptions)}</h4>
-            <FormControl variant="outlined" size="small" style={{ width: "180px" }}>
-              <InputLabel id="demo-simple-select-outlined-label" />
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={dateOption}
-                onChange={handleChange}
-                MenuProps={{
-                  anchorOrigin: {
-                    vertical: "bottom",
-                    horizontal: "left",
-                  },
-                  transformOrigin: {
-                    vertical: "top",
-                    horizontal: "left",
-                  },
-                  getContentAnchorEl: null,
-                }}
-              >
-                <MenuItem value={FindDateFilter.TODAY}>hoje</MenuItem>
-                <MenuItem value={FindDateFilter.LAST_7_DAYS}>últimos 7 dias</MenuItem>
-                <MenuItem value={FindDateFilter.LAST_30_DAYS}>últimos 30 dias</MenuItem>
-                <MenuItem value={FindDateFilter.DATE}>data</MenuItem>
-              </Select>
-            </FormControl>
+    <Formik
+      enableReinitialize
+      validateOnChange={false}
+      /* validationSchema={getDateFilterFormValidationSchema(formModel)} */
+      initialValues={getDateFilterFormInitialValues()}
+      onSubmit={submitHandler}
+    >
+      {({ values, setFieldValue }) => (
+        <DateFilterForm>
+          <h4>{getDateFilterText(values.dateFilter)}</h4>
+          <FormControl variant="outlined" size="small" style={{ width: "180px" }}>
+            <InputLabel>{formModel.dateFilter.label}</InputLabel>
+            <Select
+              id={formModel.dateFilter.name}
+              name={formModel.dateFilter.name}
+              value={values.dateFilter}
+              label={formModel.dateFilter.label}
+              onChange={(event) => setFieldValue(formModel.dateFilter.name, event.target.value)}
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "left",
+                },
+                transformOrigin: {
+                  vertical: "top",
+                  horizontal: "left",
+                },
+                getContentAnchorEl: null,
+              }}
+            >
+              <MenuItem value={FindDateFilter.TODAY}>hoje</MenuItem>
+              <MenuItem value={FindDateFilter.LAST_7_DAYS}>últimos 7 dias</MenuItem>
+              <MenuItem value={FindDateFilter.LAST_30_DAYS}>últimos 30 dias</MenuItem>
+              <MenuItem value={FindDateFilter.DATE}>data</MenuItem>
+            </Select>
+          </FormControl>
+
+          {values.dateFilter === FindDateFilter.DATE && (
             <InputTextFormik
               name={formModel.date.name}
               label={formModel.date.label}
@@ -104,17 +103,20 @@ const DateFilter: React.FC<DateFilerFormProps> = ({ setFieldValue }) => {
               helperText={formModel.date.requiredErrorMessage}
               variant="outlined"
               size="small"
+              autoComplete="off"
               style={{ width: "150px" }}
               inputProps={{ style: { textAlign: "center" } }}
               onChange={dateInputChangeHandler.bind(null, setFieldValue)}
             />
-            <Button variant="contained" color="primary">
+          )}
+          <ButtonContainer>
+            <Button variant="contained" color="primary" type="submit">
               Filtrar
             </Button>
-          </DateFilterContainer>
-        )}
-      </Formik>
-    </Fragment>
+          </ButtonContainer>
+        </DateFilterForm>
+      )}
+    </Formik>
   );
 };
 

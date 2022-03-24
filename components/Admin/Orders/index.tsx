@@ -27,6 +27,13 @@ import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
 import DateFilter from "./DateFilter";
 
+type FetchProps = {
+  skip?: number;
+  orderStatus?: StatusPedido;
+  dateFilter?: FindDateFilter;
+  date?: string;
+};
+
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
@@ -40,15 +47,15 @@ const Orders: React.FC = () => {
   );
 
   const fetchOrdersGeneralData = useCallback(
-    async (skip?: number, orderStatus?: StatusPedido) => {
+    async (fetchParams: FetchProps) => {
       changeRequestStatus({ error: "", isLoading: true });
       try {
         const response = await Axios.get<OrdersGeneralDataResponse>("/order/general-data", {
           params: {
-            status_pedido: orderStatus,
-            filtro_data_pedido: FindDateFilter,
-            /* data_pedido?: , */
-            skip: skip || 0,
+            status_pedido: fetchParams.orderStatus,
+            filtro_data_pedido: fetchParams.dateFilter || null,
+            data_pedido: fetchParams.date,
+            skip: fetchParams.skip || 0,
           },
         });
         if (!isMounted.current) return;
@@ -70,7 +77,10 @@ const Orders: React.FC = () => {
   );
 
   function loadMoreHandler() {
-    fetchOrdersGeneralData(skipItems, selectedOrderStatus);
+    fetchOrdersGeneralData({
+      skip: skipItems,
+      orderStatus: selectedOrderStatus,
+    });
   }
 
   function openModal(selectedOrderId: number) {
@@ -93,7 +103,10 @@ const Orders: React.FC = () => {
 
     resetSearch();
     setSelectedOrderStatus(orderStatus);
-    fetchOrdersGeneralData(0, orderStatus);
+    fetchOrdersGeneralData({
+      skip: 0,
+      orderStatus,
+    });
   }
 
   function updateListedOrderStatus(newOrderData: IPedido) {
@@ -112,8 +125,22 @@ const Orders: React.FC = () => {
     });
   }
 
+  async function dateFilterSubmitHandler(dateFilter?: FindDateFilter, date?: string) {
+    setSkipItems(0);
+    setOrdersGeneralData([]);
+    setCount(undefined);
+    setIsInitialRequest(true);
+    await fetchOrdersGeneralData({
+      dateFilter,
+      date,
+    });
+  }
+
   useEffect(() => {
-    fetchOrdersGeneralData(0, StatusPedido.PENDENTE);
+    fetchOrdersGeneralData({
+      skip: 0,
+      orderStatus: StatusPedido.PENDENTE,
+    });
   }, [fetchOrdersGeneralData]);
 
   return (
@@ -159,7 +186,7 @@ const Orders: React.FC = () => {
         </OrdersFilter>
       </FiltersContainer>
 
-      <DateFilter />
+      <DateFilter onSubmit={dateFilterSubmitHandler} />
 
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
 
