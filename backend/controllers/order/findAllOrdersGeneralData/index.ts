@@ -63,6 +63,13 @@ export class FindAllOrderGeneralData {
 
     const orderFilterDate = this.getOrderFilterDate();
 
+    const hasLesserThan =
+      this.filtersData.filtro_data_pedido === FindDateFilter.DATE && orderFilterDate;
+
+    const dateLesserThan = hasLesserThan
+      ? new Date(orderFilterDate.getTime() + this.calculateDateInMilliseconds(1))
+      : undefined;
+
     const ordersGeneralData = await Prisma.pedido
       .findMany({
         include: {
@@ -80,6 +87,7 @@ export class FindAllOrderGeneralData {
           status_pedido: this.filtersData.status_pedido,
           data_pedido: {
             gt: orderFilterDate,
+            lt: dateLesserThan,
           },
         },
         orderBy: {
@@ -126,7 +134,7 @@ export class FindAllOrderGeneralData {
         return this.createFilterDate(day, month, year);
       }
 
-      case undefined: {
+      case FindDateFilter.NONE: {
         return undefined;
       }
 

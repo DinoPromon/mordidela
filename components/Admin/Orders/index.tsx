@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { Button, FormControl, MenuItem, TextField } from "@material-ui/core";
 
 import Axios from "@api";
 import useIsMounted from "@hooks/useIsMounted";
@@ -9,10 +8,12 @@ import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { StatusPedido } from "@models/pedido";
 import { CentralizedLoading, LoadingButton } from "@components/shared";
 
-import { FindDateFilter } from "./constants";
+import { FindDateFilter, INIT_ORDER_FILTER } from "./constants";
 
+import DateFilter from "./DateFilter";
 const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
 const AdminOrderDetailsModal = dynamic(() => import("./AdminOrderDetailsModal"));
+
 import {
   NoRequests,
   OrdersContainer,
@@ -25,37 +26,27 @@ import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
 import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
-import DateFilter from "./DateFilter";
-
-type FetchProps = {
-  skip?: number;
-  orderStatus?: StatusPedido;
-  dateFilter?: FindDateFilter;
-  date?: string;
-};
+import type { OrderFilterParams } from "./types/orderFilter";
 
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
+  const [orderFilter, setOrderFilter] = useState<OrderFilterParams>(INIT_ORDER_FILTER);
   const [count, setCount] = useState<number>();
-  const [skipItems, setSkipItems] = useState(0);
   const [isInitialRequest, setIsInitialRequest] = useState(true);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState<number>();
   const [ordersGeneralData, setOrdersGeneralData] = useState<IOrderGeneralData[]>([]);
-  const [selectedOrderStatus, setSelectedOrderStatus] = useState<StatusPedido | undefined>(
-    StatusPedido.PENDENTE
-  );
 
   const fetchOrdersGeneralData = useCallback(
-    async (fetchParams: FetchProps) => {
+    async (fetchParams: OrderFilterParams) => {
       changeRequestStatus({ error: "", isLoading: true });
       try {
         const response = await Axios.get<OrdersGeneralDataResponse>("/order/general-data", {
           params: {
             status_pedido: fetchParams.orderStatus,
-            filtro_data_pedido: fetchParams.dateFilter || null,
-            data_pedido: fetchParams.date,
-            skip: fetchParams.skip || 0,
+            filtro_data_pedido: fetchParams.dateFilter,
+            data_pedido: fetchParams.date || undefined,
+            skip: fetchParams.skip,
           },
         });
         if (!isMounted.current) return;
@@ -63,7 +54,10 @@ const Orders: React.FC = () => {
         setCount(response.data.count);
         setIsInitialRequest(false);
         setOrdersGeneralData((prevsState) => [...prevsState, ...response.data.items]);
-        setSkipItems((prevState) => prevState + response.data.items.length);
+        setOrderFilter((prevState) => ({
+          ...prevState,
+          skip: prevState.skip + response.data.items.length,
+        }));
       } catch (err) {
         if (!isMounted.current) return;
 
@@ -77,10 +71,7 @@ const Orders: React.FC = () => {
   );
 
   function loadMoreHandler() {
-    fetchOrdersGeneralData({
-      skip: skipItems,
-      orderStatus: selectedOrderStatus,
-    });
+    fetchOrdersGeneralData(orderFilter);
   }
 
   function openModal(selectedOrderId: number) {
@@ -92,7 +83,6 @@ const Orders: React.FC = () => {
   }
 
   function resetSearch() {
-    setSkipItems(0);
     setCount(undefined);
     setIsInitialRequest(true);
     setOrdersGeneralData([]);
@@ -102,8 +92,9 @@ const Orders: React.FC = () => {
     if (requestStatus.isLoading) return;
 
     resetSearch();
-    setSelectedOrderStatus(orderStatus);
+    setOrderFilter((prevState) => ({ ...prevState, skip: INIT_ORDER_FILTER.skip, orderStatus }));
     fetchOrdersGeneralData({
+      ...orderFilter,
       skip: 0,
       orderStatus,
     });
@@ -125,22 +116,25 @@ const Orders: React.FC = () => {
     });
   }
 
-  async function dateFilterSubmitHandler(dateFilter?: FindDateFilter, date?: string) {
-    setSkipItems(0);
-    setOrdersGeneralData([]);
-    setCount(undefined);
-    setIsInitialRequest(true);
+  async function dateFilterSubmitHandler(dateFilter: FindDateFilter, date?: string) {
+    resetSearch();
+    setOrderFilter((prevState) => ({
+      ...prevState,
+      skip: INIT_ORDER_FILTER.skip,
+      dateFilter,
+      date,
+    }));
+
     await fetchOrdersGeneralData({
+      skip: INIT_ORDER_FILTER.skip,
+      orderStatus: orderFilter.orderStatus,
       dateFilter,
       date,
     });
   }
 
   useEffect(() => {
-    fetchOrdersGeneralData({
-      skip: 0,
-      orderStatus: StatusPedido.PENDENTE,
-    });
+    fetchOrdersGeneralData(INIT_ORDER_FILTER);
   }, [fetchOrdersGeneralData]);
 
   return (
@@ -158,28 +152,28 @@ const Orders: React.FC = () => {
       <FiltersContainer>
         <OrdersFilter
           disabled={requestStatus.isLoading}
-          selected={selectedOrderStatus === StatusPedido.PENDENTE}
+          selected={orderFilter.orderStatus === StatusPedido.PENDENTE}
           onClick={() => changeOrderFilter(StatusPedido.PENDENTE)}
         >
           Pedidos pendentes
         </OrdersFilter>
         <OrdersFilter
           disabled={requestStatus.isLoading}
-          selected={selectedOrderStatus === StatusPedido.CONFIRMADO}
+          selected={orderFilter.orderStatus === StatusPedido.CONFIRMADO}
           onClick={() => changeOrderFilter(StatusPedido.CONFIRMADO)}
         >
           Pedidos confirmados
         </OrdersFilter>
         <OrdersFilter
           disabled={requestStatus.isLoading}
-          selected={selectedOrderStatus === StatusPedido.REJEITADO}
+          selected={orderFilter.orderStatus === StatusPedido.REJEITADO}
           onClick={() => changeOrderFilter(StatusPedido.REJEITADO)}
         >
           Pedidos rejeitados
         </OrdersFilter>
         <OrdersFilter
           disabled={requestStatus.isLoading}
-          selected={selectedOrderStatus === undefined}
+          selected={orderFilter.orderStatus === undefined}
           onClick={() => changeOrderFilter(undefined)}
         >
           Todos os pedidos
@@ -198,19 +192,19 @@ const Orders: React.FC = () => {
         />
       )}
 
-      {count === 0 && selectedOrderStatus === StatusPedido.REJEITADO && (
+      {count === 0 && orderFilter.orderStatus === StatusPedido.REJEITADO && (
         <NoRequests>Não há pedidos rejeitados!</NoRequests>
       )}
 
-      {count === 0 && selectedOrderStatus === StatusPedido.CONFIRMADO && (
+      {count === 0 && orderFilter.orderStatus === StatusPedido.CONFIRMADO && (
         <NoRequests>Não há pedidos confirmados!</NoRequests>
       )}
 
-      {count === 0 && selectedOrderStatus === StatusPedido.PENDENTE && (
+      {count === 0 && orderFilter.orderStatus === StatusPedido.PENDENTE && (
         <NoRequests>Não há pedidos pendentes</NoRequests>
       )}
 
-      {count !== undefined && skipItems < count && (
+      {count !== undefined && orderFilter.skip < count && (
         <LoadMoreButtonContainer>
           <LoadingButton
             color="secondary"

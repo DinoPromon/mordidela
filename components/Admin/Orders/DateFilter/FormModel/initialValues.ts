@@ -1,9 +1,10 @@
-import { FindDateFilter } from "../../constants";
+import { INIT_ORDER_FILTER } from "../../constants";
+
 import type { IDateFilterFormValues } from "./index";
 
 export function getDateFilterFormInitialValues(): IDateFilterFormValues {
   return {
     date: "",
-    dateFilter: FindDateFilter.NONE,
+    dateFilter: INIT_ORDER_FILTER.dateFilter,
   };
 }

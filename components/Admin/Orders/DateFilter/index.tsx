@@ -17,7 +17,7 @@ import { InputTextFormik } from "@components/shared";
 import type { SetFieldValue } from "@my-types/formik";
 
 type DateFilterProps = {
-  onSubmit: (dateFilter?: FindDateFilter, date?: string) => Promise<void>;
+  onSubmit: (dateFilter: FindDateFilter, date?: string) => Promise<void>;
 };
 
 const DateFilter: React.FC<DateFilterProps> = ({ onSubmit }) => {

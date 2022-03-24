@@ -22,13 +22,13 @@ const handler: NextApiHandler = async (req, res) => {
 
     switch (req.method) {
       case ReqMethod.GET: {
-        const { status_pedido, ...paginationData } = req.query;
+        const { status_pedido, filtro_data_pedido, data_pedido, ...paginationData } = req.query;
 
         const findAllOrdersGeneralData = new FindAllOrderGeneralData(
           {
-            status_pedido: req.query.status_pedido,
-            filtro_data_pedido: req.query.filtro_data_pedido,
-            data_pedido: req.query.data_pedido,
+            status_pedido: status_pedido,
+            filtro_data_pedido: filtro_data_pedido,
+            data_pedido: data_pedido,
           },
           paginationData
         );

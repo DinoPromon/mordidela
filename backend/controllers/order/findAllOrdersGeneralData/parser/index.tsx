@@ -32,6 +32,7 @@ export class FindAllOrderGeneralDataParser {
       FindDateFilter.LAST_30_DAYS,
       FindDateFilter.LAST_7_DAYS,
       FindDateFilter.TODAY,
+      FindDateFilter.NONE,
     ];
 
     return possibleValues.indexOf(orderDateFitler) > -1 ? orderDateFitler : undefined;
@@ -54,7 +55,7 @@ export class FindAllOrderGeneralDataParser {
   public parse() {
     const parsedFiltersData: FiltersData = {
       status_pedido: this.parseOrderStatus(this.rawFiltersData.status_pedido),
-      data_pedido: this.parseOrderDate(this.rawFiltersData.filtro_data_pedido),
+      data_pedido: this.parseOrderDate(this.rawFiltersData.data_pedido),
       filtro_data_pedido: this.parseOrderDateFilter(this.rawFiltersData.filtro_data_pedido),
     };
 

@@ -94,7 +94,6 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
   );
 
   function calculateChangeValue(paymentValue: number) {
-    console.log(paymentValue, orderTotalPrice);
     if (orderTotalPrice) return paymentValue - orderTotalPrice;
   }
 
