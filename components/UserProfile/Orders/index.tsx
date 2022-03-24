@@ -94,7 +94,7 @@ const Orders: React.FC = () => {
 
       <CustomAnimatePresence>
         {count !== undefined && count > skipItems && (
-          <LoadMoreContainer key="sabe-de-nada-hehe" as={motion.div} exit={{ opacity: 0 }}>
+          <LoadMoreContainer as={motion.div} exit={{ opacity: 0 }}>
             <LoadingButton
               variant="contained"
               color="secondary"
