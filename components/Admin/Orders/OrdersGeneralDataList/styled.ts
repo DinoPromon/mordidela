@@ -18,7 +18,7 @@ export const OrdersCardActionsContainer = styled.div`
 
 export const OrdersCard = styled.li`
   width: 350px;
-  height: 330px;
+  height: 350px;
   border-radius: 10px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   padding: 1rem;
@@ -28,6 +28,11 @@ export const OrdersCard = styled.li`
 
   ${OrdersCardActionsContainer} {
     margin-top: auto;
+  }
+
+  & > p{
+    margin-top: auto;
+    text-align: center;
   }
 `;
 

@@ -1,22 +1,34 @@
-import React, { memo } from "react";
-import { FaPlusCircle } from "react-icons/fa";
+import React, { memo, Fragment } from "react";
 
-import { PINK } from "@utils/colors";
+import { PURPLE } from "@utils/colors";
 import { StatusPedido } from "@models/pedido";
 import { getFormattedHours } from "@utils/formatters";
 import { getFormattedDate } from "@utils/transformation";
+import { HiOutlineLocationMarker } from "react-icons/hi/index";
+import Button from "@material-ui/core/Button";
+import { IoMdRestaurant } from "react-icons/io/index"
+
+import { calculateTotalPrice } from "@utils/order";
+import { getOrderPaymentTypeText } from "../utility";
+import type { IOrderRelations } from "@models/pedido";
+import { getNumberAsCurrency } from "@utils/transformation";
+import { getFormattedOrderDate, getFormattedAddress } from "@components/Admin/Orders/utility/order";
+
+import { OrdersContainerListHighlight, OrdersDataContainer } from "./styled";
 
 import {
-  MoreDetails,
-  OrdersContainer,
-  OrdersContainerItem,
-  OrdersContainerListHighlight,
-} from "./styled";
-import { getOrderPaymentTypeText } from "../utility";
-import { calculateTotalPrice } from "@utils/order";
-import { getNumberAsCurrency } from "@utils/transformation";
+  OrdersUserContainer,
+  GeneralDataContainer,
+  ButtonContainer,
+} from "@components/Admin/Orders/OrdersGeneralDataList/styled";
 
-import type { IOrderRelations } from "@models/pedido";
+import {
+  OrdersCardContainer,
+  OrdersCard,
+  OrdersCardActionsContainer,
+  OrdersCardTitle,
+  OrdersCardTitleContainer,
+} from "@components/Admin/Orders/OrdersGeneralDataList/styled";
 
 type OrdersListProps = {
   ordersRelations: IOrderRelations[];
@@ -44,27 +56,48 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
     if (orderRelation.status_pedido === StatusPedido.PENDENTE) return `pendente`;
   }
 
-  function getOrderDateText(orderDate: Date) {
-    return `${getFormattedDate(orderDate)} às ${getFormattedHours(orderDate)}`;
-  }
-
   return (
-    <OrdersContainer>
+    <OrdersCardContainer>
       {ordersRelations.map((orderRelation) => (
-        <OrdersContainerItem
-          whileHover={{ scale: 1.07 }}
-          key={`order-history-${orderRelation.id_pedido}`}
-        >
-          <p>
-            <OrdersContainerListHighlight>
-              Pedido {`${orderRelation.id_pedido}`}
-            </OrdersContainerListHighlight>{" "}
-            - {getOrderDateText(new Date(orderRelation.data_pedido))}
-          </p>
-          <p>
-            <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight>{" "}
-            {`${getOrderStatusText(orderRelation)}`}
-          </p>
+        <OrdersCard key={`order-history-${orderRelation.id_pedido}`}>
+          <OrdersCardTitleContainer>
+            <OrdersCardTitle>{`#${orderRelation.id_pedido}`}</OrdersCardTitle>
+            <OrdersCardTitle>
+              {getFormattedOrderDate(orderRelation.data_pedido as Date)}
+            </OrdersCardTitle>
+          </OrdersCardTitleContainer>
+
+          <OrdersUserContainer>
+            {orderRelation.endereco ? (
+              <Fragment>
+                <HiOutlineLocationMarker size={40} color={PURPLE} />
+                <GeneralDataContainer>
+                  <p>{getFormattedAddress(orderRelation.endereco)}</p>
+                  {orderRelation.endereco.complemento && (
+                    <span>Complemento: {orderRelation.endereco.complemento}</span>
+                  )}
+                </GeneralDataContainer>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <IoMdRestaurant size={40} color={PURPLE} />
+                <GeneralDataContainer>
+                  <p>O pedido deve ser retirado no restaurante</p>
+                </GeneralDataContainer>
+              </Fragment>
+            )}
+          </OrdersUserContainer>
+          <OrdersDataContainer>
+            <p>
+              <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight>{" "}
+              {`${getOrderStatusText(orderRelation)}`}
+            </p>
+
+            <p>
+              <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight>{" "}
+              {`${getOrderPaymentTypeText(orderRelation)}`}
+            </p>
+          </OrdersDataContainer>
           <p>
             <OrdersContainerListHighlight>Total:</OrdersContainerListHighlight>{" "}
             {`${getNumberAsCurrency(
@@ -77,17 +110,21 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
               )
             )}`}
           </p>
-          <p>
-            <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight>{" "}
-            {`${getOrderPaymentTypeText(orderRelation)}`}
-          </p>
-          <MoreDetails onClick={() => openModal(orderRelation)}>
-            <FaPlusCircle size={12} color={PINK} />
-            <p>Detalhes</p>
-          </MoreDetails>
-        </OrdersContainerItem>
+          <OrdersCardActionsContainer>
+            <ButtonContainer>
+              <Button
+                size="small"
+                color="primary"
+                variant="contained"
+                onClick={() => openModal(orderRelation)}
+              >
+                Detalhes do pedido
+              </Button>
+            </ButtonContainer>
+          </OrdersCardActionsContainer>
+        </OrdersCard>
       ))}
-    </OrdersContainer>
+    </OrdersCardContainer>
   );
 };
 
