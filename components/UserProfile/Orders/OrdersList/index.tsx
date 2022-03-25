@@ -17,18 +17,15 @@ import { getFormattedOrderDate, getFormattedAddress } from "@components/Admin/Or
 import { OrdersDataContainer, OrdersStatus } from "./styled";
 
 import {
-  OrdersUserContainer,
-  GeneralDataContainer,
-  ButtonContainer,
-} from "@components/Admin/Orders/OrdersGeneralDataList/styled";
-
-import {
-  OrdersCardContainer,
-  OrdersCard,
-  OrdersCardActionsContainer,
-  OrdersCardTitle,
-  OrdersCardTitleContainer,
-} from "@components/Admin/Orders/OrdersGeneralDataList/styled";
+  CardContainer,
+  CardTitle,
+  CardTitleContainer,
+  UserDataContainer,
+  UserGeneralDataContainer,
+  CardActionsContainer,
+  CardButtonContainer,
+  Card,
+} from "@components/shared/OrdersCard";
 
 type OrdersListProps = {
   ordersRelations: IOrderRelations[];
@@ -71,36 +68,34 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
   }
 
   return (
-    <OrdersCardContainer>
+    <CardContainer>
       {ordersRelations.map((orderRelation) => (
-        <OrdersCard key={`order-history-${orderRelation.id_pedido}`}>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>{`#${orderRelation.id_pedido}`}</OrdersCardTitle>
-            <OrdersCardTitle>
-              {getFormattedOrderDate(orderRelation.data_pedido as Date)}
-            </OrdersCardTitle>
-          </OrdersCardTitleContainer>
+        <Card key={`order-history-${orderRelation.id_pedido}`}>
+          <CardTitleContainer>
+            <CardTitle>{`#${orderRelation.id_pedido}`}</CardTitle>
+            <CardTitle>{getFormattedOrderDate(orderRelation.data_pedido as Date)}</CardTitle>
+          </CardTitleContainer>
 
-          <OrdersUserContainer>
+          <UserDataContainer>
             {orderRelation.endereco ? (
               <Fragment>
                 <HiOutlineLocationMarker size={40} color={PURPLE} />
-                <GeneralDataContainer>
+                <UserGeneralDataContainer>
                   <p>{getFormattedAddress(orderRelation.endereco)}</p>
                   {orderRelation.endereco.complemento && (
                     <span>Complemento: {orderRelation.endereco.complemento}</span>
                   )}
-                </GeneralDataContainer>
+                </UserGeneralDataContainer>
               </Fragment>
             ) : (
               <Fragment>
                 <IoMdRestaurant size={40} color={PURPLE} />
-                <GeneralDataContainer>
+                <UserGeneralDataContainer>
                   <p>O pedido deve ser retirado no restaurante</p>
-                </GeneralDataContainer>
+                </UserGeneralDataContainer>
               </Fragment>
             )}
-          </OrdersUserContainer>
+          </UserDataContainer>
           <OrdersDataContainer>
             <p>
               <b>Status:</b>{" "}
@@ -125,8 +120,8 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
               )
             )}`}
           </p>
-          <OrdersCardActionsContainer>
-            <ButtonContainer>
+          <CardActionsContainer>
+            <CardButtonContainer>
               <Button
                 size="small"
                 color="primary"
@@ -135,11 +130,11 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
               >
                 Detalhes do pedido
               </Button>
-            </ButtonContainer>
-          </OrdersCardActionsContainer>
-        </OrdersCard>
+            </CardButtonContainer>
+          </CardActionsContainer>
+        </Card>
       ))}
-    </OrdersCardContainer>
+    </CardContainer>
   );
 };
 

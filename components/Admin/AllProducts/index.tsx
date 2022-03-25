@@ -1,10 +1,7 @@
 import React from "react";
-import {
-  OrdersCard,
-  OrdersCardContainer,
-  ButtonContainer,
-} from "../Orders/OrdersGeneralDataList/styled";
+
 import { FiltersContainer, OrdersFilter } from "../Orders/styled";
+
 import {
   AllProductsContainer,
   AllProductsTitle,
@@ -12,9 +9,11 @@ import {
   AllProductsData,
   Highlight,
   AllProductsDataContainer,
-  AllProductsAvailability,
 } from "./styled";
-import { Button } from "@material-ui/core";
+
+import { CardContainer, CardButtonContainer, Card } from "@components/shared/OrdersCard";
+
+import Button from "@material-ui/core/Button";
 
 const AllProducts: React.FC = () => {
   return (
@@ -23,8 +22,8 @@ const AllProducts: React.FC = () => {
         <OrdersFilter>Produtos disponíveis</OrdersFilter>
         <OrdersFilter>Produtos indisponíveis</OrdersFilter>
       </FiltersContainer>
-      <OrdersCardContainer>
-        <OrdersCard>
+      <CardContainer>
+        <Card>
           <AllProductsTitle>Mini Salgados - 40 Unidades</AllProductsTitle>
           <ImageContainer>
             <p>imagem</p>
@@ -40,22 +39,22 @@ const AllProducts: React.FC = () => {
               <Highlight>Categoria:</Highlight>Mini salgados
             </AllProductsData>
           </AllProductsDataContainer>
-          <ButtonContainer>
+          <CardButtonContainer>
             <Button variant="outlined" color="primary" size="small">
               Visualizar produto
             </Button>
-          </ButtonContainer>
-          <ButtonContainer>
+          </CardButtonContainer>
+          <CardButtonContainer>
             <Button variant="contained" color="primary" size="small">
               Tornar indisponível
             </Button>
             <Button variant="contained" color="secondary" size="small">
               Editar
             </Button>
-          </ButtonContainer>
-        </OrdersCard>
+          </CardButtonContainer>
+        </Card>
 
-        <OrdersCard>
+        <Card>
           <AllProductsTitle>Mini Salgados - 40 Unidades</AllProductsTitle>
           <ImageContainer>
             <p>imagem</p>
@@ -71,22 +70,22 @@ const AllProducts: React.FC = () => {
               <Highlight>Categoria:</Highlight>Mini salgados
             </AllProductsData>
           </AllProductsDataContainer>
-          <ButtonContainer>
+          <CardButtonContainer>
             <Button variant="outlined" color="primary" size="small">
               Visualizar produto
             </Button>
-          </ButtonContainer>
+          </CardButtonContainer>
 
-          <ButtonContainer>
+          <CardButtonContainer>
             <Button variant="contained" color="primary" size="small">
               Tornar disponível
             </Button>
             <Button variant="contained" color="secondary" size="small">
               Editar
             </Button>
-          </ButtonContainer>
-        </OrdersCard>
-      </OrdersCardContainer>
+          </CardButtonContainer>
+        </Card>
+      </CardContainer>
     </AllProductsContainer>
   );
 };

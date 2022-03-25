@@ -31,8 +31,3 @@ export const AllProductsData = styled.div`
 export const Highlight = styled.p`
   font-weight: bold;
 `;
-
-export const AllProductsAvailability = styled.div`
-  display: flex;
-  justify-content: center;
-`;

@@ -17,17 +17,20 @@ import {
 } from "../utility/order";
 
 import {
-  OrdersCard,
-  ButtonContainer,
-  OrdersCardTitle,
-  OrdersUserContainer,
-  OrdersCardContainer,
-  GeneralDataContainer,
-  OrdersCardTitleContainer,
-  OrdersCardActionsContainer,
   ConfirmationMessage,
   RejectionMessage,
 } from "./styled";
+
+import {
+  CardContainer,
+  CardTitle,
+  CardTitleContainer,
+  UserDataContainer,
+  UserGeneralDataContainer,
+  CardActionsContainer,
+  CardButtonContainer,
+  Card,
+} from "@components/shared/OrdersCard";
 
 import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
@@ -74,42 +77,42 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
   }
 
   return (
-    <OrdersCardContainer>
+    <CardContainer>
       {ordersGeneralData.map((order) => (
-        <OrdersCard key={`${order.id_pedido}`}>
-          <OrdersCardTitleContainer>
-            <OrdersCardTitle>{`#${order.id_pedido}`}</OrdersCardTitle>
-            <OrdersCardTitle>{getFormattedOrderDate(order.data_pedido as Date)}</OrdersCardTitle>
-          </OrdersCardTitleContainer>
+        <Card key={`${order.id_pedido}`}>
+          <CardTitleContainer>
+            <CardTitle>{`#${order.id_pedido}`}</CardTitle>
+            <CardTitle>{getFormattedOrderDate(order.data_pedido as Date)}</CardTitle>
+          </CardTitleContainer>
 
-          <OrdersUserContainer>
+          <UserDataContainer>
             <BiUserCircle size={40} color={PURPLE} />
-            <GeneralDataContainer>
+            <UserGeneralDataContainer>
               <p>{order.usuario.nome}</p>
               <span>{getFormattedOrderPhone(order.usuario.telefone[0])}</span>
-            </GeneralDataContainer>
-          </OrdersUserContainer>
+            </UserGeneralDataContainer>
+          </UserDataContainer>
 
-          <OrdersUserContainer>
+          <UserDataContainer>
             {order.endereco ? (
               <Fragment>
                 <HiOutlineLocationMarker size={40} color={PURPLE} />
-                <GeneralDataContainer>
+                <UserGeneralDataContainer>
                   <p>{getFormattedAddress(order.endereco)}</p>
                   {order.endereco.complemento && (
                     <span>Complemento: {order.endereco.complemento}</span>
                   )}
-                </GeneralDataContainer>
+                </UserGeneralDataContainer>
               </Fragment>
             ) : (
               <Fragment>
                 <IoMdRestaurant size={40} color={PURPLE} />
-                <GeneralDataContainer>
+                <UserGeneralDataContainer>
                   <p>O pedido será retirado no restaurante</p>
-                </GeneralDataContainer>
+                </UserGeneralDataContainer>
               </Fragment>
             )}
-          </OrdersUserContainer>
+          </UserDataContainer>
 
           {order.status_pedido === StatusPedido.CONFIRMADO && (
             <ConfirmationMessage>
@@ -123,8 +126,8 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
             </RejectionMessage>
           )}
 
-          <OrdersCardActionsContainer>
-            <ButtonContainer>
+          <CardActionsContainer>
+            <CardButtonContainer>
               <Button
                 size="small"
                 color="primary"
@@ -134,10 +137,10 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
               >
                 Detalhes do pedido
               </Button>
-            </ButtonContainer>
+            </CardButtonContainer>
 
             {order.status_pedido === StatusPedido.PENDENTE && (
-              <ButtonContainer>
+              <CardButtonContainer>
                 <LoadingButton
                   variant="outlined"
                   color="secondary"
@@ -162,12 +165,12 @@ const OrdersGeneralDataList: OrdersGeneralDataListType = ({
                 >
                   Confirmar
                 </LoadingButton>
-              </ButtonContainer>
+              </CardButtonContainer>
             )}
-          </OrdersCardActionsContainer>
-        </OrdersCard>
+          </CardActionsContainer>
+        </Card>
       ))}
-    </OrdersCardContainer>
+    </CardContainer>
   );
 };
 
