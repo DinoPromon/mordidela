@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-import { PURPLE, PINK } from "@utils/colors";
+import { PURPLE } from "@utils/colors";
 
 export const OrdersContainer = styled.ul`
   display: grid;
@@ -30,19 +30,7 @@ export const OrdersContainerListHighlight = styled.span`
   font-weight: bold;
 `;
 
-export const MoreDetails = styled.div`
+export const OrdersDataContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 0.25rem;
-  align-items: center;
-  font-size: 14px;
-  cursor: pointer;
-  color: ${PINK};
-
-  margin-top: 0.5rem;
-  width: 75px;
-
-  & > p:hover {
-    text-decoration: underline;
-  }
+  flex-direction: column;
 `;
