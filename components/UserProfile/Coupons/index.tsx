@@ -81,7 +81,9 @@ const Coupons: React.FC<CouponsProps> = ({ relatedCoupons }) => {
                     <CouponDataHighlight>{usedCoupon.cupom.codigo}</CouponDataHighlight> -{" "}
                     {getCouponDiscountText(usedCoupon.cupom)}
                   </p>
-                  <p>Utilizado no pedido {usedCoupon.pedido?.id_pedido}</p>
+                  <p>
+                    Utilizado no pedido <b>#{usedCoupon.pedido?.id_pedido}</b>
+                  </p>
                 </CouponData>
               </CouponDataContainer>
             ))}
