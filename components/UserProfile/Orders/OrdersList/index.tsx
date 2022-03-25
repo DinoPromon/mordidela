@@ -1,12 +1,12 @@
 import React, { memo, Fragment } from "react";
 
-import { PURPLE } from "@utils/colors";
+import { ERROR_RED, ORANGE, PURPLE, SUCCESS_GREEN } from "@utils/colors";
 import { StatusPedido } from "@models/pedido";
 import { getFormattedHours } from "@utils/formatters";
 import { getFormattedDate } from "@utils/transformation";
 import { HiOutlineLocationMarker } from "react-icons/hi/index";
 import Button from "@material-ui/core/Button";
-import { IoMdRestaurant } from "react-icons/io/index"
+import { IoMdRestaurant } from "react-icons/io/index";
 
 import { calculateTotalPrice } from "@utils/order";
 import { getOrderPaymentTypeText } from "../utility";
@@ -14,7 +14,7 @@ import type { IOrderRelations } from "@models/pedido";
 import { getNumberAsCurrency } from "@utils/transformation";
 import { getFormattedOrderDate, getFormattedAddress } from "@components/Admin/Orders/utility/order";
 
-import { OrdersContainerListHighlight, OrdersDataContainer } from "./styled";
+import { OrdersDataContainer, OrdersStatus } from "./styled";
 
 import {
   OrdersUserContainer,
@@ -56,6 +56,20 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
     if (orderRelation.status_pedido === StatusPedido.PENDENTE) return `pendente`;
   }
 
+  function orderStatusHighlight(orderStatus: StatusPedido) {
+    switch (orderStatus) {
+      case StatusPedido.CONFIRMADO: {
+        return SUCCESS_GREEN;
+      }
+      case StatusPedido.REJEITADO: {
+        return ERROR_RED;
+      }
+      default: {
+        return ORANGE;
+      }
+    }
+  }
+
   return (
     <OrdersCardContainer>
       {ordersRelations.map((orderRelation) => (
@@ -89,17 +103,15 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
           </OrdersUserContainer>
           <OrdersDataContainer>
             <p>
-              <OrdersContainerListHighlight>Status:</OrdersContainerListHighlight>{" "}
-              {`${getOrderStatusText(orderRelation)}`}
+              <b>Status:</b> <OrdersStatus color={orderStatusHighlight(orderRelation.status_pedido)}>{`${getOrderStatusText(orderRelation)}`}</OrdersStatus>
             </p>
 
             <p>
-              <OrdersContainerListHighlight>Pagamento:</OrdersContainerListHighlight>{" "}
-              {`${getOrderPaymentTypeText(orderRelation)}`}
+              <b>Pagamento:</b> {`${getOrderPaymentTypeText(orderRelation)}`}
             </p>
           </OrdersDataContainer>
           <p>
-            <OrdersContainerListHighlight>Total:</OrdersContainerListHighlight>{" "}
+            <b>Total:</b>{" "}
             {`${getNumberAsCurrency(
               calculateTotalPrice(
                 orderRelation.pedido_produto as any,

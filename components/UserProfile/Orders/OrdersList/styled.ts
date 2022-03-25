@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-
 import { PURPLE } from "@utils/colors";
 
 export const OrdersContainer = styled.ul`
@@ -26,11 +25,12 @@ export const OrdersContainerItem = styled(motion.li)`
   border-radius: 10px;
 `;
 
-export const OrdersContainerListHighlight = styled.span`
-  font-weight: bold;
-`;
-
 export const OrdersDataContainer = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const OrdersStatus = styled.span<{ color: string }>`
+  color: ${({ color }) => color};
+  font-weight: bold;
 `;
