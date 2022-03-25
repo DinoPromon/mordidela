@@ -8,7 +8,7 @@ import CustomAnimatePresence from "@components/shared/CustomAnimatePresence";
 import { StatusPedido } from "@models/pedido";
 import { CentralizedLoading, LoadingButton } from "@components/shared";
 
-import { FindDateFilter, INIT_ORDER_FILTER } from "./constants";
+import { FindDateFilter, INIT_ORDER_FILTER } from "./utility/constants";
 
 import DateFilter from "./DateFilter";
 const OrdersGeneralDataList = dynamic(() => import("./OrdersGeneralDataList"));
@@ -26,7 +26,7 @@ import type { AxiosError } from "axios";
 import type IPedido from "@models/pedido";
 import type { IOrderGeneralData } from "@models/pedido";
 import type { OrdersGeneralDataResponse } from "@my-types/responses";
-import type { OrderFilterParams } from "./types/orderFilter";
+import type { OrderFilterParams } from "./utility/types/orderFilter";
 
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();

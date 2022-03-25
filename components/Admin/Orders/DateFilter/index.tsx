@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { FindDateFilter } from "../constants";
+import React from "react";
+import { FindDateFilter } from "../utility/constants";
 import { DateFilterForm, ButtonContainer } from "./styled";
 
 import { InputLabel, Select, Button, FormControl, MenuItem } from "@material-ui/core";
@@ -92,6 +92,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ onSubmit }) => {
               <MenuItem value={FindDateFilter.LAST_7_DAYS}>últimos 7 dias</MenuItem>
               <MenuItem value={FindDateFilter.LAST_30_DAYS}>últimos 30 dias</MenuItem>
               <MenuItem value={FindDateFilter.DATE}>data</MenuItem>
+              <MenuItem value={FindDateFilter.NONE}>Nenhum</MenuItem>
             </Select>
           </FormControl>
 
