@@ -38,7 +38,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ onSubmit }) => {
         return "Exibindo os pedidos da";
 
       case FindDateFilter.NONE:
-        return "Exibindo todos os pedidos";
+        return "";
 
       default:
         return filterOption;
@@ -61,7 +61,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ onSubmit }) => {
     <Formik
       enableReinitialize
       validateOnChange={false}
-      /* validationSchema={getDateFilterFormValidationSchema(formModel)} */
+      validationSchema={getDateFilterFormValidationSchema(formModel)}
       initialValues={getDateFilterFormInitialValues()}
       onSubmit={submitHandler}
     >
