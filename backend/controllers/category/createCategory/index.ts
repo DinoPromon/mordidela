@@ -24,7 +24,7 @@ export class CreateCategory {
   }
 
   private async createCategory() {
-    const createdFlavor = await Prisma.sabor
+    const createdFlavor = await Prisma.categoria
       .create({
         data: {
           nome: this.createArg.nome,
