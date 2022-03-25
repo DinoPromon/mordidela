@@ -55,8 +55,8 @@ export const AddCategoriesTitle = styled.h3`
   margin-top: 1.5rem;
 `;
 
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div<{ isEdit?: boolean }>`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: ${({ isEdit }) => (isEdit ? "space-between" : "center")};
 `;
