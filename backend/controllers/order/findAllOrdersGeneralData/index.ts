@@ -41,12 +41,15 @@ export class FindAllOrderGeneralData {
   private async countFindAll() {
     const orderFilterDate = this.getOrderFilterDate();
 
+    const lesserThanDate = this.getLesserDate(orderFilterDate);
+
     const count = await Prisma.pedido
       .count({
         where: {
           status_pedido: this.filtersData.status_pedido,
           data_pedido: {
             gt: orderFilterDate,
+            lt: lesserThanDate,
           },
         },
       })
@@ -63,12 +66,7 @@ export class FindAllOrderGeneralData {
 
     const orderFilterDate = this.getOrderFilterDate();
 
-    const hasLesserThan =
-      this.filtersData.filtro_data_pedido === FindDateFilter.DATE && orderFilterDate;
-
-    const dateLesserThan = hasLesserThan
-      ? new Date(orderFilterDate.getTime() + this.calculateDateInMilliseconds(1))
-      : undefined;
+    const lesserThanDate = this.getLesserDate(orderFilterDate);
 
     const ordersGeneralData = await Prisma.pedido
       .findMany({
@@ -87,7 +85,7 @@ export class FindAllOrderGeneralData {
           status_pedido: this.filtersData.status_pedido,
           data_pedido: {
             gt: orderFilterDate,
-            lt: dateLesserThan,
+            lt: lesserThanDate,
           },
         },
         orderBy: {
@@ -101,6 +99,15 @@ export class FindAllOrderGeneralData {
       });
 
     return ordersGeneralData as IOrderGeneralData[];
+  }
+
+  private getLesserDate(orderFilterDate?: Date) {
+    const hasLesserThan =
+      this.filtersData.filtro_data_pedido === FindDateFilter.DATE && orderFilterDate;
+
+    return hasLesserThan
+      ? new Date(orderFilterDate.getTime() + this.calculateDateInMilliseconds(1))
+      : undefined;
   }
 
   private getOrderFilterDate() {
