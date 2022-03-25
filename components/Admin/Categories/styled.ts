@@ -8,10 +8,9 @@ export const CategoriesContainer = styled.div`
   align-items: center;
 `;
 
-export const CategoriesTitle = styled.h2`
+export const CategoriesTitle = styled.h1`
   text-align: center;
   padding-top: 0.5rem;
-  padding-bottom: 1rem;
   text-decoration: underline;
 `;
 
@@ -24,7 +23,7 @@ export const CategoriesListContainer = styled.ul`
   list-style: none;
   max-width: 400px;
   width: 100%;
-  padding: 0 1rem;
+/*   padding: 0 1rem; */
 `;
 
 export const CategoriesList = styled.li`
@@ -38,7 +37,14 @@ export const CategoriesList = styled.li`
 `;
 
 export const CategoriesListWhitBorder = styled(CategoriesList)`
-  border-top: 1px solid gray;
+  padding: 0.5rem 1rem;
+
+  &:nth-child(odd) {
+    background-color: #e6e6e6;
+  }
+  &:nth-child(even) {
+    background-color: #dedede;
+  }
 `;
 
 export const CategoriesIcons = styled.div`
@@ -52,11 +58,11 @@ export const CategoriesIcons = styled.div`
 export const AddCategoriesTitle = styled.h3`
   text-align: center;
   padding: 1rem;
-  margin-top: 1.5rem;
 `;
 
 export const ButtonContainer = styled.div<{ isEdit?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: ${({ isEdit }) => (isEdit ? "space-between" : "center")};
+  margin-top: 1rem;
 `;

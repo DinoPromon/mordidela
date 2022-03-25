@@ -13,23 +13,35 @@ import { PINK } from "@utils/colors";
 import { InputTextFormik, LoadingButton } from "@components/shared";
 
 import {
-  CategoriesContainer,
-  CategoriesTitle,
-  CategoriesListWhitBorder,
-  CategoriesIcons,
-  AddCategoriesTitle,
-  ButtonContainer,
-} from "../Categories/styled";
-import {
   getFlavorsFormInitialValues,
   getFlavorsFormValidationSchema,
   getFlavorsFormModel,
 } from "./FormModel";
-import { FlavorsListContainer, LoadingContainer } from "./styled";
+
+import { LoadingContainer, TableTitle } from "./styled";
 
 import type ISabor from "@models/sabor";
 import type { AxiosError } from "axios";
 import type { IFlavorsFormValues } from "./FormModel";
+
+import {
+  makeStyles,
+  TableContainer,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+  Paper,
+} from "@material-ui/core";
+
+import {
+  ProductsComponentsTitle,
+  ProductsComponentsContainer,
+  AddProductsComponentsTitle,
+  ProductsComponentsButtonContainer,
+  ProductsComponentsIcons,
+} from "@components/shared/ProcutsComponents";
 
 const Flavors: React.FC = () => {
   const [requestStatus, changeRequestStatus] = useRequestState();
@@ -37,6 +49,12 @@ const Flavors: React.FC = () => {
   const [editFlavor, setEditFlavor] = useState<ISabor>();
 
   const formModel = getFlavorsFormModel();
+
+  const useStyles = makeStyles({
+    table: {
+      minWidth: 600,
+    },
+  });
 
   async function submitHandler(values: IFlavorsFormValues) {
     try {
@@ -112,42 +130,10 @@ const Flavors: React.FC = () => {
   useEffect(() => {
     fetchFlavors();
   }, [fetchFlavors]);
-
+  const classes = useStyles();
   return (
-    <CategoriesContainer>
-      <CategoriesTitle>Sabores</CategoriesTitle>
-      <Fragment>
-        {flavors.length > 0 && (
-          <FlavorsListContainer>
-            {flavors.map((flavor) => (
-              <CategoriesListWhitBorder key={`${flavor.nome}-${flavor.id_sabor}`}>
-                {flavor.nome}
-                <CategoriesIcons>
-                  <ClickableItem
-                    scale={1.3}
-                    title="Editar sabor"
-                    onClick={() => editFlavorHandler(flavor)}
-                  >
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem
-                    title="Excluir sabor"
-                    scale={1.3}
-                    onClick={() => deleteFlavorHandler(flavor)}
-                  >
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesListWhitBorder>
-            ))}
-          </FlavorsListContainer>
-        )}
-        {requestStatus.isLoading && (
-          <LoadingContainer>
-            <CircularProgress size={30} color="primary" />
-          </LoadingContainer>
-        )}
-      </Fragment>
+    <ProductsComponentsContainer>
+      <ProductsComponentsTitle>Sabores</ProductsComponentsTitle>
 
       <Formik
         enableReinitialize
@@ -158,7 +144,7 @@ const Flavors: React.FC = () => {
       >
         {({ values, isSubmitting }) => (
           <Form>
-            <AddCategoriesTitle>Adicionar sabor</AddCategoriesTitle>
+            <AddProductsComponentsTitle>Adicionar sabor</AddProductsComponentsTitle>
             <InputTextFormik
               name={formModel.name.name}
               label={formModel.name.label}
@@ -167,7 +153,7 @@ const Flavors: React.FC = () => {
               helperText={formModel.name.requiredErrorMessage}
               style={{ width: "500px" }}
             />
-            <ButtonContainer isEdit={!!editFlavor}>
+            <ProductsComponentsButtonContainer isEdit={!!editFlavor}>
               {editFlavor && (
                 <Button type="button" color="secondary" variant="outlined" onClick={cancelHandler}>
                   Cancelar
@@ -183,11 +169,71 @@ const Flavors: React.FC = () => {
                   Adicionar
                 </LoadingButton>
               </motion.div>
-            </ButtonContainer>
+            </ProductsComponentsButtonContainer>
           </Form>
         )}
       </Formik>
-    </CategoriesContainer>
+
+      <Fragment>
+        {flavors.length > 0 && (
+          <div>
+            <TableTitle>Todos os sabores</TableTitle>
+            <TableContainer component={Paper}>
+              <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">
+                      <b>Sabor</b>
+                    </TableCell>
+                    <TableCell align="center">
+                      <b>Status</b>
+                    </TableCell>
+                    <TableCell>
+                      <b>Ações</b>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {flavors.map((flavor) => (
+                    <TableRow key={flavor.id_sabor}>
+                      <TableCell>{flavor.nome}</TableCell>
+                      {flavor.deletado === false ? (
+                        <TableCell align="center">Disponível</TableCell>
+                      ) : (
+                        <TableCell align="center">Excluído</TableCell>
+                      )}
+                      <TableCell>
+                        <ProductsComponentsIcons>
+                          <ClickableItem
+                            scale={1.3}
+                            title="Editar sabor"
+                            onClick={() => editFlavorHandler(flavor)}
+                          >
+                            <BsPencil size={16} color={PINK} />
+                          </ClickableItem>
+                          <ClickableItem
+                            title="Excluir sabor"
+                            scale={1.3}
+                            onClick={() => deleteFlavorHandler(flavor)}
+                          >
+                            <FaTrash size={16} color={PINK} />
+                          </ClickableItem>
+                        </ProductsComponentsIcons>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        )}
+        {requestStatus.isLoading && (
+          <LoadingContainer>
+            <CircularProgress size={30} color="primary" />
+          </LoadingContainer>
+        )}
+      </Fragment>
+    </ProductsComponentsContainer>
   );
 };
 
