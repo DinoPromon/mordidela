@@ -103,7 +103,10 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
           </OrdersUserContainer>
           <OrdersDataContainer>
             <p>
-              <b>Status:</b> <OrdersStatus color={orderStatusHighlight(orderRelation.status_pedido)}>{`${getOrderStatusText(orderRelation)}`}</OrdersStatus>
+              <b>Status:</b>{" "}
+              <OrdersStatus
+                color={orderStatusHighlight(orderRelation.status_pedido)}
+              >{`${getOrderStatusText(orderRelation)}`}</OrdersStatus>
             </p>
 
             <p>
@@ -114,8 +117,8 @@ const OrdersList: OrdersListType = ({ ordersRelations, openModal }) => {
             <b>Total:</b>{" "}
             {`${getNumberAsCurrency(
               calculateTotalPrice(
-                orderRelation.pedido_produto as any,
-                orderRelation.pedido_produto_adicional as any,
+                orderRelation.pedido_produto,
+                orderRelation.pedido_produto_adicional,
                 orderRelation.tipo_entrega,
                 orderRelation.preco_entrega,
                 orderRelation.cupom
