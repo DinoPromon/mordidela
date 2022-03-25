@@ -21,11 +21,15 @@ export const UsedCouponTitle = styled(CouponTitle)`
 `;
 
 export const CouponGrid = styled.ul`
-  display: grid;
+/*   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin: 0 auto;
   list-style: none;
+  gap: 2rem; */
+  display: flex;
   gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
 
   @media (max-width: 1160px) {
     grid-template-columns: 1fr 1fr;
@@ -46,6 +50,8 @@ export const CouponDataContainer = styled(motion.li)`
   padding: 1rem;
   border-radius: 50px;
   background-color: white;
+  max-width: 340px;
+  width: 100%;
 `;
 
 export const CouponData = styled.div`
