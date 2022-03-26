@@ -7,6 +7,7 @@ import { FindAllCategoriesParser } from "./parser";
 
 import type ICategoria from "@models/categoria";
 import type { PaginatedSearchArg } from "@helpers/pagination/types";
+import type { PaginatedResponse } from "@my-types/backend/pagination";
 import type { RawFindAllCategoriesArg, FindAllCategoriesArg } from "./types";
 
 export class FindAllCategories {
@@ -22,8 +23,22 @@ export class FindAllCategories {
 
   public async exec() {
     const allCategories = await this.findAll();
+    const countCategories = await this.countAll();
 
-    return allCategories;
+    return {
+      count: countCategories,
+      items: allCategories,
+    } as PaginatedResponse<ICategoria>;
+  }
+
+  private async countAll() {
+    const count = await Prisma.categoria.count({
+      where: {
+        deletado: this.findAllArg.getDeleted ? undefined : false,
+      },
+    });
+
+    return count;
   }
 
   private async findAll() {
@@ -32,7 +47,7 @@ export class FindAllCategories {
     const allCategories = await Prisma.categoria
       .findMany({
         where: {
-          deletado: this.findAllArg.getDeleted,
+          deletado: this.findAllArg.getDeleted ? undefined : false,
         },
         take: itemsAmount,
         skip: skip,

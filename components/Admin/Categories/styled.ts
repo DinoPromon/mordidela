@@ -66,3 +66,10 @@ export const ButtonContainer = styled.div<{ isEdit?: boolean }>`
   justify-content: ${({ isEdit }) => (isEdit ? "space-between" : "center")};
   margin-top: 1rem;
 `;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 0;
+`;

@@ -1,18 +1,22 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback, useState, useEffect } from "react";
 import { PINK } from "@utils/colors";
 import { FaTrash } from "react-icons/fa/index";
 import { BsPencil } from "react-icons/bs/index";
+
+import Axios from "@api";
+import useIsMounted from "@hooks/useIsMounted";
+import useRequestState from "@hooks/useRequestState";
 import ClickableItem from "@components/shared/ClickableItem";
 
 import {
   CategoriesContainer,
   CategoriesTitle,
   CategoriesListContainer,
-  CategoriesList,
   CategoriesListWhitBorder,
   CategoriesIcons,
   AddCategoriesTitle,
   ButtonContainer,
+  LoadingContainer,
 } from "./styled";
 
 import {
@@ -21,15 +25,127 @@ import {
   getCategoriesFormModel,
 } from "./FormModel";
 
-import { Formik } from "formik";
-import { FormikForm } from "@components/Login/styled";
-import { InputTextFormik } from "@components/shared";
-import { Button } from "@material-ui/core";
+import { Formik, Form } from "formik";
+import { InputTextFormik, LoadingButton } from "@components/shared";
+import { Button, CircularProgress } from "@material-ui/core";
+
+import type { AxiosError } from "axios";
+import type ICategoria from "@models/categoria";
+import type { FindAllCategoriesResponse } from "@my-types/responses";
+
+type FetchCategoryParams = {
+  getDeleted: boolean;
+  skip: number;
+  itemsAmount?: number;
+};
+
+type CategoryData = {
+  items: ICategoria[];
+  count: number;
+};
+
+const INIT_FIND_PARAMS: FetchCategoryParams = {
+  getDeleted: false,
+  skip: 0,
+  itemsAmount: 2,
+};
 
 const Categories: React.FC = () => {
+  const isMounted = useIsMounted();
+  const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
+  const [findParams, setFindParams] = useState<FetchCategoryParams>(INIT_FIND_PARAMS);
+  const [categories, setCategories] = useState<CategoryData>();
+  const [isInitialRequest, setIsInitialRequest] = useState(true);
+
   const formModel = getCategoriesFormModel();
+
+  const changeCategories = useCallback((category: CategoryData) => {
+    setCategories((prevState) => {
+      if (!prevState) return { count: category.count, items: category.items };
+
+      return {
+        count: category.count,
+        items: [...prevState.items, ...category.items],
+      };
+    });
+  }, []);
+
+  const fetchCategories = useCallback(
+    async (params?: FetchCategoryParams) => {
+      changeRequestStatus({ isLoading: true });
+
+      try {
+        const response = await Axios.get<FindAllCategoriesResponse>("/category", {
+          params,
+        });
+        if (!isMounted.current) return;
+
+        changeCategories(response.data);
+        setIsInitialRequest(false);
+        setFindParams((prevState) => ({
+          ...prevState,
+          skip: prevState.skip + response.data.items.length,
+        }));
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error);
+        if (!isMounted.current) return;
+
+        changeRequestStatus({ error: error.response?.data.message });
+      }
+
+      changeRequestStatus({ isLoading: false });
+    },
+    [isMounted, changeRequestStatus, changeCategories]
+  );
+
+  function loadMoreHandler() {
+    fetchCategories(findParams);
+  }
+
+  useEffect(() => {
+    fetchCategories(INIT_FIND_PARAMS);
+  }, [fetchCategories]);
+
   return (
     <Fragment>
+      <CategoriesContainer>
+        <CategoriesTitle>Categorias</CategoriesTitle>
+        {categories && categories.items.length > 0 && (
+          <CategoriesListContainer>
+            {categories.items.map((category) => (
+              <CategoriesListWhitBorder key={`${category.nome}-${category.id_categoria}`}>
+                {category.nome}
+                <CategoriesIcons>
+                  <ClickableItem title="Editar categoria" scale={1.3}>
+                    <BsPencil size={16} color={PINK} />
+                  </ClickableItem>
+                  <ClickableItem title="Excluir categoria" scale={1.3}>
+                    <FaTrash size={16} color={PINK} />
+                  </ClickableItem>
+                </CategoriesIcons>
+              </CategoriesListWhitBorder>
+            ))}
+          </CategoriesListContainer>
+        )}
+
+        {isInitialRequest && requestStatus.isLoading && (
+          <LoadingContainer>
+            <CircularProgress size={30} color="primary" />
+          </LoadingContainer>
+        )}
+
+        {categories && categories.count > findParams.skip && (
+          <LoadingButton
+            variant="contained"
+            color="secondary"
+            isLoading={requestStatus.isLoading}
+            onClick={loadMoreHandler}
+          >
+            Carregar mais
+          </LoadingButton>
+        )}
+      </CategoriesContainer>
       <Formik
         enableReinitialize
         validateOnChange={false}
@@ -38,79 +154,9 @@ const Categories: React.FC = () => {
         onSubmit={console.log}
       >
         {({ values }) => (
-          <CategoriesContainer>
-            <CategoriesTitle>Categorias</CategoriesTitle>
-            <CategoriesListContainer>
-              <CategoriesList>
-                Cones
-                <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesList>
-              <CategoriesListWhitBorder>
-                Pratos executivos
-                <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesListWhitBorder>
-              <CategoriesListWhitBorder>
-                Lanches
-                <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesListWhitBorder>
-              <CategoriesListWhitBorder>
-                Caixas
-                <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesListWhitBorder>
-              <CategoriesListWhitBorder>
-                Cremes gelados
-                <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesListWhitBorder>
-              <CategoriesListWhitBorder>
-                Bebidas
-                <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesListWhitBorder>
-            </CategoriesListContainer>
-
-            <AddCategoriesTitle>Adicionar categoria</AddCategoriesTitle>
-            <FormikForm>
+          <Form>
+            <CategoriesContainer>
+              <AddCategoriesTitle>Adicionar categoria</AddCategoriesTitle>
               <InputTextFormik
                 name={formModel.name.name}
                 label={formModel.name.label}
@@ -124,8 +170,8 @@ const Categories: React.FC = () => {
                   Adicionar
                 </Button>
               </ButtonContainer>
-            </FormikForm>
-          </CategoriesContainer>
+            </CategoriesContainer>
+          </Form>
         )}
       </Formik>
     </Fragment>
