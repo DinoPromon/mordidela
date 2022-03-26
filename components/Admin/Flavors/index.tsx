@@ -1,107 +1,96 @@
 import React, { Fragment, useCallback, useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { motion } from "framer-motion";
 import { Formik, Form } from "formik";
 import { FaTrash } from "react-icons/fa/index";
 import { BsPencil } from "react-icons/bs/index";
+import {
+  Table,
+  Paper,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TablePagination,
+  CircularProgress,
+} from "@material-ui/core";
 
 import Axios from "@api";
 import useRequestState from "@hooks/useRequestState";
 import ClickableItem from "@components/shared/ClickableItem";
 import { PINK } from "@utils/colors";
+import { useTablePagination } from "@hooks/useTablePagination";
 import { InputTextFormik, LoadingButton } from "@components/shared";
+import {
+  ProductsComponentsIcons,
+  ProductsComponentsTitle,
+  AddProductsComponentsTitle,
+  ProductsComponentsContainer,
+  ProductsComponentsButtonContainer,
+} from "@components/shared/ProcutsComponents";
 
 import {
   getFlavorsFormInitialValues,
   getFlavorsFormValidationSchema,
   getFlavorsFormModel,
 } from "./FormModel";
-
-import { LoadingContainer, TableTitle } from "./styled";
+import { LoadingContainer, TableTitle, FlavorsTableContainer, useTableStyles } from "./styled";
 
 import type ISabor from "@models/sabor";
 import type { AxiosError } from "axios";
 import type { IFlavorsFormValues } from "./FormModel";
+import type { FindAllFlavorsResponse } from "@my-types/responses/flavor/findAll";
 
-import {
-  makeStyles,
-  TableContainer,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-  Paper,
-} from "@material-ui/core";
+type FetchFlavorsParams = {
+  getDeleted: boolean;
+  skip: number;
+  itemsAmount?: number;
+};
 
-import {
-  ProductsComponentsTitle,
-  ProductsComponentsContainer,
-  AddProductsComponentsTitle,
-  ProductsComponentsButtonContainer,
-  ProductsComponentsIcons,
-} from "@components/shared/ProcutsComponents";
+type FlavorsData = {
+  count: number;
+  items: ISabor[];
+};
 
 const Flavors: React.FC = () => {
-  const [requestStatus, changeRequestStatus] = useRequestState();
-  const [flavors, setFlavors] = useState<ISabor[]>([]);
+  const tableClasses = useTableStyles();
+  const [flavors, setFlavors] = useState<FlavorsData>();
   const [editFlavor, setEditFlavor] = useState<ISabor>();
+  const [deletingFlavor, setDeletingFlavor] = useState<ISabor>();
+  const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
+  const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
 
   const formModel = getFlavorsFormModel();
+  const itemsAmountOptions = [5, 10, 15];
 
-  const useStyles = makeStyles({
-    table: {
-      minWidth: 600,
-    },
-  });
+  function removeFlavor(flavor: ISabor) {
+    setFlavors((prevState) => {
+      if (!prevState) return prevState;
 
-  async function submitHandler(values: IFlavorsFormValues) {
-    try {
-      if (editFlavor) {
-        const response = await Axios.put<ISabor>(`/flavor/update/${editFlavor.id_sabor}`, {
-          nome: values.name,
-        });
-
-        setFlavors((prevState) => {
-          const index = prevState.findIndex((pFlavor) => pFlavor.id_sabor === editFlavor.id_sabor);
-
-          if (index <= -1) return prevState;
-
-          const newFlavors = [...prevState];
-          newFlavors[index] = response.data;
-
-          return newFlavors;
-        });
-      } else {
-        const response = await Axios.post<ISabor>("/flavor/create", {
-          nome: values.name,
-        });
-        setFlavors((prevState) => [...prevState, response.data]);
-      }
-    } catch (err) {
-      const error = err as AxiosError;
-      console.log(err);
-      changeRequestStatus({ error: error.response?.data.message });
-    }
+      return {
+        items: prevState.items.filter((pFlavor) => pFlavor.id_sabor !== flavor.id_sabor),
+        count: prevState.count - 1,
+      };
+    });
   }
 
-  async function deleteFlavorHandler(flavor: ISabor) {
-    try {
-      const response = await Axios.put<ISabor>(`/flavor/update/${flavor.id_sabor}`, {
-        deletado: true,
-      });
+  function updateFlavor(flavor: ISabor) {
+    setFlavors((prevState) => {
+      if (!prevState) return prevState;
 
-      console.log(response.data);
+      const index = prevState.items.findIndex((pFlavor) => pFlavor.id_sabor === flavor.id_sabor);
 
-      setFlavors((prevState) =>
-        prevState.filter((pFlavor) => pFlavor.id_sabor !== flavor.id_sabor)
-      );
-    } catch (err) {
-      const error = err as AxiosError;
-      console.log(err);
-      changeRequestStatus({ error: error.response?.data.message });
-    }
+      if (index <= -1) return prevState;
+
+      const newFlavors = [...prevState.items];
+      newFlavors[index] = flavor;
+
+      return {
+        ...prevState,
+        items: newFlavors,
+      };
+    });
   }
 
   function editFlavorHandler(flavor: ISabor) {
@@ -112,25 +101,66 @@ const Flavors: React.FC = () => {
     setEditFlavor(undefined);
   }
 
-  const fetchFlavors = useCallback(async () => {
-    changeRequestStatus({ isLoading: true });
+  async function submitHandler(values: IFlavorsFormValues) {
     try {
-      const response = await Axios.get<ISabor[]>("/flavor");
+      if (editFlavor) {
+        const response = await Axios.put<ISabor>(`/flavor/update/${editFlavor.id_sabor}`, {
+          nome: values.name,
+        });
 
-      setFlavors(response.data);
+        updateFlavor(response.data);
+      } else {
+        await Axios.post<ISabor>("/flavor/create", {
+          nome: values.name,
+        });
+      }
     } catch (err) {
       const error = err as AxiosError;
       console.log(err);
       changeRequestStatus({ error: error.response?.data.message });
     }
+  }
 
-    changeRequestStatus({ isLoading: false });
-  }, [changeRequestStatus]);
+  async function deleteFlavorHandler(flavor: ISabor) {
+    setDeletingFlavor(flavor);
+    try {
+      const response = await Axios.put<ISabor>(`/flavor/update/${flavor.id_sabor}`, {
+        deletado: true,
+      });
+
+      removeFlavor(response.data);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(err);
+      changeRequestStatus({ error: error.response?.data.message });
+    }
+    setDeletingFlavor(undefined);
+  }
+
+  const fetchFlavors = useCallback(
+    async (params: FetchFlavorsParams) => {
+      changeRequestStatus({ isLoading: true });
+
+      try {
+        const response = await Axios.get<FindAllFlavorsResponse>("/flavor", {
+          params,
+        });
+        setFlavors(response.data);
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(err);
+        changeRequestStatus({ error: error.response?.data.message });
+      }
+
+      changeRequestStatus({ isLoading: false });
+    },
+    [changeRequestStatus]
+  );
 
   useEffect(() => {
-    fetchFlavors();
-  }, [fetchFlavors]);
-  const classes = useStyles();
+    fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: false });
+  }, [skip, pagination.itemsAmount, fetchFlavors]);
+
   return (
     <ProductsComponentsContainer>
       <ProductsComponentsTitle>Sabores</ProductsComponentsTitle>
@@ -175,33 +205,37 @@ const Flavors: React.FC = () => {
       </Formik>
 
       <Fragment>
-        {flavors.length > 0 && (
-          <div>
-            <TableTitle>Todos os sabores</TableTitle>
+        <TableTitle>Todos os sabores</TableTitle>
+
+        <FlavorsTableContainer>
+          {flavors && flavors.items.length > 0 && !requestStatus.isLoading && (
             <TableContainer component={Paper}>
-              <Table className={classes.table} aria-label="simple table">
+              <Table classes={tableClasses}>
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">
+                    <TableCell align="left">
                       <b>Sabor</b>
                     </TableCell>
                     <TableCell align="center">
                       <b>Status</b>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="right">
                       <b>Ações</b>
                     </TableCell>
                   </TableRow>
                 </TableHead>
+
                 <TableBody>
-                  {flavors.map((flavor) => (
+                  {flavors.items.map((flavor) => (
                     <TableRow key={flavor.id_sabor}>
                       <TableCell>{flavor.nome}</TableCell>
+
                       {flavor.deletado === false ? (
                         <TableCell align="center">Disponível</TableCell>
                       ) : (
                         <TableCell align="center">Excluído</TableCell>
                       )}
+
                       <TableCell>
                         <ProductsComponentsIcons>
                           <ClickableItem
@@ -211,13 +245,18 @@ const Flavors: React.FC = () => {
                           >
                             <BsPencil size={16} color={PINK} />
                           </ClickableItem>
-                          <ClickableItem
-                            title="Excluir sabor"
-                            scale={1.3}
-                            onClick={() => deleteFlavorHandler(flavor)}
-                          >
-                            <FaTrash size={16} color={PINK} />
-                          </ClickableItem>
+
+                          {deletingFlavor && deletingFlavor.id_sabor == flavor.id_sabor ? (
+                            <CircularProgress size={16} color="secondary" />
+                          ) : (
+                            <ClickableItem
+                              title="Excluir sabor"
+                              scale={1.3}
+                              onClick={() => !deletingFlavor && deleteFlavorHandler(flavor)}
+                            >
+                              <FaTrash size={16} color={PINK} />
+                            </ClickableItem>
+                          )}
                         </ProductsComponentsIcons>
                       </TableCell>
                     </TableRow>
@@ -225,13 +264,28 @@ const Flavors: React.FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-          </div>
-        )}
-        {requestStatus.isLoading && (
-          <LoadingContainer>
-            <CircularProgress size={30} color="primary" />
-          </LoadingContainer>
-        )}
+          )}
+
+          {requestStatus.isLoading && (
+            <LoadingContainer>
+              <CircularProgress size={30} color="primary" />
+            </LoadingContainer>
+          )}
+
+          <TablePagination
+            labelDisplayedRows={(info) => `página ${info.page + 1}`}
+            labelRowsPerPage="Linhas por página"
+            rowsPerPageOptions={itemsAmountOptions}
+            component="div"
+            count={flavors?.count || 0}
+            rowsPerPage={pagination.itemsAmount}
+            page={pagination.page}
+            onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
+            onRowsPerPageChange={(event) =>
+              !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
+            }
+          />
+        </FlavorsTableContainer>
       </Fragment>
     </ProductsComponentsContainer>
   );

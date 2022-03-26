@@ -28,8 +28,8 @@ export const ProductsComponentsButtonContainer = styled.div<{ isEdit?: boolean }
 export const ProductsComponentsIcons = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
   gap: 1rem;
-  margin-left: auto;
   align-items: center;
 `;
 

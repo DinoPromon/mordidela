@@ -80,7 +80,6 @@ export class FindAllOrderGeneralData {
             },
           },
         },
-        take: itemsAmount,
         where: {
           status_pedido: this.filtersData.status_pedido,
           data_pedido: {
@@ -92,6 +91,7 @@ export class FindAllOrderGeneralData {
           id_pedido: "desc",
         },
         skip: skip,
+        take: itemsAmount,
       })
       .catch((err) => {
         console.error(err);
