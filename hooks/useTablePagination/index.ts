@@ -40,11 +40,11 @@ export const useTablePagination = (initialData?: PaginationData) => {
   function changeItemsAmount(itemsAmount: number) {
     if (!isValidItemsAmount(itemsAmount)) return;
 
+    setSkip(0);
     setPaginationData((prevState) => ({
-      ...prevState,
+      page: INIT_PAGINATION_DATA.page,
       itemsAmount: itemsAmount,
     }));
-    setSkip((prevState) => prevState + itemsAmount);
   }
 
   return [paginationData, skip, changePage, changeItemsAmount] as [

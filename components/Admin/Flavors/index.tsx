@@ -161,6 +161,8 @@ const Flavors: React.FC = () => {
     fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: false });
   }, [skip, pagination.itemsAmount, fetchFlavors]);
 
+  console.log(skip, pagination);
+
   return (
     <ProductsComponentsContainer>
       <ProductsComponentsTitle>Sabores</ProductsComponentsTitle>
@@ -272,19 +274,21 @@ const Flavors: React.FC = () => {
             </LoadingContainer>
           )}
 
-          <TablePagination
-            labelDisplayedRows={(info) => `página ${info.page + 1}`}
-            labelRowsPerPage="Linhas por página"
-            rowsPerPageOptions={itemsAmountOptions}
-            component="div"
-            count={flavors?.count || 0}
-            rowsPerPage={pagination.itemsAmount}
-            page={pagination.page}
-            onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
-            onRowsPerPageChange={(event) =>
-              !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
-            }
-          />
+          {flavors && (
+            <TablePagination
+              labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
+              labelRowsPerPage="Linhas por página"
+              rowsPerPageOptions={itemsAmountOptions}
+              component="div"
+              count={flavors?.count || 0}
+              rowsPerPage={pagination.itemsAmount}
+              page={pagination.page}
+              onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
+              onRowsPerPageChange={(event) =>
+                !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
+              }
+            />
+          )}
         </FlavorsTableContainer>
       </Fragment>
     </ProductsComponentsContainer>
