@@ -43,7 +43,7 @@ import {
   AdminOrdersPaymentValuesContainer,
 } from "./styled";
 
-import { OrdersUserContainer, GeneralDataContainer } from "../OrdersGeneralDataList/styled";
+import { UserGeneralDataContainer, UserDataContainer } from "@components/shared/OrdersCard";
 
 import {
   getFormattedAddress,
@@ -149,34 +149,34 @@ const AdminOrderDetailsModal: React.FC<AdminOrderDetailsModalProps> = ({
           </AdminOrdersModalTitle>
 
           <AdminOrdersModalUserDataContainer>
-            <OrdersUserContainer>
+            <UserDataContainer>
               <BiUserCircle size={40} color={PURPLE} />
-              <GeneralDataContainer>
+              <UserGeneralDataContainer>
                 <p>{orderFullData.usuario.nome}</p>
                 <span>{getFormattedOrderPhone(orderFullData.usuario.telefone[0])}</span>
-              </GeneralDataContainer>
-            </OrdersUserContainer>
+              </UserGeneralDataContainer>
+            </UserDataContainer>
 
-            <OrdersUserContainer>
+            <UserDataContainer>
               {orderFullData.endereco ? (
                 <Fragment>
                   <HiOutlineLocationMarker size={40} color={PURPLE} />
-                  <GeneralDataContainer>
+                  <UserGeneralDataContainer>
                     <p>{getFormattedAddress(orderFullData.endereco)}</p>
                     {orderFullData.endereco.complemento && (
                       <span>Complemento: {orderFullData.endereco.complemento}</span>
                     )}
-                  </GeneralDataContainer>
+                  </UserGeneralDataContainer>
                 </Fragment>
               ) : (
                 <Fragment>
                   <IoMdRestaurant size={40} color={PURPLE} />
-                  <GeneralDataContainer>
+                  <UserGeneralDataContainer>
                     <p>O pedido será retirado no restaurante</p>
-                  </GeneralDataContainer>
+                  </UserGeneralDataContainer>
                 </Fragment>
               )}
-            </OrdersUserContainer>
+            </UserDataContainer>
           </AdminOrdersModalUserDataContainer>
 
           <ProductsContainer>
