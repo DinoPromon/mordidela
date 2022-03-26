@@ -127,7 +127,7 @@ const Flavors: React.FC = () => {
         await Axios.post<ISabor>("/flavor/create", {
           nome: values.name,
         });
-        fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: getDeleted });
+        fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
       }
       formikHelpers.resetForm();
     } catch (err) {
@@ -181,7 +181,7 @@ const Flavors: React.FC = () => {
   );
 
   useEffect(() => {
-    fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: getDeleted });
+    fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
   }, [skip, pagination.itemsAmount, fetchFlavors, getDeleted]);
 
   return (
