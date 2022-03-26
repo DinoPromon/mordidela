@@ -16,7 +16,7 @@ import {
   ProductsComponentsContainer,
   LoadingContainer,
   TableTitle,
-} from "@components/shared/ProcutsComponents";
+} from "@components/shared/ProductsComponents";
 
 import {
   getCategoriesFormInitialValues,

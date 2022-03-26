@@ -14,6 +14,8 @@ import {
   TableContainer,
   TablePagination,
   CircularProgress,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core";
 
 import Axios from "@api";
@@ -28,14 +30,17 @@ import {
   AddProductsComponentsTitle,
   ProductsComponentsContainer,
   ProductsComponentsButtonContainer,
-} from "@components/shared/ProcutsComponents";
+  CustomTableContainer,
+  LoadingContainer,
+  TableTitle,
+  useTableStyles,
+} from "@components/shared/ProductsComponents";
 
 import {
   getFlavorsFormInitialValues,
   getFlavorsFormValidationSchema,
   getFlavorsFormModel,
 } from "./FormModel";
-import { LoadingContainer, TableTitle, FlavorsTableContainer, useTableStyles } from "./styled";
 
 import type ISabor from "@models/sabor";
 import type { AxiosError } from "axios";
@@ -174,7 +179,7 @@ const Flavors: React.FC = () => {
       >
         {({ values, isSubmitting }) => (
           <Form>
-            <AddProductsComponentsTitle>Adicionar sabor</AddProductsComponentsTitle>
+            <AddProductsComponentsTitle>Criar sabor</AddProductsComponentsTitle>
             <InputTextFormik
               name={formModel.name.name}
               label={formModel.name.label}
@@ -205,9 +210,12 @@ const Flavors: React.FC = () => {
       </Formik>
 
       <Fragment>
-        <TableTitle>Todos os sabores</TableTitle>
+        <TableTitle>
+          <h3>Todos os sabores</h3>
+          <FormControlLabel control={<Checkbox />} label="Exibir os sabores excluídos" />
+        </TableTitle>
 
-        <FlavorsTableContainer>
+        <CustomTableContainer>
           {flavors && flavors.items.length > 0 && !requestStatus.isLoading && (
             <TableContainer component={Paper}>
               <Table classes={tableClasses}>
@@ -287,7 +295,7 @@ const Flavors: React.FC = () => {
               }
             />
           )}
-        </FlavorsTableContainer>
+        </CustomTableContainer>
       </Fragment>
     </ProductsComponentsContainer>
   );

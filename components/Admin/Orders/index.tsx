@@ -201,7 +201,7 @@ const Orders: React.FC = () => {
       )}
 
       {count === 0 && orderFilter.orderStatus === StatusPedido.PENDENTE && (
-        <NoRequests>Não há pedidos pendentes</NoRequests>
+        <NoRequests>Não há pedidos pendentes!</NoRequests>
       )}
 
       {count !== undefined && orderFilter.skip < count && (

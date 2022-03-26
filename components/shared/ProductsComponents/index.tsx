@@ -6,6 +6,8 @@ import {
   ProductsComponentsIcons,
   LoadingContainer,
   TableTitle,
+  CustomTableContainer,
+  useTableStyles,
 } from "./styled";
 
 export {
@@ -16,4 +18,6 @@ export {
   ProductsComponentsIcons,
   LoadingContainer,
   TableTitle,
+  CustomTableContainer,
+  useTableStyles,
 };

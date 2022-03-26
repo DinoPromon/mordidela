@@ -46,7 +46,7 @@ import {
   ProductsComponentsIcons,
   LoadingContainer,
   TableTitle,
-} from "@components/shared/ProcutsComponents";
+} from "@components/shared/ProductsComponents";
 
 const Additional: React.FC = () => {
   const formModel = getAdditionalFormModel();
