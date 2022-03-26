@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 
 import Axios from "@api";
+import useIsMounted from "@hooks/useIsMounted";
 import useRequestState from "@hooks/useRequestState";
 import ClickableItem from "@components/shared/ClickableItem";
 import { PINK } from "@utils/colors";
@@ -63,6 +64,7 @@ type FlavorsData = {
 
 const Flavors: React.FC = () => {
   const tableClasses = useTableStyles();
+  const isMounted = useIsMounted();
   const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
   const [flavors, setFlavors] = useState<FlavorsData>();
@@ -141,9 +143,12 @@ const Flavors: React.FC = () => {
       const response = await Axios.put<ISabor>(`/flavor/update/${flavor.id_sabor}`, {
         deletado: true,
       });
+      if (!isMounted.current) return;
 
       removeFlavor(response.data);
     } catch (err) {
+      if (!isMounted.current) return;
+
       const error = err as AxiosError;
       console.log(err);
       changeRequestStatus({ error: error.response?.data.message });
@@ -159,8 +164,12 @@ const Flavors: React.FC = () => {
         const response = await Axios.get<FindAllFlavorsResponse>("/flavor", {
           params,
         });
+        if (!isMounted.current) return;
+
         setFlavors(response.data);
       } catch (err) {
+        if (!isMounted.current) return;
+
         const error = err as AxiosError;
         console.log(err);
         changeRequestStatus({ error: error.response?.data.message });
@@ -168,7 +177,7 @@ const Flavors: React.FC = () => {
 
       changeRequestStatus({ isLoading: false });
     },
-    [changeRequestStatus]
+    [isMounted, changeRequestStatus]
   );
 
   useEffect(() => {
