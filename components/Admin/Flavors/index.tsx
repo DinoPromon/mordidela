@@ -187,6 +187,7 @@ const Flavors: React.FC = () => {
               variant="outlined"
               helperText={formModel.name.requiredErrorMessage}
               style={{ width: "500px" }}
+              autoComplete="off"
             />
             <ProductsComponentsButtonContainer isEdit={!!editFlavor}>
               {editFlavor && (
