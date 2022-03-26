@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import type { ProductsFormModel } from './index';
 
 export function getProductsFormValidationSchema(formModel: ProductsFormModel) {
-  const {name, defaultPrice, size, available, description} = formModel;
+  const {name, defaultPrice, size, available, description, image} = formModel;
 
   const validationSchema = Yup.object().shape({
     [name.name]: Yup.string().required(name.requiredErrorMessage),
@@ -11,6 +11,7 @@ export function getProductsFormValidationSchema(formModel: ProductsFormModel) {
     [size.name]: Yup.string(),
     [available.name]: Yup.string().required(available.requiredErrorMessage),
     [description.name]: Yup.string(),
+    [image.name]: Yup.string(),
   });
 
   return validationSchema;

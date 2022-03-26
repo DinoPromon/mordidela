@@ -7,5 +7,6 @@ export function getProductsFormInitialValues(): IProductsFormValues {
     size: "",
     available: "",
     description: "",
+    image: "",
   };
 }

@@ -6,6 +6,7 @@ export interface IProductsFormValues {
   size: string;
   available: string;
   description: string;
+  image: string | null;
 }
 
 export type ProductsFormModel = {
@@ -15,12 +16,12 @@ export type ProductsFormModel = {
 export function getProductsFormModel() {
   const productsFormModel: ProductsFormModel = {
     name: {
-      label: "Nome",
+      label: "Nome*",
       name: "name",
       requiredErrorMessage: "Insira o nome do produto",
     },
     defaultPrice: {
-      label: "Valor",
+      label: "Valor*",
       name: "defaultPrice",
       requiredErrorMessage: "Insira o valor do produto",
     },
@@ -29,13 +30,17 @@ export function getProductsFormModel() {
       name: "size",
     },
     available: {
-      label: "Disponível?",
+      label: "Disponível?*",
       name: "available",
-      requiredErrorMessage: "Informe a disponibilidade do produto"
+      requiredErrorMessage: "Informe a disponibilidade do produto",
     },
     description: {
       label: "Descrição",
       name: "description",
+    },
+    image: {
+      label: "Imagem",
+      name: "image",
     },
   };
 

@@ -10,7 +10,7 @@ import {
 
 import { InputTextFormik } from "@components/shared";
 import { FormikForm } from "@components/Login/styled";
-import { Button, InputAdornment } from "@material-ui/core";
+import { Button, FormControlLabel, InputAdornment, RadioGroup } from "@material-ui/core";
 
 const AddProducts: React.FC = () => {
   const formModel = getProductsFormModel();
@@ -25,7 +25,7 @@ const AddProducts: React.FC = () => {
       >
         {({ values }) => (
           <AddProductsContainer>
-            <AddProductsTitle>Adicionar/editar produto</AddProductsTitle>
+            <AddProductsTitle>Adicionar produto</AddProductsTitle>
             <FormikForm>
               <InputTextFormik
                 name={formModel.name.name}
@@ -47,6 +47,7 @@ const AddProducts: React.FC = () => {
                   InputProps={{
                     startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                   }}
+                  autoComplete="off"
                 />
                 <InputTextFormik
                   name={formModel.size.name}
@@ -78,17 +79,21 @@ const AddProducts: React.FC = () => {
                 style={{ width: "600px" }}
                 autoComplete="off"
               />
+              <InputTextFormik
+                name={formModel.image.name}
+                label={formModel.image.label}
+                values={values.image}
+                variant="outlined"
+                helperText={formModel.image.requiredErrorMessage}
+                style={{ width: "600px" }}
+                autoComplete="off"
+                type="file"
+              />
               <AddProductsRowContainer>
-                <InputTextFormik
-                  name={formModel.available.name}
-                  label={formModel.available.label}
-                  values={values.available}
-                  variant="outlined"
-                  helperText={formModel.available.requiredErrorMessage}
-                  style={{ width: "150px" }}
-                  autoComplete="off"
-                  select
-                />
+                <h4>O produto possui sabores?</h4>
+                <RadioGroup>
+                  
+                </RadioGroup>
               </AddProductsRowContainer>
             </FormikForm>
           </AddProductsContainer>
