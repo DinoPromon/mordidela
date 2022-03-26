@@ -161,8 +161,6 @@ const Flavors: React.FC = () => {
     fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: false });
   }, [skip, pagination.itemsAmount, fetchFlavors]);
 
-  console.log(skip, pagination);
-
   return (
     <ProductsComponentsContainer>
       <ProductsComponentsTitle>Sabores</ProductsComponentsTitle>
