@@ -7,21 +7,23 @@ import { BsPencil } from "react-icons/bs/index";
 import {
   Table,
   Paper,
+  Checkbox,
   TableRow,
   TableHead,
   TableBody,
   TableCell,
+  FormControl,
   TableContainer,
   TablePagination,
   CircularProgress,
   FormControlLabel,
-  Checkbox,
 } from "@material-ui/core";
 
 import Axios from "@api";
 import useRequestState from "@hooks/useRequestState";
 import ClickableItem from "@components/shared/ClickableItem";
 import { PINK } from "@utils/colors";
+import { GetDeleted } from "@utils/constants";
 import { useTablePagination } from "@hooks/useTablePagination";
 import { InputTextFormik, LoadingButton } from "@components/shared";
 import {
@@ -48,7 +50,7 @@ import type { IFlavorsFormValues } from "./FormModel";
 import type { FindAllFlavorsResponse } from "@my-types/responses/flavor/findAll";
 
 type FetchFlavorsParams = {
-  getDeleted: boolean;
+  getDeleted: GetDeleted;
   skip: number;
   itemsAmount?: number;
 };
@@ -63,6 +65,7 @@ const Flavors: React.FC = () => {
   const [flavors, setFlavors] = useState<FlavorsData>();
   const [editFlavor, setEditFlavor] = useState<ISabor>();
   const [deletingFlavor, setDeletingFlavor] = useState<ISabor>();
+  const [getDeleted, setGetDeleted] = useState<GetDeleted>(GetDeleted.FALSE);
   const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
 
@@ -163,8 +166,8 @@ const Flavors: React.FC = () => {
   );
 
   useEffect(() => {
-    fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: false });
-  }, [skip, pagination.itemsAmount, fetchFlavors]);
+    fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: getDeleted });
+  }, [skip, pagination.itemsAmount, fetchFlavors, getDeleted]);
 
   return (
     <ProductsComponentsContainer>
@@ -202,7 +205,7 @@ const Flavors: React.FC = () => {
                   variant="contained"
                   isLoading={isSubmitting}
                 >
-                  Adicionar
+                  {editFlavor ? "Editar" : "Adicionar"}
                 </LoadingButton>
               </motion.div>
             </ProductsComponentsButtonContainer>
@@ -213,7 +216,19 @@ const Flavors: React.FC = () => {
       <Fragment>
         <TableTitle>
           <h3>Todos os sabores</h3>
-          <FormControlLabel control={<Checkbox />} label="Exibir os sabores excluídos" />
+          <FormControl component="fieldset">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={getDeleted === GetDeleted.TRUE}
+                  onChange={(event, checked) =>
+                    setGetDeleted(checked ? GetDeleted.TRUE : GetDeleted.FALSE)
+                  }
+                />
+              }
+              label="Exibir os sabores excluídos"
+            />
+          </FormControl>
         </TableTitle>
 
         <CustomTableContainer>
