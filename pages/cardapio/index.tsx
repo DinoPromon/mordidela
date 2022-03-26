@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 
-import { findManyRelatedProducts } from "@controllers/product";
+import { FindAllProductRelations } from "@controllers/product";
 
 const Menu = dynamic(() => import("@components/Menu"));
 const NavBarFooter = dynamic(() => import("@components/Layouts/NavBarFooter"));
@@ -26,7 +26,8 @@ MenuPage.getLayout = function getLayout(page: ReactElement) {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   try {
-    const products = await findManyRelatedProducts();
+    const findAllProductRelations = new FindAllProductRelations();
+    const products = await findAllProductRelations.exec();
 
     return {
       props: {

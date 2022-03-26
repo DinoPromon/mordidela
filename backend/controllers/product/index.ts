@@ -1,4 +1,4 @@
 export { CreateProduct } from "./createProduct";
-export { findManyRelatedProducts } from "./findManyRelatedProducts";
+export { FindAllProductRelations } from "./findAllProductRelations";
 
 export type { CreateProductArg } from "./createProduct/validator/parser";

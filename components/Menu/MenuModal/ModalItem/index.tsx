@@ -39,7 +39,7 @@ const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
   const [price, setPrice] = useState(item.preco_padrao);
   const { addProductToCart } = useContext(CartContext);
 
-  const canSubmit = item.sabores.length ? productOrder.flavors.length > 0 : true;
+  const canSubmit = item.sabores?.length ? productOrder.flavors.length > 0 : true;
 
   const getProductKey = formatProductId.bind(null, item.nome, item.id_produto);
 
@@ -126,7 +126,7 @@ const ModalItem: React.FC<Props> = ({ item, onCloseModal }) => {
       )}
       <ItemImage src={getProductImagePath(item.nome_imagem)} alt={item.nome} />
       <p>{item.descricao}</p>
-      {item.sabores.length > 0 && (
+      {item.sabores && item.sabores.length > 0 && (
         <ItemFlavorsList
           items={item.sabores}
           maxFlavor={item.qtde_max_sabor}

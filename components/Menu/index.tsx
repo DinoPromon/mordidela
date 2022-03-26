@@ -36,6 +36,8 @@ const Menu: React.FC<Props> = ({ products, error }) => {
 
   function getAllCategoriesFromProducts() {
     const mappedCategories = products.reduce((allCategories, cur) => {
+      if (!cur.categoria) return allCategories;
+
       allCategories[cur.categoria.nome] = cur.categoria;
       return allCategories;
     }, {} as { [key: string]: ProductCategory });

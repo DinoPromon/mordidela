@@ -19,7 +19,7 @@ const MenuList: React.FC<Props> = ({ products, selectedCategoryFilter, onItemCli
       return products;
     }
     return products.filter(
-      (product) => product.categoria.id_categoria === selectedCategoryFilter.id_categoria
+      (product) => product.categoria?.id_categoria === selectedCategoryFilter.id_categoria
     );
   }
 

@@ -31,9 +31,9 @@ export type CartProduto = Pick<IPedidoProduto, "id_produto" | "observacao" | "qu
 
 export type RelatedProduct = Omit<IProduto, "id_categoria" | "id_desconto" | "disponivel"> & {
   desconto: ProductDiscount | null;
-  categoria: ProductCategory;
+  categoria: ProductCategory | null;
   adicionais: IAdicional[];
-  sabores: ISabor[];
+  sabores: ISabor[] | null;
 };
 
 export type ProductCreate = Omit<IProduto, "id_produto" | "uuid" | "nome_imagem">;
