@@ -1,9 +1,11 @@
 import React from "react";
-import type { ReactElement } from "react";
+import dynamic from "next/dynamic";
 
-import { NavBarAdmin } from "@components/Layouts";
-import { NextPageWithLayout } from "@my-types/next-page";
-import Flavors from "@components/Admin/Flavors";
+const Flavors = dynamic(() => import("@components/Admin/Flavors"));
+const NavBarAdmin = dynamic(() => import("@components/Layouts/NavBarAdmin"));
+
+import type { ReactElement } from "react";
+import type { NextPageWithLayout } from "@my-types/next-page";
 
 const ProductsPage: NextPageWithLayout = () => {
   return <Flavors></Flavors>;
