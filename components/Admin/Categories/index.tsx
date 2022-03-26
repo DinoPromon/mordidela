@@ -9,15 +9,14 @@ import useRequestState from "@hooks/useRequestState";
 import ClickableItem from "@components/shared/ClickableItem";
 
 import {
-  CategoriesContainer,
-  CategoriesTitle,
-  CategoriesListContainer,
-  CategoriesListWhitBorder,
-  CategoriesIcons,
-  AddCategoriesTitle,
-  ButtonContainer,
+  AddProductsComponentsTitle,
+  ProductsComponentsIcons,
+  ProductsComponentsTitle,
+  ProductsComponentsButtonContainer,
+  ProductsComponentsContainer,
   LoadingContainer,
-} from "./styled";
+  TableTitle,
+} from "@components/shared/ProcutsComponents";
 
 import {
   getCategoriesFormInitialValues,
@@ -27,7 +26,20 @@ import {
 
 import { Formik, Form } from "formik";
 import { InputTextFormik, LoadingButton } from "@components/shared";
-import { Button, CircularProgress } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  FormControlLabel,
+  Checkbox,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableRow,
+  makeStyles,
+} from "@material-ui/core";
 
 import type { AxiosError } from "axios";
 import type ICategoria from "@models/categoria";
@@ -47,7 +59,6 @@ type CategoryData = {
 const INIT_FIND_PARAMS: FetchCategoryParams = {
   getDeleted: false,
   skip: 0,
-  itemsAmount: 2,
 };
 
 const Categories: React.FC = () => {
@@ -58,6 +69,14 @@ const Categories: React.FC = () => {
   const [isInitialRequest, setIsInitialRequest] = useState(true);
 
   const formModel = getCategoriesFormModel();
+
+  const useStyles = makeStyles({
+    table: {
+      minWidth: 600,
+    },
+  });
+
+  const classes = useStyles();
 
   const changeCategories = useCallback((category: CategoryData) => {
     setCategories((prevState) => {
@@ -109,24 +128,90 @@ const Categories: React.FC = () => {
 
   return (
     <Fragment>
-      <CategoriesContainer>
-        <CategoriesTitle>Categorias</CategoriesTitle>
+      <ProductsComponentsContainer>
+        <ProductsComponentsTitle>Categorias</ProductsComponentsTitle>
+
+        <Formik
+          enableReinitialize
+          validateOnChange={false}
+          validationSchema={getCategoriesFormValidationSchema(formModel)}
+          initialValues={getCategoriesFormInitialValues()}
+          onSubmit={console.log}
+        >
+          {({ values }) => (
+            <Form>
+              <AddProductsComponentsTitle>Adicionar categoria</AddProductsComponentsTitle>
+              <InputTextFormik
+                name={formModel.name.name}
+                label={formModel.name.label}
+                values={values.name}
+                variant="outlined"
+                helperText={formModel.name.requiredErrorMessage}
+                style={{ width: "400px" }}
+              />
+              <ProductsComponentsButtonContainer>
+                <Button variant="contained" color="secondary" type="submit">
+                  Adicionar
+                </Button>
+              </ProductsComponentsButtonContainer>
+            </Form>
+          )}
+        </Formik>
+
         {categories && categories.items.length > 0 && (
-          <CategoriesListContainer>
-            {categories.items.map((category) => (
-              <CategoriesListWhitBorder key={`${category.nome}-${category.id_categoria}`}>
-                {category.nome}
-                <CategoriesIcons>
-                  <ClickableItem title="Editar categoria" scale={1.3}>
-                    <BsPencil size={16} color={PINK} />
-                  </ClickableItem>
-                  <ClickableItem title="Excluir categoria" scale={1.3}>
-                    <FaTrash size={16} color={PINK} />
-                  </ClickableItem>
-                </CategoriesIcons>
-              </CategoriesListWhitBorder>
-            ))}
-          </CategoriesListContainer>
+          <div>
+            <TableTitle>
+              <h3>Todos as categorias</h3>
+              <FormControlLabel control={<Checkbox />} label="Exibir as categorias excluídas" />
+            </TableTitle>
+            <TableContainer component={Paper}>
+              <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">
+                      <b>Sabor</b>
+                    </TableCell>
+                    <TableCell align="center">
+                      <b>Status</b>
+                    </TableCell>
+                    <TableCell>
+                      <b>Ações</b>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {categories.items.map((category) => (
+                    <TableRow key={category.id_categoria}>
+                      <TableCell>{category.nome}</TableCell>
+                      {category.deletado === false ? (
+                        <TableCell align="center">Disponível</TableCell>
+                      ) : (
+                        <TableCell align="center">Excluído</TableCell>
+                      )}
+                      <TableCell>
+                        <ProductsComponentsIcons>
+                          <ClickableItem
+                            scale={1.3}
+                            title="Editar sabor"
+                            /* onClick={() => editFlavorHandler(categories)} */
+                          >
+                            <BsPencil size={16} color={PINK} />
+                          </ClickableItem>
+                          <ClickableItem
+                            title="Excluir sabor"
+                            scale={1.3}
+                            /* onClick={() => deleteFlavorHandler(categories)} */
+                          >
+                            <FaTrash size={16} color={PINK} />
+                          </ClickableItem>
+                        </ProductsComponentsIcons>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
         )}
 
         {isInitialRequest && requestStatus.isLoading && (
@@ -145,35 +230,7 @@ const Categories: React.FC = () => {
             Carregar mais
           </LoadingButton>
         )}
-      </CategoriesContainer>
-      <Formik
-        enableReinitialize
-        validateOnChange={false}
-        validationSchema={getCategoriesFormValidationSchema(formModel)}
-        initialValues={getCategoriesFormInitialValues()}
-        onSubmit={console.log}
-      >
-        {({ values }) => (
-          <Form>
-            <CategoriesContainer>
-              <AddCategoriesTitle>Adicionar categoria</AddCategoriesTitle>
-              <InputTextFormik
-                name={formModel.name.name}
-                label={formModel.name.label}
-                values={values.name}
-                variant="outlined"
-                helperText={formModel.name.requiredErrorMessage}
-                style={{ width: "400px" }}
-              />
-              <ButtonContainer>
-                <Button variant="contained" color="secondary" type="submit">
-                  Adicionar
-                </Button>
-              </ButtonContainer>
-            </CategoriesContainer>
-          </Form>
-        )}
-      </Formik>
+      </ProductsComponentsContainer>
     </Fragment>
   );
 };

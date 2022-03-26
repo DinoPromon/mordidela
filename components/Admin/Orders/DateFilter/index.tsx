@@ -92,7 +92,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ onSubmit }) => {
               <MenuItem value={FindDateFilter.LAST_7_DAYS}>últimos 7 dias</MenuItem>
               <MenuItem value={FindDateFilter.LAST_30_DAYS}>últimos 30 dias</MenuItem>
               <MenuItem value={FindDateFilter.DATE}>data</MenuItem>
-              <MenuItem value={FindDateFilter.NONE}>Nenhum</MenuItem>
+              <MenuItem value={FindDateFilter.NONE}>nenhum</MenuItem>
             </Select>
           </FormControl>
 

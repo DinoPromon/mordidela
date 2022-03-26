@@ -32,3 +32,18 @@ export const ProductsComponentsIcons = styled.div`
   margin-left: auto;
   align-items: center;
 `;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 0;
+`;
+
+export const TableTitle = styled.div`
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

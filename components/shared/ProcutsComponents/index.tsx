@@ -4,6 +4,8 @@ import {
   AddProductsComponentsTitle,
   ProductsComponentsButtonContainer,
   ProductsComponentsIcons,
+  LoadingContainer,
+  TableTitle,
 } from "./styled";
 
 export {
@@ -12,4 +14,6 @@ export {
   AddProductsComponentsTitle,
   ProductsComponentsButtonContainer,
   ProductsComponentsIcons,
+  LoadingContainer,
+  TableTitle,
 };
