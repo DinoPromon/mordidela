@@ -46,6 +46,7 @@ import {
 
 import type ISabor from "@models/sabor";
 import type { AxiosError } from "axios";
+import type { FormikHelpers } from "formik";
 import type { IFlavorsFormValues } from "./FormModel";
 import type { FindAllFlavorsResponse } from "@my-types/responses/flavor/findAll";
 
@@ -62,12 +63,12 @@ type FlavorsData = {
 
 const Flavors: React.FC = () => {
   const tableClasses = useTableStyles();
+  const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
+  const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
   const [flavors, setFlavors] = useState<FlavorsData>();
   const [editFlavor, setEditFlavor] = useState<ISabor>();
   const [deletingFlavor, setDeletingFlavor] = useState<ISabor>();
   const [getDeleted, setGetDeleted] = useState<GetDeleted>(GetDeleted.FALSE);
-  const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
-  const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
 
   const formModel = getFlavorsFormModel();
   const itemsAmountOptions = [5, 10, 15];
@@ -109,7 +110,10 @@ const Flavors: React.FC = () => {
     setEditFlavor(undefined);
   }
 
-  async function submitHandler(values: IFlavorsFormValues) {
+  async function submitHandler(
+    values: IFlavorsFormValues,
+    formikHelpers: FormikHelpers<IFlavorsFormValues>
+  ) {
     try {
       if (editFlavor) {
         const response = await Axios.put<ISabor>(`/flavor/update/${editFlavor.id_sabor}`, {
@@ -121,7 +125,9 @@ const Flavors: React.FC = () => {
         await Axios.post<ISabor>("/flavor/create", {
           nome: values.name,
         });
+        fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: getDeleted });
       }
+      formikHelpers.resetForm();
     } catch (err) {
       const error = err as AxiosError;
       console.log(err);
@@ -175,7 +181,7 @@ const Flavors: React.FC = () => {
 
       <Formik
         enableReinitialize
-        validateOnChange={false}
+        validateOnBlur={false}
         validationSchema={getFlavorsFormValidationSchema(formModel)}
         initialValues={getFlavorsFormInitialValues(editFlavor)}
         onSubmit={submitHandler}
