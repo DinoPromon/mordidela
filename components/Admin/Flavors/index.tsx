@@ -75,17 +75,6 @@ const Flavors: React.FC = () => {
   const formModel = getFlavorsFormModel();
   const itemsAmountOptions = [5, 10, 15];
 
-  function removeFlavor(flavor: ISabor) {
-    setFlavors((prevState) => {
-      if (!prevState) return prevState;
-
-      return {
-        items: prevState.items.filter((pFlavor) => pFlavor.id_sabor !== flavor.id_sabor),
-        count: prevState.count - 1,
-      };
-    });
-  }
-
   function updateFlavor(flavor: ISabor) {
     setFlavors((prevState) => {
       if (!prevState) return prevState;
@@ -140,12 +129,12 @@ const Flavors: React.FC = () => {
   async function deleteFlavorHandler(flavor: ISabor) {
     setDeletingFlavor(flavor);
     try {
-      const response = await Axios.put<ISabor>(`/flavor/update/${flavor.id_sabor}`, {
+      await Axios.put<ISabor>(`/flavor/update/${flavor.id_sabor}`, {
         deletado: true,
       });
       if (!isMounted.current) return;
 
-      removeFlavor(response.data);
+      fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
     } catch (err) {
       if (!isMounted.current) return;
 
@@ -248,83 +237,82 @@ const Flavors: React.FC = () => {
 
         <CustomTableContainer>
           {flavors && flavors.items.length > 0 && !requestStatus.isLoading && (
-            <TableContainer component={Paper}>
-              <Table classes={tableClasses}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">
-                      <b>Sabor</b>
-                    </TableCell>
-                    <TableCell align="center">
-                      <b>Status</b>
-                    </TableCell>
-                    <TableCell align="right">
-                      <b>Ações</b>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {flavors.items.map((flavor) => (
-                    <TableRow key={flavor.id_sabor}>
-                      <TableCell>{flavor.nome}</TableCell>
-
-                      {flavor.deletado === false ? (
-                        <TableCell align="center">Disponível</TableCell>
-                      ) : (
-                        <TableCell align="center">Excluído</TableCell>
-                      )}
-
-                      <TableCell>
-                        <ProductsComponentsIcons>
-                          <ClickableItem
-                            scale={1.3}
-                            title="Editar sabor"
-                            onClick={() => editFlavorHandler(flavor)}
-                          >
-                            <BsPencil size={16} color={PINK} />
-                          </ClickableItem>
-
-                          {deletingFlavor && deletingFlavor.id_sabor == flavor.id_sabor ? (
-                            <CircularProgress size={16} color="secondary" />
-                          ) : (
-                            <ClickableItem
-                              title="Excluir sabor"
-                              scale={1.3}
-                              onClick={() => !deletingFlavor && deleteFlavorHandler(flavor)}
-                            >
-                              <FaTrash size={16} color={PINK} />
-                            </ClickableItem>
-                          )}
-                        </ProductsComponentsIcons>
+            <Fragment>
+              <TableContainer component={Paper}>
+                <Table classes={tableClasses}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">
+                        <b>Sabor</b>
+                      </TableCell>
+                      <TableCell align="center">
+                        <b>Status</b>
+                      </TableCell>
+                      <TableCell align="right">
+                        <b>Ações</b>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+
+                  <TableBody>
+                    {flavors.items.map((flavor) => (
+                      <TableRow key={flavor.id_sabor}>
+                        <TableCell>{flavor.nome}</TableCell>
+
+                        {flavor.deletado === false ? (
+                          <TableCell align="center">Disponível</TableCell>
+                        ) : (
+                          <TableCell align="center">Excluído</TableCell>
+                        )}
+
+                        <TableCell>
+                          <ProductsComponentsIcons>
+                            <ClickableItem
+                              scale={1.3}
+                              title="Editar sabor"
+                              onClick={() => editFlavorHandler(flavor)}
+                            >
+                              <BsPencil size={16} color={PINK} />
+                            </ClickableItem>
+
+                            {deletingFlavor && deletingFlavor.id_sabor == flavor.id_sabor ? (
+                              <CircularProgress size={16} color="secondary" />
+                            ) : (
+                              <ClickableItem
+                                title="Excluir sabor"
+                                scale={1.3}
+                                onClick={() => !deletingFlavor && deleteFlavorHandler(flavor)}
+                              >
+                                <FaTrash size={16} color={PINK} />
+                              </ClickableItem>
+                            )}
+                          </ProductsComponentsIcons>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
+                labelRowsPerPage="Linhas por página"
+                rowsPerPageOptions={itemsAmountOptions}
+                component="div"
+                count={flavors?.count || 0}
+                rowsPerPage={pagination.itemsAmount}
+                page={pagination.page}
+                onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
+                onRowsPerPageChange={(event) =>
+                  !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
+                }
+              />
+            </Fragment>
           )}
 
           {requestStatus.isLoading && (
             <LoadingContainer>
               <CircularProgress size={30} color="primary" />
             </LoadingContainer>
-          )}
-
-          {flavors && (
-            <TablePagination
-              labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
-              labelRowsPerPage="Linhas por página"
-              rowsPerPageOptions={itemsAmountOptions}
-              component="div"
-              count={flavors?.count || 0}
-              rowsPerPage={pagination.itemsAmount}
-              page={pagination.page}
-              onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
-              onRowsPerPageChange={(event) =>
-                !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
-              }
-            />
           )}
         </CustomTableContainer>
       </Fragment>

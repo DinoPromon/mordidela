@@ -74,19 +74,6 @@ const Categories: React.FC = () => {
   const itemsAmountOptions = [5, 10, 15];
   const formModel = getCategoriesFormModel();
 
-  function removeCategory(category: ICategoria) {
-    setCategories((prevState) => {
-      if (!prevState) return prevState;
-
-      return {
-        items: prevState.items.filter(
-          (pCategory) => pCategory.id_categoria !== category.id_categoria
-        ),
-        count: prevState.count - 1,
-      };
-    });
-  }
-
   function updateCategory(category: ICategoria) {
     setCategories((prevState) => {
       if (!prevState) return prevState;
@@ -152,13 +139,13 @@ const Categories: React.FC = () => {
   async function deleteCategoryHandler(category: ICategoria) {
     setDeletingCategory(category);
     try {
-      const response = await Axios.put<ICategoria>(`/category/update/${category.id_categoria}`, {
+      await Axios.put<ICategoria>(`/category/update/${category.id_categoria}`, {
         deletado: true,
       });
 
       if (!isMounted.current) return;
 
-      removeCategory(response.data);
+      fetchCategories({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
     } catch (err) {
       if (!isMounted.current) return;
 
@@ -259,84 +246,83 @@ const Categories: React.FC = () => {
 
         <CustomTableContainer>
           {categories && categories.items.length > 0 && !requestStatus.isLoading && (
-            <TableContainer component={Paper}>
-              <Table classes={tableClasses}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">
-                      <b>Categoria</b>
-                    </TableCell>
-                    <TableCell align="center">
-                      <b>Status</b>
-                    </TableCell>
-                    <TableCell align="right">
-                      <b>Ações</b>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {categories.items.map((category) => (
-                    <TableRow key={category.id_categoria}>
-                      <TableCell>{category.nome}</TableCell>
-
-                      {category.deletado === false ? (
-                        <TableCell align="center">Disponível</TableCell>
-                      ) : (
-                        <TableCell align="center">Excluído</TableCell>
-                      )}
-
-                      <TableCell>
-                        <ProductsComponentsIcons>
-                          <ClickableItem
-                            scale={1.3}
-                            title="Editar categoria"
-                            onClick={() => editCategoryHandler(category)}
-                          >
-                            <BsPencil size={16} color={PINK} />
-                          </ClickableItem>
-
-                          {deletingCategory &&
-                          deletingCategory.id_categoria == category.id_categoria ? (
-                            <CircularProgress size={16} color="secondary" />
-                          ) : (
-                            <ClickableItem
-                              title="Excluir categoria"
-                              scale={1.3}
-                              onClick={() => !deletingCategory && deleteCategoryHandler(category)}
-                            >
-                              <FaTrash size={16} color={PINK} />
-                            </ClickableItem>
-                          )}
-                        </ProductsComponentsIcons>
+            <Fragment>
+              <TableContainer component={Paper}>
+                <Table classes={tableClasses}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">
+                        <b>Categoria</b>
+                      </TableCell>
+                      <TableCell align="center">
+                        <b>Status</b>
+                      </TableCell>
+                      <TableCell align="right">
+                        <b>Ações</b>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+
+                  <TableBody>
+                    {categories.items.map((category) => (
+                      <TableRow key={category.id_categoria}>
+                        <TableCell>{category.nome}</TableCell>
+
+                        {category.deletado === false ? (
+                          <TableCell align="center">Disponível</TableCell>
+                        ) : (
+                          <TableCell align="center">Excluído</TableCell>
+                        )}
+
+                        <TableCell>
+                          <ProductsComponentsIcons>
+                            <ClickableItem
+                              scale={1.3}
+                              title="Editar categoria"
+                              onClick={() => editCategoryHandler(category)}
+                            >
+                              <BsPencil size={16} color={PINK} />
+                            </ClickableItem>
+
+                            {deletingCategory &&
+                            deletingCategory.id_categoria == category.id_categoria ? (
+                              <CircularProgress size={16} color="secondary" />
+                            ) : (
+                              <ClickableItem
+                                title="Excluir categoria"
+                                scale={1.3}
+                                onClick={() => !deletingCategory && deleteCategoryHandler(category)}
+                              >
+                                <FaTrash size={16} color={PINK} />
+                              </ClickableItem>
+                            )}
+                          </ProductsComponentsIcons>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
+                labelRowsPerPage="Linhas por página"
+                rowsPerPageOptions={itemsAmountOptions}
+                component="div"
+                count={categories?.count || 0}
+                rowsPerPage={pagination.itemsAmount}
+                page={pagination.page}
+                onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
+                onRowsPerPageChange={(event) =>
+                  !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
+                }
+              />
+            </Fragment>
           )}
 
           {requestStatus.isLoading && (
             <LoadingContainer>
               <CircularProgress size={30} color="primary" />
             </LoadingContainer>
-          )}
-
-          {categories && (
-            <TablePagination
-              labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
-              labelRowsPerPage="Linhas por página"
-              rowsPerPageOptions={itemsAmountOptions}
-              component="div"
-              count={categories?.count || 0}
-              rowsPerPage={pagination.itemsAmount}
-              page={pagination.page}
-              onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
-              onRowsPerPageChange={(event) =>
-                !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
-              }
-            />
           )}
         </CustomTableContainer>
       </Fragment>
