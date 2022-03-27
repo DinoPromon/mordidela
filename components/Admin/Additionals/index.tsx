@@ -8,8 +8,6 @@ import { BsPencil } from "react-icons/bs/index";
 
 import Axios from "@api";
 import useRequestState from "@hooks/useRequestState";
-import ClickableItem from "@components/shared/ClickableItem";
-import { PINK } from "@utils/colors";
 import { InputTextFormik, LoadingButton } from "@components/shared";
 
 import {
@@ -17,10 +15,6 @@ import {
   getAdditionalFormValidationSchema,
   getAdditionalFormModel,
 } from "./FormModel";
-
-import type ISabor from "@models/sabor";
-import type { AxiosError } from "axios";
-import type { IAdditionalFormValues } from "./FormModel";
 
 import { InputAdditionalContainer } from "./styled";
 
@@ -48,7 +42,7 @@ import {
   TableTitle,
 } from "@components/shared/ProductsComponents";
 
-const Additional: React.FC = () => {
+const Additionals: React.FC = () => {
   const formModel = getAdditionalFormModel();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
 
@@ -183,4 +177,4 @@ const Additional: React.FC = () => {
   );
 };
 
-export default Additional;
+export default Additionals;
