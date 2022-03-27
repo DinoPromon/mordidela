@@ -12,22 +12,22 @@ export const ProductsDropdownListContainer = styled.ul<Props>`
   z-index: 2;
   background-color: white;
   overflow: hidden;
-  width: 250px;
+  width: 200px;
   font-weight: bold;
   list-style: none;
   border-radius: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   animation: ${(props) => props.animation} ${DROPDOWN_ANIMATION_TIME}ms ease-out forwards;
   margin: 0.5rem auto;
-  top: 550%;
+  top: 100%;
   left: 50%;
   margin-right: -50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
 `;
 
 export const ProductsDropdownListItem = styled.li`
   color: ${PURPLE};
-  padding: 0.5rem 0;
+  padding: 0.25rem 0;
   background-color: transparent;
   transition: background-color 250ms;
 
@@ -43,5 +43,6 @@ export const ProductsDropdownListItem = styled.li`
     color: inherit;
     text-decoration: none;
     transition: color 250ms;
+    font-size: 1rem;
   }
 `;

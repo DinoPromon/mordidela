@@ -7,23 +7,26 @@ import { BsPencil } from "react-icons/bs/index";
 import {
   Table,
   Paper,
+  Checkbox,
   TableRow,
   TableHead,
   TableBody,
   TableCell,
+  FormControl,
   TableContainer,
   TablePagination,
   CircularProgress,
   FormControlLabel,
-  Checkbox,
 } from "@material-ui/core";
 
 import Axios from "@api";
+import useIsMounted from "@hooks/useIsMounted";
 import useRequestState from "@hooks/useRequestState";
 import ClickableItem from "@components/shared/ClickableItem";
 import { PINK } from "@utils/colors";
+import { GetDeleted } from "@utils/constants";
 import { useTablePagination } from "@hooks/useTablePagination";
-import { InputTextFormik, LoadingButton } from "@components/shared";
+import { InputTextFormik, LoadingButton, CustomChip } from "@components/shared";
 import {
   ProductsComponentsIcons,
   ProductsComponentsTitle,
@@ -44,11 +47,12 @@ import {
 
 import type ISabor from "@models/sabor";
 import type { AxiosError } from "axios";
+import type { FormikHelpers } from "formik";
 import type { IFlavorsFormValues } from "./FormModel";
 import type { FindAllFlavorsResponse } from "@my-types/responses/flavor/findAll";
 
 type FetchFlavorsParams = {
-  getDeleted: boolean;
+  getDeleted: GetDeleted;
   skip: number;
   itemsAmount?: number;
 };
@@ -60,25 +64,16 @@ type FlavorsData = {
 
 const Flavors: React.FC = () => {
   const tableClasses = useTableStyles();
+  const isMounted = useIsMounted();
+  const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
+  const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
   const [flavors, setFlavors] = useState<FlavorsData>();
   const [editFlavor, setEditFlavor] = useState<ISabor>();
   const [deletingFlavor, setDeletingFlavor] = useState<ISabor>();
-  const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
-  const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
+  const [getDeleted, setGetDeleted] = useState<GetDeleted>(GetDeleted.FALSE);
 
   const formModel = getFlavorsFormModel();
   const itemsAmountOptions = [5, 10, 15];
-
-  function removeFlavor(flavor: ISabor) {
-    setFlavors((prevState) => {
-      if (!prevState) return prevState;
-
-      return {
-        items: prevState.items.filter((pFlavor) => pFlavor.id_sabor !== flavor.id_sabor),
-        count: prevState.count - 1,
-      };
-    });
-  }
 
   function updateFlavor(flavor: ISabor) {
     setFlavors((prevState) => {
@@ -106,7 +101,10 @@ const Flavors: React.FC = () => {
     setEditFlavor(undefined);
   }
 
-  async function submitHandler(values: IFlavorsFormValues) {
+  async function submitHandler(
+    values: IFlavorsFormValues,
+    formikHelpers: FormikHelpers<IFlavorsFormValues>
+  ) {
     try {
       if (editFlavor) {
         const response = await Axios.put<ISabor>(`/flavor/update/${editFlavor.id_sabor}`, {
@@ -118,7 +116,9 @@ const Flavors: React.FC = () => {
         await Axios.post<ISabor>("/flavor/create", {
           nome: values.name,
         });
+        fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
       }
+      formikHelpers.resetForm();
     } catch (err) {
       const error = err as AxiosError;
       console.log(err);
@@ -129,12 +129,15 @@ const Flavors: React.FC = () => {
   async function deleteFlavorHandler(flavor: ISabor) {
     setDeletingFlavor(flavor);
     try {
-      const response = await Axios.put<ISabor>(`/flavor/update/${flavor.id_sabor}`, {
+      await Axios.put<ISabor>(`/flavor/update/${flavor.id_sabor}`, {
         deletado: true,
       });
+      if (!isMounted.current) return;
 
-      removeFlavor(response.data);
+      fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
     } catch (err) {
+      if (!isMounted.current) return;
+
       const error = err as AxiosError;
       console.log(err);
       changeRequestStatus({ error: error.response?.data.message });
@@ -150,8 +153,12 @@ const Flavors: React.FC = () => {
         const response = await Axios.get<FindAllFlavorsResponse>("/flavor", {
           params,
         });
+        if (!isMounted.current) return;
+
         setFlavors(response.data);
       } catch (err) {
+        if (!isMounted.current) return;
+
         const error = err as AxiosError;
         console.log(err);
         changeRequestStatus({ error: error.response?.data.message });
@@ -159,12 +166,12 @@ const Flavors: React.FC = () => {
 
       changeRequestStatus({ isLoading: false });
     },
-    [changeRequestStatus]
+    [isMounted, changeRequestStatus]
   );
 
   useEffect(() => {
-    fetchFlavors({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: false });
-  }, [skip, pagination.itemsAmount, fetchFlavors]);
+    fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
+  }, [skip, pagination.itemsAmount, fetchFlavors, getDeleted]);
 
   return (
     <ProductsComponentsContainer>
@@ -172,14 +179,16 @@ const Flavors: React.FC = () => {
 
       <Formik
         enableReinitialize
-        validateOnChange={false}
+        validateOnBlur={false}
         validationSchema={getFlavorsFormValidationSchema(formModel)}
         initialValues={getFlavorsFormInitialValues(editFlavor)}
         onSubmit={submitHandler}
       >
         {({ values, isSubmitting }) => (
           <Form>
-            <AddProductsComponentsTitle>Criar sabor</AddProductsComponentsTitle>
+            <AddProductsComponentsTitle>
+              {editFlavor ? `Editar sabor ${editFlavor.nome}` : "Criar sabor"}
+            </AddProductsComponentsTitle>
             <InputTextFormik
               name={formModel.name.name}
               label={formModel.name.label}
@@ -202,7 +211,7 @@ const Flavors: React.FC = () => {
                   variant="contained"
                   isLoading={isSubmitting}
                 >
-                  Adicionar
+                  {editFlavor ? "Editar" : "Adicionar"}
                 </LoadingButton>
               </motion.div>
             </ProductsComponentsButtonContainer>
@@ -213,88 +222,101 @@ const Flavors: React.FC = () => {
       <Fragment>
         <TableTitle>
           <h3>Todos os sabores</h3>
-          <FormControlLabel control={<Checkbox />} label="Exibir os sabores excluídos" />
+          <FormControl component="fieldset">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={getDeleted === GetDeleted.TRUE}
+                  onChange={(event, checked) =>
+                    setGetDeleted(checked ? GetDeleted.TRUE : GetDeleted.FALSE)
+                  }
+                />
+              }
+              label="Exibir os sabores excluídos"
+            />
+          </FormControl>
         </TableTitle>
 
         <CustomTableContainer>
           {flavors && flavors.items.length > 0 && !requestStatus.isLoading && (
-            <TableContainer component={Paper}>
-              <Table classes={tableClasses}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">
-                      <b>Sabor</b>
-                    </TableCell>
-                    <TableCell align="center">
-                      <b>Status</b>
-                    </TableCell>
-                    <TableCell align="right">
-                      <b>Ações</b>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {flavors.items.map((flavor) => (
-                    <TableRow key={flavor.id_sabor}>
-                      <TableCell>{flavor.nome}</TableCell>
-
-                      {flavor.deletado === false ? (
-                        <TableCell align="center">Disponível</TableCell>
-                      ) : (
-                        <TableCell align="center">Excluído</TableCell>
-                      )}
-
-                      <TableCell>
-                        <ProductsComponentsIcons>
-                          <ClickableItem
-                            scale={1.3}
-                            title="Editar sabor"
-                            onClick={() => editFlavorHandler(flavor)}
-                          >
-                            <BsPencil size={16} color={PINK} />
-                          </ClickableItem>
-
-                          {deletingFlavor && deletingFlavor.id_sabor == flavor.id_sabor ? (
-                            <CircularProgress size={16} color="secondary" />
-                          ) : (
-                            <ClickableItem
-                              title="Excluir sabor"
-                              scale={1.3}
-                              onClick={() => !deletingFlavor && deleteFlavorHandler(flavor)}
-                            >
-                              <FaTrash size={16} color={PINK} />
-                            </ClickableItem>
-                          )}
-                        </ProductsComponentsIcons>
+            <Fragment>
+              <TableContainer component={Paper}>
+                <Table classes={tableClasses}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">
+                        <b>Sabor</b>
+                      </TableCell>
+                      <TableCell align="center">
+                        <b>Status</b>
+                      </TableCell>
+                      <TableCell align="right">
+                        <b>Ações</b>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+
+                  <TableBody>
+                    {flavors.items.map((flavor) => (
+                      <TableRow key={flavor.id_sabor}>
+                        <TableCell>{flavor.nome}</TableCell>
+
+                        <TableCell align="center">
+                          <CustomChip
+                            size="small"
+                            color={flavor.deletado ? "red" : "green"}
+                            label={flavor.deletado ? "Excluído" : "Disponível"}
+                          />
+                        </TableCell>
+
+                        <TableCell>
+                          <ProductsComponentsIcons>
+                            <ClickableItem
+                              scale={1.3}
+                              title="Editar sabor"
+                              onClick={() => editFlavorHandler(flavor)}
+                            >
+                              <BsPencil size={16} color={PINK} />
+                            </ClickableItem>
+
+                            {deletingFlavor && deletingFlavor.id_sabor == flavor.id_sabor ? (
+                              <CircularProgress size={16} color="secondary" />
+                            ) : (
+                              <ClickableItem
+                                title="Excluir sabor"
+                                scale={1.3}
+                                onClick={() => !deletingFlavor && deleteFlavorHandler(flavor)}
+                              >
+                                <FaTrash size={16} color={PINK} />
+                              </ClickableItem>
+                            )}
+                          </ProductsComponentsIcons>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
+                labelRowsPerPage="Linhas por página"
+                rowsPerPageOptions={itemsAmountOptions}
+                component="div"
+                count={flavors?.count || 0}
+                rowsPerPage={pagination.itemsAmount}
+                page={pagination.page}
+                onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
+                onRowsPerPageChange={(event) =>
+                  !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
+                }
+              />
+            </Fragment>
           )}
 
           {requestStatus.isLoading && (
             <LoadingContainer>
               <CircularProgress size={30} color="primary" />
             </LoadingContainer>
-          )}
-
-          {flavors && (
-            <TablePagination
-              labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
-              labelRowsPerPage="Linhas por página"
-              rowsPerPageOptions={itemsAmountOptions}
-              component="div"
-              count={flavors?.count || 0}
-              rowsPerPage={pagination.itemsAmount}
-              page={pagination.page}
-              onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
-              onRowsPerPageChange={(event) =>
-                !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
-              }
-            />
           )}
         </CustomTableContainer>
       </Fragment>

@@ -7,7 +7,7 @@ import { NavBarAdminContainer, NavBarAdminListItem } from "./styled";
 const NavBarAdmin: React.FC = () => {
   return (
     <NavBarAdminContainer>
-      <Link passHref href="/admin/inicio">
+      <Link passHref href="/admin">
         <NavBarAdminListItem>Início</NavBarAdminListItem>
       </Link>
       <Link passHref href="/admin/pedidos">

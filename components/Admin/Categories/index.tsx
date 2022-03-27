@@ -1,35 +1,8 @@
 import React, { Fragment, useCallback, useState, useEffect } from "react";
-import { PINK } from "@utils/colors";
+import { Formik, Form } from "formik";
+import { motion } from "framer-motion";
 import { FaTrash } from "react-icons/fa/index";
 import { BsPencil } from "react-icons/bs/index";
-import { motion } from "framer-motion";
-
-import Axios from "@api";
-import useIsMounted from "@hooks/useIsMounted";
-import useRequestState from "@hooks/useRequestState";
-import ClickableItem from "@components/shared/ClickableItem";
-
-import {
-  AddProductsComponentsTitle,
-  ProductsComponentsIcons,
-  ProductsComponentsTitle,
-  ProductsComponentsButtonContainer,
-  ProductsComponentsContainer,
-  LoadingContainer,
-  TableTitle,
-  CustomTableContainer,
-  useTableStyles,
-} from "@components/shared/ProductsComponents";
-
-import {
-  getCategoriesFormInitialValues,
-  getCategoriesFormValidationSchema,
-  getCategoriesFormModel,
-  ICategoriesFormValues,
-} from "./FormModel";
-
-import { Formik, Form } from "formik";
-import { InputTextFormik, LoadingButton } from "@components/shared";
 import {
   Button,
   CircularProgress,
@@ -42,17 +15,43 @@ import {
   TableBody,
   TableCell,
   TableRow,
-  TablePagination
+  TablePagination,
 } from "@material-ui/core";
 
+import Axios from "@api";
+import useIsMounted from "@hooks/useIsMounted";
+import useRequestState from "@hooks/useRequestState";
+import ClickableItem from "@components/shared/ClickableItem";
+import { PINK } from "@utils/colors";
+import { GetDeleted } from "@utils/constants";
+import { useTablePagination } from "@hooks/useTablePagination";
+import { InputTextFormik, LoadingButton, CustomChip } from "@components/shared";
+import {
+  TableTitle,
+  useTableStyles,
+  LoadingContainer,
+  CustomTableContainer,
+  ProductsComponentsIcons,
+  ProductsComponentsTitle,
+  AddProductsComponentsTitle,
+  ProductsComponentsContainer,
+  ProductsComponentsButtonContainer,
+} from "@components/shared/ProductsComponents";
+
+import {
+  getCategoriesFormModel,
+  getCategoriesFormInitialValues,
+  getCategoriesFormValidationSchema,
+} from "./FormModel";
+
 import type { AxiosError } from "axios";
+import type { FormikHelpers } from "formik";
 import type ICategoria from "@models/categoria";
+import type { ICategoriesFormValues } from "./FormModel/index";
 import type { FindAllCategoriesResponse } from "@my-types/responses";
 
-import { useTablePagination } from "@hooks/useTablePagination";
-
 type FetchCategoryParams = {
-  getDeleted: boolean;
+  getDeleted: GetDeleted;
   skip: number;
   itemsAmount?: number;
 };
@@ -62,42 +61,26 @@ type CategoryData = {
   count: number;
 };
 
-const INIT_FIND_PARAMS: FetchCategoryParams = {
-  getDeleted: false,
-  skip: 0,
-};
-
 const Categories: React.FC = () => {
-
   const isMounted = useIsMounted();
   const tableClasses = useTableStyles();
+  const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
+  const [getDeleted, setGetDeleted] = useState<GetDeleted>(GetDeleted.FALSE);
+  const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
   const [categories, setCategories] = useState<CategoryData>();
   const [editCategory, setEditCategory] = useState<ICategoria>();
-  const [isInitialRequest, setIsInitialRequest] = useState(true);
   const [deletingCategory, setDeletingCategory] = useState<ICategoria>();
-  const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
-  const [findParams, setFindParams] = useState<FetchCategoryParams>(INIT_FIND_PARAMS);
-  const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
 
   const itemsAmountOptions = [5, 10, 15];
   const formModel = getCategoriesFormModel();
-
-  function removeCategory(category: ICategoria) {
-    setCategories((prevState) => {
-      if (!prevState) return prevState;
-
-      return {
-        items: prevState.items.filter((pCategory) => pCategory.id_categoria !== category.id_categoria),
-        count: prevState.count - 1,
-      };
-    });
-  }
 
   function updateCategory(category: ICategoria) {
     setCategories((prevState) => {
       if (!prevState) return prevState;
 
-      const index = prevState.items.findIndex((pCategory) => pCategory.id_categoria === category.id_categoria);
+      const index = prevState.items.findIndex(
+        (pCategory) => pCategory.id_categoria === category.id_categoria
+      );
 
       if (index <= -1) return prevState;
 
@@ -119,19 +102,33 @@ const Categories: React.FC = () => {
     setEditCategory(undefined);
   }
 
-  async function submitHandler(values: ICategoriesFormValues) {
+  async function submitHandler(
+    values: ICategoriesFormValues,
+    formikHelpers: FormikHelpers<ICategoriesFormValues>
+  ) {
     try {
       if (editCategory) {
-        const response = await Axios.put<ICategoria>(`/category/update/${editCategory.id_categoria}`, {
-          nome: values.name,
-        });
+        const response = await Axios.put<ICategoria>(
+          `/category/update/${editCategory.id_categoria}`,
+          {
+            nome: values.name,
+          }
+        );
+
+        if (!isMounted.current) return;
 
         updateCategory(response.data);
       } else {
         await Axios.post<ICategoria>("/category/create", {
           nome: values.name,
         });
+
+        if (!isMounted.current) return;
+
+        fetchCategories({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
       }
+
+      formikHelpers.resetForm();
     } catch (err) {
       const error = err as AxiosError;
       console.log(err);
@@ -142,58 +139,22 @@ const Categories: React.FC = () => {
   async function deleteCategoryHandler(category: ICategoria) {
     setDeletingCategory(category);
     try {
-      const response = await Axios.put<ICategoria>(`/category/update/${category.id_categoria}`, {
+      await Axios.put<ICategoria>(`/category/update/${category.id_categoria}`, {
         deletado: true,
       });
 
-      removeCategory(response.data);
+      if (!isMounted.current) return;
+
+      fetchCategories({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
     } catch (err) {
+      if (!isMounted.current) return;
+
       const error = err as AxiosError;
       console.log(err);
       changeRequestStatus({ error: error.response?.data.message });
     }
     setDeletingCategory(undefined);
   }
-
-/*   const changeCategories = useCallback((category: CategoryData) => {
-    setCategories((prevState) => {
-      if (!prevState) return { count: category.count, items: category.items };
-
-      return {
-        count: category.count,
-        items: [...prevState.items, ...category.items],
-      };
-    });
-  }, []);
-
-  const fetchCategories = useCallback(
-    async (params?: FetchCategoryParams) => {
-      changeRequestStatus({ isLoading: true });
-
-      try {
-        const response = await Axios.get<FindAllCategoriesResponse>("/category", {
-          params,
-        });
-        if (!isMounted.current) return;
-
-        changeCategories(response.data);
-        setIsInitialRequest(false);
-        setFindParams((prevState) => ({
-          ...prevState,
-          skip: prevState.skip + response.data.items.length,
-        }));
-      } catch (err) {
-        const error = err as AxiosError;
-        console.log(error);
-        if (!isMounted.current) return;
-
-        changeRequestStatus({ error: error.response?.data.message });
-      }
-
-      changeRequestStatus({ isLoading: false });
-    },
-    [isMounted, changeRequestStatus, changeCategories]
-  ); */
 
   const fetchCategories = useCallback(
     async (params: FetchCategoryParams) => {
@@ -203,8 +164,13 @@ const Categories: React.FC = () => {
         const response = await Axios.get<FindAllCategoriesResponse>("/category", {
           params,
         });
+
+        if (!isMounted.current) return;
+
         setCategories(response.data);
       } catch (err) {
+        if (!isMounted.current) return;
+
         const error = err as AxiosError;
         console.log(err);
         changeRequestStatus({ error: error.response?.data.message });
@@ -212,12 +178,12 @@ const Categories: React.FC = () => {
 
       changeRequestStatus({ isLoading: false });
     },
-    [changeRequestStatus]
+    [isMounted, changeRequestStatus]
   );
 
   useEffect(() => {
-    fetchCategories({ skip: skip, itemsAmount: pagination.itemsAmount, getDeleted: false });
-  }, [skip, pagination.itemsAmount, fetchCategories]);
+    fetchCategories({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
+  }, [skip, pagination.itemsAmount, fetchCategories, getDeleted]);
 
   return (
     <ProductsComponentsContainer>
@@ -232,7 +198,9 @@ const Categories: React.FC = () => {
       >
         {({ values, isSubmitting }) => (
           <Form>
-            <AddProductsComponentsTitle>Criar categoria</AddProductsComponentsTitle>
+            <AddProductsComponentsTitle>
+              {editCategory ? `Editar categoria ${editCategory.nome}` : "Criar categoria"}
+            </AddProductsComponentsTitle>
             <InputTextFormik
               name={formModel.name.name}
               label={formModel.name.label}
@@ -255,7 +223,7 @@ const Categories: React.FC = () => {
                   variant="contained"
                   isLoading={isSubmitting}
                 >
-                  Adicionar
+                  {editCategory ? "Editar" : "Adicionar"}
                 </LoadingButton>
               </motion.div>
             </ProductsComponentsButtonContainer>
@@ -266,88 +234,99 @@ const Categories: React.FC = () => {
       <Fragment>
         <TableTitle>
           <h3>Todos as categorias</h3>
-          <FormControlLabel control={<Checkbox />} label="Exibir as categorias excluídas" />
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={(event, checked) =>
+                  setGetDeleted(checked ? GetDeleted.TRUE : GetDeleted.FALSE)
+                }
+              />
+            }
+            label="Exibir as categorias excluídas"
+          />
         </TableTitle>
 
         <CustomTableContainer>
           {categories && categories.items.length > 0 && !requestStatus.isLoading && (
-            <TableContainer component={Paper}>
-              <Table classes={tableClasses}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">
-                      <b>Categoria</b>
-                    </TableCell>
-                    <TableCell align="center">
-                      <b>Status</b>
-                    </TableCell>
-                    <TableCell align="right">
-                      <b>Ações</b>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {categories.items.map((category) => (
-                    <TableRow key={category.id_categoria}>
-                      <TableCell>{category.nome}</TableCell>
-
-                      {category.deletado === false ? (
-                        <TableCell align="center">Disponível</TableCell>
-                      ) : (
-                        <TableCell align="center">Excluído</TableCell>
-                      )}
-
-                      <TableCell>
-                        <ProductsComponentsIcons>
-                          <ClickableItem
-                            scale={1.3}
-                            title="Editar categoria"
-                            onClick={() => editCategoryHandler(category)}
-                          >
-                            <BsPencil size={16} color={PINK} />
-                          </ClickableItem>
-
-                          {deletingCategory && deletingCategory.id_categoria == category.id_categoria ? (
-                            <CircularProgress size={16} color="secondary" />
-                          ) : (
-                            <ClickableItem
-                              title="Excluir categoria"
-                              scale={1.3}
-                              onClick={() => !deletingCategory && deleteCategoryHandler(category)}
-                            >
-                              <FaTrash size={16} color={PINK} />
-                            </ClickableItem>
-                          )}
-                        </ProductsComponentsIcons>
+            <Fragment>
+              <TableContainer component={Paper}>
+                <Table classes={tableClasses}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">
+                        <b>Categoria</b>
+                      </TableCell>
+                      <TableCell align="center">
+                        <b>Status</b>
+                      </TableCell>
+                      <TableCell align="right">
+                        <b>Ações</b>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+
+                  <TableBody>
+                    {categories.items.map((category) => (
+                      <TableRow key={category.id_categoria}>
+                        <TableCell>{category.nome}</TableCell>
+
+                        <TableCell align="center">
+                          <CustomChip
+                            size="small"
+                            color={category.deletado ? "red" : "green"}
+                            label={category.deletado ? "Excluído" : "Disponível"}
+                          />
+                        </TableCell>
+
+                        <TableCell>
+                          <ProductsComponentsIcons>
+                            <ClickableItem
+                              scale={1.3}
+                              title="Editar categoria"
+                              onClick={() => editCategoryHandler(category)}
+                            >
+                              <BsPencil size={16} color={PINK} />
+                            </ClickableItem>
+
+                            {deletingCategory &&
+                            deletingCategory.id_categoria == category.id_categoria ? (
+                              <CircularProgress size={16} color="secondary" />
+                            ) : (
+                              <ClickableItem
+                                title="Excluir categoria"
+                                scale={1.3}
+                                onClick={() => !deletingCategory && deleteCategoryHandler(category)}
+                              >
+                                <FaTrash size={16} color={PINK} />
+                              </ClickableItem>
+                            )}
+                          </ProductsComponentsIcons>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
+                labelRowsPerPage="Linhas por página"
+                rowsPerPageOptions={itemsAmountOptions}
+                component="div"
+                count={categories?.count || 0}
+                rowsPerPage={pagination.itemsAmount}
+                page={pagination.page}
+                onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
+                onRowsPerPageChange={(event) =>
+                  !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
+                }
+              />
+            </Fragment>
           )}
 
           {requestStatus.isLoading && (
             <LoadingContainer>
               <CircularProgress size={30} color="primary" />
             </LoadingContainer>
-          )}
-
-          {categories && (
-            <TablePagination
-              labelDisplayedRows={(info) => `${info.to} de ${info.count}`}
-              labelRowsPerPage="Linhas por página"
-              rowsPerPageOptions={itemsAmountOptions}
-              component="div"
-              count={categories?.count || 0}
-              rowsPerPage={pagination.itemsAmount}
-              page={pagination.page}
-              onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
-              onRowsPerPageChange={(event) =>
-                !requestStatus.isLoading && changeItemsAmount(Number(event.target.value))
-              }
-            />
           )}
         </CustomTableContainer>
       </Fragment>

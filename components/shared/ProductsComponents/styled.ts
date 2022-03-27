@@ -46,7 +46,7 @@ export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 2rem 0;
 `;
 
 export const TableTitle = styled.div`
