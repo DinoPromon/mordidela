@@ -198,7 +198,9 @@ const Categories: React.FC = () => {
       >
         {({ values, isSubmitting }) => (
           <Form>
-            <AddProductsComponentsTitle>Criar categoria</AddProductsComponentsTitle>
+            <AddProductsComponentsTitle>
+              {editCategory ? `Editar categoria ${editCategory.nome}` : "Criar categoria"}
+            </AddProductsComponentsTitle>
             <InputTextFormik
               name={formModel.name.name}
               label={formModel.name.label}

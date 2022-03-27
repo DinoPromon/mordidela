@@ -186,7 +186,9 @@ const Flavors: React.FC = () => {
       >
         {({ values, isSubmitting }) => (
           <Form>
-            <AddProductsComponentsTitle>Criar sabor</AddProductsComponentsTitle>
+            <AddProductsComponentsTitle>
+              {editFlavor ? `Editar sabor ${editFlavor.nome}` : "Criar sabor"}
+            </AddProductsComponentsTitle>
             <InputTextFormik
               name={formModel.name.name}
               label={formModel.name.label}
