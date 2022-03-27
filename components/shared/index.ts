@@ -30,3 +30,5 @@ export {
   ConfirmationLayout,
   MordidelaLogoWithLabel,
 };
+
+export { default as CustomChip } from "./CustomChip";

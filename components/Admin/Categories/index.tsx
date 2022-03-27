@@ -25,7 +25,7 @@ import ClickableItem from "@components/shared/ClickableItem";
 import { PINK } from "@utils/colors";
 import { GetDeleted } from "@utils/constants";
 import { useTablePagination } from "@hooks/useTablePagination";
-import { InputTextFormik, LoadingButton } from "@components/shared";
+import { InputTextFormik, LoadingButton, CustomChip } from "@components/shared";
 import {
   TableTitle,
   useTableStyles,
@@ -270,11 +270,13 @@ const Categories: React.FC = () => {
                       <TableRow key={category.id_categoria}>
                         <TableCell>{category.nome}</TableCell>
 
-                        {category.deletado === false ? (
-                          <TableCell align="center">Disponível</TableCell>
-                        ) : (
-                          <TableCell align="center">Excluído</TableCell>
-                        )}
+                        <TableCell align="center">
+                          <CustomChip
+                            size="small"
+                            color={category.deletado ? "red" : "green"}
+                            label={category.deletado ? "Excluído" : "Disponível"}
+                          />
+                        </TableCell>
 
                         <TableCell>
                           <ProductsComponentsIcons>

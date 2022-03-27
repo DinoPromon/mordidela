@@ -26,7 +26,7 @@ import ClickableItem from "@components/shared/ClickableItem";
 import { PINK } from "@utils/colors";
 import { GetDeleted } from "@utils/constants";
 import { useTablePagination } from "@hooks/useTablePagination";
-import { InputTextFormik, LoadingButton } from "@components/shared";
+import { InputTextFormik, LoadingButton, CustomChip } from "@components/shared";
 import {
   ProductsComponentsIcons,
   ProductsComponentsTitle,
@@ -261,11 +261,13 @@ const Flavors: React.FC = () => {
                       <TableRow key={flavor.id_sabor}>
                         <TableCell>{flavor.nome}</TableCell>
 
-                        {flavor.deletado === false ? (
-                          <TableCell align="center">Disponível</TableCell>
-                        ) : (
-                          <TableCell align="center">Excluído</TableCell>
-                        )}
+                        <TableCell align="center">
+                          <CustomChip
+                            size="small"
+                            color={flavor.deletado ? "red" : "green"}
+                            label={flavor.deletado ? "Excluído" : "Disponível"}
+                          />
+                        </TableCell>
 
                         <TableCell>
                           <ProductsComponentsIcons>
