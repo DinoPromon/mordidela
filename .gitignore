@@ -40,4 +40,4 @@ yarn-error.log*
 # .env
 
 # ignore prisma schema
-/prisma
+# /prisma
