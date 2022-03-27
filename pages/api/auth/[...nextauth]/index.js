@@ -14,6 +14,29 @@ export default NextAuth({
     newUser: "/",
     verifyRequest: "/login",
   },
+  cookies: {
+    sessionToken: {
+      name: "_promon-session",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: true,
+      },
+    },
+    callbackUrl: {
+      name: "_promon-callback-url",
+      sameSite: "lax",
+      secure: true,
+    },
+    csrfToken: {
+      name: "_promon-csrf-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: true,
+      },
+    },
+  },
   providers: [
     Providers.Credentials({
       async authorize(credentials, req) {
