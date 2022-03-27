@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/client";
@@ -21,9 +19,8 @@ import {
   getLoginFormValidationSchema,
 } from "./FormModel";
 
-import type { AxiosError } from "axios";
-import type { ILoginFormValues } from "./FormModel";
 import type { RequestState } from "@my-types/request";
+import type { ILoginFormValues } from "./FormModel";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
