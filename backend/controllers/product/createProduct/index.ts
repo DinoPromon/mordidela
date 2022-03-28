@@ -2,35 +2,90 @@ import { Prisma } from "@backend";
 import { UUIDParse } from "@helpers/uuid";
 import { throwError } from "@errors/index";
 import { ImageHandler } from "@helpers/image";
+
+import { CreateProductParser } from "./parser";
 import { CreateProductValidator } from "./validator";
 
-import type IProduto from "@models/produto";
 import type { File as FormidableFile } from "formidable";
-import type { CreateProductArg } from "./validator/parser";
+import type IProduto from "@models/produto";
+import type { ProductCreate } from "@models/produto";
+import type { CreateProductArg } from "./types";
 
 export class CreateProduct {
   private image?: FormidableFile;
+  private createArg: ProductCreate;
   private validator: CreateProductValidator;
 
   constructor(createProductArgs: CreateProductArg, image?: FormidableFile) {
-    this.validator = new CreateProductValidator(createProductArgs);
+    const parser = new CreateProductParser(createProductArgs);
+    this.createArg = parser.parse();
+    this.validator = new CreateProductValidator(this.createArg);
     this.image = image;
   }
 
   public async exec() {
     this.validator.validate();
 
-    return await this.createProduct();
+    const { adicionais, sabores, ...productData } = this.createArg;
+
+    const createdProduct = await this.createProduct(productData);
+
+    await this.createProductAdds(createdProduct.id_produto, adicionais);
+
+    await this.createProductFlavors(createdProduct.id_produto, sabores);
+
+    return createdProduct;
   }
 
-  private async createProduct() {
+  private async createProductAdds(productId: number, adds: ProductCreate["adicionais"]) {
+    if (!adds) return;
+
+    const createAddsRelationsData = adds.map((add) => ({
+      id_produto: productId,
+      id_adicional: add,
+    }));
+
+    const createdRelations = await Prisma.produto_adicional
+      .createMany({
+        data: createAddsRelationsData,
+      })
+      .catch((err) => {
+        console.error(err);
+        throwError("O-C-DI", { customMessage: "Algo de inesperado aconteceu" });
+      });
+
+    return createdRelations;
+  }
+
+  private async createProductFlavors(productId: number, flavors: ProductCreate["sabores"]) {
+    if (!flavors) return;
+
+    const createFlavorsRelationsData = flavors.map((flavor) => ({
+      id_produto: productId,
+      id_sabor: flavor,
+    }));
+
+    const createdRelations = await Prisma.produto_sabor
+      .createMany({
+        data: createFlavorsRelationsData,
+      })
+      .catch((err) => {
+        console.error(err);
+        throwError("O-C-DI", { customMessage: "Algo de inesperado aconteceu" });
+      });
+
+    return createdRelations;
+  }
+
+  private async createProduct(productData: Omit<ProductCreate, "adicionais" | "sabores">) {
     const [binUUID, stringUUID] = this.createUUID();
+
     const productImageHandler = this.createImage(stringUUID);
 
     const createdProduct = await Prisma.produto
       .create({
         data: {
-          ...this.validator.getCreateProductData(),
+          ...productData,
           uuid: binUUID,
           nome_imagem: productImageHandler ? productImageHandler.getFileName(stringUUID) : null,
         },
