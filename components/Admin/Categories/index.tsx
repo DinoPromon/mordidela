@@ -116,7 +116,8 @@ const Categories: React.FC = () => {
         );
 
         if (!isMounted.current) return;
-
+        
+        setEditCategory(undefined);
         updateCategory(response.data);
       } else {
         await Axios.post<ICategoria>("/category/create", {

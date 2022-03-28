@@ -123,6 +123,7 @@ const Additionals: React.FC = () => {
           preco: transformPriceStringToNumber(values.price),
         });
 
+        setEditAdd(undefined);
         updateAdd(response.data);
       } else {
         await Axios.post<IAdicional>("/additional/create", {

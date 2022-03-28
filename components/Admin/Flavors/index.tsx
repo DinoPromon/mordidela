@@ -111,6 +111,7 @@ const Flavors: React.FC = () => {
           nome: values.name,
         });
 
+        setEditFlavor(undefined);
         updateFlavor(response.data);
       } else {
         await Axios.post<ISabor>("/flavor/create", {
