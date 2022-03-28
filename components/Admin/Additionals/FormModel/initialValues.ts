@@ -1,4 +1,4 @@
-import { getNumberAsCurrency } from "@utils/transformation";
+import { transformPriceToString } from "@utils/transformation";
 
 import type IAdicional from "@models/adicional";
 import type { IAdditionalFormValues } from "./index";
@@ -13,6 +13,6 @@ export function getAdditionalFormInitialValues(add?: IAdicional): IAdditionalFor
 
   return {
     name: add.nome,
-    price: getNumberAsCurrency(add.preco),
+    price: transformPriceToString(add.preco),
   };
 }
