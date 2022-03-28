@@ -15,7 +15,6 @@ import { transformPriceToString } from "@utils/transformation";
 import { SubtotalText } from "@components/shared/StyledComponents";
 import { Modal, ConfirmationLayout, SuccessRequestLayout } from "@components/shared";
 
-
 import CartOrdersList from "./CartOrdersList";
 const CartAddress = dynamic(() => import("./CartAddress"));
 const CartDeliveryType = dynamic(() => import("./CartDeliveryType"));
@@ -194,7 +193,11 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
 
                         {!session && !isLoadingSession && (
                           <CartFormLoginText>
-                            Faça <Link href={"/login"}><a>login</a></Link> para continuar sua compra!
+                            Faça{" "}
+                            <Link href={"/login"}>
+                              <a>login</a>
+                            </Link>{" "}
+                            para continuar sua compra!
                           </CartFormLoginText>
                         )}
                       </Fragment>

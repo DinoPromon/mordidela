@@ -2,12 +2,17 @@ import type { FormField } from "@my-types/form";
 
 export interface IAdditionalFormValues {
   name: string;
-  value: number | null;
+  price: string;
 }
 
 export type AdditionalFormModel = {
   [key in keyof IAdditionalFormValues]: FormField<IAdditionalFormValues>;
 };
+
+export type SetAdditionalFormValue = <T extends keyof IAdditionalFormValues>(
+  key: T,
+  value: IAdditionalFormValues[T]
+) => void;
 
 export function getAdditionalFormModel() {
   const additionalFormModel: AdditionalFormModel = {
@@ -16,11 +21,11 @@ export function getAdditionalFormModel() {
       name: "name",
       requiredErrorMessage: "Insira o nome do adicional",
     },
-    value: {
+    price: {
       label: "Valor",
-      name: "value",
-      requiredErrorMessage: "Insira o valor do adicional"
-    }
+      name: "price",
+      requiredErrorMessage: "Insira o valor do adicional",
+    },
   };
 
   return additionalFormModel;

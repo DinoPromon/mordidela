@@ -17,7 +17,7 @@ export function calculateSubTotalPrice(
     );
 
     return (
-      totalPrice + orderProduct.produto.preco_padrao * orderProduct.quantidade + addsTotalPrice
+      totalPrice + (orderProduct.produto.preco_padrao + addsTotalPrice) * orderProduct.quantidade
     );
   }, 0);
 

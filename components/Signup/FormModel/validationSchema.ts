@@ -2,6 +2,7 @@ import * as Yup from "yup";
 import validator from "validator";
 
 import { phoneValidation } from "@utils/validations";
+import { createDate } from "@utils/transformation/date";
 
 import type { SignupCompleteFormModel } from "./index";
 
@@ -29,7 +30,11 @@ export function getSignupCompleteValidationSchema(formModel: SignupCompleteFormM
       .required(formModel.birthDate.requiredErrorMessage)
       .test("is-valid-date", `${formModel.birthDate.requiredErrorMessage}`, (value) =>
         validator.isDate(value || "", { format: "DD/MM/YYYY", strictMode: true })
-      ),
+      )
+      .test("maxDate", `${formModel.birthDate.requiredErrorMessage}`, (date) => {
+        if (!date) return false;
+        return createDate(date) > new Date() ? false : true;
+      }),
     [formModel.phoneNumber.name]: Yup.string()
       .required(formModel.phoneNumber.requiredErrorMessage)
       .test("is-phone-valid", "Número de telefone inválido", (value) =>

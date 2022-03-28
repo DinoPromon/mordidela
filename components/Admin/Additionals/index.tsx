@@ -1,5 +1,6 @@
 import React, { Fragment, useCallback, useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { motion } from "framer-motion";
 import { Formik, Form } from "formik";
 import { FaTrash } from "react-icons/fa/index";
@@ -10,12 +11,12 @@ import {
   Checkbox,
   TableRow,
   TableHead,
-  TableBody,
   TableCell,
+  TableBody,
   FormControl,
   TableContainer,
+  InputAdornment,
   TablePagination,
-  CircularProgress,
   FormControlLabel,
 } from "@material-ui/core";
 
@@ -25,66 +26,73 @@ import useRequestState from "@hooks/useRequestState";
 import ClickableItem from "@components/shared/ClickableItem";
 import { PINK } from "@utils/colors";
 import { GetDeleted } from "@utils/constants";
+import { formatCurrency } from "@utils/formatters";
 import { useTablePagination } from "@hooks/useTablePagination";
+import {
+  getNumberAsCurrency,
+  transformPriceToString,
+  transformPriceStringToNumber,
+} from "@utils/transformation";
 import { InputTextFormik, LoadingButton, CustomChip } from "@components/shared";
 import {
-  ProductsComponentsIcons,
+  TableTitle,
+  useTableStyles,
+  LoadingContainer,
+  CustomTableContainer,
   ProductsComponentsTitle,
+  ProductsComponentsIcons,
   AddProductsComponentsTitle,
   ProductsComponentsContainer,
   ProductsComponentsButtonContainer,
-  CustomTableContainer,
-  LoadingContainer,
-  TableTitle,
-  useTableStyles,
 } from "@components/shared/ProductsComponents";
 
 import {
-  getFlavorsFormInitialValues,
-  getFlavorsFormValidationSchema,
-  getFlavorsFormModel,
+  getAdditionalFormModel,
+  getAdditionalFormInitialValues,
+  getAdditionalFormValidationSchema,
 } from "./FormModel";
+import { InputAdditionalContainer } from "./styled";
 
-import type ISabor from "@models/sabor";
 import type { AxiosError } from "axios";
 import type { FormikHelpers } from "formik";
-import type { IFlavorsFormValues } from "./FormModel";
-import type { FindAllFlavorsResponse } from "@my-types/responses/flavor/findAll";
+import type IAdicional from "@models/adicional";
+import type { FindAllAdditionalsResponse } from "@my-types/responses";
+import type { IAdditionalFormValues, SetAdditionalFormValue } from "./FormModel";
 
-type FetchFlavorsParams = {
+type FetchAddsParams = {
   getDeleted: GetDeleted;
   skip: number;
   itemsAmount?: number;
 };
 
-type FlavorsData = {
+type AddsData = {
   count: number;
-  items: ISabor[];
+  items: IAdicional[];
 };
 
-const Flavors: React.FC = () => {
+const Additionals: React.FC = () => {
   const tableClasses = useTableStyles();
   const isMounted = useIsMounted();
   const [pagination, skip, changePage, changeItemsAmount] = useTablePagination();
   const [requestStatus, changeRequestStatus] = useRequestState({ error: "", isLoading: true });
-  const [flavors, setFlavors] = useState<FlavorsData>();
-  const [editFlavor, setEditFlavor] = useState<ISabor>();
-  const [deletingFlavor, setDeletingFlavor] = useState<ISabor>();
+  const [adds, setAdds] = useState<AddsData>();
+  const [editAdd, setEditAdd] = useState<IAdicional>();
+  const [deletingFlavor, setDeletingFlavor] = useState<IAdicional>();
   const [getDeleted, setGetDeleted] = useState<GetDeleted>(GetDeleted.FALSE);
 
-  const formModel = getFlavorsFormModel();
+  const formModel = getAdditionalFormModel();
   const itemsAmountOptions = [5, 10, 15];
 
-  function updateFlavor(flavor: ISabor) {
-    setFlavors((prevState) => {
+  function updateAdd(add: IAdicional) {
+    setAdds((prevState) => {
       if (!prevState) return prevState;
 
-      const index = prevState.items.findIndex((pFlavor) => pFlavor.id_sabor === flavor.id_sabor);
+      const index = prevState.items.findIndex((padd) => padd.id_adicional === add.id_adicional);
 
       if (index <= -1) return prevState;
 
       const newFlavors = [...prevState.items];
-      newFlavors[index] = flavor;
+      newFlavors[index] = add;
 
       return {
         ...prevState,
@@ -93,32 +101,42 @@ const Flavors: React.FC = () => {
     });
   }
 
-  function editFlavorHandler(flavor: ISabor) {
-    setEditFlavor(flavor);
+  function editFlavorHandler(flavor: IAdicional) {
+    setEditAdd(flavor);
   }
 
   function cancelHandler() {
-    setEditFlavor(undefined);
+    setEditAdd(undefined);
+  }
+
+  function priceChangeHandler(
+    event: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: SetAdditionalFormValue
+  ) {
+    setFieldValue("price", event.target.value && formatCurrency(event.target.value));
   }
 
   async function submitHandler(
-    values: IFlavorsFormValues,
-    formikHelpers: FormikHelpers<IFlavorsFormValues>
+    values: IAdditionalFormValues,
+    formikHelpers: FormikHelpers<IAdditionalFormValues>
   ) {
     try {
-      if (editFlavor) {
-        const response = await Axios.put<ISabor>(`/flavor/update/${editFlavor.id_sabor}`, {
+      if (editAdd) {
+        const response = await Axios.put<IAdicional>(`/additional/update/${editAdd.id_adicional}`, {
           nome: values.name,
+          preco: transformPriceStringToNumber(values.price),
         });
 
-        setEditFlavor(undefined);
-        updateFlavor(response.data);
+        setEditAdd(undefined);
+        updateAdd(response.data);
       } else {
-        await Axios.post<ISabor>("/flavor/create", {
+        await Axios.post<IAdicional>("/additional/create", {
           nome: values.name,
+          preco: transformPriceStringToNumber(values.price),
         });
-        fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
+        fetchAdds({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
       }
+
       formikHelpers.resetForm();
     } catch (err) {
       const error = err as AxiosError;
@@ -127,15 +145,15 @@ const Flavors: React.FC = () => {
     }
   }
 
-  async function deleteFlavorHandler(flavor: ISabor) {
-    setDeletingFlavor(flavor);
+  async function deleteAddHandler(add: IAdicional) {
+    setDeletingFlavor(add);
     try {
-      await Axios.put<ISabor>(`/flavor/update/${flavor.id_sabor}`, {
+      await Axios.put<IAdicional>(`/additional/update/${add.id_adicional}`, {
         deletado: true,
       });
       if (!isMounted.current) return;
 
-      fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
+      fetchAdds({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
     } catch (err) {
       if (!isMounted.current) return;
 
@@ -146,17 +164,17 @@ const Flavors: React.FC = () => {
     setDeletingFlavor(undefined);
   }
 
-  const fetchFlavors = useCallback(
-    async (params: FetchFlavorsParams) => {
+  const fetchAdds = useCallback(
+    async (params: FetchAddsParams) => {
       changeRequestStatus({ isLoading: true });
 
       try {
-        const response = await Axios.get<FindAllFlavorsResponse>("/flavor", {
+        const response = await Axios.get<FindAllAdditionalsResponse>("/additional", {
           params,
         });
         if (!isMounted.current) return;
 
-        setFlavors(response.data);
+        setAdds(response.data);
       } catch (err) {
         if (!isMounted.current) return;
 
@@ -171,39 +189,56 @@ const Flavors: React.FC = () => {
   );
 
   useEffect(() => {
-    fetchFlavors({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
-  }, [skip, pagination.itemsAmount, fetchFlavors, getDeleted]);
+    fetchAdds({ skip, getDeleted, itemsAmount: pagination.itemsAmount });
+  }, [skip, pagination.itemsAmount, fetchAdds, getDeleted]);
 
   return (
     <ProductsComponentsContainer>
-      <ProductsComponentsTitle>Sabores</ProductsComponentsTitle>
+      <ProductsComponentsTitle>Adicionais</ProductsComponentsTitle>
 
       <Formik
         enableReinitialize
         validateOnBlur={false}
-        validationSchema={getFlavorsFormValidationSchema(formModel)}
-        initialValues={getFlavorsFormInitialValues(editFlavor)}
         onSubmit={submitHandler}
+        initialValues={getAdditionalFormInitialValues(editAdd)}
+        validationSchema={getAdditionalFormValidationSchema(formModel)}
       >
-        {({ values, isSubmitting }) => (
+        {({ values, isSubmitting, setFieldValue }) => (
           <Form>
             <AddProductsComponentsTitle>
-              {editFlavor ? `Editar sabor ${editFlavor.nome}` : "Criar sabor"}
+              {editAdd ? `Editar adicional ${editAdd.nome}` : "Criar adicional"}
             </AddProductsComponentsTitle>
-            <InputTextFormik
-              name={formModel.name.name}
-              label={formModel.name.label}
-              variant="outlined"
-              helperText={formModel.name.requiredErrorMessage}
-              style={{ width: "500px" }}
-              autoComplete="off"
-            />
-            <ProductsComponentsButtonContainer isEdit={!!editFlavor}>
-              {editFlavor && (
+            <InputAdditionalContainer>
+              <InputTextFormik
+                name={formModel.name.name}
+                label={formModel.name.label}
+                variant="outlined"
+                helperText={formModel.name.requiredErrorMessage}
+                style={{ width: "454px" }}
+                autoComplete="off"
+              />
+              <InputTextFormik
+                name={formModel.price.name}
+                label={formModel.price.label}
+                variant="outlined"
+                onChange={(event) =>
+                  priceChangeHandler(event as React.ChangeEvent<HTMLInputElement>, setFieldValue)
+                }
+                helperText={formModel.price.requiredErrorMessage}
+                style={{ width: "130px" }}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                }}
+                autoComplete="off"
+              />
+            </InputAdditionalContainer>
+            <ProductsComponentsButtonContainer isEdit={!!editAdd}>
+              {editAdd && (
                 <Button type="button" color="secondary" variant="outlined" onClick={cancelHandler}>
                   Cancelar
                 </Button>
               )}
+
               <motion.div layout>
                 <LoadingButton
                   type="submit"
@@ -211,7 +246,7 @@ const Flavors: React.FC = () => {
                   variant="contained"
                   isLoading={isSubmitting}
                 >
-                  {editFlavor ? "Editar" : "Adicionar"}
+                  {editAdd ? "Editar" : "Adicionar"}
                 </LoadingButton>
               </motion.div>
             </ProductsComponentsButtonContainer>
@@ -238,7 +273,7 @@ const Flavors: React.FC = () => {
         </TableTitle>
 
         <CustomTableContainer>
-          {flavors && flavors.items.length > 0 && !requestStatus.isLoading && (
+          {adds && adds.items.length > 0 && !requestStatus.isLoading && (
             <Fragment>
               <TableContainer component={Paper}>
                 <Table classes={tableClasses}>
@@ -246,6 +281,9 @@ const Flavors: React.FC = () => {
                     <TableRow>
                       <TableCell align="left">
                         <b>Sabor</b>
+                      </TableCell>
+                      <TableCell align="center">
+                        <b>Preço</b>
                       </TableCell>
                       <TableCell align="center">
                         <b>Status</b>
@@ -257,15 +295,17 @@ const Flavors: React.FC = () => {
                   </TableHead>
 
                   <TableBody>
-                    {flavors.items.map((flavor) => (
-                      <TableRow key={flavor.id_sabor}>
-                        <TableCell>{flavor.nome}</TableCell>
+                    {adds.items.map((add) => (
+                      <TableRow key={add.id_adicional}>
+                        <TableCell>{add.nome}</TableCell>
+
+                        <TableCell>{getNumberAsCurrency(add.preco)}</TableCell>
 
                         <TableCell align="center">
                           <CustomChip
                             size="small"
-                            color={flavor.deletado ? "red" : "green"}
-                            label={flavor.deletado ? "Excluído" : "Disponível"}
+                            color={add.deletado ? "red" : "green"}
+                            label={add.deletado ? "Excluído" : "Disponível"}
                           />
                         </TableCell>
 
@@ -274,18 +314,18 @@ const Flavors: React.FC = () => {
                             <ClickableItem
                               scale={1.3}
                               title="Editar sabor"
-                              onClick={() => editFlavorHandler(flavor)}
+                              onClick={() => editFlavorHandler(add)}
                             >
                               <BsPencil size={16} color={PINK} />
                             </ClickableItem>
 
-                            {deletingFlavor && deletingFlavor.id_sabor === flavor.id_sabor ? (
+                            {deletingFlavor && deletingFlavor.id_adicional === add.id_adicional ? (
                               <CircularProgress size={16} color="secondary" />
                             ) : (
                               <ClickableItem
                                 title="Excluir sabor"
                                 scale={1.3}
-                                onClick={() => !deletingFlavor && deleteFlavorHandler(flavor)}
+                                onClick={() => !deletingFlavor && deleteAddHandler(add)}
                               >
                                 <FaTrash size={16} color={PINK} />
                               </ClickableItem>
@@ -302,7 +342,7 @@ const Flavors: React.FC = () => {
                 labelRowsPerPage="Linhas por página"
                 rowsPerPageOptions={itemsAmountOptions}
                 component="div"
-                count={flavors?.count || 0}
+                count={adds?.count || 0}
                 rowsPerPage={pagination.itemsAmount}
                 page={pagination.page}
                 onPageChange={(event, page) => !requestStatus.isLoading && changePage(page)}
@@ -324,4 +364,4 @@ const Flavors: React.FC = () => {
   );
 };
 
-export default Flavors;
+export default Additionals;

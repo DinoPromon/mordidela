@@ -10,7 +10,7 @@ import {
 
 import { InputTextFormik } from "@components/shared";
 import { FormikForm } from "@components/Login/styled";
-import { Button, FormControlLabel, InputAdornment, RadioGroup } from "@material-ui/core";
+import { InputAdornment, RadioGroup } from "@material-ui/core";
 
 const AddProducts: React.FC = () => {
   const formModel = getProductsFormModel();
@@ -91,9 +91,7 @@ const AddProducts: React.FC = () => {
               />
               <AddProductsRowContainer>
                 <h4>O produto possui sabores?</h4>
-                <RadioGroup>
-                  
-                </RadioGroup>
+                <RadioGroup></RadioGroup>
               </AddProductsRowContainer>
             </FormikForm>
           </AddProductsContainer>
