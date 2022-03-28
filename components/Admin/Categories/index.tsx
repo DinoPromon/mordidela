@@ -204,7 +204,6 @@ const Categories: React.FC = () => {
             <InputTextFormik
               name={formModel.name.name}
               label={formModel.name.label}
-              values={values.name}
               variant="outlined"
               helperText={formModel.name.requiredErrorMessage}
               style={{ width: "500px" }}
@@ -289,7 +288,7 @@ const Categories: React.FC = () => {
                             </ClickableItem>
 
                             {deletingCategory &&
-                            deletingCategory.id_categoria == category.id_categoria ? (
+                            deletingCategory.id_categoria === category.id_categoria ? (
                               <CircularProgress size={16} color="secondary" />
                             ) : (
                               <ClickableItem

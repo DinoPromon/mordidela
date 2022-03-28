@@ -22,9 +22,12 @@ const handler: NextApiHandler = async (req, res) => {
 
     switch (req.method) {
       case ReqMethod.PUT: {
-        const { flavorId } = req.query;
+        const { additionalId } = req.query;
 
-        const updateAdditional = new UpdateAdditional({ id_sabor: Number(flavorId), ...req.body });
+        const updateAdditional = new UpdateAdditional({
+          id_adicional: Number(additionalId),
+          ...req.body,
+        });
         const updatedAdditional = await updateAdditional.exec();
 
         return res.status(200).json(updatedAdditional);

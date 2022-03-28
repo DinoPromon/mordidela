@@ -100,7 +100,6 @@ const DateFilter: React.FC<DateFilterProps> = ({ onSubmit }) => {
             <InputTextFormik
               name={formModel.date.name}
               label={formModel.date.label}
-              values={values.date}
               helperText={formModel.date.requiredErrorMessage}
               variant="outlined"
               size="small"

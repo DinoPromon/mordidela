@@ -192,7 +192,6 @@ const Flavors: React.FC = () => {
             <InputTextFormik
               name={formModel.name.name}
               label={formModel.name.label}
-              values={values.name}
               variant="outlined"
               helperText={formModel.name.requiredErrorMessage}
               style={{ width: "500px" }}
@@ -279,7 +278,7 @@ const Flavors: React.FC = () => {
                               <BsPencil size={16} color={PINK} />
                             </ClickableItem>
 
-                            {deletingFlavor && deletingFlavor.id_sabor == flavor.id_sabor ? (
+                            {deletingFlavor && deletingFlavor.id_sabor === flavor.id_sabor ? (
                               <CircularProgress size={16} color="secondary" />
                             ) : (
                               <ClickableItem
