@@ -1,6 +1,5 @@
 import { IncomingForm } from "formidable";
 import { CreateProduct } from "@controllers/product";
-import { CreateProductArg } from "@controllers/product";
 import { ReqMethod } from "@my-types/backend/reqMethod";
 
 import type IProduto from "@models/produto";
@@ -35,8 +34,7 @@ export const handler: NextApiHandler = async (req, res) => {
           if (err) reject(err);
           if (Array.isArray(files.imagem)) reject("Não há suporte para múltiplas imagens");
 
-          const createProductArg: CreateProductArg = fields as CreateProductArg;
-          const createProduct = new CreateProduct(createProductArg, files.imagem as FormidableFile);
+          const createProduct = new CreateProduct(fields as any, files.imagem as FormidableFile);
 
           createProduct
             .exec()
