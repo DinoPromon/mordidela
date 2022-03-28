@@ -42,7 +42,7 @@ export const useCartFormValidationSchema = (subTotalPrice: number) => {
           return true;
         }
         const numberPaymentAmount = transformPriceStringToNumber(stringPaymentAmount);
-        if (numberPaymentAmount < context.parent.deliveryPrice + subTotalPrice) return false;
+        if (numberPaymentAmount <= context.parent.deliveryPrice + subTotalPrice) return false;
         return true;
       }),
     }),
