@@ -28,7 +28,7 @@ import { PINK } from "@utils/colors";
 import { GetDeleted } from "@utils/constants";
 import { formatCurrency } from "@utils/formatters";
 import { useTablePagination } from "@hooks/useTablePagination";
-import { transformPriceStringToNumber, getNumberAsCurrency } from "@utils/transformation";
+import { transformPriceStringToNumber, transformPriceToString } from "@utils/transformation";
 import { InputTextFormik, LoadingButton, CustomChip } from "@components/shared";
 import {
   TableTitle,
@@ -295,7 +295,7 @@ const Additionals: React.FC = () => {
                       <TableRow key={add.id_adicional}>
                         <TableCell>{add.nome}</TableCell>
 
-                        <TableCell>{getNumberAsCurrency(add.preco)}</TableCell>
+                        <TableCell>{transformPriceToString(add.preco)}</TableCell>
 
                         <TableCell align="center">
                           <CustomChip
