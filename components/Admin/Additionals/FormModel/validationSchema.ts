@@ -13,7 +13,7 @@ export function getAdditionalFormValidationSchema(formModel: AdditionalFormModel
       .test("isMax", "Valor máximo de R$ 999,99", (price) => {
         if (!price) return false;
 
-        return transformPriceStringToNumber(price) < 999.99;
+        return transformPriceStringToNumber(price) > 999.99 ? false : true;
       }),
   });
 
