@@ -6,3 +6,7 @@ export const LoadMoreContainer = styled.div`
   align-items: center;
   padding: 0.5rem 0;
 `;
+
+export const WarningMessage = styled.h4`
+  text-align: center;
+`;

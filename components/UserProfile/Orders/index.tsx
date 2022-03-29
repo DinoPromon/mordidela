@@ -16,7 +16,7 @@ import {
 
 const OrdersList = dynamic(() => import("./OrdersList"));
 const OrderDetailsModal = dynamic(() => import("./OrderDetailsModal"));
-import { LoadMoreContainer } from "./styled";
+import { LoadMoreContainer, WarningMessage } from "./styled";
 
 import type { AxiosError } from "axios";
 import type { IOrderRelations } from "@models/pedido";
@@ -88,8 +88,12 @@ const Orders: React.FC = () => {
 
       <PageTitle>Pedidos</PageTitle>
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
-      {!isInitialRequest && ordersRelations.length && (
+      {!isInitialRequest && ordersRelations.length !== 0 && (
         <OrdersList ordersRelations={ordersRelations} openModal={openModal} />
+      )}
+
+      {!isInitialRequest && ordersRelations.length === 0 && (
+        <WarningMessage>Você ainda não fez pedidos!</WarningMessage>
       )}
 
       <CustomAnimatePresence>
