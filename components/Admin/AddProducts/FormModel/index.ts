@@ -1,17 +1,24 @@
 import type { FormField } from "@my-types/form";
+import type { ProductAvailable } from "../utility/constants";
 
 export interface IProductsFormValues {
   name: string;
-  defaultPrice: number | null;
+  defaultPrice: string;
   size: string;
-  available: string;
+  available: ProductAvailable;
+  maxFlavors: string;
   description: string;
-  image: string | null;
+  image: File | undefined;
 }
 
 export type ProductsFormModel = {
   [key in keyof IProductsFormValues]: FormField<IProductsFormValues>;
 };
+
+export type SetProductValue = <T extends keyof IProductsFormValues>(
+  key: T,
+  value: IProductsFormValues[T]
+) => void;
 
 export function getProductsFormModel() {
   const productsFormModel: ProductsFormModel = {
@@ -28,6 +35,11 @@ export function getProductsFormModel() {
     size: {
       label: "Tamanho",
       name: "size",
+    },
+    maxFlavors: {
+      label: "Quantidade de sabores",
+      name: "maxFlavors",
+      requiredErrorMessage: "Escolha uma quantidade máxima de sabores",
     },
     available: {
       label: "Disponível?*",

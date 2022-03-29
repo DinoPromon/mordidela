@@ -1,12 +1,15 @@
+import { ProductAvailable } from "../utility/constants";
+
 import type { IProductsFormValues } from "./index";
 
 export function getProductsFormInitialValues(): IProductsFormValues {
   return {
     name: "",
-    defaultPrice: null,
+    defaultPrice: "",
     size: "",
-    available: "",
+    available: ProductAvailable.TRUE,
     description: "",
-    image: "",
+    image: undefined,
+    maxFlavors: "",
   };
 }

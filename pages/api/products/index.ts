@@ -34,7 +34,10 @@ export const handler: NextApiHandler = async (req, res) => {
           if (err) reject(err);
           if (Array.isArray(files.imagem)) reject("Não há suporte para múltiplas imagens");
 
-          const createProduct = new CreateProduct(fields as any, files.imagem as FormidableFile);
+          const createProduct = new CreateProduct(
+            fields as CreateProductArg,
+            files.imagem as FormidableFile
+          );
 
           createProduct
             .exec()
