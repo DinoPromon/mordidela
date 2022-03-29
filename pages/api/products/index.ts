@@ -5,6 +5,7 @@ import { ReqMethod } from "@my-types/backend/reqMethod";
 import type IProduto from "@models/produto";
 import type { NextApiHandler } from "next";
 import type { File as FormidableFile } from "formidable";
+import type { CreateProductArg } from "@controllers/product/createProduct/types";
 
 export const config = {
   api: {
