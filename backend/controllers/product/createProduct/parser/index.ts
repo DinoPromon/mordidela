@@ -46,9 +46,19 @@ export class CreateProductParser {
     return numberIdDesconto;
   }
 
-  public parse() {
-    console.log(this.parseIdDesconto());
+  private parseIdCategoria() {
+    if (!this.createProductArgs.id_categoria) return null;
 
+    if (Array.isArray(this.createProductArgs.id_categoria)) return null;
+
+    const numberIdDesconto = Number(this.createProductArgs.id_categoria);
+
+    if (isNaN(numberIdDesconto)) return null;
+
+    return numberIdDesconto;
+  }
+
+  public parse() {
     const parsedProductCreate: ProductCreate = {
       nome: String(this.createProductArgs.nome),
       qtde_max_sabor: this.createProductArgs.qtde_max_sabor
@@ -59,7 +69,7 @@ export class CreateProductParser {
       preco_padrao: Number(this.createProductArgs.preco_padrao),
       tamanho: this.createProductArgs.tamanho ? String(this.createProductArgs.tamanho) : null,
       id_desconto: this.parseIdDesconto(),
-      id_categoria: Number(this.createProductArgs.id_categoria),
+      id_categoria: this.parseIdCategoria(),
       adicionais: this.parseAdicionais(),
       sabores: this.parseSabores(),
     };

@@ -14,7 +14,7 @@ interface IProduto {
   descricao: string | null;
   tamanho: string | null;
   qtde_max_sabor: number | null;
-  id_categoria: ICategoria["id_categoria"];
+  id_categoria: ICategoria["id_categoria"] | null;
   id_desconto: IDesconto["id_desconto"] | null;
 }
 
@@ -37,8 +37,8 @@ export type RelatedProduct = Omit<IProduto, "id_categoria" | "id_desconto" | "di
 };
 
 export type ProductCreate = Omit<IProduto, "id_produto" | "uuid" | "nome_imagem"> & {
-  adicionais: number[] | null;
-  sabores: number[] | null;
+  adicionais?: number[];
+  sabores?: number[];
 };
 
 export default IProduto;
