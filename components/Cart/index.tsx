@@ -33,6 +33,7 @@ import {
   CartEmptyMessage,
   CartLoadingContainer,
   CartEmptyMessageContainer,
+  RedirectMessage,
 } from "./styled";
 
 import type { Session } from "next-auth";
@@ -140,7 +141,14 @@ const Cart: React.FC<Props> = ({ onCloseModal }) => {
         {({ values }) => (
           <Fragment>
             {isOrderConfirmed && !requestStatus.isLoading && (
-              <SuccessRequestLayout successMessage="Pedido realizado com sucesso!" />
+              <SuccessRequestLayout successMessage="Pedido realizado com sucesso!">
+                <RedirectMessage>
+                  Visualize seu pedido em{" "}
+                  <Link href={"/pedidos"}>
+                    <a>pedidos!</a>
+                  </Link>{" "}
+                </RedirectMessage>
+              </SuccessRequestLayout>
             )}
 
             {!isOrderConfirmed && !requestStatus.isLoading && (

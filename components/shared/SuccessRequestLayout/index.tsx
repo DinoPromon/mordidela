@@ -7,17 +7,19 @@ type SuccessRequestLayoutProps = {
   successMessage: string;
 };
 
-type SuccessRequestLayoutType = (props: SuccessRequestLayoutProps) => JSX.Element;
-
-const SuccessRequestLayout: SuccessRequestLayoutType = ({ successMessage }) => {
+const SuccessRequestLayout: React.FC<SuccessRequestLayoutProps> = ({
+  successMessage,
+  children,
+}) => {
   return (
     <SuccessRequestLayoutContainer>
       <IconContainer>
         <BsCheck2Circle size={50} color="green" />
       </IconContainer>
       <SuccessMessage>{successMessage}</SuccessMessage>
+      {children}
     </SuccessRequestLayoutContainer>
   );
 };
 
-export default memo(SuccessRequestLayout);
+export default SuccessRequestLayout;

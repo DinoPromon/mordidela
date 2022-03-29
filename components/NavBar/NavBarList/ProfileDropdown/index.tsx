@@ -13,6 +13,7 @@ import { SessionStatus } from "./constants/sessionStatus";
 import { ProfileDropdownContainer, LoadingContainer } from "./styled";
 
 import type { Variants } from "framer-motion";
+import type { Session } from "next-auth";
 
 const angleUpVariants: Variants = {
   down: (isDown: boolean) => ({
@@ -27,6 +28,7 @@ const ProfileDropdown: React.FC = (props) => {
   const [sessionStatus, setSessionStatus] = useState<SessionStatus>(SessionStatus.LOADING);
   const [userFirstName, setUserFirstName] = useState<string>();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
 
   const showDropdownHandler = () => {
     setShowDropdown((prevState) => !prevState);
@@ -37,6 +39,7 @@ const ProfileDropdown: React.FC = (props) => {
       const session = await getSession();
 
       if (!session) return setSessionStatus(SessionStatus.LOGGED_OUT);
+      setSession(session);
 
       const { nome } = session.user as { nome: string };
 
@@ -76,8 +79,12 @@ const ProfileDropdown: React.FC = (props) => {
 
       {sessionStatus === SessionStatus.LOGGED_OUT && <Link href="/login">Login</Link>}
 
-      {showDropdown && sessionStatus === SessionStatus.LOGGED_IN && (
-        <DropdownList isShowingDropdown={showDropdown} setShowDropdown={setShowDropdown} />
+      {showDropdown && sessionStatus === SessionStatus.LOGGED_IN && session && (
+        <DropdownList
+          isShowingDropdown={showDropdown}
+          setShowDropdown={setShowDropdown}
+          session={session}
+        />
       )}
     </ProfileDropdownContainer>
   );

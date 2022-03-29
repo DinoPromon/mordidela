@@ -46,3 +46,12 @@ export const CartLoadingContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const RedirectMessage = styled.h4`
+  text-align: center;
+  padding: 0.25rem 0;
+
+  & > a {
+    color: ${PINK};
+  }
+`;

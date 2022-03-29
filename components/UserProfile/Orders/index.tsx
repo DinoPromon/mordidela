@@ -16,11 +16,12 @@ import {
 
 const OrdersList = dynamic(() => import("./OrdersList"));
 const OrderDetailsModal = dynamic(() => import("./OrderDetailsModal"));
-import { LoadMoreContainer } from "./styled";
+import { LoadMoreContainer, WarningMessage, ReloadContainer } from "./styled";
 
 import type { AxiosError } from "axios";
 import type { IOrderRelations } from "@models/pedido";
 import type { OrdersRelationsResponse } from "@my-types/responses";
+import { Button } from "@material-ui/core";
 
 const Orders: React.FC = () => {
   const isMounted = useIsMounted();
@@ -76,6 +77,10 @@ const Orders: React.FC = () => {
     fetchUserOrdersRelations(skipItems);
   }
 
+  function reload() {
+    window.location.reload();
+  }
+
   useEffect(() => {
     fetchUserOrdersRelations();
   }, [fetchUserOrdersRelations]);
@@ -87,9 +92,22 @@ const Orders: React.FC = () => {
       </CustomAnimatePresence>
 
       <PageTitle>Pedidos</PageTitle>
+      <ReloadContainer>
+        <h4>
+          Para visualizar se o status do pedido foi alterado, recarregue a página periodicamente
+          apertando F5 ou o botão
+        </h4>
+        <Button variant="contained" color="secondary" onClick={reload}>
+          Recarregar
+        </Button>
+      </ReloadContainer>
       {isInitialRequest && requestStatus.isLoading && <CentralizedLoading />}
-      {!isInitialRequest && ordersRelations.length && (
+      {!isInitialRequest && ordersRelations.length !== 0 && (
         <OrdersList ordersRelations={ordersRelations} openModal={openModal} />
+      )}
+
+      {!isInitialRequest && ordersRelations.length === 0 && (
+        <WarningMessage>Você ainda não fez pedidos!</WarningMessage>
       )}
 
       <CustomAnimatePresence>
