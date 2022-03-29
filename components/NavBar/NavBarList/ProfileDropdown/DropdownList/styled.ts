@@ -30,7 +30,7 @@ export const DropdownListContainer = styled.ul<Props>`
   background-color: white;
   overflow: hidden;
   width: 100%;
-  min-width: 120px;
+  min-width: 130px;
   max-width: 130px;
   font-weight: bold;
   list-style: none;
