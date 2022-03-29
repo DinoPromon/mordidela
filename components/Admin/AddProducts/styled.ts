@@ -26,6 +26,7 @@ export const ProductFormActionsContainer = styled.div`
 
 export const ProductForm = styled(Form)`
   width: 85%;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   gap: 16px;
