@@ -43,6 +43,8 @@ export class FindAllOrderGeneralData {
 
     const lesserThanDate = this.getLesserDate(orderFilterDate);
 
+    console.log(orderFilterDate, lesserThanDate);
+
     const count = await Prisma.pedido
       .count({
         where: {
@@ -160,6 +162,7 @@ export class FindAllOrderGeneralData {
   }
 
   private createFilterDate(day: number, month: number, year: number) {
-    return new Date(year, month, day, 0, 0, 0, 0);
+    console.log(day, month, year);
+    return new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
   }
 }

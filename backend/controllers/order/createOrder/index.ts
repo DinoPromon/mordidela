@@ -204,6 +204,7 @@ export class CreateOrder {
       .create({
         data: {
           ...this.orderData,
+          data_pedido: new Date(),
           troco_para: this.orderData.troco_para || null,
           preco_entrega: deliveryPrice,
         },
